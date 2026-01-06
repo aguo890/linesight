@@ -1,0 +1,5 @@
+Code,Ref,Client,Description,Pcs,Done,Fail,Rate,Date
+JKT-01,777,Target,Puffer Jacket,1000,900,10,0.85,12/25/24
+JKT-02,888,Walmart,Vest,500,450,5,0.92,25/12/2024
+,,,Missing Info,,,,!@#,
+Unknown,999,Kmart,,200,180,2,0.5,

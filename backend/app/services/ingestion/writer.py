@@ -1,0 +1,351 @@
+"""
+Production Writer - Database Writing Layer with Atomic Transactions.
+Extracted from file_processor.py to handle all database writes.
+
+CRITICAL: All writes happen in a single transaction block for atomicity.
+If any step fails, the entire transaction is rolled back.
+"""
+import logging
+import uuid
+from datetime import date, datetime, time, timezone
+from decimal import Decimal
+from typing import Any
+
+from sqlalchemy import insert, update
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.models.analytics import EfficiencyMetric
+from app.models.data_quality import DataQualityIssue, IssueSeverity, IssueType
+from app.models.events import EventType, ProductionEvent
+from app.models.production import Order, ProductionRun, Style
+from app.models.quality import InspectionType, QualityInspection
+from app.services.analytics_service import AnalyticsService
+
+logger = logging.getLogger(__name__)
+
+# Batch size for bulk inserts (avoids MySQL packet size limits)
+BATCH_SIZE = 1000
+
+
+class ProductionWriter:
+    """
+    Handles all database writes for ingestion with atomic transactions.
+    
+    Responsibilities:
+    - Prepare ProductionRun inserts/updates
+    - Create ProductionEvents for audit trail
+    - Create EfficiencyMetrics and QualityInspection records
+    - Execute all writes in a single transaction
+    """
+
+    def __init__(self, db: AsyncSession):
+        self.db = db
+
+    async def write_production_data(
+        self,
+        records: list[dict[str, Any]],
+        style_map: dict[str, Style],
+        order_map: dict[tuple[str, str], Order],
+        existing_run_map: dict[tuple[str, date, str], ProductionRun],
+        factory_id: str,
+        production_line_id: str,
+        raw_import_id: str,
+    ) -> dict[str, Any]:
+        """
+        Process all records and write to database atomically.
+        
+        Returns dict with:
+            - inserted: count of new runs
+            - updated: count of updated runs
+            - events: count of events created
+            - errors: count of processing errors
+        """
+        runs_to_insert: list[dict] = []
+        runs_to_update: list[dict] = []
+        production_events: list[dict] = []
+        efficiency_metrics: list[dict] = []
+        quality_inspections: list[dict] = []
+        quality_issues: list[dict] = []
+        error_count = 0
+        now = datetime.utcnow()
+
+        # Process each record
+        for idx, record in enumerate(records):
+            try:
+                result = self._process_record(
+                    idx=idx,
+                    record=record,
+                    style_map=style_map,
+                    order_map=order_map,
+                    existing_run_map=existing_run_map,
+                    factory_id=factory_id,
+                    production_line_id=production_line_id,
+                    raw_import_id=raw_import_id,
+                    now=now,
+                )
+                
+                if result is None:
+                    error_count += 1
+                    continue
+                
+                # Collect prepared data
+                if result.get("run_insert"):
+                    runs_to_insert.append(result["run_insert"])
+                if result.get("run_update"):
+                    runs_to_update.append(result["run_update"])
+                if result.get("event"):
+                    production_events.append(result["event"])
+                if result.get("efficiency"):
+                    efficiency_metrics.append(result["efficiency"])
+                if result.get("quality"):
+                    quality_inspections.append(result["quality"])
+                if result.get("issues"):
+                    quality_issues.extend(result["issues"])
+                    
+            except (ValueError, TypeError, KeyError) as e:
+                logger.warning(f"Data error in row {idx}: {e}")
+                error_count += 1
+            except Exception as e:
+                logger.error(f"Internal error processing row {idx}: {e}")
+                raise
+
+        # Execute all writes atomically
+        await self._execute_writes(
+            runs_to_insert=runs_to_insert,
+            runs_to_update=runs_to_update,
+            production_events=production_events,
+            efficiency_metrics=efficiency_metrics,
+            quality_inspections=quality_inspections,
+            quality_issues=quality_issues,
+        )
+
+        return {
+            "inserted": len(runs_to_insert),
+            "updated": len(runs_to_update),
+            "events": len(production_events),
+            "errors": error_count,
+        }
+
+    def _process_record(
+        self,
+        idx: int,
+        record: dict[str, Any],
+        style_map: dict[str, Style],
+        order_map: dict[tuple[str, str], Order],
+        existing_run_map: dict[tuple[str, date, str], ProductionRun],
+        factory_id: str,
+        production_line_id: str,
+        raw_import_id: str,
+        now: datetime,
+    ) -> dict[str, Any] | None:
+        """
+        Process a single record and return prepared data for DB operations.
+        Returns None if record should be skipped.
+        """
+        # Lookup Style
+        sn = record.get("style_number")
+        if not sn or sn not in style_map:
+            return None
+        style = style_map[sn]
+
+        # Lookup Order
+        po = record.get("po_number", "UNKNOWN_PO")
+        order_key = (str(po), style.id)
+        if order_key not in order_map:
+            return None
+        order = order_map[order_key]
+
+        # Determine production date and shift
+        p_date = record.get("production_date", datetime.now(timezone.utc).date())
+        if isinstance(p_date, datetime):
+            p_date = p_date.date()
+        shift = record.get("shift", "day")
+        run_key = (order.id, p_date, shift)
+
+        new_qty = record.get("actual_qty", 0)
+        run_sam = record.get("sam") or style.base_sam or Decimal(0)
+
+        # Common run data
+        run_data_base = {
+            "actual_qty": new_qty,
+            "sam": run_sam,
+            "operators_present": record.get("operators_present", 0),
+            "helpers_present": record.get("helpers_present", 0),
+            "worked_minutes": record.get("worked_minutes", 0),
+            "downtime_minutes": record.get("downtime_minutes"),
+            "downtime_reason": record.get("downtime_reason"),
+            "updated_at": now,
+        }
+
+        # Physics validation
+        issues = []
+        physics_warnings = AnalyticsService.validate_production_physics(record)
+        if physics_warnings:
+            for warning in physics_warnings:
+                issues.append({
+                    "id": str(uuid.uuid4()),
+                    "raw_import_id": raw_import_id,
+                    "row_number": idx + 1,
+                    "issue_type": IssueType.PHYSICS_VIOLATION.value,
+                    "severity": IssueSeverity.WARNING.value,
+                    "message": warning,
+                    "field_name": None,
+                    "field_value": None,
+                })
+
+        result: dict[str, Any] = {"issues": issues}
+
+        # Differential logic: Update existing or Insert new
+        if run_key in existing_run_map:
+            # UPDATE EXISTING
+            existing_run = existing_run_map[run_key]
+            delta_qty = new_qty - existing_run.actual_qty
+
+            if delta_qty != 0:
+                # Update run
+                update_payload = run_data_base.copy()
+                update_payload["id"] = existing_run.id
+                result["run_update"] = update_payload
+
+                # Create differential event
+                result["event"] = {
+                    "id": str(uuid.uuid4()),
+                    "production_run_id": existing_run.id,
+                    "line_id": production_line_id,
+                    "order_id": order.id,
+                    "style_id": style.id,
+                    "timestamp": datetime.combine(p_date, time(12, 0)).replace(
+                        tzinfo=timezone.utc
+                    ),
+                    "event_type": EventType.BATCH_UPLOAD.value,
+                    "quantity": delta_qty,
+                    "source_import_id": raw_import_id,
+                    "raw_data": {"row": idx, "logic": "differential_update"},
+                }
+        else:
+            # INSERT NEW
+            new_id = str(uuid.uuid4())
+
+            # Create run
+            run_payload = run_data_base.copy()
+            run_payload.update({
+                "id": new_id,
+                "factory_id": factory_id,
+                "order_id": order.id,
+                "line_id": production_line_id,
+                "source_import_id": raw_import_id,
+                "production_date": record.get("production_date", now.date()),
+                "shift": shift,
+                "planned_qty": record.get("planned_qty", 0),
+                "created_at": now,
+            })
+            result["run_insert"] = run_payload
+
+            # Create initial event
+            result["event"] = {
+                "id": str(uuid.uuid4()),
+                "production_run_id": new_id,
+                "line_id": production_line_id,
+                "order_id": order.id,
+                "style_id": style.id,
+                "timestamp": datetime.combine(p_date, time(12, 0)).replace(
+                    tzinfo=timezone.utc
+                ),
+                "event_type": EventType.BATCH_UPLOAD.value,
+                "quantity": new_qty,
+                "source_import_id": raw_import_id,
+                "raw_data": {"row": idx, "logic": "initial_insert"},
+            }
+
+            # Efficiency metric (only for new runs)
+            actual_qty = Decimal(str(new_qty))
+            sam_val = Decimal(str(run_sam))
+            earned = actual_qty * sam_val
+            worked_mins = Decimal(str(record.get("worked_minutes", 0)))
+            manpower = Decimal(
+                str(record.get("operators_present", 0) + record.get("helpers_present", 0))
+            )
+            available = worked_mins * manpower
+            eff = (earned / available * 100) if available > 0 else Decimal(0)
+
+            result["efficiency"] = {
+                "id": str(uuid.uuid4()),
+                "production_run_id": new_id,
+                "efficiency_pct": eff,
+                "sam_target": available,
+                "sam_actual": earned,
+                "calculated_at": now,
+                "created_at": now,
+                "updated_at": now,
+            }
+
+            # Quality inspection (always for new runs)
+            result["quality"] = {
+                "id": str(uuid.uuid4()),
+                "production_run_id": new_id,
+                "inspection_type": InspectionType.ENDLINE,
+                "units_checked": new_qty,
+                "defects_found": int(float(record.get("defects", 0))),
+                "dhu": Decimal(str(record.get("dhu", 0))) if record.get("dhu") else None,
+                "inspected_at": now,
+                "created_at": now,
+                "updated_at": now,
+            }
+
+        return result
+
+    async def _execute_writes(
+        self,
+        runs_to_insert: list[dict],
+        runs_to_update: list[dict],
+        production_events: list[dict],
+        efficiency_metrics: list[dict],
+        quality_inspections: list[dict],
+        quality_issues: list[dict],
+    ) -> None:
+        """
+        Execute all database writes.
+        Note: Caller should wrap in transaction context for atomicity.
+        """
+        # Insert new runs
+        if runs_to_insert:
+            logger.info(f"Inserting {len(runs_to_insert)} new runs...")
+            for i in range(0, len(runs_to_insert), BATCH_SIZE):
+                await self.db.execute(
+                    insert(ProductionRun).values(runs_to_insert[i : i + BATCH_SIZE])
+                )
+
+        # Update existing runs
+        if runs_to_update:
+            logger.info(f"Updating {len(runs_to_update)} existing runs...")
+            await self.db.execute(update(ProductionRun), runs_to_update)
+
+        # Insert events
+        if production_events:
+            logger.info(f"Inserting {len(production_events)} events...")
+            for i in range(0, len(production_events), BATCH_SIZE):
+                await self.db.execute(
+                    insert(ProductionEvent).values(production_events[i : i + BATCH_SIZE])
+                )
+
+        # Insert efficiency metrics
+        if efficiency_metrics:
+            for i in range(0, len(efficiency_metrics), BATCH_SIZE):
+                await self.db.execute(
+                    insert(EfficiencyMetric).values(efficiency_metrics[i : i + BATCH_SIZE])
+                )
+
+        # Insert quality inspections
+        if quality_inspections:
+            for i in range(0, len(quality_inspections), BATCH_SIZE):
+                await self.db.execute(
+                    insert(QualityInspection).values(quality_inspections[i : i + BATCH_SIZE])
+                )
+
+        # Insert data quality issues
+        if quality_issues:
+            logger.info(f"Persisting {len(quality_issues)} data quality issues...")
+            for i in range(0, len(quality_issues), BATCH_SIZE):
+                await self.db.execute(
+                    insert(DataQualityIssue).values(quality_issues[i : i + BATCH_SIZE])
+                )

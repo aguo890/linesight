@@ -1,0 +1,74 @@
+import React from 'react';
+import { AlertOctagon, ArrowRight } from 'lucide-react';
+
+interface BlockerItem {
+    reason: string;
+    count: number;
+}
+
+interface MockBlockerProps {
+    w?: number;
+    h?: number;
+    data: BlockerItem[];
+}
+
+const getDensity = (w: number, h: number) => {
+    if (w <= 2 || h <= 2) return 'compact';
+    return 'normal';
+};
+
+export const MockBlockerCloudWidget: React.FC<MockBlockerProps> = ({ w = 4, h = 3, data }) => {
+    const density = getDensity(w, h);
+    const maxItems = 10;
+    const showCounts = true;
+
+    const reasons = data || [];
+
+    // Limit to maxItems
+    const displayReasons = reasons.slice(0, maxItems);
+    const maxCount = Math.max(...displayReasons.map(r => r.count));
+
+    return (
+        <div className="flex flex-col h-full w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-md bg-red-50`}>
+                        <AlertOctagon className="w-4 h-4 text-red-500" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-semibold text-slate-700">Top Blockers</h3>
+                        <div className="text-[10px] text-slate-400">Recurring Downtime Keywords</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex flex-col h-full overflow-hidden">
+                <div className="flex-1 overflow-y-auto space-y-3 pr-1 scrollbar-thin scrollbar-thumb-slate-200">
+                    {displayReasons.map((item, idx) => (
+                        <div key={idx} className="group">
+                            <div className="flex justify-between items-center text-xs mb-1">
+                                <span className="font-medium text-slate-700">{item.reason}</span>
+                                {showCounts && (
+                                    <span className="text-slate-400">{item.count} occurrences</span>
+                                )}
+                            </div>
+                            <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-red-400 rounded-full group-hover:bg-red-500 transition-all duration-500"
+                                    style={{ width: `${(item.count / maxCount) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-auto pt-2 border-t border-slate-50 text-right">
+                    <button className="text-[10px] text-sky-600 font-medium inline-flex items-center hover:underline">
+                        View all logs <ArrowRight className="w-3 h-3 ml-1" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};

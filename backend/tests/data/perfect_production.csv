@@ -1,0 +1,4 @@
+style_number,po_number,buyer,color,quantity,production_date,actual_qty,sam
+S123,PO-999,Nike,Blue,1000,2024-12-25,950,2.5
+S124,PO-1000,Adidas,Black,500,2024-12-25,510,3.0
+S125,PO-1001,Puma,Red,750,2024-12-25,700,2.2

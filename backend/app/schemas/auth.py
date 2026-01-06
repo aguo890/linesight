@@ -1,0 +1,50 @@
+"""
+Auth Pydantic schemas.
+Request/response models for authentication endpoints.
+"""
+
+from pydantic import BaseModel, EmailStr, Field
+
+
+class LoginRequest(BaseModel):
+    """Login request payload."""
+
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+
+
+class LoginResponse(BaseModel):
+    """Login response with JWT token."""
+
+    access_token: str
+    token_type: str = "bearer"
+    user: "UserInfo"
+
+    model_config = {"from_attributes": True}
+
+
+class UserInfo(BaseModel):
+    """User information returned after login."""
+
+    id: str
+    email: str
+    full_name: str
+    role: str
+    organization_id: str
+
+
+class RegisterRequest(BaseModel):
+    """Registration request payload."""
+
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+    full_name: str = Field(..., min_length=2, max_length=255)
+    organization_name: str = Field(..., min_length=2, max_length=255)
+    organization_code: str = Field(..., min_length=2, max_length=50)
+
+
+class RegisterResponse(BaseModel):
+    """Registration response."""
+
+    message: str
+    user_id: str

@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 2025 Industrial Prime - Light "Clean Factory" Palette */
+  --color-primary: #2563EB;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #1D4ED8;
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-accent-light: #60A5FA;
+
+  /* Industrial Status */
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+
+  /* Surface & Glass */
+  --color-background: #F8FAFC;
+  /* Slate 50 */
+  --color-surface: rgba(255, 255, 255, 0.7);
+  /* White Glass */
+  --color-surface-elevated: #FFFFFF;
+  --color-surface-subtle: #F5F5F7;
+  /* Apple-esque light gray */
+  --color-surface-dark: #1D1D1F;
+  /* Dark mode surface / charcoal card */
+
+  --color-border: rgba(203, 213, 225, 0.5);
+  --color-border-subtle: rgba(29, 29, 31, 0.05);
+  /* 5% opacity charcoal for subtle lines */
+  /* Slate 200 */
+  --color-border-hover: rgba(37, 99, 235, 0.4);
+
+  /* Text - Refined for "Elite" feel */
+  --color-text: #1D1D1F;
+  /* Deep charcoal, almost black */
+  --color-text-muted: #86868b;
+  /* Apple-esque medium gray */
+  --color-text-subtle: #94A3B8;
+  /* Slate 400 */
+
+  /* Typography */
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-heading);
+  }
+
+  .glass-card {
+    @apply backdrop-blur-md bg-white/70 border border-slate-200/60 shadow-xl shadow-slate-200/50;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle industrial texture for light mode */
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+    background-size: 10px 10px;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  .btn-accent {
+    @apply bg-blue-600 text-white font-bold transition-all shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-background);
+}
+
+body {
+  color: var(--color-text);
+  font-family: var(--font-body);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes loading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+@keyframes draw {
+  from { stroke-dashoffset: 100%; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes grow-up {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.animate-draw {
+  stroke-dasharray: 100% 100%; 
+  animation: draw 1.5s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s infinite ease-in-out;
+}
+
+.animate-grow-up {
+  transform-origin: bottom;
+  animation: grow-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

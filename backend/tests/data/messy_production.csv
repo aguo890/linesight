@@ -1,0 +1,8 @@
+FACTORY PRODUCTION REPORT,,,
+Date:,2024-12-25,,,
+,,,
+Style #,Order ID,Customer,Variant,Target,Actual Output,Mins
+S-456,ABC-1,ZARA,WHITE,1,200,"1,150",4.5
+S-457,ABC-2,H&M,BLACK,800,780,5.1
+,,,,,
+Total,,,,2000,1930,

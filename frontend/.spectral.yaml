@@ -1,0 +1,25 @@
+# Spectral OpenAPI Linting Configuration
+# See: https://docs.stoplight.io/docs/spectral/
+
+extends:
+  - spectral:oas  # OpenAPI ruleset (OAS 2.0 & 3.x)
+
+# Rule customization for FactoryExcelManager API
+rules:
+  # --- Naming & Documentation ---
+  operation-operationId: error          # Every operation must have an operationId
+  operation-description: warn           # Operations should have descriptions
+  operation-tags: warn                  # Operations should have tags
+  
+  # --- Schema Quality ---
+  oas3-schema: error                    # Valid OpenAPI 3.x schema
+  oas3-valid-schema-example: warn       # Examples should match schema
+  
+  # --- API Hygiene ---
+  no-$ref-siblings: error               # $ref should not have siblings
+  path-params: error                    # Path parameters must be defined
+  
+  # --- Relaxed Rules (adjust as needed) ---
+  info-contact: off                     # Contact info not required
+  info-license: off                     # License info not required
+  oas3-api-servers: off                 # Server array not required (dev environment)

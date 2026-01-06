@@ -1,0 +1,99 @@
+# API Breaking Change Detection
+# Runs on backend PRs to detect OpenAPI spec breaking changes
+
+name: API Breaking Change Detection
+
+on:
+  pull_request:
+    paths:
+      - 'backend/**'
+      - '!backend/tests/**'
+      - '!backend/**/*.md'
+
+jobs:
+  check-api-breaking-changes:
+    name: Check for API Breaking Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Extract NEW OpenAPI schema
+        run: |
+          cd backend
+          python scripts/extract_openapi.py --output ../openapi-new.json
+          echo "New schema extracted"
+
+      - name: Checkout base branch schema
+        run: |
+          git checkout origin/${{ github.base_ref }} -- frontend/swagger.json || echo "No existing schema found"
+          if [ -f frontend/swagger.json ]; then
+            cp frontend/swagger.json openapi-base.json
+          fi
+
+      - name: Install oasdiff
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/oasdiff/oasdiff/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Check for breaking changes
+        id: breaking-check
+        if: ${{ hashFiles('openapi-base.json') != '' }}
+        run: |
+          echo "## API Breaking Change Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Run oasdiff and capture output
+          set +e
+          BREAKING_OUTPUT=$(oasdiff breaking openapi-base.json openapi-new.json 2>&1)
+          BREAKING_EXIT_CODE=$?
+          set -e
+          
+          if [ $BREAKING_EXIT_CODE -ne 0 ]; then
+            echo "### ⚠️ Breaking Changes Detected" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "$BREAKING_OUTPUT" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Action Required:** Please review these changes with the frontend team before merging." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "### ✅ No Breaking Changes" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The API changes in this PR are backward-compatible." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Show API changelog
+        if: ${{ hashFiles('openapi-base.json') != '' }}
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 API Changelog" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          oasdiff changelog openapi-base.json openapi-new.json || echo "No changes"
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: First-time API schema (no base to compare)
+        if: ${{ hashFiles('openapi-base.json') == '' }}
+        run: |
+          echo "## API Breaking Change Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ℹ️ No existing API schema found in base branch. This appears to be initial API setup." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "New schema has been generated with:" >> $GITHUB_STEP_SUMMARY
+          echo "- $(jq '.paths | length' openapi-new.json) endpoints" >> $GITHUB_STEP_SUMMARY
+          echo "- $(jq '.components.schemas | length' openapi-new.json) schemas" >> $GITHUB_STEP_SUMMARY
