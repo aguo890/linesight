@@ -138,9 +138,43 @@
 | BE-002 | Implement user registration `/auth/register` | P0 | M | ✅ Done | Creates org + user |
 | BE-003 | Implement password reset flow | P2 | M | ⬜ Todo | Email integration needed |
 | BE-004 | Add refresh token mechanism | P1 | S | ⬜ Todo | Extend session management |
-| BE-005 | Implement RBAC middleware | P0 | L | ✅ Done | Admin/Manager/Analyst/Viewer roles |
-| BE-006 | Implement Scoped Roles (Org/Factory/Line) | P0 | L | ⬜ Todo | Fine-grained access control |
+| BE-005 | Implement RBAC middleware | P0 | L | ✅ Done | SYSTEM_ADMIN/OWNER/MANAGER/ANALYST/VIEWER roles |
+| BE-006 | Implement Scoped Roles (Org/Factory/Line) | P0 | L | 🟡 Partial | UserScope model + query filtering for factories/lines |
 | BE-007 | Semantic Mapping Layer API | P0 | L | ⬜ Todo | Store Excel-to-Internal mappings |
+
+### 🛡️ RBAC Enhancement Tasks (New - 2026-01-07)
+> **Context**: Role hierarchy restructured. SYSTEM_ADMIN (platform), OWNER (org-wide), MANAGER (line-scoped).
+> **Completed**: Enum changes, seed data, deps.py role checks, query filtering for `/factories/{id}` and `/factories/{id}/lines`.
+
+| ID | Task | Priority | Effort | Status | Notes |
+|----|------|----------|--------|--------|-------|
+| **User Management** |
+| RBAC-001 | Owner can view all users in their organization | P0 | M | ⬜ Todo | GET /users endpoint with org filter |
+| RBAC-002 | Owner can assign managers to specific lines | P0 | L | ⬜ Todo | POST /users/{id}/scopes endpoint |
+| RBAC-003 | Owner can revoke manager line access | P0 | M | ⬜ Todo | DELETE /users/{id}/scopes/{scope_id} |
+| RBAC-004 | UI for line assignment (Owner view) | P0 | L | ⬜ Todo | Drag-drop or checkbox matrix |
+| RBAC-005 | Manager can only see users they manage (same lines) | P2 | M | ⬜ Todo | Query filtering for managers |
+| **Data Ingestion (Manager Restrictions)** |
+| RBAC-010 | Manager can only upload to assigned lines | P0 | M | ⬜ Todo | Validate line_id in upload endpoint |
+| RBAC-011 | Manager can only promote data to assigned lines | P0 | M | ⬜ Todo | Validate in /ingestion/promote |
+| RBAC-012 | Filter upload history by assigned lines | P1 | M | ⬜ Todo | Manager sees only their uploads |
+| **Analytics & Dashboards** |
+| RBAC-020 | Filter analytics endpoints by user scope | P0 | L | ⬜ Todo | /analytics/* respects line scope |
+| RBAC-021 | Dashboard widgets respect line scope | P1 | M | ⬜ Todo | Only show data for accessible lines |
+| RBAC-022 | Manager cannot create dashboards org-wide | P2 | S | ⬜ Todo | Scope dashboard to assigned lines |
+| **Production Line Creation (Owner Only)** |
+| RBAC-030 | Restrict line creation to OWNER role | P0 | S | ⬜ Todo | Update create_production_line endpoint |
+| RBAC-031 | Restrict line deletion to OWNER role | P0 | S | ⬜ Todo | Update delete_production_line endpoint |
+| RBAC-032 | Manager cannot modify line settings | P1 | S | ⬜ Todo | Update update_production_line endpoint |
+| **System Admin Features** |
+| RBAC-040 | SYSTEM_ADMIN can view all organizations | P1 | M | ⬜ Todo | GET /admin/organizations |
+| RBAC-041 | SYSTEM_ADMIN can impersonate users | P2 | L | ⬜ Todo | Debug/support feature |
+| RBAC-042 | SYSTEM_ADMIN can reset user passwords | P2 | M | ⬜ Todo | Admin support tool |
+| **Frontend RBAC** |
+| RBAC-050 | Hide "Create Line" button for Managers | P0 | S | ⬜ Todo | UI role check |
+| RBAC-051 | Show only assigned lines in sidebar/nav | P0 | M | ⬜ Todo | Filter nav based on scope |
+| RBAC-052 | Role-based menu items (Owner vs Manager) | P1 | M | ⬜ Todo | Dynamic navigation |
+| RBAC-053 | User management page (Owner only) | P1 | L | ⬜ Todo | Invite, assign, revoke users |
 
 ### 🏭 Factory & Organization Management
 | ID | Task | Priority | Effort | Status | Notes |
@@ -772,6 +806,7 @@
 | 2024-12-27 | **Dashboard Wizard Decoupling**: Split Create and Upload flows. Implemented `createFactory`/`createLine` frontend APIs. Users can now define new contexts during dashboard creation. | Antigravity |
 | 2026-01-03 | **Dashboard Assembly Animation Spec**: 10-phase fly-in animation design (spatial continuity, spring physics, accessibility). Added EPIC 9. | Antigravity |
 | 2026-01-03 | **Live Data Architecture Spec**: WebSocket pub/sub + Optimistic UI with three-tier state. Added EPIC 10. | Antigravity |
+| 2026-01-07 | **RBAC Restructuring**: New role hierarchy (SYSTEM_ADMIN, OWNER, MANAGER). Updated enums.py, seed.py, deps.py. Implemented query-level filtering in factories.py. Manager now sees only assigned lines (2/4). Added 20+ RBAC tasks to backlog. | Antigravity |
 
 ---
 

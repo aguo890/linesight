@@ -83,12 +83,22 @@ class SubscriptionTier(StrEnum):
 
 
 class UserRole(StrEnum):
-    """User roles for RBAC."""
+    """User roles for RBAC.
+    
+    Hierarchy:
+    - SYSTEM_ADMIN: Platform-level admin (developer). Can see all organizations.
+    - OWNER: Organization owner/CEO. Full access to all factories/lines in their org.
+             Only role that can create production lines.
+    - MANAGER: Assigned to specific lines by owner. Can only view/upload to assigned lines.
+    - ANALYST: Read-only analytics access within organization.
+    - VIEWER: Read-only access within organization.
+    """
 
-    ADMIN = "admin"
-    MANAGER = "manager"
-    ANALYST = "analyst"
-    VIEWER = "viewer"
+    SYSTEM_ADMIN = "system_admin"  # Platform-level admin
+    OWNER = "owner"                # Organization owner/CEO
+    MANAGER = "manager"            # Line-scoped manager
+    ANALYST = "analyst"            # Read-only analytics
+    VIEWER = "viewer"              # Read-only access
 
 
 class RoleScope(StrEnum):

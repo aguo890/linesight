@@ -128,3 +128,12 @@ prompt_for_next_chat.md
 # Playwright test artifacts  
 frontend/test-results/
 frontend/playwright-report/
+
+# Excel temp/lock files (created when file is open)
+~$*.xlsx
+~$*.xls
+~$*.xlsm
+*.tmp
+
+# Test data (large files, not needed in repo)
+backend/test_data_bulk/

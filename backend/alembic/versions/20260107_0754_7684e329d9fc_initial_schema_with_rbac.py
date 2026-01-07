@@ -1,8 +1,8 @@
-"""reset_migration
+"""initial_schema_with_rbac
 
-Revision ID: 5f259675217e
+Revision ID: 7684e329d9fc
 Revises: 
-Create Date: 2026-01-07 06:45:38.757459+00:00
+Create Date: 2026-01-07 07:54:19.986617+00:00
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision: str = '5f259675217e'
+revision: str = '7684e329d9fc'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -76,7 +76,24 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('code')
     )
-
+    op.create_table('production_lines',
+    sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('code', sa.String(length=50), nullable=True),
+    sa.Column('target_operators', sa.Integer(), nullable=True),
+    sa.Column('target_efficiency_pct', sa.Integer(), nullable=True),
+    sa.Column('settings', sa.JSON(), nullable=True),
+    sa.Column('specialty', sa.String(length=100), nullable=True),
+    sa.Column('supervisor_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
+    sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], name='fk_line_factory', ondelete='CASCADE', use_alter=True),
+    sa.ForeignKeyConstraint(['supervisor_id'], ['workers.id'], name='fk_line_supervisor', ondelete='SET NULL', use_alter=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_production_lines_factory_id'), 'production_lines', ['factory_id'], unique=False)
     op.create_table('workers',
     sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
     sa.Column('employee_id', sa.String(length=50), nullable=False),
@@ -96,29 +113,10 @@ def upgrade() -> None:
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
     sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['line_id'], ['production_lines.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('factory_id', 'employee_id', name='uq_factory_employee')
     )
-
-    op.create_table('production_lines',
-    sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('code', sa.String(length=50), nullable=True),
-    sa.Column('target_operators', sa.Integer(), nullable=True),
-    sa.Column('target_efficiency_pct', sa.Integer(), nullable=True),
-    sa.Column('settings', sa.JSON(), nullable=True),
-    sa.Column('specialty', sa.String(length=100), nullable=True),
-    sa.Column('supervisor_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], name='fk_line_factory', ondelete='CASCADE', use_alter=True),
-    sa.ForeignKeyConstraint(['supervisor_id'], ['workers.id'], ondelete='SET NULL'),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_index(op.f('ix_production_lines_factory_id'), 'production_lines', ['factory_id'], unique=False)
-    
     op.create_index(op.f('ix_workers_employee_id'), 'workers', ['employee_id'], unique=False)
     op.create_index(op.f('ix_workers_factory_id'), 'workers', ['factory_id'], unique=False)
     op.create_table('data_sources',
@@ -191,7 +189,7 @@ def upgrade() -> None:
     sa.Column('avatar_url', sa.String(length=500), nullable=True),
     sa.Column('timezone', sa.String(length=50), nullable=True),
     sa.Column('preferences', sa.Text(), nullable=True),
-    sa.Column('role', sa.Enum('ADMIN', 'MANAGER', 'ANALYST', 'VIEWER', name='userrole'), nullable=False),
+    sa.Column('role', sa.Enum('SYSTEM_ADMIN', 'OWNER', 'MANAGER', 'ANALYST', 'VIEWER', name='userrole'), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
     sa.Column('last_login', sa.DateTime(timezone=True), nullable=True),
@@ -383,7 +381,7 @@ def upgrade() -> None:
     sa.Column('organization_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('factory_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('production_line_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('role', sa.Enum('ADMIN', 'MANAGER', 'ANALYST', 'VIEWER', name='userrole'), nullable=False),
+    sa.Column('role', sa.Enum('SYSTEM_ADMIN', 'OWNER', 'MANAGER', 'ANALYST', 'VIEWER', name='userrole'), nullable=False),
     sa.Column('id', mysql.CHAR(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
@@ -591,7 +589,6 @@ def upgrade() -> None:
     op.create_index(op.f('ix_defects_defect_type'), 'defects', ['defect_type'], unique=False)
     op.create_index(op.f('ix_defects_inspection_id'), 'defects', ['inspection_id'], unique=False)
     op.create_index(op.f('ix_defects_worker_id'), 'defects', ['worker_id'], unique=False)
-    op.create_foreign_key('fk_workers_lines', 'workers', 'production_lines', ['line_id'], ['id'])
     # ### end Alembic commands ###
 
 

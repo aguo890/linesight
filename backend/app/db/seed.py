@@ -10,7 +10,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password
-from app.enums import OrderPriority, OrderStatus
+from app.enums import OrderPriority, OrderStatus, RoleScope, UserRole
 from app.models.analytics import EfficiencyMetric
 # from app.models.compliance import (
 #     ComplianceStandard,
@@ -23,7 +23,7 @@ from app.models.production import (
     ProductionRun,
     Style,
 )
-from app.models.user import Organization, User, UserRole
+from app.models.user import Organization, User, UserScope
 from app.models.workforce import Worker, WorkerSkill
 
 
@@ -50,7 +50,7 @@ async def seed_data(db: AsyncSession):
         await db.flush()
         print(f"Created Organization: {org.name}")
 
-    # 2. Create Admin User
+    # 2. Create System Admin User (Platform-level admin - YOU)
     admin_query = select(User).where(User.email == "admin@linesight.dev")
     admin_result = await db.execute(admin_query)
     admin_user = admin_result.scalar_one_or_none()
@@ -61,12 +61,17 @@ async def seed_data(db: AsyncSession):
             email="admin@linesight.dev",
             hashed_password=hash_password("admin123"),
             full_name="System Admin",
-            role=UserRole.ADMIN,
+            role=UserRole.SYSTEM_ADMIN,  # Platform-level access
             is_active=True,
             is_verified=True,
         )
         db.add(admin_user)
-        print(f"Created Admin User: {admin_user.email}")
+        print(f"Created System Admin User: {admin_user.email}")
+    else:
+        # Update existing admin to SYSTEM_ADMIN role
+        admin_user.role = UserRole.SYSTEM_ADMIN
+        db.add(admin_user)
+        print(f"Updated Admin User to SYSTEM_ADMIN: {admin_user.email}")
 
     # 2.5. Create Demo Organization & User (Ported from standalone script)
     print("Checking Demo Organization...")
@@ -90,21 +95,23 @@ async def seed_data(db: AsyncSession):
     demo_user = demo_user_res.scalar_one_or_none()
 
     if not demo_user:
-        print("Creating Demo User...")
+        print("Creating Demo Owner User...")
         demo_user = User(
             organization_id=demo_org.id,
             email="demo@linesight.io",
             hashed_password=hash_password("demo1234"),
-            full_name="Demo User",
-            role=UserRole.ADMIN,
+            full_name="Demo Owner",
+            role=UserRole.OWNER,  # Organization owner - full access to all factories/lines
             is_active=True,
             is_verified=True,
         )
         db.add(demo_user)
     else:
-        print("Updating Demo User password to 'demo1234'...")
+        print("Updating Demo User to OWNER role...")
         demo_user.organization_id = demo_org.id
         demo_user.hashed_password = hash_password("demo1234")
+        demo_user.role = UserRole.OWNER
+        demo_user.full_name = "Demo Owner"
         db.add(demo_user)
     
     await db.flush()
@@ -152,6 +159,46 @@ async def seed_data(db: AsyncSession):
             db.add(line)
         lines.append(line)
     await db.flush()
+
+    # 4.5. Create Demo Manager User (Line-scoped access to LINE-01 and LINE-02)
+    print("Checking Demo Manager User...")
+    manager_query = select(User).where(User.email == "manager@linesight.io")
+    manager_res = await db.execute(manager_query)
+    manager_user = manager_res.scalar_one_or_none()
+
+    if not manager_user:
+        print("Creating Demo Manager User...")
+        manager_user = User(
+            organization_id=demo_org.id,
+            email="manager@linesight.io",
+            hashed_password=hash_password("manager123"),
+            full_name="Demo Manager",
+            role=UserRole.MANAGER,  # Line-scoped manager
+            is_active=True,
+            is_verified=True,
+        )
+        db.add(manager_user)
+        await db.flush()
+        
+        # Create UserScope entries for LINE-01 and LINE-02 only
+        print("Creating UserScope entries for manager (LINE-01, LINE-02)...")
+        for line in lines[:2]:  # Only first two lines
+            scope = UserScope(
+                user_id=manager_user.id,
+                scope_type=RoleScope.LINE,
+                organization_id=demo_org.id,
+                factory_id=factory.id,
+                production_line_id=line.id,
+                role=UserRole.MANAGER,
+            )
+            db.add(scope)
+        await db.flush()
+        print(f"Created Demo Manager User: {manager_user.email} with access to LINE-01, LINE-02")
+    else:
+        print(f"Demo Manager User already exists: {manager_user.email}")
+        # Ensure role is correct
+        manager_user.role = UserRole.MANAGER
+        db.add(manager_user)
 
     # 5. Create Styles and Orders
     styles = []
