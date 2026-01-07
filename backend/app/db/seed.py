@@ -78,7 +78,7 @@ async def seed_data(db: AsyncSession):
             organization_id=org.id,
             name="Main Production Center",
             code="FAC-001",
-            country="Vietnam",
+            country="VN",
             city="Ho Chi Minh City",
             timezone="Asia/Ho_Chi_Minh",
             total_workers=250,
@@ -226,14 +226,14 @@ async def seed_data(db: AsyncSession):
                 db.add(metric)
 
                 # Add a few discrepancies for variety
-                if d == 0 and line.id == lines[0].id:
-                    record = TraceabilityRecord(
-                        compliance_standard=ComplianceStandard.UFLPA,
-                        verification_status=VerificationStatus.FLAGGED,
-                        risk_notes="Possible material origin discrepancy detected in automated scan.",
-                        production_run_id=run.id,
-                    )
-                    db.add(record)
+                # if d == 0 and line.id == lines[0].id:
+                #     record = TraceabilityRecord(
+                #         compliance_standard=ComplianceStandard.UFLPA,
+                #         verification_status=VerificationStatus.FLAGGED,
+                #         risk_notes="Possible material origin discrepancy detected in automated scan.",
+                #         production_run_id=run.id,
+                #     )
+                #     db.add(record)
 
     await db.commit()
     print("Database seeding completed.")
