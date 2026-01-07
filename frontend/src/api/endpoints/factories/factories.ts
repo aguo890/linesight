@@ -201,6 +201,10 @@ export const useCreateFactoryApiV1FactoriesPost = <TError = HTTPValidationError,
     }
     /**
  * Get a specific factory with its production lines.
+
+RBAC Filtering:
+- SYSTEM_ADMIN/OWNER: See all lines
+- MANAGER: Only see lines assigned via UserScope
  * @summary Get Factory
  */
 export const getFactoryApiV1FactoriesFactoryIdGet = (
@@ -419,7 +423,12 @@ export const useDeleteFactoryApiV1FactoriesFactoryIdDelete = <TError = HTTPValid
       return useMutation(mutationOptions, queryClient);
     }
     /**
- * Get all production lines for a factory.
+ * Get production lines for a factory.
+
+RBAC Filtering:
+- SYSTEM_ADMIN/OWNER: See all lines in the factory
+- MANAGER: Only see lines assigned via UserScope
+- ANALYST/VIEWER: See all lines (read-only)
  * @summary List Production Lines
  */
 export const listProductionLinesApiV1FactoriesFactoryIdLinesGet = (

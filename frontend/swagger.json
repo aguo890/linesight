@@ -1080,7 +1080,7 @@
           "Factories"
         ],
         "summary": "Get Factory",
-        "description": "Get a specific factory with its production lines.",
+        "description": "Get a specific factory with its production lines.\n\nRBAC Filtering:\n- SYSTEM_ADMIN/OWNER: See all lines\n- MANAGER: Only see lines assigned via UserScope",
         "operationId": "get_factory_api_v1_factories__factory_id__get",
         "security": [
           {
@@ -1223,7 +1223,7 @@
           "Factories"
         ],
         "summary": "List Production Lines",
-        "description": "Get all production lines for a factory.",
+        "description": "Get production lines for a factory.\n\nRBAC Filtering:\n- SYSTEM_ADMIN/OWNER: See all lines in the factory\n- MANAGER: Only see lines assigned via UserScope\n- ANALYST/VIEWER: See all lines (read-only)",
         "operationId": "list_production_lines_api_v1_factories__factory_id__lines_get",
         "security": [
           {
