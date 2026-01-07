@@ -68,6 +68,47 @@ async def seed_data(db: AsyncSession):
         db.add(admin_user)
         print(f"Created Admin User: {admin_user.email}")
 
+    # 2.5. Create Demo Organization & User (Ported from standalone script)
+    print("Checking Demo Organization...")
+    demo_org_query = select(Organization).where(Organization.code == "DEMO")
+    demo_org_res = await db.execute(demo_org_query)
+    demo_org = demo_org_res.scalar_one_or_none()
+
+    if not demo_org:
+        print("Creating Demo Organization...")
+        demo_org = Organization(
+            name="Demo Org", code="DEMO", primary_email="demo@linesight.io"
+        )
+        db.add(demo_org)
+        await db.flush()
+    else:
+        print("Demo Organization already exists.")
+
+    print("Checking Demo User...")
+    demo_user_query = select(User).where(User.email == "demo@linesight.io")
+    demo_user_res = await db.execute(demo_user_query)
+    demo_user = demo_user_res.scalar_one_or_none()
+
+    if not demo_user:
+        print("Creating Demo User...")
+        demo_user = User(
+            organization_id=demo_org.id,
+            email="demo@linesight.io",
+            hashed_password=hash_password("demo1234"),
+            full_name="Demo User",
+            role=UserRole.ADMIN,
+            is_active=True,
+            is_verified=True,
+        )
+        db.add(demo_user)
+    else:
+        print("Updating Demo User password to 'demo1234'...")
+        demo_user.organization_id = demo_org.id
+        demo_user.hashed_password = hash_password("demo1234")
+        db.add(demo_user)
+    
+    await db.flush()
+
     # 3. Create Factory
     factory_query = select(Factory).where(Factory.code == "FAC-001")
     factory_result = await db.execute(factory_query)
@@ -75,7 +116,7 @@ async def seed_data(db: AsyncSession):
 
     if not factory:
         factory = Factory(
-            organization_id=org.id,
+            organization_id=demo_org.id,
             name="Main Production Center",
             code="FAC-001",
             country="VN",
@@ -85,7 +126,12 @@ async def seed_data(db: AsyncSession):
         )
         db.add(factory)
         await db.flush()
-        print(f"Created Factory: {factory.name}")
+        print(f"Created Factory: {factory.name} linked to Demo Org")
+    else:
+        print(f"Factory exists. Ensuring it's linked to Demo Org.")
+        factory.organization_id = demo_org.id
+        db.add(factory)
+        await db.flush()
 
     # 4. Create Production Lines
     lines = []
