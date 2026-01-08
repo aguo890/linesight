@@ -19,7 +19,7 @@ const OrgSettingsLayout = lazy(() => import('./features/organization/layouts/Org
 const OrgGeneralPage = lazy(() => import('./features/organization/pages/OrgGeneralPage'));
 const OrgMembersPage = lazy(() => import('./features/organization/pages/OrgMembersPage'));
 const FactorySelectionPage = lazy(() => import('./features/organization/pages/FactorySelectionPage'));
-const FactoryAssignmentPage = lazy(() => import('./features/organization/pages/FactoryAssignmentPage'));
+const FactoryConfigurationPage = lazy(() => import('./features/organization/pages/FactoryConfigurationPage'));
 
 
 // Loading component with skeleton
@@ -119,7 +119,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'assignments',
+                path: 'factories',
                 children: [
                     {
                         index: true,
@@ -133,7 +133,7 @@ const router = createBrowserRouter([
                         path: ':factoryId',
                         element: (
                             <Suspense fallback={<PageLoader />}>
-                                <FactoryAssignmentPage />
+                                <FactoryConfigurationPage />
                             </Suspense>
                         ),
                     },

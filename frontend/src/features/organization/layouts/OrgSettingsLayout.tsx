@@ -65,7 +65,7 @@ const OrgSettingsLayout: React.FC = () => {
                     <nav className="space-y-1">
                         <NavItem to="/organization/settings/general" icon={Building2} label="General" />
                         <NavItem to="/organization/settings/members" icon={Users} label="Members" />
-                        <NavItem to="/organization/settings/assignments" icon={GitBranch} label="Team Assignments" />
+                        <NavItem to="/organization/settings/factories" icon={Building2} label="Factories" />
 
                         <div className="pt-4 mt-4 border-t border-[var(--color-border)]">
                             <p className="text-[10px] text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 px-3">
@@ -78,7 +78,7 @@ const OrgSettingsLayout: React.FC = () => {
                 </aside>
 
                 {/* Content Area */}
-                <main className="flex-1 p-8 overflow-auto">
+                <main className="flex-1 overflow-auto">
                     <Outlet />
                 </main>
             </div>

@@ -83,7 +83,7 @@ const OrgMembersPage: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="p-8">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
@@ -94,7 +94,7 @@ const OrgMembersPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={() => navigate('/organization/settings/assignments')}
+                        onClick={() => navigate('/organization/settings/factories')}
                         className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-border)]/30 transition-colors text-sm font-medium"
                     >
                         <GitBranch className="w-4 h-4" />

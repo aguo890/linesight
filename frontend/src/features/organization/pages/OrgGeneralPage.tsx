@@ -90,7 +90,7 @@ const OrgGeneralPage: React.FC = () => {
     }
 
     return (
-        <div className="max-w-4xl">
+        <div className="max-w-4xl p-8">
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-[var(--color-text)]">General</h1>

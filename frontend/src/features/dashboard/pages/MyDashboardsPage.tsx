@@ -1,84 +1,42 @@
 /**
  * My Dashboards Gallery Page
  * 
- * Command Center style dashboard for managing production sites
- * Inspired by Vercel, Linear, and Stripe design patterns
- * 
- * Features:
- * - Control Bar with search and view toggles
- * - Grid and List view modes
- * - Modern SaaS design patterns
+ * Command Center style dashboard for viewing production sites.
+ * Pure Operations View - No configuration/management capabilities.
  */
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
-    Plus,
-    Building2,
     Search,
     LayoutGrid,
     List,
     ChevronRight,
     Factory as FactoryIcon,
-    Loader2
+    Building2,
+    Settings
 } from 'lucide-react';
 import { MainLayout } from '../../../components/layout/MainLayout';
 import { FactoryCard } from '../components/FactoryCard';
-import { FactoryCreationModal } from '../components/FactoryCreationModal';
-// Using generated hook for data fetching
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
-
 import { useOrganization } from '../../../contexts/OrganizationContext';
 
 type ViewMode = 'grid' | 'list';
 
-const FactoryProvisioningCard = () => (
-    <div className="bg-white rounded-xl border border-indigo-100 shadow-sm p-5 relative overflow-hidden">
-        {/* Shimmer Effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-50/30 to-transparent -translate-x-full animate-[shimmer_1.5s_infinite]" />
-
-        <div className="flex justify-between items-start mb-4">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center border border-indigo-100">
-                    <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-                </div>
-                <div>
-                    <h3 className="font-semibold text-slate-900">Creating Factory...</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">Provisioning resources</p>
-                </div>
-            </div>
-        </div>
-
-        <div className="space-y-3 mt-6 opacity-60">
-            <div className="h-px bg-slate-100 w-full" />
-            <div className="flex justify-between items-center">
-                <div className="h-2 bg-slate-100 rounded w-16" />
-                <div className="h-6 bg-slate-100 rounded-full w-12" />
-            </div>
-        </div>
-    </div>
-);
-
 export const MyDashboardsPage: React.FC = () => {
     const navigate = useNavigate();
-
-    // Factory management state
-    const [isFactoryModalOpen, setIsFactoryModalOpen] = useState(false);
-    const [isCreating, setIsCreating] = useState(false);
-    const [deletingFactoryId, setDeletingFactoryId] = useState<string | null>(null);
 
     // Control Bar state
     const [viewMode, setViewMode] = useState<ViewMode>('grid');
     const [searchQuery, setSearchQuery] = useState('');
 
     // consume context
-    const { quotaStatus, refreshQuota } = useOrganization();
+    const { quotaStatus } = useOrganization();
 
     // Use Orval hook for fetching factories
     const {
         data: factoriesData,
         isLoading: isLoadingFactories,
-        error: factoryError,
-        refetch: refetchFactories
+        error: factoryError
     } = useListFactoriesApiV1FactoriesGet();
 
     // Enrich factories with line counts from Context if available
@@ -90,15 +48,10 @@ export const MyDashboardsPage: React.FC = () => {
                 q => q.factory_id === factory.id
             );
 
-            // Calculate actual lines:
-            // 1. Try to get the length of the production_lines array from the factory object
-            // 2. Fallback to the quota system's count
-            // 3. Default to 0
             const actualLineCount = factory.production_lines?.length ?? quotaInfo?.current ?? 0;
 
             return {
                 ...factory,
-                // Ensure code is string or undefined for UI
                 code: typeof factory.code === 'string' ? factory.code : undefined,
                 lineCount: actualLineCount
             };
@@ -130,63 +83,18 @@ export const MyDashboardsPage: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
-    const handleCreateFactory = () => {
-        if (!quotaStatus?.factories.can_create) {
-            alert('Factory quota limit reached. Please upgrade your plan to create more factories.');
-            return;
-        }
-        setIsFactoryModalOpen(true);
-    };
-
-    const handleFactoryCreationSuccess = async () => {
-        setIsFactoryModalOpen(false);
-        setIsCreating(true);
-        setSearchQuery('');
-
-        try {
-            await Promise.all([
-                refetchFactories(), // Reload factory list via React Query
-                refreshQuota() // Refresh quota status to update the display
-            ]);
-        } finally {
-            setIsCreating(false);
-        }
-    };
-
     const handleFactoryEdit = (id: string) => {
-        console.log('Edit factory:', id);
-        alert('Factory editing will be available soon!');
-    };
-
-    const handleFactoryDelete = async (id: string) => {
-        if (confirm('Are you sure you want to delete this factory? This will also delete all associated production lines.')) {
-            // Set deleting state immediately for instant UI feedback
-            setDeletingFactoryId(id);
-            try {
-                // Keep manual import for delete until we refactor the delete action too
-                const { deleteFactory } = await import('../../../lib/factoryApi');
-                await deleteFactory(id);
-                await Promise.all([
-                    refetchFactories(), // Reload factory list
-                    refreshQuota() // Refresh quota status
-                ]);
-            } catch (error) {
-                console.error('Failed to delete factory:', error);
-                alert('Failed to delete factory. It may contain active resources.');
-            } finally {
-                setDeletingFactoryId(null);
-            }
-        }
+        // Redirect to settings for configuration
+        navigate(`/organization/settings/factories/${id}`);
     };
 
     if (factoryError) {
-        // Simple error handling for now
         console.error('Error loading factories:', factoryError);
     }
 
     return (
         <MainLayout>
-            {/* Command Center Header - Single Row, Action-Oriented */}
+            {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900">Production Sites</h1>
@@ -194,30 +102,20 @@ export const MyDashboardsPage: React.FC = () => {
                         {isLoadingFactories
                             ? 'Loading your sites...'
                             : factories.length === 0
-                                ? 'Get started by creating your first site'
-                                : `${factories.length} active ${factories.length === 1 ? 'site' : 'sites'} across your organization`
+                                ? 'No active production sites'
+                                : `${factories.length} active ${factories.length === 1 ? 'site' : 'sites'} available`
                         }
                     </p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    {/* Subtle Quota Badge - Only shows usage context when items exist */}
-                    {quotaStatus && factories.length > 0 && (
-                        <span className="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-                            {quotaStatus.factories.current} / {quotaStatus.factories.max} Used
-                        </span>
-                    )}
-
-                    {/* Primary Action Button */}
-                    <button
-                        onClick={handleCreateFactory}
-                        disabled={!quotaStatus?.factories.can_create}
-                        className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors"
-                    >
-                        <Plus className="w-4 h-4" />
-                        New Factory
-                    </button>
-                </div>
+                {/* Settings Link */}
+                <Link
+                    to="/organization/settings/factories"
+                    className="flex items-center gap-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                >
+                    <Settings className="w-4 h-4" />
+                    Configure Sites
+                </Link>
             </div>
 
             {/* Control Bar - Search & View Toggles */}
@@ -269,9 +167,8 @@ export const MyDashboardsPage: React.FC = () => {
             )}
 
             {/* Content Area - Grid View */}
-            {viewMode === 'grid' && (isLoadingFactories || filteredFactories.length > 0 || isCreating) && (
+            {viewMode === 'grid' && (isLoadingFactories || filteredFactories.length > 0) && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="factories-grid">
-                    {isCreating && <FactoryProvisioningCard />}
 
                     {/* Loading Skeletons */}
                     {isLoadingFactories ? (
@@ -307,60 +204,28 @@ export const MyDashboardsPage: React.FC = () => {
                             </div>
                         ))
                     ) : (
-                        <>
-                            {/* Actual Factory Cards */}
-                            {filteredFactories.map(factory => {
-                                const isDeleting = deletingFactoryId === factory.id;
-                                return (
-                                    <div key={factory.id} className="relative">
-                                        {/* Deleting Overlay */}
-                                        {isDeleting && (
-                                            <div className="absolute inset-0 bg-white/70 backdrop-blur-sm rounded-xl z-10 flex items-center justify-center">
-                                                <div className="flex items-center gap-2 text-slate-600">
-                                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                                    <span className="text-sm font-medium">Deleting...</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                        <FactoryCard
-                                            factory={{
-                                                id: factory.id,
-                                                name: factory.name,
-                                                code: factory.code,
-                                                lineCount: factory.lineCount || 0,
-                                                maxLines: quotaStatus?.lines_per_factory.max || 10
-                                            }}
-                                            onClick={(id) => !isDeleting && navigate(`/dashboard/factories/${id}`)}
-                                            onEdit={handleFactoryEdit}
-                                            onDelete={handleFactoryDelete}
-                                        />
-                                    </div>
-                                );
-                            })}
-
-                            {/* Ghost Card - Elegant "Add New" experience */}
-                            {/* This sits inside the grid as the last item */}
-                            {quotaStatus?.factories.can_create && !searchQuery && (
-                                <button
-                                    onClick={handleCreateFactory}
-                                    className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-indigo-300 hover:shadow-lg transition-all duration-200"
-                                >
-                                    <div className="h-12 w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-md transition-all duration-200">
-                                        <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-                                    </div>
-                                    <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Factory</span>
-                                    <span className="text-xs text-slate-400 mt-1 group-hover:text-indigo-500 transition-colors">
-                                        {quotaStatus.factories.max - quotaStatus.factories.current} slot{quotaStatus.factories.max - quotaStatus.factories.current !== 1 ? 's' : ''} available
-                                    </span>
-                                </button>
-                            )}
-                        </>
+                        // Actual Factory Cards
+                        filteredFactories.map(factory => (
+                            <FactoryCard
+                                key={factory.id}
+                                factory={{
+                                    id: factory.id,
+                                    name: factory.name,
+                                    code: factory.code,
+                                    lineCount: factory.lineCount || 0,
+                                    maxLines: quotaStatus?.lines_per_factory.max || 10
+                                }}
+                                onClick={(id) => navigate(`/dashboard/factories/${id}`)}
+                                onEdit={handleFactoryEdit}
+                                onDelete={() => { }} // No delete capability in Operations view
+                            />
+                        ))
                     )}
                 </div>
             )}
 
             {/* Content Area - List View */}
-            {viewMode === 'list' && !isLoadingFactories && (filteredFactories.length > 0 || isCreating) && (
+            {viewMode === 'list' && !isLoadingFactories && filteredFactories.length > 0 && (
                 <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm" data-testid="factories-list">
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-slate-50 border-b border-slate-200">
@@ -373,26 +238,10 @@ export const MyDashboardsPage: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {isCreating && (
-                                <tr className="bg-indigo-50/30 animate-pulse">
-                                    <td className="py-3 px-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                                                <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-                                            </div>
-                                            <span className="font-medium text-indigo-900">Provisioning...</span>
-                                        </div>
-                                    </td>
-                                    <td colSpan={4} className="py-3 px-4 text-xs text-indigo-500">
-                                        Setting up environment...
-                                    </td>
-                                </tr>
-                            )}
                             {filteredFactories.map(factory => {
                                 const lineCount = factory.lineCount || 0;
                                 const maxLines = quotaStatus?.lines_per_factory.max || 10;
                                 const quotaPercentage = (lineCount / maxLines) * 100;
-                                const isDeleting = deletingFactoryId === factory.id;
 
                                 const getStatusStyle = () => {
                                     if (quotaPercentage >= 100) return 'bg-red-50 text-red-700 ring-red-600/20';
@@ -409,20 +258,13 @@ export const MyDashboardsPage: React.FC = () => {
                                 return (
                                     <tr
                                         key={factory.id}
-                                        className={`transition-colors group ${isDeleting
-                                            ? 'bg-slate-50 opacity-60 pointer-events-none'
-                                            : 'hover:bg-slate-50 cursor-pointer'
-                                            }`}
-                                        onClick={() => !isDeleting && navigate(`/dashboard/factories/${factory.id}`)}
+                                        className="transition-colors group hover:bg-slate-50 cursor-pointer"
+                                        onClick={() => navigate(`/dashboard/factories/${factory.id}`)}
                                     >
                                         <td className="py-3 px-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center border border-indigo-100">
-                                                    {isDeleting ? (
-                                                        <Loader2 className="w-4 h-4 text-indigo-600 animate-spin" />
-                                                    ) : (
-                                                        <FactoryIcon className="w-4 h-4 text-indigo-600" />
-                                                    )}
+                                                    <FactoryIcon className="w-4 h-4 text-indigo-600" />
                                                 </div>
                                                 <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
                                                     {factory.name}
@@ -436,16 +278,9 @@ export const MyDashboardsPage: React.FC = () => {
                                             {lineCount} / {maxLines}
                                         </td>
                                         <td className="py-3 px-4">
-                                            {isDeleting ? (
-                                                <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
-                                                    <Loader2 className="w-3 h-3 animate-spin" />
-                                                    Deleting...
-                                                </span>
-                                            ) : (
-                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ring-1 ring-inset ${getStatusStyle()}`}>
-                                                    {getStatusText()}
-                                                </span>
-                                            )}
+                                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ring-1 ring-inset ${getStatusStyle()}`}>
+                                                {getStatusText()}
+                                            </span>
                                         </td>
                                         <td className="py-3 px-4 text-right">
                                             <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 inline-block" />
@@ -476,7 +311,7 @@ export const MyDashboardsPage: React.FC = () => {
             )}
 
             {/* Empty State - Welcoming & Action-Oriented */}
-            {!isLoadingFactories && factories.length === 0 && !isCreating && (
+            {!isLoadingFactories && factories.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 px-6 bg-gradient-to-b from-white to-slate-50/50 rounded-2xl border border-slate-100 shadow-sm">
                     {/* Animated Icon */}
                     <div className="relative mb-8">
@@ -487,37 +322,22 @@ export const MyDashboardsPage: React.FC = () => {
                     </div>
 
                     {/* Copy */}
-                    <h2 className="text-2xl font-bold text-slate-900 mb-2">Welcome to LineSight</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">No active sites</h2>
                     <p className="text-slate-500 mb-8 text-center max-w-md">
-                        Create your first production site to start tracking real-time metrics,
-                        analyzing performance, and optimizing your manufacturing operations.
+                        Your dashboard is empty because no factories have been configured yet.
+                        Head over to Organization Settings to set up your infrastructure.
                     </p>
 
                     {/* CTA Button */}
-                    <button
-                        onClick={handleCreateFactory}
-                        disabled={!quotaStatus?.factories.can_create}
-                        className="group flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    <Link
+                        to="/organization/settings/factories"
+                        className="group flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-[0.98]"
                     >
-                        <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
-                        Create Your First Factory
-                    </button>
-
-                    {/* Quota hint for empty state */}
-                    {quotaStatus && (
-                        <p className="text-xs text-slate-400 mt-4">
-                            You can create up to {quotaStatus.factories.max} {quotaStatus.factories.max === 1 ? 'factory' : 'factories'} on your current plan
-                        </p>
-                    )}
+                        <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+                        Go to Organization Settings
+                    </Link>
                 </div>
             )}
-
-            <FactoryCreationModal
-                isOpen={isFactoryModalOpen}
-                onClose={() => setIsFactoryModalOpen(false)}
-                onSuccess={handleFactoryCreationSuccess}
-                quotaStatus={quotaStatus}
-            />
         </MainLayout>
     );
 };
