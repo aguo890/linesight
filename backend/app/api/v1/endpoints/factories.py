@@ -11,8 +11,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.api.deps import CurrentUser, ManagerUser, get_db
+from app.enums import UserRole
 from app.models.factory import Factory, ProductionLine
-from app.models.user import Organization
+from app.models.user import Organization, UserScope
 from app.schemas.factory import (
     FactoryCreate,
     FactoryRead,
@@ -38,13 +39,35 @@ async def list_factories(
 ):
     """
     Get all factories for the current user's organization.
+    
+    RBAC:
+    - OWNER/ADMIN: See all active factories in organization.
+    - MANAGER: Only see factories where they have assigned lines.
     """
-    result = await db.execute(
-        select(Factory)
-        .where(Factory.organization_id == current_user.organization_id)
-        .where(Factory.is_active)
-        .order_by(Factory.name)
+    query = select(Factory).where(
+        Factory.organization_id == current_user.organization_id,
+        Factory.is_active
     )
+
+    if current_user.role == UserRole.MANAGER:
+        # Get factory IDs from user's line assignments
+        # We look for scopes that have a production_line_id
+        # The factory_id is also stored in scope, but let's be robust
+        scope_query = select(UserScope.factory_id).where(
+            UserScope.user_id == current_user.id,
+            UserScope.production_line_id.isnot(None)
+        ).distinct()
+        
+        scope_result = await db.execute(scope_query)
+        allowed_factory_ids = {row[0] for row in scope_result.fetchall() if row[0]}
+        
+        # If no assignments, they see no factories
+        if not allowed_factory_ids:
+            return []
+            
+        query = query.where(Factory.id.in_(allowed_factory_ids))
+
+    result = await db.execute(query.order_by(Factory.name))
     factories = result.scalars().all()
     return factories
 
@@ -57,6 +80,10 @@ async def get_factory(
 ):
     """
     Get a specific factory with its production lines.
+    
+    RBAC Filtering:
+    - SYSTEM_ADMIN/OWNER: See all lines
+    - MANAGER: Only see lines assigned via UserScope
     """
     result = await db.execute(
         select(Factory)
@@ -71,6 +98,22 @@ async def get_factory(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Factory not found",
         )
+
+    # RBAC: Filter lines for managers
+    if current_user.role == UserRole.MANAGER:
+        # Get line IDs assigned to this manager
+        scope_result = await db.execute(
+            select(UserScope.production_line_id)
+            .where(UserScope.user_id == current_user.id)
+            .where(UserScope.production_line_id.isnot(None))
+        )
+        allowed_line_ids = {row[0] for row in scope_result.fetchall()}
+        
+        # Filter production_lines to only allowed ones
+        factory.production_lines = [
+            line for line in factory.production_lines 
+            if line.id in allowed_line_ids and line.is_active
+        ]
 
     return factory
 
@@ -231,7 +274,12 @@ async def list_production_lines(
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Get all production lines for a factory.
+    Get production lines for a factory.
+    
+    RBAC Filtering:
+    - SYSTEM_ADMIN/OWNER: See all lines in the factory
+    - MANAGER: Only see lines assigned via UserScope
+    - ANALYST/VIEWER: See all lines (read-only)
     """
     # Verify factory belongs to user's org
     result = await db.execute(
@@ -247,13 +295,28 @@ async def list_production_lines(
             detail="Factory not found",
         )
 
-    # Get production lines
-    result = await db.execute(
+    # Build base query
+    query = (
         select(ProductionLine)
         .where(ProductionLine.factory_id == factory_id)
         .where(ProductionLine.is_active)
-        .order_by(ProductionLine.name)
     )
+
+    # RBAC: Managers only see their assigned lines
+    if current_user.role == UserRole.MANAGER:
+        # Get line IDs assigned to this manager
+        scope_result = await db.execute(
+            select(UserScope.production_line_id)
+            .where(UserScope.user_id == current_user.id)
+            .where(UserScope.production_line_id.isnot(None))
+        )
+        allowed_line_ids = [row[0] for row in scope_result.fetchall()]
+        
+        # Filter to only allowed lines
+        query = query.where(ProductionLine.id.in_(allowed_line_ids))
+
+    # Execute query
+    result = await db.execute(query.order_by(ProductionLine.name))
     lines = result.scalars().all()
     return lines
 

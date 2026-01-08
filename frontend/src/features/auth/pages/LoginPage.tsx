@@ -207,18 +207,69 @@ const LoginPage: React.FC = () => {
                     </motion.form>
 
                     {/* Tactical Demo Bypass */}
-                    <div className="mt-10 pt-8 border-t border-slate-200/50 space-y-4">
-                        <button
-                            onClick={() => {
-                                setEmail('demo@linesight.io');
-                                setPassword('demo1234');
-                            }}
-                            className="w-full py-3 rounded-xl border border-dashed border-slate-300 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-slate-50 hover:border-slate-400 hover:text-slate-600 transition-all"
-                        >
-                            Load Simulation Profile
-                        </button>
+                    <div className="mt-10 pt-8 border-t border-slate-200/50 space-y-3">
+                        <div className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">
+                            Quick Login As
+                        </div>
 
-                        <div className="text-center">
+                        {/* Demo Users Dropdown */}
+                        <select
+                            onChange={(e) => {
+                                const [email, pwd] = e.target.value.split('|');
+                                if (email && pwd) {
+                                    setEmail(email);
+                                    setPassword(pwd);
+                                }
+                            }}
+                            defaultValue=""
+                            className="w-full py-3 px-4 rounded-xl border border-slate-200 bg-white/50 text-slate-600 text-sm font-medium hover:border-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none cursor-pointer"
+                        >
+                            <option value="" disabled>Select a demo user...</option>
+
+                            <optgroup label="👑 System Admin">
+                                <option value="admin@linesight.dev|admin123">admin@linesight.dev</option>
+                            </optgroup>
+
+                            <optgroup label="🏢 Owner">
+                                <option value="demo@linesight.io|demo1234">demo@linesight.io (Demo Org Owner)</option>
+                            </optgroup>
+
+                            <optgroup label="📊 Standard Managers">
+                                <option value="emily.chen@linesight.io|manager123">Emily Chen (logged in 2h ago)</option>
+                                <option value="marcus.johnson@linesight.io|manager123">Marcus Johnson (logged in 1d ago)</option>
+                                <option value="sofia.rodriguez@linesight.io|manager123">Sofia Rodriguez (logged in 3d ago)</option>
+                                <option value="james.williams@linesight.io|manager123">James Williams (logged in 7d ago)</option>
+                                <option value="aisha.patel@linesight.io|manager123">Aisha Patel (logged in 14d ago)</option>
+                            </optgroup>
+
+                            <optgroup label="🧪 Edge Cases">
+                                <option value="christopher.montgomery@linesight.io|manager123">🔤 UI Breaker (very long name)</option>
+                                <option value="ghost.user@linesight.io|manager123">👻 Ghost (never logged in, no avatar)</option>
+                                <option value="stale.user@linesight.io|manager123">⏰ Stale User (90+ days inactive)</option>
+                                <option value="suspended.user@linesight.io|manager123">🚫 Suspended User (is_active=false)</option>
+                            </optgroup>
+
+                            <optgroup label="⚡ Super Manager">
+                                <option value="super.manager@linesight.io|manager123">Super Manager (ALL lines)</option>
+                            </optgroup>
+
+                            <optgroup label="🚫 Unassigned (no lines)">
+                                <option value="unassigned.one@linesight.io|manager123">Unassigned Manager One</option>
+                                <option value="unassigned.two@linesight.io|manager123">Unassigned Manager Two</option>
+                            </optgroup>
+
+                            <optgroup label="🏭 Cross-Factory">
+                                <option value="cross.factory@linesight.io|manager123">Cross-Factory Manager (Detroit + Shanghai)</option>
+                            </optgroup>
+
+                            <optgroup label="🔧 Chassis Line (Overcrowded)">
+                                <option value="chassis.lead@linesight.io|manager123">Chassis Lead</option>
+                                <option value="chassis.assistant@linesight.io|manager123">Chassis Assistant</option>
+                                <option value="chassis.supervisor@linesight.io|manager123">Chassis Supervisor</option>
+                            </optgroup>
+                        </select>
+
+                        <div className="text-center pt-2">
                             <Link to="/register" className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
                                 Request Access Credentials
                             </Link>

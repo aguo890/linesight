@@ -82,10 +82,10 @@ async def get_current_active_user(
 async def require_admin(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ) -> User:
-    """Require admin role."""
-    from app.models.user import UserRole
+    """Require system admin or owner role."""
+    from app.enums import UserRole
 
-    if current_user.role != UserRole.ADMIN:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access required",
@@ -93,13 +93,41 @@ async def require_admin(
     return current_user
 
 
+async def require_system_admin(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+) -> User:
+    """Require system admin role (platform-level access)."""
+    from app.enums import UserRole
+
+    if current_user.role != UserRole.SYSTEM_ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="System admin access required",
+        )
+    return current_user
+
+
+async def require_owner(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+) -> User:
+    """Require owner role (organization-level access for creating lines, etc.)."""
+    from app.enums import UserRole
+
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Owner access required",
+        )
+    return current_user
+
+
 async def require_manager_or_above(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ) -> User:
-    """Require manager or admin role."""
-    from app.models.user import UserRole
+    """Require manager, owner, or system admin role."""
+    from app.enums import UserRole
 
-    if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.MANAGER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Manager access required",
@@ -110,6 +138,8 @@ async def require_manager_or_above(
 # Type aliases for dependency injection
 CurrentUser = Annotated[User, Depends(get_current_user)]
 ActiveUser = Annotated[User, Depends(get_current_active_user)]
-AdminUser = Annotated[User, Depends(require_admin)]
-ManagerUser = Annotated[User, Depends(require_manager_or_above)]
+AdminUser = Annotated[User, Depends(require_admin)]  # SYSTEM_ADMIN or OWNER
+SystemAdminUser = Annotated[User, Depends(require_system_admin)]  # SYSTEM_ADMIN only
+OwnerUser = Annotated[User, Depends(require_owner)]  # SYSTEM_ADMIN or OWNER
+ManagerUser = Annotated[User, Depends(require_manager_or_above)]  # SYSTEM_ADMIN, OWNER, or MANAGER
 DbSession = Annotated[AsyncSession, Depends(get_db)]

@@ -1,6 +1,6 @@
 # LineSight Factory Excel Manager - Project Automation
 
-.PHONY: default dev run sync sync-check check check-backend check-frontend setup help
+.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick
 
 # Default: List available commands
 default: help
@@ -22,6 +22,11 @@ help:
 	@echo "    make check          - Run ALL checks (backend + frontend)"
 	@echo "    make check-backend  - Run backend tests and linting"
 	@echo "    make check-frontend - Run frontend type checking and linting"
+	@echo ""
+	@echo "  Git & Deployment:"
+	@echo "    make clean          - Remove cache files (__pycache__, .pytest_cache, etc)"
+	@echo "    make push m=\"msg\"   - Clean, commit with message, push to GitHub"
+	@echo "    make push-quick     - Clean, commit with timestamp, push to GitHub"
 	@echo ""
 	@echo "  Setup:"
 	@echo "    make setup          - Install all dependencies"
@@ -107,3 +112,44 @@ setup:
 	cd frontend && npm install
 	@echo ""
 	@echo "✅ Setup complete! Run 'make dev' to start developing."
+
+# ============================================================================
+# GIT & DEPLOYMENT
+# ============================================================================
+
+# Clean up caches and generated files
+clean:
+	@echo ""
+	@echo "🧹 Cleaning up caches and generated files..."
+	@if exist "backend\__pycache__" rd /s /q "backend\__pycache__" 2>nul
+	@if exist "backend\app\__pycache__" rd /s /q "backend\app\__pycache__" 2>nul
+	@if exist "backend\.pytest_cache" rd /s /q "backend\.pytest_cache" 2>nul
+	@if exist "backend\.ruff_cache" rd /s /q "backend\.ruff_cache" 2>nul
+	@if exist "frontend\node_modules\.cache" rd /s /q "frontend\node_modules\.cache" 2>nul
+	@for /d /r backend %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d" 2>nul
+	@echo "✅ Cleanup complete!"
+
+# Push to GitHub with automatic commit
+# Usage: make push m="Your commit message"
+# If no message provided, uses a timestamp
+push: clean
+	@echo ""
+	@echo "🚀 Preparing to push to GitHub..."
+	@git add -A
+	@if "$(m)"=="" ( \
+		git commit -m "Update: %date% %time%" \
+	) else ( \
+		git commit -m "$(m)" \
+	)
+	@git push
+	@echo ""
+	@echo "✅ Successfully pushed to GitHub!"
+
+# Quick push with default message
+push-quick: clean
+	@echo ""
+	@echo "🚀 Quick push to GitHub..."
+	@git add -A
+	@git commit -m "Quick update: %date:~-4%-%date:~4,2%-%date:~7,2%"
+	@git push
+	@echo "✅ Pushed!"

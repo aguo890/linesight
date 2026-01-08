@@ -14,6 +14,14 @@ const ProductionLinePage = lazy(() => import('./features/dashboard/pages/Product
 const ProfilePage = lazy(() => import('./features/user/ProfilePage'));
 const NotFound = lazy(() => import('./features/dashboard/pages/NotFound'));
 
+// Organization Settings (Hub and Spoke pattern)
+const OrgSettingsLayout = lazy(() => import('./features/organization/layouts/OrgSettingsLayout'));
+const OrgGeneralPage = lazy(() => import('./features/organization/pages/OrgGeneralPage'));
+const OrgMembersPage = lazy(() => import('./features/organization/pages/OrgMembersPage'));
+const FactorySelectionPage = lazy(() => import('./features/organization/pages/FactorySelectionPage'));
+const FactoryConfigurationPage = lazy(() => import('./features/organization/pages/FactoryConfigurationPage'));
+const OrganizationSettingsHub = lazy(() => import('./features/organization/pages/OrganizationSettingsHub'));
+
 
 // Loading component with skeleton
 const PageLoader = () => (
@@ -83,6 +91,64 @@ const router = createBrowserRouter([
             </ProtectedRoute>
         ),
         errorElement: <ErrorPage />,
+    },
+    {
+        path: '/organization/settings',
+        element: (
+            <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                    <OrgSettingsLayout />
+                </Suspense>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrganizationSettingsHub />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'general',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrgGeneralPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'members',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrgMembersPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'factories',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense fallback={<PageLoader />}>
+                                <FactorySelectionPage />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ':factoryId',
+                        element: (
+                            <Suspense fallback={<PageLoader />}>
+                                <FactoryConfigurationPage />
+                            </Suspense>
+                        ),
+                    },
+                ],
+            },
+        ],
     },
     {
         path: '/dashboard',

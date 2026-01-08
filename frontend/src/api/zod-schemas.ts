@@ -519,6 +519,10 @@ export const createFactoryApiV1FactoriesPostBody = zod.object({
 
 /**
  * Get a specific factory with its production lines.
+
+RBAC Filtering:
+- SYSTEM_ADMIN/OWNER: See all lines
+- MANAGER: Only see lines assigned via UserScope
  * @summary Get Factory
  */
 export const getFactoryApiV1FactoriesFactoryIdGetParams = zod.object({
@@ -669,7 +673,12 @@ export const deleteFactoryApiV1FactoriesFactoryIdDeleteParams = zod.object({
 
 
 /**
- * Get all production lines for a factory.
+ * Get production lines for a factory.
+
+RBAC Filtering:
+- SYSTEM_ADMIN/OWNER: See all lines in the factory
+- MANAGER: Only see lines assigned via UserScope
+- ANALYST/VIEWER: See all lines (read-only)
  * @summary List Production Lines
  */
 export const listProductionLinesApiV1FactoriesFactoryIdLinesGetParams = zod.object({

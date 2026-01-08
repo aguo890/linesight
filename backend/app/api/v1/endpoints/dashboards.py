@@ -13,7 +13,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.api.deps import get_current_user, get_db
-from app.models import Dashboard, User
+from app.enums import UserRole
+from app.models import Dashboard, User, UserScope
 from app.schemas.dashboard import (
     DashboardCreate,
     DashboardDetailResponse,
@@ -95,6 +96,20 @@ async def create_dashboard(
                 detail="Data source not found or you don't have access. This may be a timing issue if the data source was just created.",
             )
 
+        # RBAC Check: If Manager, verify they are assigned to the line for this data source
+        if current_user.role == UserRole.MANAGER:
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.production_line_id == data_source.production_line_id
+                )
+            )
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="You do not have permission to create a dashboard for this production line."
+                )
+
     try:
         # Create dashboard
         dashboard = Dashboard(
@@ -152,6 +167,39 @@ async def list_dashboards(
             .where(Factory.id == factory_id)
         )
 
+    # RBAC: Managers only see dashboards for lines they are assigned to
+    if current_user.role == UserRole.MANAGER:
+        # We need to filter based on DataSource -> ProductionLine -> UserScope
+        # But this is tricky because not all dashboards have a data_source_id (could be draft)
+        # However, if it HAS a data_source_id, we must check it.
+        # If it DOES NOT have a data_source_id, it effectively has no line, so maybe they can see it?
+        # User prompt says: "They can only view Dashboards associated with those specific Lines."
+        # This implies checking the association.
+        
+        # Strategy:
+        # 1. Fetch all allowed line IDs for variables.
+        # 2. Filter dashboards where data_source is NULL OR data_source.line_id is in allowed_ids.
+        
+        scope_query = select(UserScope.production_line_id).where(
+            UserScope.user_id == current_user.id,
+            UserScope.production_line_id.isnot(None)
+        )
+        scope_result = await db.execute(scope_query)
+        allowed_line_ids = [row[0] for row in scope_result.fetchall()]
+        
+        # We need to join to check the line ID of the dashboard
+        from app.models.datasource import DataSource
+        
+        # Left join to get datasource info (if any)
+        # Verify if we already joined DataSource above
+        if not factory_id:
+             stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)
+        
+        stmt = stmt.where(
+            (Dashboard.data_source_id.is_(None)) | 
+            (DataSource.production_line_id.in_(allowed_line_ids))
+        )
+
     stmt = stmt.order_by(Dashboard.updated_at.desc())
 
     result = await db.execute(stmt)
@@ -194,6 +242,21 @@ async def get_dashboard(
     production_line_id = None
     if dashboard.data_source:
         production_line_id = dashboard.data_source.production_line_id
+
+    # RBAC Reference Check
+    if current_user.role == UserRole.MANAGER and production_line_id:
+        # Verify manager has access to this line
+        scope_check = await db.execute(
+            select(UserScope).where(
+                UserScope.user_id == current_user.id,
+                UserScope.production_line_id == production_line_id
+            )
+        )
+        if not scope_check.scalar_one_or_none():
+             raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have access to the line associated with this dashboard."
+            )
 
     # TODO: Fetch actual widget data from data source
     # This will be implemented when we build the widget data fetcher
@@ -259,6 +322,20 @@ async def update_dashboard(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Data source not found or you don't have access",
             )
+
+        # RBAC Check: If Manager, verify they are assigned to the line for this data source
+        if current_user.role == UserRole.MANAGER:
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.production_line_id == data_source.production_line_id
+                )
+            )
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="You do not have permission to link this dashboard to this production line."
+                )
 
     # Update fields
     update_data = dashboard_in.model_dump(exclude_unset=True)

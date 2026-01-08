@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LayoutGrid, ChevronDown, PanelLeft } from 'lucide-react';
+import { LayoutGrid, ChevronDown, PanelLeft, Users } from 'lucide-react';
 import { dashboardStorage } from '../../features/dashboard/storage';
 import type { SavedDashboard } from '../../features/dashboard/types';
 
 import { useOrganization } from '../../contexts/OrganizationContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Logo } from '../common/Logo';
 import { cn } from '../../lib/utils';
 
@@ -34,6 +35,8 @@ export const Sidebar: React.FC = () => {
 
     // consume context
     const { } = useOrganization();
+    const { user } = useAuth();
+    const isOwner = user?.role === 'owner' || user?.role === 'system_admin';
 
     useEffect(() => {
         loadDashboards();
@@ -112,6 +115,7 @@ export const Sidebar: React.FC = () => {
 
                     {/* Overview */}
                     {/* Overview */}
+                    {/*
                     <button
                         onClick={() => navigate('/dashboard')}
                         title={!isSidebarOpen ? "Overview" : undefined}
@@ -131,6 +135,7 @@ export const Sidebar: React.FC = () => {
                             isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
                         )}>Overview</span>
                     </button>
+                    */}
 
                     {/* My Dashboards - Split Button (Navigate + Toggle) */}
                     <div>
@@ -242,6 +247,7 @@ export const Sidebar: React.FC = () => {
                             isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
                         )}>Data Import</span>
                     </a> */}
+                    {/*
                     <a href="#"
                         title={!isSidebarOpen ? "Discrepancies" : undefined}
                         className={cn(
@@ -259,7 +265,9 @@ export const Sidebar: React.FC = () => {
                             <span className="ml-auto bg-[var(--color-warning-bg)] text-[var(--color-warning)] text-xs px-2 py-0.5 rounded-full font-bold">3</span>
                         )}
                     </a>
+                    */}
 
+                    {/*
                     <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>Analytics</div>
 
                     <a href="#"
@@ -290,6 +298,30 @@ export const Sidebar: React.FC = () => {
                             isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
                         )}>Line Performance</span>
                     </a>
+
+                    {/* Team Management - Owner Only */}
+                    {isOwner && (
+                        <>
+                            <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>Organization</div>
+                            <button
+                                onClick={() => navigate('/organization/settings')}
+                                title={!isSidebarOpen ? "Team" : undefined}
+                                className={cn(
+                                    "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
+                                    isActive('/organization/settings') || location.pathname.startsWith('/organization/settings')
+                                        ? 'bg-[var(--color-surface)] border-[var(--color-primary)] text-[var(--color-text)]'
+                                        : 'border-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20',
+                                    isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
+                                )}
+                            >
+                                <Users className={cn("w-5 h-5 flex-shrink-0", isSidebarOpen ? "mr-3" : "mr-0", (isActive('/organization/settings') || location.pathname.startsWith('/organization/settings')) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-subtle)]')} />
+                                <span className={cn(
+                                    "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
+                                    isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
+                                )}>Organization</span>
+                            </button>
+                        </>
+                    )}
                 </nav>
 
                 <div className="p-4 border-t border-[var(--color-border)] space-y-3">
@@ -319,7 +351,7 @@ export const Sidebar: React.FC = () => {
                     */}
 
                     {/* Temporary Debug Button - Remove before production */}
-                    <button
+                    {/* <button
                         onClick={() => {
                             if (window.confirm('WARNING: This will wipe all saved dashboards. Continue?')) {
                                 // Attempt to clear common keys, or check your storage.ts for the exact key
@@ -331,7 +363,7 @@ export const Sidebar: React.FC = () => {
                         className="w-full py-2 bg-red-100 hover:bg-red-200 text-red-800 text-xs font-bold rounded border border-red-200 transition-colors"
                     >
                         [DEBUG] FORCE RESET STORAGE
-                    </button>
+                    </button> */}
                 </div>
             </aside >
         </>
