@@ -50,9 +50,9 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon: Icon, label, disabled }) =>
 const OrgSettingsLayout: React.FC = () => {
     const location = useLocation();
 
-    // Redirect /settings/organization to /settings/organization/general
-    if (location.pathname === '/settings/organization' || location.pathname === '/settings/organization/') {
-        return <Navigate to="/settings/organization/general" replace />;
+    // Redirect /organization/settings to /organization/settings/general
+    if (location.pathname === '/organization/settings' || location.pathname === '/organization/settings/') {
+        return <Navigate to="/organization/settings/general" replace />;
     }
 
     return (
@@ -63,16 +63,16 @@ const OrgSettingsLayout: React.FC = () => {
                     <h2 className="font-bold text-[var(--color-text)] mb-4 px-3">Organization</h2>
 
                     <nav className="space-y-1">
-                        <NavItem to="/settings/organization/general" icon={Building2} label="General" />
-                        <NavItem to="/settings/organization/members" icon={Users} label="Members" />
-                        <NavItem to="/settings/organization/assignments" icon={GitBranch} label="Team Assignments" />
+                        <NavItem to="/organization/settings/general" icon={Building2} label="General" />
+                        <NavItem to="/organization/settings/members" icon={Users} label="Members" />
+                        <NavItem to="/organization/settings/assignments" icon={GitBranch} label="Team Assignments" />
 
                         <div className="pt-4 mt-4 border-t border-[var(--color-border)]">
                             <p className="text-[10px] text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 px-3">
                                 Coming Soon
                             </p>
-                            <NavItem to="/settings/organization/billing" icon={CreditCard} label="Billing" disabled />
-                            <NavItem to="/settings/organization/audit" icon={FileText} label="Audit Logs" disabled />
+                            <NavItem to="/organization/settings/billing" icon={CreditCard} label="Billing" disabled />
+                            <NavItem to="/organization/settings/audit" icon={FileText} label="Audit Logs" disabled />
                         </div>
                     </nav>
                 </aside>

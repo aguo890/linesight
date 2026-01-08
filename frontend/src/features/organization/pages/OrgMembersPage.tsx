@@ -94,7 +94,7 @@ const OrgMembersPage: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={() => navigate('/settings/organization/assignments')}
+                        onClick={() => navigate('/organization/settings/assignments')}
                         className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-border)]/30 transition-colors text-sm font-medium"
                     >
                         <GitBranch className="w-4 h-4" />

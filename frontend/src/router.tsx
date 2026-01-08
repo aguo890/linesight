@@ -18,7 +18,8 @@ const NotFound = lazy(() => import('./features/dashboard/pages/NotFound'));
 const OrgSettingsLayout = lazy(() => import('./features/organization/layouts/OrgSettingsLayout'));
 const OrgGeneralPage = lazy(() => import('./features/organization/pages/OrgGeneralPage'));
 const OrgMembersPage = lazy(() => import('./features/organization/pages/OrgMembersPage'));
-const OrgAssignmentsPage = lazy(() => import('./features/organization/pages/OrgAssignmentsPage'));
+const FactorySelectionPage = lazy(() => import('./features/organization/pages/FactorySelectionPage'));
+const FactoryAssignmentPage = lazy(() => import('./features/organization/pages/FactoryAssignmentPage'));
 
 
 // Loading component with skeleton
@@ -91,7 +92,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
     },
     {
-        path: '/settings/organization',
+        path: '/organization/settings',
         element: (
             <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
@@ -119,11 +120,24 @@ const router = createBrowserRouter([
             },
             {
                 path: 'assignments',
-                element: (
-                    <Suspense fallback={<PageLoader />}>
-                        <OrgAssignmentsPage />
-                    </Suspense>
-                ),
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <Suspense fallback={<PageLoader />}>
+                                <FactorySelectionPage />
+                            </Suspense>
+                        ),
+                    },
+                    {
+                        path: ':factoryId',
+                        element: (
+                            <Suspense fallback={<PageLoader />}>
+                                <FactoryAssignmentPage />
+                            </Suspense>
+                        ),
+                    },
+                ],
             },
         ],
     },
