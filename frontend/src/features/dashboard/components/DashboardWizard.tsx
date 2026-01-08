@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Upload, CheckCircle, Layout, Factory, ChevronRight, Settings, AlertCircle, Loader2 } from 'lucide-react';
+// Note: useNavigate and canManageInfrastructure removed - no longer navigating to add line from wizard
 import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
@@ -27,6 +28,9 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     preselectedLineId,
     mode = 'create'
 }) => {
+    // --- Hooks ---
+    // Note: canManageInfrastructure removed - not used after removing 'add line' option
+
     // --- State Management (Kept existing logic) ---
     const [currentStep, setCurrentStep] = useState<WizardStep>('upload');
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -386,7 +390,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 {/* Sleek Context Selection Grid */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                                    {/* Factory Selection */}
+                                    {/* Factory Display - Read only when preselected, selectable otherwise */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
                                             <label className="block text-sm font-medium text-gray-700">Factory</label>
@@ -397,21 +401,29 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                                 </span>
                                             )}
                                         </div>
-                                        <div className="relative">
-                                            <select
-                                                value={selectedFactoryId}
-                                                onChange={(e) => setSelectedFactoryId(e.target.value)}
-                                                className="block w-full pl-3 pr-10 py-2.5 bg-gray-50 border-0 ring-1 ring-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm transition-shadow disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-                                                disabled={isLoadingContext}
-                                            >
-                                                <option value="">
-                                                    {isLoadingContext ? 'Loading Factories...' : 'Select Factory...'}
-                                                </option>
-                                                {factories.map(f => (
-                                                    <option key={f.id} value={f.id}>{f.name}</option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                        {preselectedFactoryId ? (
+                                            // Read-only display when factory is preselected (user is already in that factory)
+                                            <div className="block w-full pl-3 pr-10 py-2.5 bg-gray-100 border-0 ring-1 ring-gray-200 rounded-lg text-sm text-gray-700">
+                                                {factories.find(f => f.id === preselectedFactoryId)?.name || 'Loading...'}
+                                            </div>
+                                        ) : (
+                                            // Selectable dropdown when no factory is preselected
+                                            <div className="relative">
+                                                <select
+                                                    value={selectedFactoryId}
+                                                    onChange={(e) => setSelectedFactoryId(e.target.value)}
+                                                    className="block w-full pl-3 pr-10 py-2.5 bg-gray-50 border-0 ring-1 ring-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm transition-shadow disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                                    disabled={isLoadingContext}
+                                                >
+                                                    <option value="">
+                                                        {isLoadingContext ? 'Loading Factories...' : 'Select Factory...'}
+                                                    </option>
+                                                    {factories.map(f => (
+                                                        <option key={f.id} value={f.id}>{f.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Line Selection */}
@@ -447,10 +459,11 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                     </div>
                                 </div>
 
+                                {/* Warning when no lines exist */}
                                 {selectedFactoryId && lines.length === 0 && !isLoadingLines && (
                                     <div className="bg-amber-50 text-amber-800 px-4 py-3 rounded-lg text-sm flex items-center">
-                                        <AlertCircle className="w-4 h-4 mr-2" />
-                                        This factory has no production lines.
+                                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                                        <span>No production lines available. Configure lines from the Factory settings page first.</span>
                                     </div>
                                 )}
 
@@ -468,18 +481,8 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 >
                                     <div className="relative">
                                         <WizardStep1Upload
-                                            factoryId={selectedFactoryId}
-                                            productionLineId={selectedLineId}
                                             existingDataSources={existingDataSources}
                                             onUseExisting={handleUseExisting}
-                                            onBeforeUpload={undefined}
-                                            onFileUploaded={(file, rawId, mappings, name) => {
-                                                setUploadedFile(file);
-                                                setRawImportId(rawId);
-                                                setColumnMappings(mappings);
-                                                setDashboardName(name);
-                                                setCurrentStep('mapping');
-                                            }}
                                         />
 
                                         {/* Optional: Add a friendly message overlay if waiting */}

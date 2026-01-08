@@ -13,13 +13,15 @@ import {
     ChevronRight,
     Factory as FactoryIcon,
     Building2,
-    Settings
+    Settings,
+    Plus
 } from 'lucide-react';
 import { MainLayout } from '../../../components/layout/MainLayout';
 import { FactoryCard } from '../components/FactoryCard';
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
 import { useOrganization } from '../../../contexts/OrganizationContext';
-import { useAuth } from '../../../hooks/useAuth';
+import { usePermissions } from '../../../hooks/usePermissions';
+import { DashboardWizard } from '../components/DashboardWizard';
 
 type ViewMode = 'grid' | 'list';
 
@@ -32,8 +34,10 @@ export const MyDashboardsPage: React.FC = () => {
 
     // consume context
     const { quotaStatus } = useOrganization();
-    const { user } = useAuth();
-    const isOwner = user?.role === 'owner' || user?.role === 'system_admin';
+    const { isAdmin, canCreateDashboard, canManageInfrastructure } = usePermissions();
+
+    // Modal state for New Dashboard wizard
+    const [isWizardOpen, setIsWizardOpen] = useState(false);
 
     // Use Orval hook for fetching factories
     const {
@@ -106,16 +110,30 @@ export const MyDashboardsPage: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Settings Link - Restricted to Owners */}
-                {isOwner && (
-                    <Link
-                        to="/organization/settings/factories"
-                        className="flex items-center gap-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
-                    >
-                        <Settings className="w-4 h-4" />
-                        Configure Sites
-                    </Link>
-                )}
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3">
+                    {/* New Dashboard Button - Visible to those who can create */}
+                    {canCreateDashboard && (
+                        <button
+                            onClick={() => setIsWizardOpen(true)}
+                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                        >
+                            <Plus className="w-4 h-4" />
+                            New Dashboard
+                        </button>
+                    )}
+
+                    {/* Settings Link - Restricted to Admins */}
+                    {isAdmin && (
+                        <Link
+                            to="/organization/settings/factories"
+                            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                        >
+                            <Settings className="w-4 h-4" />
+                            Configure Sites
+                        </Link>
+                    )}
+                </div>
             </div>
 
             {/* Control Bar - Search & View Toggles */}
@@ -324,11 +342,11 @@ export const MyDashboardsPage: React.FC = () => {
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">No active sites</h2>
                     <p className="text-slate-500 mb-8 text-center max-w-md">
                         Your dashboard is empty because no factories have been configured yet.
-                        {isOwner ? ' Head over to Organization Settings to set up your infrastructure.' : ' Please contact your administrator to set up the infrastructure.'}
+                        {canManageInfrastructure ? ' Head over to Organization Settings to set up your infrastructure.' : ' Please contact your administrator to set up the infrastructure.'}
                     </p>
 
-                    {/* CTA Button - Restricted to Owners */}
-                    {isOwner && (
+                    {/* CTA Button - Restricted to those who can manage infrastructure */}
+                    {canManageInfrastructure && (
                         <Link
                             to="/organization/settings/factories"
                             className="group flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-[0.98]"
@@ -339,6 +357,17 @@ export const MyDashboardsPage: React.FC = () => {
                     )}
                 </div>
             )}
+
+            {/* Dashboard Creation Wizard Modal */}
+            <DashboardWizard
+                isOpen={isWizardOpen}
+                onClose={() => setIsWizardOpen(false)}
+                onComplete={(dashboardId) => {
+                    setIsWizardOpen(false);
+                    navigate(`/dashboard/${dashboardId}`);
+                }}
+                mode="create"
+            />
         </MainLayout>
     );
 };

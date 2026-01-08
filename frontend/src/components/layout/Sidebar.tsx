@@ -117,7 +117,7 @@ export const Sidebar: React.FC = () => {
                     {/* Overview */}
                     {/*
                     <button
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => navigate('/dashboard/factories')}
                         title={!isSidebarOpen ? "Overview" : undefined}
                         className={cn(
                             "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",

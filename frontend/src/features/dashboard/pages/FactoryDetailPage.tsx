@@ -51,6 +51,7 @@ import {
 } from '../../../api/endpoints/dashboards/dashboards';
 import type { ProductionLineRead } from '../../../api/model';
 import type { Dashboard } from '../types';
+import { usePermissions } from '../../../hooks/usePermissions';
 
 type ViewMode = 'grid' | 'list';
 
@@ -60,6 +61,7 @@ export const FactoryDetailPage: React.FC = () => {
 
     // Context
     const { quotaStatus } = useOrganization();
+    const { canManageInfrastructure, canUploadToLine, canUploadAny } = usePermissions();
 
     // UI State
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -581,32 +583,37 @@ export const FactoryDetailPage: React.FC = () => {
                                 </button>
                             </div>
 
-                            <button
-                                onClick={handleCreateLine}
-                                disabled={!canCreateLine}
-                                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors whitespace-nowrap"
-                            >
-                                <Plus className="w-4 h-4" />
-                                New Line
-                            </button>
+                            {/* New Line Button - Only for users who can manage infrastructure */}
+                            {canManageInfrastructure && (
+                                <button
+                                    onClick={handleCreateLine}
+                                    disabled={!canCreateLine}
+                                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors whitespace-nowrap"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    New Line
+                                </button>
+                            )}
                         </div>
                     </div>
 
                     {/* Content - Grid View */}
                     {lineViewMode === 'grid' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {/* Ghost Card for New Line */}
-                            <button
-                                onClick={handleCreateLine}
-                                disabled={!canCreateLine}
-                                className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 hover:bg-white hover:border-indigo-400 hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                <div className="h-12 w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-sm transition-all duration-200">
-                                    <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-                                </div>
-                                <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Production Line</span>
-                                {!canCreateLine && <span className="text-xs text-red-400 mt-1">Quota limit reached</span>}
-                            </button>
+                            {/* Ghost Card for New Line - Only for users who can manage infrastructure */}
+                            {canManageInfrastructure && (
+                                <button
+                                    onClick={handleCreateLine}
+                                    disabled={!canCreateLine}
+                                    className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 hover:bg-white hover:border-indigo-400 hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <div className="h-12 w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-sm transition-all duration-200">
+                                        <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                                    </div>
+                                    <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Production Line</span>
+                                    {!canCreateLine && <span className="text-xs text-red-400 mt-1">Quota limit reached</span>}
+                                </button>
+                            )}
 
                             {linesLoading ? (
                                 <CardsSkeleton count={4} />
@@ -664,9 +671,20 @@ export const FactoryDetailPage: React.FC = () => {
                                                     </td>
                                                     <td className="py-3 px-4 text-right">
                                                         <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
-                                                            <button onClick={() => handleUploadLine(line.id)} className="p-1.5 text-slate-400 hover:text-indigo-600 rounded hover:bg-indigo-50">
-                                                                <Settings className="w-4 h-4" />
-                                                            </button>
+                                                            {/* Upload button - permission aware */}
+                                                            {canUploadAny && (
+                                                                <button
+                                                                    onClick={() => canUploadToLine(line.id) && handleUploadLine(line.id)}
+                                                                    disabled={!canUploadToLine(line.id)}
+                                                                    className={`p-1.5 rounded ${canUploadToLine(line.id)
+                                                                            ? 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
+                                                                            : 'text-slate-300 cursor-not-allowed'
+                                                                        }`}
+                                                                    title={canUploadToLine(line.id) ? 'Upload data' : 'No write access to this line'}
+                                                                >
+                                                                    <Settings className="w-4 h-4" />
+                                                                </button>
+                                                            )}
                                                             <ChevronRight className="w-4 h-4 text-slate-300 ml-2" />
                                                         </div>
                                                     </td>

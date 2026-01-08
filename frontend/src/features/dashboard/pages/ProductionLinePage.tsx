@@ -19,7 +19,7 @@ import {
     useGetProductionLineApiV1FactoriesLinesLineIdGet,
     useGetFactoryApiV1FactoriesFactoryIdGet
 } from '../../../api/endpoints/factories/factories';
-import { DashboardWizard } from '../../dashboard/components/DashboardWizard';
+// DashboardWizard removed - upload is now handled from FactoryDetailPage only
 import { FilePreviewModal } from '../../../components/FilePreviewModal';
 
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
@@ -48,7 +48,6 @@ const ProductionLinePage: React.FC = () => {
 
     // UI State for the Integrated Panel
     const [activeTab, setActiveTab] = useState<'schema' | 'uploads'>('schema');
-    const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [isEditingConfig, setIsEditingConfig] = useState(false);
     const [editForm, setEditForm] = useState({ time_column: '', is_active: true });
 
@@ -164,10 +163,7 @@ const ProductionLinePage: React.FC = () => {
         }
     };
 
-    const handleUploadComplete = () => {
-        if (lineId) loadDataSourceData(lineId);
-        setActiveTab('uploads');
-    };
+    // Note: handleUploadComplete removed - wizard is no longer used on this page
 
     if (loading) {
         return (
@@ -335,13 +331,10 @@ const ProductionLinePage: React.FC = () => {
                                 <div className="text-center py-20 border-2 border-dashed border-gray-100 rounded-2xl">
                                     <Database className="w-12 h-12 text-gray-200 mx-auto mb-4" />
                                     <h3 className="text-lg font-bold text-gray-900">No Configuration Found</h3>
-                                    <p className="text-gray-500 mb-6">This production line hasn't been mapped yet.</p>
-                                    <button
-                                        onClick={() => setIsWizardOpen(true)}
-                                        className="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors"
-                                    >
-                                        Start Mapping Wizard
-                                    </button>
+                                    <p className="text-gray-500 mb-2">This production line hasn't been mapped yet.</p>
+                                    <p className="text-sm text-gray-400">
+                                        Upload a file from the Factory page to get started.
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -460,14 +453,7 @@ const ProductionLinePage: React.FC = () => {
                 </div>
             )}
 
-            <DashboardWizard
-                isOpen={isWizardOpen}
-                onClose={() => setIsWizardOpen(false)}
-                onComplete={handleUploadComplete}
-                mode="upload"
-                preselectedLineId={lineId}
-            />
-
+            {/* File Preview Modal */}
             <FilePreviewModal
                 fileId={previewFileId}
                 filename={previewFilename}

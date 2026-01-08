@@ -38,8 +38,8 @@ async def seed_data(db: AsyncSession):
     await db.execute(delete(EfficiencyMetric))
     await db.execute(delete(ProductionRun))
     await db.execute(delete(UserScope))
-    # Delete managers only (preserve admin/owner accounts)
-    await db.execute(delete(User).where(User.role == UserRole.MANAGER))
+    # Delete managers, analysts, viewers only (preserve admin/owner accounts)
+    await db.execute(delete(User).where(User.role.in_([UserRole.MANAGER, UserRole.ANALYST, UserRole.VIEWER])))
     await db.execute(delete(ProductionLine))
     await db.execute(delete(Factory))
     await db.flush()
@@ -133,6 +133,112 @@ async def seed_data(db: AsyncSession):
         demo_user.avatar_url = gravatar_url("demo@linesight.io")
         db.add(demo_user)
 
+    await db.flush()
+
+    # --------------------------------------------------------------------------
+    # 2.6. Create Analyst and Viewer test users (for permission testing)
+    # --------------------------------------------------------------------------
+    print("\n--- Creating Analyst and Viewer Test Users ---")
+    
+    # Analyst User - Can view dashboards and create them, but NOT add lines
+    analyst_query = select(User).where(User.email == "analyst@linesight.io")
+    analyst_result = await db.execute(analyst_query)
+    analyst_user = analyst_result.scalar_one_or_none()
+    
+    if not analyst_user:
+        analyst_user = User(
+            organization_id=demo_org.id,
+            email="analyst@linesight.io",
+            hashed_password=hash_password("analyst123"),
+            full_name="Data Analyst",
+            role=UserRole.ANALYST,
+            is_active=True,
+            is_verified=True,
+            last_login=datetime.utcnow() - timedelta(hours=6),
+            avatar_url=gravatar_url("analyst@linesight.io"),
+        )
+        db.add(analyst_user)
+        print(f"Created Analyst User: {analyst_user.email}")
+    else:
+        print(f"Analyst User already exists: {analyst_user.email}")
+    
+    # Viewer User - Read-only, can only view dashboards
+    viewer_query = select(User).where(User.email == "viewer@linesight.io")
+    viewer_result = await db.execute(viewer_query)
+    viewer_user = viewer_result.scalar_one_or_none()
+    
+    if not viewer_user:
+        viewer_user = User(
+            organization_id=demo_org.id,
+            email="viewer@linesight.io",
+            hashed_password=hash_password("viewer123"),
+            full_name="Read-Only Viewer",
+            role=UserRole.VIEWER,
+            is_active=True,
+            is_verified=True,
+            last_login=datetime.utcnow() - timedelta(days=1),
+            avatar_url=gravatar_url("viewer@linesight.io"),
+        )
+        db.add(viewer_user)
+        print(f"Created Viewer User: {viewer_user.email}")
+    else:
+        print(f"Viewer User already exists: {viewer_user.email}")
+    
+    await db.flush()
+
+    # --------------------------------------------------------------------------
+    # 2.7. Create Factory Manager test user (for permission testing)
+    # --------------------------------------------------------------------------
+    print("\n--- Creating Factory Manager Test User ---")
+    
+    factory_mgr_query = select(User).where(User.email == "factory.manager@linesight.io")
+    factory_mgr_result = await db.execute(factory_mgr_query)
+    factory_mgr_user = factory_mgr_result.scalar_one_or_none()
+    
+    if not factory_mgr_user:
+        factory_mgr_user = User(
+            organization_id=demo_org.id,
+            email="factory.manager@linesight.io",
+            hashed_password=hash_password("factorymgr123"),
+            full_name="Factory Manager",
+            role=UserRole.FACTORY_MANAGER,
+            is_active=True,
+            is_verified=True,
+            last_login=datetime.utcnow() - timedelta(hours=2),
+            avatar_url=gravatar_url("factory.manager@linesight.io"),
+        )
+        db.add(factory_mgr_user)
+        print(f"Created Factory Manager: {factory_mgr_user.email}")
+    else:
+        print(f"Factory Manager already exists: {factory_mgr_user.email}")
+    
+    # --------------------------------------------------------------------------
+    # 2.8. Create Line Manager test user (for strict access testing)
+    # LINE MANAGER: Can ONLY view/upload to assigned lines, NOT siblings
+    # --------------------------------------------------------------------------
+    print("\n--- Creating Line Manager Test User ---")
+    
+    line_mgr_query = select(User).where(User.email == "line.manager@linesight.io")
+    line_mgr_result = await db.execute(line_mgr_query)
+    line_mgr_user = line_mgr_result.scalar_one_or_none()
+    
+    if not line_mgr_user:
+        line_mgr_user = User(
+            organization_id=demo_org.id,
+            email="line.manager@linesight.io",
+            hashed_password=hash_password("linemgr123"),
+            full_name="Line Manager",
+            role=UserRole.LINE_MANAGER,
+            is_active=True,
+            is_verified=True,
+            last_login=datetime.utcnow() - timedelta(hours=4),
+            avatar_url=gravatar_url("line.manager@linesight.io"),
+        )
+        db.add(line_mgr_user)
+        print(f"Created Line Manager: {line_mgr_user.email}")
+    else:
+        print(f"Line Manager already exists: {line_mgr_user.email}")
+    
     await db.flush()
 
     # =========================================================================

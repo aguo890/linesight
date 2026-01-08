@@ -2,11 +2,12 @@
  * Production Line Card Component
  * 
  * Displays production line information and status within a factory.
- * Allows uploading data and managing the line.
+ * Allows uploading data and managing the line (permission-aware).
  */
 import React from 'react';
-import { Settings, Edit2, Trash2, Activity, Upload } from 'lucide-react';
+import { Settings, Edit2, Trash2, Activity, Upload, Lock } from 'lucide-react';
 import type { ProductionLineRead } from '../../../api/model';
+import { usePermissions } from '../../../hooks/usePermissions';
 
 interface ProductionLineCardProps {
     line: ProductionLineRead;
@@ -22,6 +23,13 @@ export const ProductionLineCard: React.FC<ProductionLineCardProps & { onClick?: 
     onUpload,
     onClick
 }) => {
+    const { canUploadToLine, canUploadAny, canManageInfrastructure } = usePermissions();
+
+    // Determine upload button state
+    const canUploadThisLine = canUploadToLine(line.id);
+    const showUploadButton = canUploadAny && onUpload; // Only show if role allows any upload
+    const isUploadDisabled = showUploadButton && !canUploadThisLine; // Disable if no scope access
+
     return (
         <div
             onClick={() => onClick?.(line.id)}
@@ -61,16 +69,29 @@ export const ProductionLineCard: React.FC<ProductionLineCardProps & { onClick?: 
                 )}
 
                 <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-100 opacity-60 group-hover:opacity-100 transition-opacity">
-                    {onUpload && (
+                    {/* Upload Button - Permission-aware */}
+                    {showUploadButton && (
                         <button
-                            onClick={(e) => { e.stopPropagation(); onUpload(line.id); }}
-                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                            title="Upload data to this line"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (canUploadThisLine) onUpload!(line.id);
+                            }}
+                            disabled={isUploadDisabled}
+                            className={`p-2 rounded-lg transition-colors relative ${isUploadDisabled
+                                    ? 'text-gray-300 cursor-not-allowed bg-gray-50'
+                                    : 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                                }`}
+                            title={isUploadDisabled ? 'You do not have write access to this line' : 'Upload data to this line'}
                         >
-                            <Upload className="w-4 h-4" />
+                            {isUploadDisabled ? (
+                                <Lock className="w-4 h-4" />
+                            ) : (
+                                <Upload className="w-4 h-4" />
+                            )}
                         </button>
                     )}
-                    {onEdit && (
+                    {/* Edit Button - Infrastructure managers only */}
+                    {onEdit && canManageInfrastructure && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onEdit(line.id); }}
                             className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
@@ -79,7 +100,8 @@ export const ProductionLineCard: React.FC<ProductionLineCardProps & { onClick?: 
                             <Edit2 className="w-4 h-4" />
                         </button>
                     )}
-                    {onDelete && (
+                    {/* Delete Button - Infrastructure managers only */}
+                    {onDelete && canManageInfrastructure && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onDelete(line.id); }}
                             className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"

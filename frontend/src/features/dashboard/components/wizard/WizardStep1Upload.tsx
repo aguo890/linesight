@@ -1,65 +1,29 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Upload as UploadIcon, FileSpreadsheet, Loader2, AlertCircle, Eye, Database, Clock, FileText, ChevronRight } from 'lucide-react';
-import * as XLSX from 'xlsx';
-import { uploadFileForIngestion, processFile as processFileAPI } from '../../../../lib/ingestionApi';
-import type { ColumnMapping, DataSource } from '../../../../lib/ingestionApi';
+import React, { useState, useRef } from 'react';
+import { Loader2, AlertCircle, Database, Clock, FileText, ChevronRight } from 'lucide-react';
+import type { DataSource } from '../../../../lib/ingestionApi';
 
 interface WizardStep1UploadProps {
-    onFileUploaded: (file: File, rawImportId: string, mappings: ColumnMapping[], dashboardName: string) => void;
     onUseExisting: (dataSource: DataSource, dashboardName: string) => void;
-    factoryId?: string;
-    productionLineId?: string;
     existingDataSources: DataSource[];
-    onBeforeUpload?: () => Promise<{ factoryId: string; productionLineId: string }>;
 }
 
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
-    onFileUploaded,
     onUseExisting,
-    factoryId,
-    productionLineId,
     existingDataSources,
-    onBeforeUpload
 }) => {
     const { formatDate } = useDateFormatter();
-    // Default to 'existing' if we have any files
-    const [mode, setMode] = useState<'existing' | 'upload'>(
-        existingDataSources.length > 0 ? 'existing' : 'upload'
-    );
     const [dashboardName, setDashboardName] = useState('');
 
     // REF: Add a ref to control focus and scrolling
     const dashboardInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        if (existingDataSources.length > 0) {
-            setMode('existing');
-        } else {
-            setMode('upload');
-        }
-    }, [existingDataSources]);
-
-    const [isDragging, setIsDragging] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [previewData, setPreviewData] = useState<any[][] | null>(null);
-    const [previewHeaders, setPreviewHeaders] = useState<string[]>([]);
 
     // HELPER: check if the current error is specifically about the name
     const isNameError = error === 'Please enter a Dashboard Name first.';
-
-    const handleDragOver = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(true);
-    }, []);
-
-    const handleDragLeave = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
-    }, []);
 
     const triggerNameError = () => {
         setError('Please enter a Dashboard Name first.');
@@ -68,90 +32,6 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
             dashboardInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
             dashboardInputRef.current.focus();
         }
-    };
-
-    const processFile = async (file: File) => {
-        if (!dashboardName.trim()) {
-            triggerNameError();
-            return;
-        }
-
-        setIsProcessing(true);
-        setError(null);
-        setSelectedFile(file);
-
-        try {
-            // Read and parse Excel file for preview
-            const arrayBuffer = await file.arrayBuffer();
-            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as any[][];
-
-            // Extract headers and preview data
-            const headers = jsonData[0] as string[];
-            const previewRows = jsonData.slice(1, 6); // First 5 rows
-
-            setPreviewHeaders(headers);
-            setPreviewData(previewRows);
-
-            // Determine Context IDs
-            let finalFactoryId = factoryId;
-            let finalProductionLineId = productionLineId;
-
-            if (onBeforeUpload) {
-                const context = await onBeforeUpload();
-                finalFactoryId = context.factoryId;
-                finalProductionLineId = context.productionLineId;
-            }
-
-            // Step 1: Upload file to backend
-            const uploadResult = await uploadFileForIngestion(
-                file,
-                finalFactoryId,
-                finalProductionLineId
-            );
-
-            const { raw_import_id } = uploadResult;
-
-            // Step 2: Process through waterfall matching engine  
-            const processResult = await processFileAPI(raw_import_id, {
-                llmEnabled: true,
-                factoryId: finalFactoryId,
-            });
-
-            // Step 3: Pass real mappings to wizard
-            onFileUploaded(file, raw_import_id, processResult.columns, dashboardName);
-        } catch (err: any) {
-            console.error('File processing error:', err);
-            setError(err.message || 'Failed to process file. Please ensure it\'s a valid Excel file.');
-            setIsProcessing(false);
-            setPreviewData(null);
-        }
-    };
-
-    const handleDrop = useCallback((e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDragging(false);
-        if (mode !== 'upload') return;
-
-        const files = Array.from(e.dataTransfer.files);
-        const excelFile = files.find(f =>
-            f.name.endsWith('.xlsx') || f.name.endsWith('.xls') || f.name.endsWith('.csv')
-        );
-
-        if (excelFile) {
-            processFile(excelFile);
-        } else {
-            setError('Please upload an Excel (.xlsx, .xls) or CSV file');
-        }
-    }, [mode, dashboardName]); // Added dashboardName dependency
-
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            processFile(file);
-        }
-        e.target.value = '';
     };
 
     return (
@@ -195,38 +75,18 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                 )}
             </div>
 
-            {/* Header / Tabs */}
+            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <h3 className="text-lg font-semibold text-gray-900">Data Source Selection</h3>
                     <p className="text-sm text-gray-500">
-                        {mode === 'existing'
-                            ? 'Select a file to configure your dashboard widgets.'
-                            : 'Upload a new file to add to this production line.'}
+                        Select a previously uploaded file to configure your dashboard widgets.
                     </p>
                 </div>
-                {existingDataSources.length > 0 && (
-                    <div className="flex bg-gray-100 p-1 rounded-lg">
-                        <button
-                            onClick={() => setMode('existing')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${mode === 'existing' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                                }`}
-                        >
-                            History ({existingDataSources.length})
-                        </button>
-                        <button
-                            onClick={() => setMode('upload')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${mode === 'upload' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                                }`}
-                        >
-                            Upload New
-                        </button>
-                    </div>
-                )}
             </div>
 
             {/* MODE: EXISTING FILES LIST */}
-            {mode === 'existing' && (
+            {existingDataSources.length > 0 ? (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                     <div className="overflow-y-auto max-h-[400px]">
                         <table className="min-w-full divide-y divide-gray-200">
@@ -310,126 +170,26 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                         Note: Your dashboard will include data from ALL files in this list. Select any file to define the widget columns.
                     </div>
                 </div>
-            )
-            }
+            ) : (
+                <div className="p-8 text-center border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+                    <Database className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <h4 className="text-lg font-medium text-gray-900 mb-2">No Data Sources Yet</h4>
+                    <p className="text-sm text-gray-500">
+                        Upload files from the Production Line page first, then return here to create a dashboard.
+                    </p>
+                </div>
+            )}
 
-            {/* Mode: Upload New */}
-            {
-                mode === 'upload' && (
-                    <div
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${isDragging
-                            ? 'border-blue-500 bg-blue-50'
-                            : isProcessing
-                                ? 'border-gray-300 bg-gray-50'
-                                : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/50'
-                            }`}
-                    >
-                        {isProcessing ? (
-                            <div className="space-y-4">
-                                <Loader2 className="w-12 h-12 mx-auto text-blue-600 animate-spin" />
-                                <div>
-                                    <p className="text-lg font-medium text-gray-900">Analyzing your data...</p>
-                                    <p className="text-sm text-gray-500 mt-1">
-                                        AI is identifying columns and suggesting mappings
-                                    </p>
-                                </div>
-                                {selectedFile && (
-                                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
-                                        <FileSpreadsheet className="w-4 h-4" />
-                                        <span>{selectedFile.name}</span>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <>
-                                <UploadIcon className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                                <p className="text-lg font-medium text-gray-900 mb-2">
-                                    Drop your Excel file here
-                                </p>
-                                <p className="text-sm text-gray-500 mb-4">
-                                    or click to browse
-                                </p>
-                                <input
-                                    type="file"
-                                    accept=".xlsx,.xls,.csv"
-                                    onChange={handleFileSelect}
-                                    className="hidden"
-                                    id="file-upload"
-                                />
-                                <label
-                                    htmlFor="file-upload"
-                                    className="inline-block px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors"
-                                >
-                                    Select File
-                                </label>
-                                <p className="text-xs text-gray-400 mt-4">
-                                    Supports: .xlsx, .xls, .csv
-                                </p>
-                            </>
-                        )}
+            {/* Error display */}
+            {error && !isNameError && (
+                <div className="flex items-start space-x-3 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-sm font-medium text-red-900">Error</p>
+                        <p className="text-sm text-red-700 mt-1">{error}</p>
                     </div>
-                )
-            }
-
-            {/* 
-               Only show the bottom generic error if it is NOT the name error. 
-               The name error is now handled inline at the top.
-            */}
-            {
-                error && !isNameError && (
-                    <div className="flex items-start space-x-3 p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                        <div>
-                            <p className="text-sm font-medium text-red-900">Upload Error</p>
-                            <p className="text-sm text-red-700 mt-1">{error}</p>
-                        </div>
-                    </div>
-                )
-            }
-
-            {/* Excel Preview (Only for upload mode) */}
-            {
-                mode === 'upload' && previewData && previewData.length > 0 && (
-                    <div className="border border-gray-200 rounded-lg overflow-hidden mt-6">
-                        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                                <Eye className="w-4 h-4 text-gray-600" />
-                                <span className="text-sm font-medium text-gray-900">Data Preview</span>
-                            </div>
-                            <span className="text-xs text-gray-500">
-                                Showing first 5 rows of {selectedFile?.name}
-                            </span>
-                        </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead className="bg-gray-100">
-                                    <tr>
-                                        {previewHeaders.map((header, idx) => (
-                                            <th key={idx} className="px-3 py-2 text-left text-xs font-semibold text-gray-700 border-r border-gray-200 last:border-r-0">
-                                                {header}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {previewData.map((row, rowIdx) => (
-                                        <tr key={rowIdx} className="hover:bg-gray-50">
-                                            {row.map((cell, cellIdx) => (
-                                                <td key={cellIdx} className="px-3 py-2 text-gray-900 border-r border-gray-200 last:border-r-0 whitespace-nowrap">
-                                                    {cell !== null && cell !== undefined ? String(cell) : '-'}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                )
-            }
+                </div>
+            )}
         </div >
     );
 };

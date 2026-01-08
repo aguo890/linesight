@@ -88,17 +88,22 @@ class UserRole(StrEnum):
     Hierarchy:
     - SYSTEM_ADMIN: Platform-level admin (developer). Can see all organizations.
     - OWNER: Organization owner/CEO. Full access to all factories/lines in their org.
-             Only role that can create production lines.
-    - MANAGER: Assigned to specific lines by owner. Can only view/upload to assigned lines.
-    - ANALYST: Read-only analytics access within organization.
+             Can create factories, add lines, assign managers.
+    - FACTORY_MANAGER: Assigned to specific factories by owner. 
+             Can add/edit lines within assigned factory, upload to any line in factory.
+    - LINE_MANAGER: Assigned to specific lines by owner/factory manager.
+             STRICT ACCESS: Can ONLY view/upload to explicitly assigned lines.
+             Cannot view sibling lines or add new lines.
+    - ANALYST: Read-only analytics access within organization. Can create dashboards.
     - VIEWER: Read-only access within organization.
     """
 
-    SYSTEM_ADMIN = "system_admin"  # Platform-level admin
-    OWNER = "owner"                # Organization owner/CEO
-    MANAGER = "manager"            # Line-scoped manager
-    ANALYST = "analyst"            # Read-only analytics
-    VIEWER = "viewer"              # Read-only access
+    SYSTEM_ADMIN = "system_admin"        # Platform-level admin
+    OWNER = "owner"                      # Organization owner/CEO
+    FACTORY_MANAGER = "factory_manager"  # Factory-scoped manager
+    LINE_MANAGER = "line_manager"        # Line-scoped manager (strict)
+    ANALYST = "analyst"                  # Read-only analytics
+    VIEWER = "viewer"                    # Read-only access
 
 
 class RoleScope(StrEnum):

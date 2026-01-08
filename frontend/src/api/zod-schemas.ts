@@ -445,6 +445,10 @@ export const deleteDashboardApiV1DashboardsDashboardIdDeleteParams = zod.object(
 
 /**
  * Get all factories for the current user's organization.
+
+RBAC:
+- OWNER/ADMIN: See all active factories in organization.
+- MANAGER: Only see factories where they have assigned lines.
  * @summary List Factories
  */
 export const listFactoriesApiV1FactoriesGetResponseNameMax = 255;export const listFactoriesApiV1FactoriesGetResponseCodeMaxOne = 50;export const listFactoriesApiV1FactoriesGetResponseLocationMaxOne = 255;export const listFactoriesApiV1FactoriesGetResponseCountryMaxOne = 100;export const listFactoriesApiV1FactoriesGetResponseTimezoneMaxOne = 50;export const listFactoriesApiV1FactoriesGetResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
@@ -1227,6 +1231,67 @@ export const recalculateMetricsApiV1AnalyticsRecalculatePostQueryParams = zod.ob
 })
 
 export const recalculateMetricsApiV1AnalyticsRecalculatePostResponse = zod.any()
+
+
+/**
+ * List all organization members with their scope assignments.
+
+Only accessible by organization owners.
+Returns all users in the organization with their production line assignments.
+ * @summary List Organization Members
+ */
+export const listOrganizationMembersApiV1OrganizationsMembersGetResponseScopesDefault = [];
+
+export const listOrganizationMembersApiV1OrganizationsMembersGetResponseItem = zod.object({
+  "id": zod.string(),
+  "email": zod.email(),
+  "full_name": zod.union([zod.string(),zod.null()]).optional(),
+  "avatar_url": zod.union([zod.string(),zod.null()]).optional(),
+  "role": zod.string(),
+  "is_active": zod.boolean(),
+  "last_login": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
+  "scopes": zod.array(zod.object({
+  "id": zod.string(),
+  "scope_type": zod.string(),
+  "organization_id": zod.union([zod.string(),zod.null()]).optional(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
+  "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
+  "role": zod.string()
+}).describe('Response schema for a user scope assignment.')).default(listOrganizationMembersApiV1OrganizationsMembersGetResponseScopesDefault)
+}).describe('Response schema for an organization member with their scopes.')
+export const listOrganizationMembersApiV1OrganizationsMembersGetResponse = zod.array(listOrganizationMembersApiV1OrganizationsMembersGetResponseItem)
+
+
+/**
+ * Assign a user to a production line.
+
+Only accessible by organization owners.
+Creates a new UserScope entry linking the user to the specified production line.
+ * @summary Assign User To Line
+ */
+export const assignUserToLineApiV1OrganizationsMembersUserIdScopesPostParams = zod.object({
+  "user_id": zod.string()
+})
+
+export const assignUserToLineApiV1OrganizationsMembersUserIdScopesPostBodyRoleDefault = "manager";
+
+export const assignUserToLineApiV1OrganizationsMembersUserIdScopesPostBody = zod.object({
+  "production_line_id": zod.string(),
+  "role": zod.string().default(assignUserToLineApiV1OrganizationsMembersUserIdScopesPostBodyRoleDefault)
+}).describe('Request body for assigning a user to a production line.')
+
+
+/**
+ * Remove a user's scope assignment.
+
+Only accessible by organization owners.
+Deletes the UserScope entry, removing the user's access to that production line.
+ * @summary Remove User Scope
+ */
+export const removeUserScopeApiV1OrganizationsMembersUserIdScopesScopeIdDeleteParams = zod.object({
+  "user_id": zod.string(),
+  "scope_id": zod.string()
+})
 
 
 /**

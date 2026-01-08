@@ -1004,7 +1004,7 @@
           "Factories"
         ],
         "summary": "List Factories",
-        "description": "Get all factories for the current user's organization.",
+        "description": "Get all factories for the current user's organization.\n\nRBAC:\n- OWNER/ADMIN: See all active factories in organization.\n- MANAGER: Only see factories where they have assigned lines.",
         "operationId": "list_factories_api_v1_factories_get",
         "responses": {
           "200": {
@@ -2674,6 +2674,145 @@
                 "schema": {}
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/members": {
+      "get": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "List Organization Members",
+        "description": "List all organization members with their scope assignments.\n\nOnly accessible by organization owners.\nReturns all users in the organization with their production line assignments.",
+        "operationId": "list_organization_members_api_v1_organizations_members_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MemberRead"
+                  },
+                  "type": "array",
+                  "title": "Response List Organization Members Api V1 Organizations Members Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/organizations/members/{user_id}/scopes": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "Assign User To Line",
+        "description": "Assign a user to a production line.\n\nOnly accessible by organization owners.\nCreates a new UserScope entry linking the user to the specified production line.",
+        "operationId": "assign_user_to_line_api_v1_organizations_members__user_id__scopes_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScopeAssign"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScopeRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/members/{user_id}/scopes/{scope_id}": {
+      "delete": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "Remove User Scope",
+        "description": "Remove a user's scope assignment.\n\nOnly accessible by organization owners.\nDeletes the UserScope entry, removing the user's access to that production line.",
+        "operationId": "remove_user_scope_api_v1_organizations_members__user_id__scopes__scope_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "scope_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scope Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -6605,6 +6744,78 @@
         "title": "MatchTier",
         "description": "Column matching tier in waterfall engine."
       },
+      "MemberRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "full_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Full Name"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "last_login": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Login"
+          },
+          "scopes": {
+            "items": {
+              "$ref": "#/components/schemas/ScopeRead"
+            },
+            "type": "array",
+            "title": "Scopes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "is_active"
+        ],
+        "title": "MemberRead",
+        "description": "Response schema for an organization member with their scopes."
+      },
       "OrderCreate": {
         "properties": {
           "po_number": {
@@ -8413,6 +8624,82 @@
           "created_at"
         ],
         "title": "SchemaMappingResponse"
+      },
+      "ScopeAssign": {
+        "properties": {
+          "production_line_id": {
+            "type": "string",
+            "title": "Production Line Id"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "default": "manager"
+          }
+        },
+        "type": "object",
+        "required": [
+          "production_line_id"
+        ],
+        "title": "ScopeAssign",
+        "description": "Request body for assigning a user to a production line."
+      },
+      "ScopeRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "scope_type": {
+            "type": "string",
+            "title": "Scope Type"
+          },
+          "organization_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organization Id"
+          },
+          "factory_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Factory Id"
+          },
+          "production_line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Production Line Id"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "scope_type",
+          "role"
+        ],
+        "title": "ScopeRead",
+        "description": "Response schema for a user scope assignment."
       },
       "ShiftConfig": {
         "properties": {

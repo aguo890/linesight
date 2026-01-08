@@ -6,7 +6,7 @@ import { useAuth } from './hooks/useAuth';
 // Lazy load pages for code splitting
 const LandingPage = lazy(() => import('./features/landing/pages/LandingPage'));
 const LoginPage = lazy(() => import('./features/auth/pages/LoginPage'));
-const DashboardPage = lazy(() => import('./features/dashboard/pages/DashboardPage'));
+// DashboardPage is deprecated - /dashboard now redirects to /dashboard/factories
 const DynamicDashboardPage = lazy(() => import('./features/dashboard/pages/DynamicDashboardPage'));
 const MyDashboardsPage = lazy(() => import('./features/dashboard/pages/MyDashboardsPage'));
 const FactoryDetailPage = lazy(() => import('./features/dashboard/pages/FactoryDetailPage'));
@@ -48,11 +48,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-// Public route - redirect to dashboard if already logged in
+// Public route - redirect to factories if already logged in
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     const { isAuthenticated } = useAuth();
     if (isAuthenticated) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/dashboard/factories" replace />;
     }
     return <>{children}</>;
 };
@@ -150,16 +150,11 @@ const router = createBrowserRouter([
             },
         ],
     },
+    // DEPRECATED: /dashboard now redirects to /dashboard/factories
+    // The old overview page (DashboardPage) is no longer the default entry point
     {
         path: '/dashboard',
-        element: (
-            <ProtectedRoute>
-                <Suspense fallback={<PageLoader />}>
-                    <DashboardPage />
-                </Suspense>
-            </ProtectedRoute>
-        ),
-        errorElement: <ErrorPage />,
+        element: <Navigate to="/dashboard/factories" replace />,
     },
     {
         path: '/dashboard/factories/:factoryId',

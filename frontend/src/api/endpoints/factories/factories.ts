@@ -44,6 +44,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
  * Get all factories for the current user's organization.
+
+RBAC:
+- OWNER/ADMIN: See all active factories in organization.
+- MANAGER: Only see factories where they have assigned lines.
  * @summary List Factories
  */
 export const listFactoriesApiV1FactoriesGet = (
