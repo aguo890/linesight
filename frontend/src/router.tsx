@@ -20,6 +20,7 @@ const OrgGeneralPage = lazy(() => import('./features/organization/pages/OrgGener
 const OrgMembersPage = lazy(() => import('./features/organization/pages/OrgMembersPage'));
 const FactorySelectionPage = lazy(() => import('./features/organization/pages/FactorySelectionPage'));
 const FactoryConfigurationPage = lazy(() => import('./features/organization/pages/FactoryConfigurationPage'));
+const OrganizationSettingsHub = lazy(() => import('./features/organization/pages/OrganizationSettingsHub'));
 
 
 // Loading component with skeleton
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
         ),
         errorElement: <ErrorPage />,
         children: [
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrganizationSettingsHub />
+                    </Suspense>
+                ),
+            },
             {
                 path: 'general',
                 element: (

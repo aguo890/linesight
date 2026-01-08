@@ -1,14 +1,8 @@
-/**
- * Organization General Settings Page
- * 
- * The "landing" page for Organization settings.
- * Shows overview stats and basic organization info.
- */
-
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { AXIOS_INSTANCE } from '../../../api/axios-client';
 import { Building2, Users, Factory, Crown, AlertTriangle } from 'lucide-react';
+import { SettingsPageHeader } from '../../../components/settings/SettingsPageHeader';
 
 interface OrgStats {
     totalManagers: number;
@@ -89,14 +83,9 @@ const OrgGeneralPage: React.FC = () => {
     }
 
     return (
-        <div className="w-full p-8">
-            {/* Header */}
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-[var(--color-text)]">General</h1>
-                <p className="text-[var(--color-text-muted)] mt-1">
-                    Organization overview and settings
-                </p>
-            </div>
+        <div className="w-full">
+            {/* Header with Back Button */}
+            <SettingsPageHeader title="General" />
 
             {/* Organization Profile Card */}
             <div className="bg-[var(--color-surface)] rounded-xl p-6 border border-[var(--color-border)] mb-6">

@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useOrgMembers } from '../hooks/useOrgMembers';
 import { MemberIdentityCell } from '../components/MemberIdentityCell';
 import { MemberDetailsDrawer } from '../components/MemberDetailsDrawer';
+import { SettingsPageHeader } from '../../../components/settings/SettingsPageHeader';
 import type { MemberRead } from '../../../api/endpoints/team/teamApi';
 
 export const OrgMembersPage = () => {
@@ -20,14 +21,11 @@ export const OrgMembersPage = () => {
     );
 
     return (
-        <div className="p-8 max-w-7xl mx-auto">
-            {/* Page Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Members</h1>
-                    <p className="text-gray-500 mt-1">Manage who has access to your organization.</p>
-                </div>
-                <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+        <div className="max-w-7xl mx-auto">
+            {/* Page Header with Back Button */}
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <SettingsPageHeader title="Members" />
+                <Button className="gap-2 bg-blue-600 hover:bg-blue-700 shrink-0">
                     <Plus className="w-4 h-4" /> Invite Member
                 </Button>
             </div>
