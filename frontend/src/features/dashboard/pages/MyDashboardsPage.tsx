@@ -19,6 +19,7 @@ import { MainLayout } from '../../../components/layout/MainLayout';
 import { FactoryCard } from '../components/FactoryCard';
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
 import { useOrganization } from '../../../contexts/OrganizationContext';
+import { useAuth } from '../../../hooks/useAuth';
 
 type ViewMode = 'grid' | 'list';
 
@@ -31,6 +32,8 @@ export const MyDashboardsPage: React.FC = () => {
 
     // consume context
     const { quotaStatus } = useOrganization();
+    const { user } = useAuth();
+    const isOwner = user?.role === 'owner' || user?.role === 'system_admin';
 
     // Use Orval hook for fetching factories
     const {
@@ -83,11 +86,6 @@ export const MyDashboardsPage: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
-    const handleFactoryEdit = (id: string) => {
-        // Redirect to settings for configuration
-        navigate(`/organization/settings/factories/${id}`);
-    };
-
     if (factoryError) {
         console.error('Error loading factories:', factoryError);
     }
@@ -108,14 +106,16 @@ export const MyDashboardsPage: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Settings Link */}
-                <Link
-                    to="/organization/settings/factories"
-                    className="flex items-center gap-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
-                >
-                    <Settings className="w-4 h-4" />
-                    Configure Sites
-                </Link>
+                {/* Settings Link - Restricted to Owners */}
+                {isOwner && (
+                    <Link
+                        to="/organization/settings/factories"
+                        className="flex items-center gap-2 text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                    >
+                        <Settings className="w-4 h-4" />
+                        Configure Sites
+                    </Link>
+                )}
             </div>
 
             {/* Control Bar - Search & View Toggles */}
@@ -216,8 +216,7 @@ export const MyDashboardsPage: React.FC = () => {
                                     maxLines: quotaStatus?.lines_per_factory.max || 10
                                 }}
                                 onClick={(id) => navigate(`/dashboard/factories/${id}`)}
-                                onEdit={handleFactoryEdit}
-                                onDelete={() => { }} // No delete capability in Operations view
+                            // Edit and Delete removed for My Dashboards
                             />
                         ))
                     )}
@@ -325,17 +324,19 @@ export const MyDashboardsPage: React.FC = () => {
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">No active sites</h2>
                     <p className="text-slate-500 mb-8 text-center max-w-md">
                         Your dashboard is empty because no factories have been configured yet.
-                        Head over to Organization Settings to set up your infrastructure.
+                        {isOwner ? ' Head over to Organization Settings to set up your infrastructure.' : ' Please contact your administrator to set up the infrastructure.'}
                     </p>
 
-                    {/* CTA Button */}
-                    <Link
-                        to="/organization/settings/factories"
-                        className="group flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-[0.98]"
-                    >
-                        <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
-                        Go to Organization Settings
-                    </Link>
+                    {/* CTA Button - Restricted to Owners */}
+                    {isOwner && (
+                        <Link
+                            to="/organization/settings/factories"
+                            className="group flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl hover:shadow-indigo-100 transition-all active:scale-[0.98]"
+                        >
+                            <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+                            Go to Organization Settings
+                        </Link>
+                    )}
                 </div>
             )}
         </MainLayout>

@@ -53,16 +53,15 @@ const OrgGeneralPage: React.FC = () => {
                 const factoriesRes = await AXIOS_INSTANCE.get('/api/v1/factories');
                 const factories = factoriesRes.data;
 
-                // Count lines per factory
-                let totalLines = 0;
-                for (const factory of factories) {
-                    try {
-                        const linesRes = await AXIOS_INSTANCE.get(`/api/v1/factories/${factory.id}/lines`);
-                        totalLines += linesRes.data?.length || 0;
-                    } catch {
-                        // Ignore failed line fetches
-                    }
-                }
+                // Count lines per factory (Parallel Fetching)
+                const linePromises = factories.map((factory: any) =>
+                    AXIOS_INSTANCE.get(`/api/v1/factories/${factory.id}/lines`)
+                        .then(res => res.data?.length || 0)
+                        .catch(() => 0)
+                );
+
+                const lineCounts = await Promise.all(linePromises);
+                const totalLines = lineCounts.reduce((a, b) => a + b, 0);
 
                 setStats({
                     totalManagers: managers.length,
@@ -90,7 +89,7 @@ const OrgGeneralPage: React.FC = () => {
     }
 
     return (
-        <div className="max-w-4xl p-8">
+        <div className="w-full p-8">
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-[var(--color-text)]">General</h1>

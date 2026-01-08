@@ -351,7 +351,7 @@ export const Sidebar: React.FC = () => {
                     */}
 
                     {/* Temporary Debug Button - Remove before production */}
-                    <button
+                    {/* <button
                         onClick={() => {
                             if (window.confirm('WARNING: This will wipe all saved dashboards. Continue?')) {
                                 // Attempt to clear common keys, or check your storage.ts for the exact key
@@ -363,7 +363,7 @@ export const Sidebar: React.FC = () => {
                         className="w-full py-2 bg-red-100 hover:bg-red-200 text-red-800 text-xs font-bold rounded border border-red-200 transition-colors"
                     >
                         [DEBUG] FORCE RESET STORAGE
-                    </button>
+                    </button> */}
                 </div>
             </aside >
         </>

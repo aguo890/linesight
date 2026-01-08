@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
+import { cn } from '../../../lib/utils';
 import type { MemberRead } from '../../../api/endpoints/team/teamApi';
 import { createPortal } from 'react-dom';
 
@@ -9,6 +10,7 @@ interface UserSearchCommandProps {
     excludeUserIds?: string[];
     onClose: () => void;
     position?: { top: number; left: number };
+    inline?: boolean;
 }
 
 export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
@@ -16,7 +18,8 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
     onSelect,
     excludeUserIds = [],
     onClose,
-    position
+    position,
+    inline
 }) => {
     const [query, setQuery] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -29,15 +32,17 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
 
     // Handle outside click
     useEffect(() => {
+        if (inline) return; // Don't handle outside click if inline (parent Popover handles it)
+
         const handleClickOutside = (event: MouseEvent) => {
             if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                onClose();
+                onClose?.();
             }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [onClose]);
+    }, [onClose, inline]);
 
     const filteredUsers = useMemo(() => {
         return users
@@ -52,7 +57,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
             });
     }, [users, excludeUserIds, query]);
 
-    const style: React.CSSProperties = position ? {
+    const style: React.CSSProperties = (position && !inline) ? {
         position: 'fixed',
         top: position.top,
         left: position.left,
@@ -60,10 +65,14 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
         maxHeight: '300px'
     } : {};
 
-    return createPortal(
+    const content = (
         <div
             ref={containerRef}
-            className="flex flex-col w-72 bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+            className={cn(
+                "flex flex-col bg-white rounded-lg overflow-hidden",
+                !inline && "w-72 shadow-xl border border-slate-200 animate-in fade-in zoom-in-95 duration-100",
+                inline && "w-full border-0 shadow-none"
+            )}
             style={style}
         >
             <div className="flex items-center px-3 py-2 border-b border-slate-100">
@@ -110,7 +119,12 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
             <div className="bg-slate-50 px-3 py-2 border-t border-slate-100 text-[10px] text-slate-400 text-right">
                 {filteredUsers.length} available
             </div>
-        </div>,
-        document.body
+        </div>
     );
+
+    if (inline) {
+        return content;
+    }
+
+    return createPortal(content, document.body);
 };
