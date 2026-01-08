@@ -39,13 +39,35 @@ async def list_factories(
 ):
     """
     Get all factories for the current user's organization.
+    
+    RBAC:
+    - OWNER/ADMIN: See all active factories in organization.
+    - MANAGER: Only see factories where they have assigned lines.
     """
-    result = await db.execute(
-        select(Factory)
-        .where(Factory.organization_id == current_user.organization_id)
-        .where(Factory.is_active)
-        .order_by(Factory.name)
+    query = select(Factory).where(
+        Factory.organization_id == current_user.organization_id,
+        Factory.is_active
     )
+
+    if current_user.role == UserRole.MANAGER:
+        # Get factory IDs from user's line assignments
+        # We look for scopes that have a production_line_id
+        # The factory_id is also stored in scope, but let's be robust
+        scope_query = select(UserScope.factory_id).where(
+            UserScope.user_id == current_user.id,
+            UserScope.production_line_id.isnot(None)
+        ).distinct()
+        
+        scope_result = await db.execute(scope_query)
+        allowed_factory_ids = {row[0] for row in scope_result.fetchall() if row[0]}
+        
+        # If no assignments, they see no factories
+        if not allowed_factory_ids:
+            return []
+            
+        query = query.where(Factory.id.in_(allowed_factory_ids))
+
+    result = await db.execute(query.order_by(Factory.name))
     factories = result.scalars().all()
     return factories
 

@@ -16,7 +16,8 @@ export const ProductionLineRow = ({
     onAssignUser,
     onRefetchRequest,
     isSearchOpen,
-    onToggleSearch
+    onToggleSearch,
+    onClickName
 }: any) => {
     // const [isSearchOpen, setIsSearchOpen] = useState(false); // Controlled by parent now
     const [allUsers, setAllUsers] = useState<any[]>([]);
@@ -41,7 +42,8 @@ export const ProductionLineRow = ({
     };
 
     // --- Structure Mode Handlers ---
-    const handleRename = async () => {
+    const handleRename = async (e: React.MouseEvent) => {
+        e.stopPropagation();
         const newName = prompt("Rename line:", line.name);
         if (newName && newName !== line.name) {
             await updateProductionLineApiV1FactoriesLinesLineIdPatch(line.id, { name: newName });
@@ -49,7 +51,8 @@ export const ProductionLineRow = ({
         }
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (e: React.MouseEvent) => {
+        e.stopPropagation();
         if (confirm(`Delete ${line.name}?`)) {
             await deleteProductionLineApiV1FactoriesLinesLineIdDelete(line.id);
             onRefetchRequest();
@@ -57,15 +60,21 @@ export const ProductionLineRow = ({
     };
 
     return (
-        <div className={`
-            group flex items-center justify-between p-4 transition-colors first:rounded-t-xl last:rounded-b-xl
-            ${isSelected ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'}
-        `}>
+        <div
+            onClick={onClickName}
+            className={`
+                group flex items-center justify-between p-4 transition-colors first:rounded-t-xl last:rounded-b-xl cursor-pointer
+                ${isSelected ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'}
+            `}
+        >
             {/* LEFT: Checkbox + Name */}
             <div className="flex items-center gap-4 w-1/3">
                 {/* Checkbox only appears in Assignment Mode */}
                 {!isEditMode && (
-                    <div className="w-5 h-5 flex items-center justify-center">
+                    <div
+                        className="w-5 h-5 flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Checkbox
                             checked={isSelected}
                             onCheckedChange={onToggleSelection}
@@ -73,14 +82,27 @@ export const ProductionLineRow = ({
                         />
                     </div>
                 )}
-                <div>
-                    <h4 className="font-medium text-gray-900 truncate">{line.name}</h4>
-                    <span className="text-xs text-gray-500 font-mono">{line.code}</span>
+                <div className="group/name flex flex-col">
+                    <h4
+                        className={`
+                            font-medium text-sm truncate transition-all cursor-pointer underline-offset-2
+                            ${(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(line.name)) ? 'text-gray-400 italic' : 'text-gray-900 group-hover/name:text-blue-600 group-hover/name:underline'}
+                        `}
+                        title="Click to view details & rename"
+                    >
+                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(line.name)) ? "Untitled Line" : line.name}
+                    </h4>
+                    <span
+                        className="text-[10px] text-gray-400 font-mono mt-0.5 group-hover/name:text-blue-500 transition-colors"
+                    >
+                        ID: {line.id.split('-').pop()}
+                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(line.name)) && <span className="ml-1 text-orange-400">• Rename Required</span>}
+                    </span>
                 </div>
             </div>
 
             {/* RIGHT: Context-Aware Actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4" onClick={(e) => e.stopPropagation()}>
 
                 {/* MODE A: Structure Editing */}
                 {isEditMode ? (

@@ -1,8 +1,10 @@
 """
 Database seeding utility.
-Populates the database with realistic development data.
+Populates the database with realistic development data for edge case testing.
 """
 
+import hashlib
+import uuid
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
@@ -12,11 +14,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.security import hash_password
 from app.enums import OrderPriority, OrderStatus, RoleScope, UserRole
 from app.models.analytics import EfficiencyMetric
-# from app.models.compliance import (
-#     ComplianceStandard,
-#     TraceabilityRecord,
-#     VerificationStatus,
-# )
 from app.models.factory import Factory, ProductionLine
 from app.models.production import (
     Order,
@@ -27,14 +24,24 @@ from app.models.user import Organization, User, UserScope
 from app.models.workforce import Worker, WorkerSkill
 
 
+def gravatar_url(email: str) -> str:
+    """Generate a Gravatar identicon URL for an email."""
+    email_hash = hashlib.md5(email.lower().encode()).hexdigest()
+    return f"https://www.gravatar.com/avatar/{email_hash}?d=identicon&s=200"
+
+
 async def seed_data(db: AsyncSession):
     """Seed the database with initial development data."""
 
-    # 0. Clear existing Production Runs to allow regeneration with correct data
-    print("Clearing existing Production Run data...")
-    # Delete dependent metrics first (though CASCADE should handle it, explicit is safer for some DBs)
+    # 0. Clear existing data for idempotency
+    print("Clearing existing seed data for idempotency...")
     await db.execute(delete(EfficiencyMetric))
     await db.execute(delete(ProductionRun))
+    await db.execute(delete(UserScope))
+    # Delete managers only (preserve admin/owner accounts)
+    await db.execute(delete(User).where(User.role == UserRole.MANAGER))
+    await db.execute(delete(ProductionLine))
+    await db.execute(delete(Factory))
     await db.flush()
 
     # 1. Create Organization
@@ -61,19 +68,18 @@ async def seed_data(db: AsyncSession):
             email="admin@linesight.dev",
             hashed_password=hash_password("admin123"),
             full_name="System Admin",
-            role=UserRole.SYSTEM_ADMIN,  # Platform-level access
+            role=UserRole.SYSTEM_ADMIN,
             is_active=True,
             is_verified=True,
         )
         db.add(admin_user)
         print(f"Created System Admin User: {admin_user.email}")
     else:
-        # Update existing admin to SYSTEM_ADMIN role
         admin_user.role = UserRole.SYSTEM_ADMIN
         db.add(admin_user)
         print(f"Updated Admin User to SYSTEM_ADMIN: {admin_user.email}")
 
-    # 2.5. Create Demo Organization & User (Ported from standalone script)
+    # 2.5. Create Demo Organization & User
     print("Checking Demo Organization...")
     demo_org_query = select(Organization).where(Organization.code == "DEMO")
     demo_org_res = await db.execute(demo_org_query)
@@ -82,12 +88,21 @@ async def seed_data(db: AsyncSession):
     if not demo_org:
         print("Creating Demo Organization...")
         demo_org = Organization(
-            name="Demo Org", code="DEMO", primary_email="demo@linesight.io"
+            name="Demo Org",
+            code="DEMO",
+            primary_email="demo@linesight.io",
+            max_factories=10,
+            max_lines_per_factory=10,
         )
         db.add(demo_org)
         await db.flush()
     else:
         print("Demo Organization already exists.")
+        # Update quotas for testing
+        demo_org.max_factories = 10
+        demo_org.max_lines_per_factory = 10
+        db.add(demo_org)
+        await db.flush()
 
     print("Checking Demo User...")
     demo_user_query = select(User).where(User.email == "demo@linesight.io")
@@ -101,9 +116,11 @@ async def seed_data(db: AsyncSession):
             email="demo@linesight.io",
             hashed_password=hash_password("demo1234"),
             full_name="Demo Owner",
-            role=UserRole.OWNER,  # Organization owner - full access to all factories/lines
+            role=UserRole.OWNER,
             is_active=True,
             is_verified=True,
+            last_login=datetime.utcnow(),
+            avatar_url=gravatar_url("demo@linesight.io"),
         )
         db.add(demo_user)
     else:
@@ -112,120 +129,350 @@ async def seed_data(db: AsyncSession):
         demo_user.hashed_password = hash_password("demo1234")
         demo_user.role = UserRole.OWNER
         demo_user.full_name = "Demo Owner"
+        demo_user.last_login = datetime.utcnow()
+        demo_user.avatar_url = gravatar_url("demo@linesight.io")
         db.add(demo_user)
-    
+
     await db.flush()
 
-    # 3. Create Factory
-    factory_query = select(Factory).where(Factory.code == "FAC-001")
-    factory_result = await db.execute(factory_query)
-    factory = factory_result.scalar_one_or_none()
+    # =========================================================================
+    # 3. CREATE TEST FACTORIES (3 total for edge case testing)
+    # =========================================================================
+    print("\n--- Creating Test Factories ---")
 
-    if not factory:
-        factory = Factory(
-            organization_id=demo_org.id,
-            name="Main Production Center",
-            code="FAC-001",
-            country="VN",
-            city="Ho Chi Minh City",
-            timezone="Asia/Ho_Chi_Minh",
-            total_workers=250,
+    # Factory A: Detroit Plant (fully populated, 5 lines with human names)
+    factory_a = Factory(
+        organization_id=demo_org.id,
+        name="Detroit Plant",
+        code="FAC-DETROIT",
+        country="US",
+        city="Detroit",
+        timezone="America/Detroit",
+        total_workers=250,
+        is_active=True,
+    )
+    db.add(factory_a)
+    await db.flush()
+    print(f"Created Factory A: {factory_a.name}")
+
+    # Detroit lines with proper human names
+    detroit_line_names = ["Chassis Assembly", "Paint Shop", "Final Assembly", "Quality Control", "Packaging"]
+    detroit_lines = []
+    for i, name in enumerate(detroit_line_names, start=1):
+        line = ProductionLine(
+            factory_id=factory_a.id,
+            name=name,
+            code=f"DET-L{i:02d}",
+            is_active=True,
+            target_efficiency_pct=85,
         )
-        db.add(factory)
-        await db.flush()
-        print(f"Created Factory: {factory.name} linked to Demo Org")
-    else:
-        print(f"Factory exists. Ensuring it's linked to Demo Org.")
-        factory.organization_id = demo_org.id
-        db.add(factory)
-        await db.flush()
-
-    # 4. Create Production Lines
-    lines = []
-    for i in range(1, 5):
-        line_code = f"LINE-{i:02d}"
-        line_query = select(ProductionLine).where(ProductionLine.code == line_code)
-        line_result = await db.execute(line_query)
-        line = line_result.scalar_one_or_none()
-
-        if not line:
-            line = ProductionLine(
-                factory_id=factory.id,
-                name=f"Production Line {i}",
-                code=line_code,
-                is_active=True,
-                target_efficiency_pct=85,
-            )
-            db.add(line)
-        lines.append(line)
+        db.add(line)
+        detroit_lines.append(line)
     await db.flush()
+    print(f"  Created {len(detroit_lines)} production lines for Detroit Plant")
 
-    # 4.5. Create 30 Demo Manager Users with varying line assignments
-    # Distribution:
-    #   - Managers 01-10: LINE-01 only
-    #   - Managers 11-20: LINE-02 only
-    #   - Managers 21-25: Both LINE-01 and LINE-02
-    #   - Managers 26-30: No line assignments (unassigned pool)
-    print("Creating 30 Demo Manager Users with varying line assignments...")
-    
-    MANAGER_COUNT = 30
+    # Factory B: Shanghai Prototype (messy - 2 UUID names, 1 proper name)
+    factory_b = Factory(
+        organization_id=demo_org.id,
+        name="Shanghai Prototype",
+        code="FAC-SHANGHAI",
+        country="CN",
+        city="Shanghai",
+        timezone="Asia/Shanghai",
+        total_workers=80,
+        is_active=True,
+    )
+    db.add(factory_b)
+    await db.flush()
+    print(f"Created Factory B: {factory_b.name}")
+
+    # Shanghai lines - 2 with UUID names (simulating drag-drop created), 1 with proper name
+    shanghai_lines = []
+    # Proper named line
+    proper_line = ProductionLine(
+        factory_id=factory_b.id,
+        name="Prototype Assembly",
+        code="SH-L01",
+        is_active=True,
+        target_efficiency_pct=75,
+    )
+    db.add(proper_line)
+    shanghai_lines.append(proper_line)
+
+    # UUID-named lines (simulate unconfigured lines from drag-drop)
+    for i in range(2):
+        uuid_name = str(uuid.uuid4())
+        line = ProductionLine(
+            factory_id=factory_b.id,
+            name=uuid_name,  # Raw UUID as name - should show "Untitled Line" in UI
+            code=f"SH-UUID-{i+1}",
+            is_active=True,
+            target_efficiency_pct=70,
+        )
+        db.add(line)
+        shanghai_lines.append(line)
+    await db.flush()
+    print(f"  Created {len(shanghai_lines)} production lines for Shanghai (2 with UUID names)")
+
+    # Factory C: Empty Shell (0 lines - edge case for empty states)
+    factory_c = Factory(
+        organization_id=demo_org.id,
+        name="Empty Shell",
+        code="FAC-EMPTY",
+        country="MX",
+        city="Monterrey",
+        timezone="America/Monterrey",
+        total_workers=0,
+        is_active=True,
+    )
+    db.add(factory_c)
+    await db.flush()
+    print(f"Created Factory C: {factory_c.name} (0 production lines - empty state)")
+
+    # Collect all lines for assignment logic
+    all_lines = detroit_lines + shanghai_lines
+
+    # =========================================================================
+    # 4. CREATE DIVERSE USER ROSTER (Visual Stress Testing)
+    # =========================================================================
+    print("\n--- Creating Diverse User Roster ---")
+    now = datetime.utcnow()
     managers_created = 0
     scopes_created = 0
-    
-    for i in range(MANAGER_COUNT):
-        manager_num = i + 1
-        manager_email = f"manager{manager_num:02d}@linesight.io"
-        manager_name = f"Manager {manager_num:02d}"
-        
-        # Check if manager already exists
-        manager_query = select(User).where(User.email == manager_email)
-        manager_res = await db.execute(manager_query)
-        manager_user = manager_res.scalar_one_or_none()
-        
-        if not manager_user:
-            manager_user = User(
-                organization_id=demo_org.id,
-                email=manager_email,
-                hashed_password=hash_password("manager123"),
-                full_name=manager_name,
-                role=UserRole.MANAGER,
-                is_active=True,
-                is_verified=True,
-            )
-            db.add(manager_user)
-            await db.flush()
-            managers_created += 1
-            
-            # Determine line assignments based on index
-            assigned_lines = []
-            if 0 <= i <= 9:
-                # Managers 01-10: LINE-01 only
-                assigned_lines = [lines[0]]
-            elif 10 <= i <= 19:
-                # Managers 11-20: LINE-02 only
-                assigned_lines = [lines[1]]
-            elif 20 <= i <= 24:
-                # Managers 21-25: Both LINE-01 and LINE-02
-                assigned_lines = [lines[0], lines[1]]
-            # else: Managers 26-30: No assignments (unassigned pool)
-            
-            # Create UserScope entries for assigned lines
-            for line in assigned_lines:
-                scope = UserScope(
-                    user_id=manager_user.id,
-                    scope_type=RoleScope.LINE,
-                    organization_id=demo_org.id,
-                    factory_id=factory.id,
-                    production_line_id=line.id,
-                    role=UserRole.MANAGER,
-                )
-                db.add(scope)
-                scopes_created += 1
-    
-    await db.flush()
-    print(f"Created {managers_created} new managers with {scopes_created} scope assignments")
 
-    # 5. Create Styles and Orders
+    # Helper to create manager and return
+    async def create_manager(
+        email: str,
+        full_name: str,
+        last_login: datetime | None,
+        avatar_url: str | None,
+        is_active: bool = True,
+    ) -> User:
+        user = User(
+            organization_id=demo_org.id,
+            email=email,
+            hashed_password=hash_password("manager123"),
+            full_name=full_name,
+            role=UserRole.MANAGER,
+            is_active=is_active,
+            is_verified=True,
+            last_login=last_login,
+            avatar_url=avatar_url,
+        )
+        db.add(user)
+        return user
+
+    # --- 1. Standard Managers (5) with realistic names, varied login times ---
+    standard_managers = [
+        ("emily.chen@linesight.io", "Emily Chen", now - timedelta(hours=2)),
+        ("marcus.johnson@linesight.io", "Marcus Johnson", now - timedelta(days=1)),
+        ("sofia.rodriguez@linesight.io", "Sofia Rodriguez", now - timedelta(days=3)),
+        ("james.williams@linesight.io", "James Williams", now - timedelta(days=7)),
+        ("aisha.patel@linesight.io", "Aisha Patel", now - timedelta(days=14)),
+    ]
+
+    for email, name, last_login in standard_managers:
+        user = await create_manager(email, name, last_login, gravatar_url(email))
+        await db.flush()
+        managers_created += 1
+        # Assign to random Detroit line (1-2 lines each)
+        line_idx = managers_created % len(detroit_lines)
+        scope = UserScope(
+            user_id=user.id,
+            scope_type=RoleScope.LINE,
+            organization_id=demo_org.id,
+            factory_id=factory_a.id,
+            production_line_id=detroit_lines[line_idx].id,
+            role=UserRole.MANAGER,
+        )
+        db.add(scope)
+        scopes_created += 1
+    print(f"  Created 5 Standard Managers")
+
+    # --- 2. The "UI Breaker" - exceptionally long name ---
+    ui_breaker = await create_manager(
+        "christopher.montgomery@linesight.io",
+        "Christopher-James Montgomery-Smythe III, PhD, MBA",
+        now - timedelta(days=5),
+        gravatar_url("christopher.montgomery@linesight.io"),
+    )
+    await db.flush()
+    managers_created += 1
+    scope = UserScope(
+        user_id=ui_breaker.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_a.id,
+        production_line_id=detroit_lines[0].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    print(f"  Created 'UI Breaker' with long name")
+
+    # --- 3. The "Ghost" - never logged in, no avatar ---
+    ghost = await create_manager(
+        "ghost.user@linesight.io",
+        "Ghost User",
+        None,  # Never logged in
+        None,  # No avatar
+    )
+    await db.flush()
+    managers_created += 1
+    scope = UserScope(
+        user_id=ghost.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_a.id,
+        production_line_id=detroit_lines[1].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    print(f"  Created 'Ghost' user (never logged in, no avatar)")
+
+    # --- 4. The "Stale" User - 90+ days since login ---
+    stale = await create_manager(
+        "stale.user@linesight.io",
+        "Stale User",
+        now - timedelta(days=92),  # 3 months ago
+        gravatar_url("stale.user@linesight.io"),
+    )
+    await db.flush()
+    managers_created += 1
+    scope = UserScope(
+        user_id=stale.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_a.id,
+        production_line_id=detroit_lines[2].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    print(f"  Created 'Stale' user (last login 92 days ago)")
+
+    # --- 5. The "Suspended" User - is_active=False ---
+    suspended = await create_manager(
+        "suspended.user@linesight.io",
+        "Suspended User",
+        now - timedelta(days=30),
+        gravatar_url("suspended.user@linesight.io"),
+        is_active=False,  # SUSPENDED!
+    )
+    await db.flush()
+    managers_created += 1
+    scope = UserScope(
+        user_id=suspended.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_a.id,
+        production_line_id=detroit_lines[3].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    print(f"  Created 'Suspended' user (is_active=False)")
+
+    # --- 6. The "Super Manager" - assigned to ALL lines in ALL factories ---
+    super_manager = await create_manager(
+        "super.manager@linesight.io",
+        "Super Manager",
+        now - timedelta(hours=1),  # Very active
+        gravatar_url("super.manager@linesight.io"),
+    )
+    await db.flush()
+    managers_created += 1
+    for line in all_lines:
+        factory_id = factory_a.id if line in detroit_lines else factory_b.id
+        scope = UserScope(
+            user_id=super_manager.id,
+            scope_type=RoleScope.LINE,
+            organization_id=demo_org.id,
+            factory_id=factory_id,
+            production_line_id=line.id,
+            role=UserRole.MANAGER,
+        )
+        db.add(scope)
+        scopes_created += 1
+    print(f"  Created 'Super Manager' (assigned to ALL {len(all_lines)} lines)")
+
+    # --- 7. The "Unassigned" Pool - 2 managers with NO scopes ---
+    unassigned_names = [
+        ("unassigned.one@linesight.io", "Unassigned Manager One"),
+        ("unassigned.two@linesight.io", "Unassigned Manager Two"),
+    ]
+    for email, name in unassigned_names:
+        user = await create_manager(email, name, now - timedelta(days=10), gravatar_url(email))
+        await db.flush()
+        managers_created += 1
+        # NO SCOPES - they are in the org but assigned to nothing
+    print(f"  Created 2 'Unassigned' managers (no scopes)")
+
+    # --- 8. The "Cross-Pollinated" Manager - assigned to BOTH Detroit AND Shanghai ---
+    cross_pollinated = await create_manager(
+        "cross.factory@linesight.io",
+        "Cross-Factory Manager",
+        now - timedelta(days=2),
+        gravatar_url("cross.factory@linesight.io"),
+    )
+    await db.flush()
+    managers_created += 1
+    # Assign to Detroit line
+    scope = UserScope(
+        user_id=cross_pollinated.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_a.id,
+        production_line_id=detroit_lines[0].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    # Also assign to Shanghai line
+    scope = UserScope(
+        user_id=cross_pollinated.id,
+        scope_type=RoleScope.LINE,
+        organization_id=demo_org.id,
+        factory_id=factory_b.id,
+        production_line_id=shanghai_lines[0].id,
+        role=UserRole.MANAGER,
+    )
+    db.add(scope)
+    scopes_created += 1
+    print(f"  Created 'Cross-Pollinated' manager (Detroit + Shanghai)")
+
+    # --- 9. Extra Managers for "Overcrowded Line" (Chassis Assembly gets 5+ managers) ---
+    overcrowd_chassis_managers = [
+        ("chassis.lead@linesight.io", "Chassis Lead"),
+        ("chassis.assistant@linesight.io", "Chassis Assistant"),
+        ("chassis.supervisor@linesight.io", "Chassis Supervisor"),
+    ]
+    chassis_line = detroit_lines[0]  # Chassis Assembly
+    for email, name in overcrowd_chassis_managers:
+        user = await create_manager(email, name, now - timedelta(days=4), gravatar_url(email))
+        await db.flush()
+        managers_created += 1
+        scope = UserScope(
+            user_id=user.id,
+            scope_type=RoleScope.LINE,
+            organization_id=demo_org.id,
+            factory_id=factory_a.id,
+            production_line_id=chassis_line.id,
+            role=UserRole.MANAGER,
+        )
+        db.add(scope)
+        scopes_created += 1
+    print(f"  Created 3 extra managers for 'Overcrowded Line' (Chassis Assembly)")
+
+    await db.flush()
+    print(f"\nTotal: Created {managers_created} managers with {scopes_created} scope assignments")
+
+    # =========================================================================
+    # 5. CREATE STYLES AND ORDERS (for production data)
+    # =========================================================================
+    print("\n--- Creating Styles and Orders ---")
+    
     styles = []
     orders = []
     style_data = [
@@ -241,7 +488,7 @@ async def seed_data(db: AsyncSession):
 
         if not style:
             style = Style(
-                factory_id=factory.id,
+                factory_id=factory_a.id,
                 style_number=s["num"],
                 base_sam=Decimal(str(s["sam"])),
             )
@@ -269,8 +516,13 @@ async def seed_data(db: AsyncSession):
             await db.flush()
         orders.append(order)
     await db.flush()
+    print(f"Created {len(styles)} styles and {len(orders)} orders")
 
-    # 6. Create Workers
+    # =========================================================================
+    # 6. CREATE WORKERS (for Detroit Plant)
+    # =========================================================================
+    print("\n--- Creating Workers ---")
+    
     worker_names = ["Thao Nguyen", "Minh Tran", "Hoa Pham", "Dung Le", "Anh Vu"]
     workers = []
     for i, name in enumerate(worker_names):
@@ -281,10 +533,10 @@ async def seed_data(db: AsyncSession):
 
         if not worker:
             worker = Worker(
-                factory_id=factory.id,
+                factory_id=factory_a.id,
                 employee_id=emp_id,
                 full_name=name,
-                line_id=lines[i % len(lines)].id,
+                line_id=detroit_lines[i % len(detroit_lines)].id,
                 is_active=True,
             )
             db.add(worker)
@@ -298,13 +550,18 @@ async def seed_data(db: AsyncSession):
             )
             db.add(skill)
         workers.append(worker)
+    print(f"Created {len(workers)} workers")
 
-    # 7. Create Historical Production Runs (Last 7 days)
+    # =========================================================================
+    # 7. CREATE HISTORICAL PRODUCTION RUNS (Last 7 days for Detroit)
+    # =========================================================================
+    print("\n--- Creating Historical Production Runs ---")
+    
     today = date.today()
+    runs_created = 0
     for d in range(7):
         target_date = today - timedelta(days=d)
-        for line in lines:
-            # Check if run exists
+        for line in detroit_lines:
             run_query = select(ProductionRun).where(
                 ProductionRun.line_id == line.id,
                 ProductionRun.production_date == target_date,
@@ -319,7 +576,7 @@ async def seed_data(db: AsyncSession):
                 actual = int(planned * (0.8 + (0.05 * (d % 4))))
 
                 run = ProductionRun(
-                    factory_id=factory.id,
+                    factory_id=factory_a.id,
                     production_date=target_date,
                     order_id=order.id,
                     line_id=line.id,
@@ -327,10 +584,11 @@ async def seed_data(db: AsyncSession):
                     actual_qty=actual,
                     worked_minutes=Decimal("480"),
                     operators_present=20,
-                    sam=style.base_sam,  # Explicitly populate SAM for complexity analysis
+                    sam=style.base_sam,
                 )
                 db.add(run)
                 await db.flush()
+                runs_created += 1
 
                 # Add efficiency metric
                 eff_pct = Decimal(str((actual / planned) * 100))
@@ -343,15 +601,15 @@ async def seed_data(db: AsyncSession):
                 )
                 db.add(metric)
 
-                # Add a few discrepancies for variety
-                # if d == 0 and line.id == lines[0].id:
-                #     record = TraceabilityRecord(
-                #         compliance_standard=ComplianceStandard.UFLPA,
-                #         verification_status=VerificationStatus.FLAGGED,
-                #         risk_notes="Possible material origin discrepancy detected in automated scan.",
-                #         production_run_id=run.id,
-                #     )
-                #     db.add(record)
-
     await db.commit()
-    print("Database seeding completed.")
+    print(f"Created {runs_created} production runs with efficiency metrics")
+    print("\n=== Database seeding completed successfully! ===")
+    print(f"""
+Summary:
+  - 3 Factories (Detroit, Shanghai, Empty Shell)
+  - {len(detroit_lines)} Detroit lines + {len(shanghai_lines)} Shanghai lines
+  - {managers_created} diverse managers with {scopes_created} scope assignments
+  - Edge cases: Ghost, Stale, Suspended, Super Manager, Unassigned, Cross-Factory
+  - Overcrowded line: Chassis Assembly (5+ managers)
+  - 2 UUID-named lines in Shanghai (for 'Untitled Line' UI testing)
+""")

@@ -3,6 +3,7 @@ Pydantic schemas for Team Management API.
 Handles organization member listing and scope assignments.
 """
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 
@@ -27,8 +28,10 @@ class MemberRead(BaseModel):
     id: str
     email: EmailStr
     full_name: str | None = None
+    avatar_url: str | None = None
     role: str
     is_active: bool
+    last_login: datetime | None = None
     scopes: list[ScopeRead] = []
 
 

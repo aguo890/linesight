@@ -9,15 +9,19 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Settings, LayoutGrid, Users, X, Plus } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Settings, LayoutGrid, Users, X, Plus } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
+import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 
 // Custom Components
 import { ProductionLineRow } from '../components/ProductionLineRow';
 import { CreateLineModal } from '../components/CreateLineModal';
 import { UserSearchCommand } from '../components/UserSearchCommand';
+import { LineDetailsDrawer } from '../components/LineDetailsDrawer';
+import { MemberDetailsDrawer } from '../components/MemberDetailsDrawer';
+import type { MemberRead } from '../../../api/endpoints/team/teamApi';
 
 // API & Context
 import { useGetFactoryApiV1FactoriesFactoryIdGet } from '../../../api/endpoints/factories/factories';
@@ -39,6 +43,10 @@ export const FactoryConfigurationPage: React.FC = () => {
 
     // Controlled Popover State
     const [activePopoverLineId, setActivePopoverLineId] = useState<string | null>(null);
+
+    // Inspector State
+    const [inspectingLine, setInspectingLine] = useState<any | null>(null);
+    const [inspectingMember, setInspectingMember] = useState<MemberRead | null>(null);
 
     // Bulk Selection State
     const [selectedLineIds, setSelectedLineIds] = useState<Set<string>>(new Set());
@@ -85,15 +93,23 @@ export const FactoryConfigurationPage: React.FC = () => {
 
     if (isLoading || !factory) return <div className="p-8">Loading Factory...</div>;
 
+
+
     return (
         <div className="h-full flex flex-col bg-gray-50 relative">
             {/* Header */}
             <div className="bg-white border-b px-8 py-5 flex items-center justify-between sticky top-0 z-10 shadow-sm">
-                <div className="flex items-center gap-4">
-                    <Link to="/organization/settings/factories" className="text-gray-500 hover:text-gray-900">
-                        <ArrowLeft className="w-5 h-5" />
-                    </Link>
-                    <h1 className="text-xl font-bold flex items-center gap-2">
+                <div className="flex flex-col gap-2">
+                    {/* Breadcrumbs */}
+                    <Breadcrumb
+                        items={[
+                            { label: 'Organization', href: '/organization/settings' },
+                            { label: 'Factories', href: '/organization/settings/factories' },
+                            { label: factory.name }
+                        ]}
+                    />
+
+                    <h1 className="text-xl font-bold flex items-center gap-2 mt-1">
                         {factory.name}
                         <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded border">
                             {factory.code}
@@ -121,7 +137,7 @@ export const FactoryConfigurationPage: React.FC = () => {
 
             {/* Main Content Area - No Sidebar! */}
             <div className="flex-1 overflow-y-auto p-8 pb-32">
-                <div className="max-w-5xl mx-auto">
+                <div className="w-full">
 
                     {/* Add Line Button (Only in Edit Mode) */}
                     {isEditMode && (
@@ -159,6 +175,7 @@ export const FactoryConfigurationPage: React.FC = () => {
                                         onToggleSelection={() => toggleLineSelection(line.id)}
                                         onAssignUser={(userId: string) => handleAssignUser(userId, [line.id])}
                                         onRefetchRequest={refetchFactory} // For renames/deletes
+                                        onClickName={() => setInspectingLine(line)}
                                     />
                                 );
                             })
@@ -206,6 +223,28 @@ export const FactoryConfigurationPage: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            {/* [NEW] Line Inspector Drawer */}
+            <LineDetailsDrawer
+                line={inspectingLine}
+                isOpen={!!inspectingLine}
+                onClose={() => setInspectingLine(null)}
+                allMembers={members} // Pass full list to filter inside
+                onDataChange={() => {
+                    refetchFactory();
+                    fetchMembers();
+                }}
+                onMemberClick={(member) => setInspectingMember(member)}
+            />
+
+            {/* 2. Member Inspector (Modal on top of Drawer) */}
+            <MemberDetailsDrawer
+                member={inspectingMember}
+                isOpen={!!inspectingMember}
+                onClose={() => setInspectingMember(null)}
+                displayMode="modal" // Forces centered modal
+                contextLines={factory.production_lines || []}
+            />
 
             <CreateLineModal
                 isOpen={isCreateLineModalOpen}

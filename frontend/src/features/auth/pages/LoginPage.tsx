@@ -227,33 +227,45 @@ const LoginPage: React.FC = () => {
                             <option value="" disabled>Select a demo user...</option>
 
                             <optgroup label="👑 System Admin">
-                                <option value="admin@linesight.io|admin1234">admin@linesight.io</option>
+                                <option value="admin@linesight.dev|admin123">admin@linesight.dev</option>
                             </optgroup>
 
                             <optgroup label="🏢 Owner">
                                 <option value="demo@linesight.io|demo1234">demo@linesight.io (Demo Org Owner)</option>
                             </optgroup>
 
-                            <optgroup label="📊 Managers - Line 01 Only">
-                                <option value="manager01@linesight.io|manager123">manager01@linesight.io</option>
-                                <option value="manager02@linesight.io|manager123">manager02@linesight.io</option>
-                                <option value="manager03@linesight.io|manager123">manager03@linesight.io</option>
+                            <optgroup label="📊 Standard Managers">
+                                <option value="emily.chen@linesight.io|manager123">Emily Chen (logged in 2h ago)</option>
+                                <option value="marcus.johnson@linesight.io|manager123">Marcus Johnson (logged in 1d ago)</option>
+                                <option value="sofia.rodriguez@linesight.io|manager123">Sofia Rodriguez (logged in 3d ago)</option>
+                                <option value="james.williams@linesight.io|manager123">James Williams (logged in 7d ago)</option>
+                                <option value="aisha.patel@linesight.io|manager123">Aisha Patel (logged in 14d ago)</option>
                             </optgroup>
 
-                            <optgroup label="📊 Managers - Line 02 Only">
-                                <option value="manager11@linesight.io|manager123">manager11@linesight.io</option>
-                                <option value="manager12@linesight.io|manager123">manager12@linesight.io</option>
-                                <option value="manager13@linesight.io|manager123">manager13@linesight.io</option>
+                            <optgroup label="🧪 Edge Cases">
+                                <option value="christopher.montgomery@linesight.io|manager123">🔤 UI Breaker (very long name)</option>
+                                <option value="ghost.user@linesight.io|manager123">👻 Ghost (never logged in, no avatar)</option>
+                                <option value="stale.user@linesight.io|manager123">⏰ Stale User (90+ days inactive)</option>
+                                <option value="suspended.user@linesight.io|manager123">🚫 Suspended User (is_active=false)</option>
                             </optgroup>
 
-                            <optgroup label="📊 Managers - Both Lines">
-                                <option value="manager21@linesight.io|manager123">manager21@linesight.io</option>
-                                <option value="manager22@linesight.io|manager123">manager22@linesight.io</option>
+                            <optgroup label="⚡ Super Manager">
+                                <option value="super.manager@linesight.io|manager123">Super Manager (ALL lines)</option>
                             </optgroup>
 
-                            <optgroup label="📊 Managers - Unassigned">
-                                <option value="manager26@linesight.io|manager123">manager26@linesight.io</option>
-                                <option value="manager27@linesight.io|manager123">manager27@linesight.io</option>
+                            <optgroup label="🚫 Unassigned (no lines)">
+                                <option value="unassigned.one@linesight.io|manager123">Unassigned Manager One</option>
+                                <option value="unassigned.two@linesight.io|manager123">Unassigned Manager Two</option>
+                            </optgroup>
+
+                            <optgroup label="🏭 Cross-Factory">
+                                <option value="cross.factory@linesight.io|manager123">Cross-Factory Manager (Detroit + Shanghai)</option>
+                            </optgroup>
+
+                            <optgroup label="🔧 Chassis Line (Overcrowded)">
+                                <option value="chassis.lead@linesight.io|manager123">Chassis Lead</option>
+                                <option value="chassis.assistant@linesight.io|manager123">Chassis Assistant</option>
+                                <option value="chassis.supervisor@linesight.io|manager123">Chassis Supervisor</option>
                             </optgroup>
                         </select>
 

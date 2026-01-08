@@ -22,8 +22,10 @@ export interface MemberRead {
     id: string;
     email: string;
     full_name: string | null;
+    avatar_url: string | null;
     role: string;
     is_active: boolean;
+    last_login: string | null;
     scopes: ScopeRead[];
 }
 

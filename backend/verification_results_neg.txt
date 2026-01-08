@@ -1,0 +1,25 @@
+Testing Manager Access Control...
+
+--- Testing Unassigned Manager (manager26@linesight.io) ---
+DEBUG: Unassigned User Scopes count: 1
+ - Scope: Type=line, Line=d37a9391-c228-43a7-834b-351949dae3ae, Factory=6d5b47e5-b4f8-4b19-9d0d-2f2258d15168
+Factories visible to unassigned manager: 1
+FAIL: Unassigned manager sees 1 factories (Expected 0).
+   > LEAKED FACTORY: Main Production Center (6d5b47e5-b4f8-4b19-9d0d-2f2258d15168)
+
+--- Testing Assigned Manager (manager01@linesight.io) ---
+DEBUG: Assigned User Scopes count: 5
+ - Scope: Type=line, Line=e5331927-3b6b-473d-922c-9988e6a6bf74, Factory=6d5b47e5-b4f8-4b19-9d0d-2f2258d15168
+ - Scope: Type=line, Line=4dbbb64a-ea8d-4d24-93a4-46f1976b19ad, Factory=b334f563-43a4-4478-abeb-513cf5616262
+ - Scope: Type=line, Line=d37a9391-c228-43a7-834b-351949dae3ae, Factory=6d5b47e5-b4f8-4b19-9d0d-2f2258d15168
+ - Scope: Type=line, Line=4bd1a56e-39cc-4ba8-9b6c-ad25e7fe3c1c, Factory=6d5b47e5-b4f8-4b19-9d0d-2f2258d15168
+ - Scope: Type=line, Line=7f380053-ad3e-4cfe-aad8-724fd7548cce, Factory=6d5b47e5-b4f8-4b19-9d0d-2f2258d15168
+Factories visible to assigned manager: 2
+PASS: Assigned manager sees at least 1 factory.
+ - Sees Factory: 2nd (b334f563-43a4-4478-abeb-513cf5616262)
+ - Sees Factory: Main Production Center (6d5b47e5-b4f8-4b19-9d0d-2f2258d15168)
+
+--- Testing Dashboard Permission Logic ---
+Testing Negative Case with unassigned_user...
+Found forbidden line: Line A (4a89c1f6-c718-4ae6-b56c-c2c29db7cc6b)
+PASS: Access correctly DENIED for forbidden line.
