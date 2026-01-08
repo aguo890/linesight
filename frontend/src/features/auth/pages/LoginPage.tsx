@@ -207,18 +207,57 @@ const LoginPage: React.FC = () => {
                     </motion.form>
 
                     {/* Tactical Demo Bypass */}
-                    <div className="mt-10 pt-8 border-t border-slate-200/50 space-y-4">
-                        <button
-                            onClick={() => {
-                                setEmail('demo@linesight.io');
-                                setPassword('demo1234');
-                            }}
-                            className="w-full py-3 rounded-xl border border-dashed border-slate-300 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-slate-50 hover:border-slate-400 hover:text-slate-600 transition-all"
-                        >
-                            Load Simulation Profile
-                        </button>
+                    <div className="mt-10 pt-8 border-t border-slate-200/50 space-y-3">
+                        <div className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">
+                            Quick Login As
+                        </div>
 
-                        <div className="text-center">
+                        {/* Demo Users Dropdown */}
+                        <select
+                            onChange={(e) => {
+                                const [email, pwd] = e.target.value.split('|');
+                                if (email && pwd) {
+                                    setEmail(email);
+                                    setPassword(pwd);
+                                }
+                            }}
+                            defaultValue=""
+                            className="w-full py-3 px-4 rounded-xl border border-slate-200 bg-white/50 text-slate-600 text-sm font-medium hover:border-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none cursor-pointer"
+                        >
+                            <option value="" disabled>Select a demo user...</option>
+
+                            <optgroup label="👑 System Admin">
+                                <option value="admin@linesight.io|admin1234">admin@linesight.io</option>
+                            </optgroup>
+
+                            <optgroup label="🏢 Owner">
+                                <option value="demo@linesight.io|demo1234">demo@linesight.io (Demo Org Owner)</option>
+                            </optgroup>
+
+                            <optgroup label="📊 Managers - Line 01 Only">
+                                <option value="manager01@linesight.io|manager123">manager01@linesight.io</option>
+                                <option value="manager02@linesight.io|manager123">manager02@linesight.io</option>
+                                <option value="manager03@linesight.io|manager123">manager03@linesight.io</option>
+                            </optgroup>
+
+                            <optgroup label="📊 Managers - Line 02 Only">
+                                <option value="manager11@linesight.io|manager123">manager11@linesight.io</option>
+                                <option value="manager12@linesight.io|manager123">manager12@linesight.io</option>
+                                <option value="manager13@linesight.io|manager123">manager13@linesight.io</option>
+                            </optgroup>
+
+                            <optgroup label="📊 Managers - Both Lines">
+                                <option value="manager21@linesight.io|manager123">manager21@linesight.io</option>
+                                <option value="manager22@linesight.io|manager123">manager22@linesight.io</option>
+                            </optgroup>
+
+                            <optgroup label="📊 Managers - Unassigned">
+                                <option value="manager26@linesight.io|manager123">manager26@linesight.io</option>
+                                <option value="manager27@linesight.io|manager123">manager27@linesight.io</option>
+                            </optgroup>
+                        </select>
+
+                        <div className="text-center pt-2">
                             <Link to="/register" className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors">
                                 Request Access Credentials
                             </Link>

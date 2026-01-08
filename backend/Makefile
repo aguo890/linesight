@@ -5,7 +5,7 @@
 VENV = venv\Scripts\activate &&
 
 .PHONY: default dev dev-preflight dev-quick test test-cov test-file test-x migrate migration migrate-history migrate-down
-.PHONY: lint lint-fix format format-check check fix typecheck seed openapi clean
+.PHONY: lint lint-fix format format-check check fix typecheck seed reset-db openapi clean
 
 # Default command - show available recipes
 default:
@@ -107,9 +107,21 @@ fix:
 typecheck:
 	$(VENV) mypy app
 
-# Seed the database with test data
+# Seed the database with test data (calls dev API)
 seed:
-	$(VENV) python run_seed.py
+	curl -X POST http://127.0.0.1:8000/api/v1/dev/seed
+
+# Reset database: drop all tables, migrate, and seed (avoids FK constraint issues)
+reset-db:
+	@echo "🔄 Resetting database..."
+	@echo "Dropping all tables..."
+	mysql -u root -proot -P 3307 -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS linesight; CREATE DATABASE linesight; SET FOREIGN_KEY_CHECKS = 1;"
+	@echo "Running migrations..."
+	$(VENV) alembic upgrade head
+	@echo "Seeding data..."
+	curl -X POST http://127.0.0.1:8000/api/v1/dev/seed
+	@echo ""
+	@echo "✅ Database reset complete!"
 
 # Generate OpenAPI schema
 openapi:

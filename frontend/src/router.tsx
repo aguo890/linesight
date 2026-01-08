@@ -14,6 +14,12 @@ const ProductionLinePage = lazy(() => import('./features/dashboard/pages/Product
 const ProfilePage = lazy(() => import('./features/user/ProfilePage'));
 const NotFound = lazy(() => import('./features/dashboard/pages/NotFound'));
 
+// Organization Settings (Hub and Spoke pattern)
+const OrgSettingsLayout = lazy(() => import('./features/organization/layouts/OrgSettingsLayout'));
+const OrgGeneralPage = lazy(() => import('./features/organization/pages/OrgGeneralPage'));
+const OrgMembersPage = lazy(() => import('./features/organization/pages/OrgMembersPage'));
+const OrgAssignmentsPage = lazy(() => import('./features/organization/pages/OrgAssignmentsPage'));
+
 
 // Loading component with skeleton
 const PageLoader = () => (
@@ -83,6 +89,43 @@ const router = createBrowserRouter([
             </ProtectedRoute>
         ),
         errorElement: <ErrorPage />,
+    },
+    {
+        path: '/settings/organization',
+        element: (
+            <ProtectedRoute>
+                <Suspense fallback={<PageLoader />}>
+                    <OrgSettingsLayout />
+                </Suspense>
+            </ProtectedRoute>
+        ),
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: 'general',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrgGeneralPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'members',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrgMembersPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'assignments',
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <OrgAssignmentsPage />
+                    </Suspense>
+                ),
+            },
+        ],
     },
     {
         path: '/dashboard',

@@ -17,6 +17,7 @@ from app.api.v1.endpoints import (
     organizations,
     production,
     samples,
+    team,
     users,
     websockets,
 )
@@ -31,6 +32,11 @@ api_router.include_router(
 api_router.include_router(dashboards.router, prefix="/dashboards", tags=["Dashboards"])
 api_router.include_router(factories.router, prefix="/factories", tags=["Factories"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytics"])
+# Team router must come BEFORE organizations router
+# because organizations has /{organization_id} which would catch /members
+api_router.include_router(
+    team.router, prefix="/organizations", tags=["Team Management"]
+)
 api_router.include_router(
     organizations.router, prefix="/organizations", tags=["Organizations"]
 )

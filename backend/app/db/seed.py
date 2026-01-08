@@ -160,45 +160,70 @@ async def seed_data(db: AsyncSession):
         lines.append(line)
     await db.flush()
 
-    # 4.5. Create Demo Manager User (Line-scoped access to LINE-01 and LINE-02)
-    print("Checking Demo Manager User...")
-    manager_query = select(User).where(User.email == "manager@linesight.io")
-    manager_res = await db.execute(manager_query)
-    manager_user = manager_res.scalar_one_or_none()
-
-    if not manager_user:
-        print("Creating Demo Manager User...")
-        manager_user = User(
-            organization_id=demo_org.id,
-            email="manager@linesight.io",
-            hashed_password=hash_password("manager123"),
-            full_name="Demo Manager",
-            role=UserRole.MANAGER,  # Line-scoped manager
-            is_active=True,
-            is_verified=True,
-        )
-        db.add(manager_user)
-        await db.flush()
+    # 4.5. Create 30 Demo Manager Users with varying line assignments
+    # Distribution:
+    #   - Managers 01-10: LINE-01 only
+    #   - Managers 11-20: LINE-02 only
+    #   - Managers 21-25: Both LINE-01 and LINE-02
+    #   - Managers 26-30: No line assignments (unassigned pool)
+    print("Creating 30 Demo Manager Users with varying line assignments...")
+    
+    MANAGER_COUNT = 30
+    managers_created = 0
+    scopes_created = 0
+    
+    for i in range(MANAGER_COUNT):
+        manager_num = i + 1
+        manager_email = f"manager{manager_num:02d}@linesight.io"
+        manager_name = f"Manager {manager_num:02d}"
         
-        # Create UserScope entries for LINE-01 and LINE-02 only
-        print("Creating UserScope entries for manager (LINE-01, LINE-02)...")
-        for line in lines[:2]:  # Only first two lines
-            scope = UserScope(
-                user_id=manager_user.id,
-                scope_type=RoleScope.LINE,
+        # Check if manager already exists
+        manager_query = select(User).where(User.email == manager_email)
+        manager_res = await db.execute(manager_query)
+        manager_user = manager_res.scalar_one_or_none()
+        
+        if not manager_user:
+            manager_user = User(
                 organization_id=demo_org.id,
-                factory_id=factory.id,
-                production_line_id=line.id,
+                email=manager_email,
+                hashed_password=hash_password("manager123"),
+                full_name=manager_name,
                 role=UserRole.MANAGER,
+                is_active=True,
+                is_verified=True,
             )
-            db.add(scope)
-        await db.flush()
-        print(f"Created Demo Manager User: {manager_user.email} with access to LINE-01, LINE-02")
-    else:
-        print(f"Demo Manager User already exists: {manager_user.email}")
-        # Ensure role is correct
-        manager_user.role = UserRole.MANAGER
-        db.add(manager_user)
+            db.add(manager_user)
+            await db.flush()
+            managers_created += 1
+            
+            # Determine line assignments based on index
+            assigned_lines = []
+            if 0 <= i <= 9:
+                # Managers 01-10: LINE-01 only
+                assigned_lines = [lines[0]]
+            elif 10 <= i <= 19:
+                # Managers 11-20: LINE-02 only
+                assigned_lines = [lines[1]]
+            elif 20 <= i <= 24:
+                # Managers 21-25: Both LINE-01 and LINE-02
+                assigned_lines = [lines[0], lines[1]]
+            # else: Managers 26-30: No assignments (unassigned pool)
+            
+            # Create UserScope entries for assigned lines
+            for line in assigned_lines:
+                scope = UserScope(
+                    user_id=manager_user.id,
+                    scope_type=RoleScope.LINE,
+                    organization_id=demo_org.id,
+                    factory_id=factory.id,
+                    production_line_id=line.id,
+                    role=UserRole.MANAGER,
+                )
+                db.add(scope)
+                scopes_created += 1
+    
+    await db.flush()
+    print(f"Created {managers_created} new managers with {scopes_created} scope assignments")
 
     # 5. Create Styles and Orders
     styles = []
