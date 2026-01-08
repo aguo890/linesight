@@ -22,7 +22,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.enums import PerformanceTier, PeriodType
+from app.enums import PerformanceTier, PeriodType, resolve_enum_values
 from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
@@ -72,7 +72,7 @@ class EfficiencyMetric(Base, UUIDMixin, TimestampMixin):
 
     # Performance Tier
     performance_tier: Mapped[PerformanceTier | None] = mapped_column(
-        Enum(PerformanceTier),
+        Enum(PerformanceTier, values_callable=resolve_enum_values),
         nullable=True,
     )
 
@@ -124,7 +124,7 @@ class DHUReport(Base, UUIDMixin, TimestampMixin):
     # Report Period
     report_date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
     period_type: Mapped[PeriodType] = mapped_column(
-        Enum(PeriodType),
+        Enum(PeriodType, values_callable=resolve_enum_values),
         default=PeriodType.DAILY,
         nullable=False,
     )

@@ -9,14 +9,20 @@ Usage:
     from app.enums import OrderStatus, ShiftType, PriorityLevel
 """
 
-from enum import StrEnum
+from enum import Enum
+
+
+def resolve_enum_values(enum_cls):
+    """SQLAlchemy values_callable helper to enforce using values instead of names."""
+    return [e.value for e in enum_cls]
+
 
 # =============================================================================
 # Production Domain Enums
 # =============================================================================
 
 
-class OrderStatus(StrEnum):
+class OrderStatus(str, Enum):
     """Order lifecycle status tracking."""
 
     PENDING = "pending"  # Order received, not yet started
@@ -29,7 +35,7 @@ class OrderStatus(StrEnum):
     CANCELLED = "cancelled"  # Order cancelled
 
 
-class OrderPriority(StrEnum):
+class OrderPriority(str, Enum):
     """Order priority levels."""
 
     NORMAL = "normal"
@@ -37,7 +43,7 @@ class OrderPriority(StrEnum):
     CRITICAL = "critical"
 
 
-class PriorityLevel(StrEnum):
+class PriorityLevel(str, Enum):
     """General priority levels for various entities."""
 
     LOW = "low"
@@ -46,7 +52,7 @@ class PriorityLevel(StrEnum):
     URGENT = "urgent"
 
 
-class ComplexityRating(StrEnum):
+class ComplexityRating(str, Enum):
     """Style complexity rating for SAM adjustment."""
 
     LOW = "low"
@@ -55,7 +61,7 @@ class ComplexityRating(StrEnum):
     URGENT = "urgent"
 
 
-class ShiftType(StrEnum):
+class ShiftType(str, Enum):
     """Production shift identifiers.
 
     'day'/'night' for 2-shift factories,
@@ -74,7 +80,7 @@ class ShiftType(StrEnum):
 # =============================================================================
 
 
-class SubscriptionTier(StrEnum):
+class SubscriptionTier(str, Enum):
     """Organization subscription tiers."""
 
     STARTER = "starter"
@@ -82,7 +88,7 @@ class SubscriptionTier(StrEnum):
     ENTERPRISE = "enterprise"
 
 
-class UserRole(StrEnum):
+class UserRole(str, Enum):
     """User roles for RBAC.
     
     Hierarchy:
@@ -106,7 +112,7 @@ class UserRole(StrEnum):
     VIEWER = "viewer"                    # Read-only access
 
 
-class RoleScope(StrEnum):
+class RoleScope(str, Enum):
     """Scope levels for user permissions."""
 
     ORGANIZATION = "organization"
@@ -119,7 +125,7 @@ class RoleScope(StrEnum):
 # =============================================================================
 
 
-class PerformanceTier(StrEnum):
+class PerformanceTier(str, Enum):
     """Performance classification for efficiency metrics."""
 
     BELOW_TARGET = "below_target"
@@ -127,7 +133,7 @@ class PerformanceTier(StrEnum):
     ABOVE_TARGET = "above_target"
 
 
-class PeriodType(StrEnum):
+class PeriodType(str, Enum):
     """Aggregation period types for reports."""
 
     DAILY = "daily"
@@ -140,7 +146,7 @@ class PeriodType(StrEnum):
 # =============================================================================
 
 
-class FileType(StrEnum):
+class FileType(str, Enum):
     """Excel file type classification."""
 
     PRODUCTION = "production"
@@ -150,7 +156,7 @@ class FileType(StrEnum):
     UNKNOWN = "unknown"
 
 
-class ProcessingStatus(StrEnum):
+class ProcessingStatus(str, Enum):
     """Processing job status."""
 
     PENDING = "pending"
@@ -159,7 +165,7 @@ class ProcessingStatus(StrEnum):
     FAILED = "failed"
 
 
-class MatchTier(StrEnum):
+class MatchTier(str, Enum):
     """Column matching tier in waterfall engine."""
 
     HASH = "hash"
@@ -174,7 +180,7 @@ class MatchTier(StrEnum):
 # =============================================================================
 
 
-class AliasScope(StrEnum):
+class AliasScope(str, Enum):
     """Scope for alias mappings."""
 
     GLOBAL = "global"

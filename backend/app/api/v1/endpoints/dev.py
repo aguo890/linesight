@@ -40,9 +40,14 @@ async def trigger_seed(
         await seed_data(db)
         return {"status": "success", "message": "Database seeded successfully."}
     except Exception as e:
+        import traceback
+
+        tb = traceback.format_exc()
+        # Still print to console for server logs
+        print(tb)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Seeding failed: {str(e)}",
+            detail=f"Seeding failed: {str(e)}\nTraceback:\n{tb}",
         ) from e
 
 

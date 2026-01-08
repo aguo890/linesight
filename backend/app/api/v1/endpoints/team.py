@@ -138,7 +138,7 @@ async def assign_user_to_line(
         )
 
     # Create the scope assignment
-    role = UserRole(scope_data.role) if scope_data.role in [r.value for r in UserRole] else UserRole.MANAGER
+    role = UserRole(scope_data.role) if scope_data.role in [r.value for r in UserRole] else UserRole.FACTORY_MANAGER
     
     new_scope = UserScope(
         user_id=user_id,

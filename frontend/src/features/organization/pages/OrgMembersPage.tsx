@@ -20,6 +20,10 @@ export const OrgMembersPage = () => {
         m.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const formatRole = (role: string) => {
+        return role.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    };
+
     return (
         <div className="max-w-7xl mx-auto">
             {/* Page Header with Back Button */}
@@ -79,8 +83,8 @@ export const OrgMembersPage = () => {
                                         }} />
                                     </td>
                                     <td className="px-6 py-3">
-                                        <Badge variant="outline" className="capitalize font-normal text-gray-600 bg-gray-50">
-                                            {member.role}
+                                        <Badge variant="outline" className="font-normal text-gray-600 bg-gray-50">
+                                            {formatRole(member.role)}
                                         </Badge>
                                     </td>
                                     <td className="px-6 py-3">

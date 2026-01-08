@@ -844,7 +844,7 @@ async def delete_uploads(
 
     logger = logging.getLogger("app.audit")
 
-    if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER, UserRole.LINE_MANAGER]:
         raise HTTPException(status_code=403, detail="Not authorized to clear history")
 
     # Verify production line exists and belongs to user's organization

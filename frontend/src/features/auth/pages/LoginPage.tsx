@@ -231,21 +231,21 @@ const LoginPage: React.FC = () => {
                                 <p className="text-[10px] text-slate-400 mt-0.5">Full access</p>
                             </button>
 
-                            {/* Manager */}
+                            {/* Factory Manager */}
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setEmail('emily.chen@linesight.io');
-                                    setPassword('manager123');
+                                    setEmail('factory.manager@linesight.io');
+                                    setPassword('factorymgr123');
                                 }}
                                 className="group p-3 rounded-xl border-2 border-transparent bg-gradient-to-br from-blue-50 to-indigo-50 hover:border-blue-300 hover:shadow-md transition-all text-left"
                             >
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-lg">🏭</span>
-                                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Manager</span>
+                                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Factory Mgr</span>
                                 </div>
-                                <p className="text-xs text-slate-600 font-medium truncate">Emily Chen</p>
-                                <p className="text-[10px] text-slate-400 mt-0.5">Can add lines</p>
+                                <p className="text-xs text-slate-600 font-medium truncate">Factory Manager</p>
+                                <p className="text-[10px] text-slate-400 mt-0.5">Manage All Lines</p>
                             </button>
 
                             {/* Analyst */}
@@ -265,21 +265,21 @@ const LoginPage: React.FC = () => {
                                 <p className="text-[10px] text-slate-400 mt-0.5">View only, no add</p>
                             </button>
 
-                            {/* Viewer */}
+                            {/* Line Manager */}
                             <button
                                 type="button"
                                 onClick={() => {
-                                    setEmail('viewer@linesight.io');
-                                    setPassword('viewer123');
+                                    setEmail('line.manager@linesight.io');
+                                    setPassword('linemgr123');
                                 }}
-                                className="group p-3 rounded-xl border-2 border-transparent bg-gradient-to-br from-slate-50 to-gray-100 hover:border-slate-300 hover:shadow-md transition-all text-left"
+                                className="group p-3 rounded-xl border-2 border-transparent bg-gradient-to-br from-teal-50 to-emerald-50 hover:border-teal-300 hover:shadow-md transition-all text-left"
                             >
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-lg">👀</span>
-                                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Viewer</span>
+                                    <span className="text-lg">⚙️</span>
+                                    <span className="text-[10px] font-bold text-teal-600 uppercase tracking-wider">Line Mgr</span>
                                 </div>
-                                <p className="text-xs text-slate-600 font-medium truncate">Read-Only</p>
-                                <p className="text-[10px] text-slate-400 mt-0.5">Dashboards only</p>
+                                <p className="text-xs text-slate-600 font-medium truncate">Line Manager</p>
+                                <p className="text-[10px] text-slate-400 mt-0.5">Assigned Lines Only</p>
                             </button>
                         </div>
 
@@ -306,12 +306,9 @@ const LoginPage: React.FC = () => {
                                     <option value="admin@linesight.dev|admin123">System Admin (admin@linesight.dev)</option>
                                 </optgroup>
 
-                                <optgroup label="📊 Other Managers">
-                                    <option value="marcus.johnson@linesight.io|manager123">Marcus Johnson</option>
-                                    <option value="sofia.rodriguez@linesight.io|manager123">Sofia Rodriguez</option>
-                                    <option value="james.williams@linesight.io|manager123">James Williams</option>
-                                    <option value="super.manager@linesight.io|manager123">Super Manager (ALL lines)</option>
-                                    <option value="cross.factory@linesight.io|manager123">Cross-Factory Manager</option>
+                                <optgroup label="📊 Other Roles">
+                                    <option value="viewer@linesight.io|viewer123">Viewer (Read-Only)</option>
+                                    <option value="emily.chen@linesight.io|manager123">Generic Manager (Deprecated)</option>
                                 </optgroup>
 
                                 <optgroup label="🧪 Edge Cases">

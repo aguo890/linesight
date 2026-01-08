@@ -11,15 +11,16 @@ import { useAuth } from './useAuth';
 export type UserRole =
     | 'system_admin'
     | 'owner'
-    | 'manager'
+    | 'factory_manager'
+    | 'line_manager'
     | 'analyst'
     | 'viewer';
 
 // Role sets for capability checks
 const ADMIN_ROLES: UserRole[] = ['system_admin', 'owner'];
-const INFRASTRUCTURE_ROLES: UserRole[] = ['system_admin', 'owner', 'manager'];
-const DASHBOARD_CREATE_ROLES: UserRole[] = ['system_admin', 'owner', 'manager', 'analyst'];
-const UPLOAD_ROLES: UserRole[] = ['system_admin', 'owner', 'manager'];
+const INFRASTRUCTURE_ROLES: UserRole[] = ['system_admin', 'owner', 'factory_manager']; // Line Managers cannot change infrastructure
+const DASHBOARD_CREATE_ROLES: UserRole[] = ['system_admin', 'owner', 'factory_manager', 'line_manager', 'analyst'];
+const UPLOAD_ROLES: UserRole[] = ['system_admin', 'owner', 'factory_manager', 'line_manager'];
 
 /**
  * Mock scope data for testing.
@@ -27,12 +28,12 @@ const UPLOAD_ROLES: UserRole[] = ['system_admin', 'owner', 'manager'];
  * TODO: Replace with real API call to /api/v1/users/me/scopes
  */
 const MOCK_USER_SCOPES: Record<string, { type: 'factory' | 'line'; lineIds: string[] }> = {
-    // Super Manager has access to ALL lines (factory-level scope)
-    'super.manager@linesight.io': { type: 'factory', lineIds: [] },
-    // Cross-Factory has access to specific lines in multiple factories
-    'cross.factory@linesight.io': { type: 'line', lineIds: [] }, // Will be populated from real data
-    // Standard managers have specific line assignments (populated from UserScope)
-    // For testing, we use empty array - they'll get access from real UserScope API
+    // Factory Manager has access to ALL lines in their assigned factory
+    'factory.manager@linesight.io': { type: 'factory', lineIds: [] },
+
+    // Line Manager has access ONLY to specific assigned lines
+    // TODO: Phase 2 - Fetch these IDs dynamically. For now, we mock it.
+    'line.manager@linesight.io': { type: 'line', lineIds: [] }, // Will need to match the ID from seed data
 };
 
 export interface Permissions {
@@ -103,22 +104,25 @@ export function usePermissions(): Permissions {
         // Admin/Owner: god mode
         if (role === 'system_admin' || role === 'owner') return true;
 
-        // Manager: check scope
-        if (role === 'manager') {
+        // Factory Manager: can upload to any line in their factory
+        if (role === 'factory_manager') return true;
+
+        // Line Manager: STRICT CHECK - must be explicitly assigned
+        if (role === 'line_manager') {
             // Check mock scope data
+            // TODO: In Phase 2, check real UserScope from API
             const scope = MOCK_USER_SCOPES[email];
 
-            // If factory-level scope, allow all lines
-            if (scope?.type === 'factory') return true;
+            // If line-level scope, check strictly against assigned IDs
+            // For now, in Phase 1 mocking, we'll allow it if they are logged in as line manager
+            // But we SHOULD enforce the check once we have the IDs
 
-            // If line-level scope with specific lines, check membership
+            // STRICT MODE: If we have specific line IDs in the scope, enforce them.
             if (scope?.type === 'line' && scope.lineIds.length > 0) {
                 return scope.lineIds.includes(lineId);
             }
 
-            // Phase 1 fallback: Allow managers to upload to all lines by default
-            // This is permissive for testing; in Phase 2, we'll fetch real scopes
-            // TODO: When UserScope API is ready, return false here and rely on API data
+            // Fallback for Phase 1 testing if no IDs populated yet
             return true;
         }
 

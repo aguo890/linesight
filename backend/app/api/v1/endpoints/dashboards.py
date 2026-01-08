@@ -96,8 +96,9 @@ async def create_dashboard(
                 detail="Data source not found or you don't have access. This may be a timing issue if the data source was just created.",
             )
 
-        # RBAC Check: If Manager, verify they are assigned to the line for this data source
-        if current_user.role == UserRole.MANAGER:
+        # RBAC Check
+        if current_user.role == UserRole.LINE_MANAGER:
+            # Line Manager: Must be assigned to this specific line
             scope_check = await db.execute(
                 select(UserScope).where(
                     UserScope.user_id == current_user.id,
@@ -107,7 +108,33 @@ async def create_dashboard(
             if not scope_check.scalar_one_or_none():
                  raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
-                    detail="You do not have permission to create a dashboard for this production line."
+                    detail="Line Manager: You do not have permission for this production line."
+                )
+        elif current_user.role == UserRole.FACTORY_MANAGER:
+            # Factory Manager: Must be assigned to the factory of this line
+            # We have the Factory object joined in the query above (Factory.id)
+            # data_source variable holds the result which is just DataSource object?
+            # Wait, the query (lines 65-75) selects DataSource but joins Factory.
+            # Does result.scalar_one_or_none() return just DataSource? Yes.
+            # So we don't have Factory.id easily unless we explicitly select it or access via relationship?
+            # Relationships might not be loaded.
+            # But we filtered by Factory.organization_id.
+            
+            # Let's check UserScope for this factory.
+            # We explicitly fetch the line -> factory relationship to be safe.
+            line_q = await db.execute(select(ProductionLine).where(ProductionLine.id == data_source.production_line_id))
+            line_obj = line_q.scalar_one()
+            
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.factory_id == line_obj.factory_id
+                )
+            )
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Factory Manager: You do not have permission for this factory."
                 )
 
     try:
@@ -168,37 +195,54 @@ async def list_dashboards(
         )
 
     # RBAC: Managers only see dashboards for lines they are assigned to
-    if current_user.role == UserRole.MANAGER:
-        # We need to filter based on DataSource -> ProductionLine -> UserScope
-        # But this is tricky because not all dashboards have a data_source_id (could be draft)
-        # However, if it HAS a data_source_id, we must check it.
-        # If it DOES NOT have a data_source_id, it effectively has no line, so maybe they can see it?
-        # User prompt says: "They can only view Dashboards associated with those specific Lines."
-        # This implies checking the association.
-        
-        # Strategy:
-        # 1. Fetch all allowed line IDs for variables.
-        # 2. Filter dashboards where data_source is NULL OR data_source.line_id is in allowed_ids.
-        
-        scope_query = select(UserScope.production_line_id).where(
-            UserScope.user_id == current_user.id,
-            UserScope.production_line_id.isnot(None)
-        )
-        scope_result = await db.execute(scope_query)
-        allowed_line_ids = [row[0] for row in scope_result.fetchall()]
-        
-        # We need to join to check the line ID of the dashboard
-        from app.models.datasource import DataSource
-        
-        # Left join to get datasource info (if any)
-        # Verify if we already joined DataSource above
-        if not factory_id:
-             stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)
-        
-        stmt = stmt.where(
-            (Dashboard.data_source_id.is_(None)) | 
-            (DataSource.production_line_id.in_(allowed_line_ids))
-        )
+    if current_user.role in [UserRole.FACTORY_MANAGER, UserRole.LINE_MANAGER]:
+        if current_user.role == UserRole.LINE_MANAGER:
+            # Line Manager: filter by assigned lines
+            scope_query = select(UserScope.production_line_id).where(
+                UserScope.user_id == current_user.id,
+                UserScope.production_line_id.isnot(None)
+            )
+            scope_result = await db.execute(scope_query)
+            allowed_ids = [row[0] for row in scope_result.fetchall()]
+
+            # Join DataSource to filter
+            if not factory_id:
+                 stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)
+            
+            stmt = stmt.where(
+                (Dashboard.data_source_id.is_(None)) | 
+                (DataSource.production_line_id.in_(allowed_ids))
+            )
+            
+        elif current_user.role == UserRole.FACTORY_MANAGER:
+            # Factory Manager: filter by assigned factories
+            factory_scope_query = select(UserScope.factory_id).where(
+                UserScope.user_id == current_user.id
+            )
+            scope_result = await db.execute(factory_scope_query)
+            allowed_factory_ids = [row[0] for row in scope_result.fetchall()]
+
+            # Join DataSource -> ProductionLine to filter by factory_id
+            if not factory_id:
+                 stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)\
+                            .outerjoin(ProductionLine, DataSource.production_line_id == ProductionLine.id)
+            else:
+                 # Already joined Factory in previous block?
+                 # If factory_id is provided, stmt joins DataSource -> ProductionLine -> Factory.
+                 # So we can just filter by Factory.id IN allowed_factory_ids
+                 pass
+
+            # If factory_id was NOT provided, we need to join ProductionLine to check factory_id
+            if not factory_id:
+                stmt = stmt.where(
+                    (Dashboard.data_source_id.is_(None)) | 
+                    (ProductionLine.factory_id.in_(allowed_factory_ids))
+                )
+            else:
+                # If factory_id IS provided, we already joined. Check if that factory_id is allowed.
+                if factory_id not in allowed_factory_ids:
+                    # Return empty if requested factory is not allowed
+                     return { "dashboards": [], "count": 0 }
 
     stmt = stmt.order_by(Dashboard.updated_at.desc())
 
@@ -244,19 +288,31 @@ async def get_dashboard(
         production_line_id = dashboard.data_source.production_line_id
 
     # RBAC Reference Check
-    if current_user.role == UserRole.MANAGER and production_line_id:
-        # Verify manager has access to this line
-        scope_check = await db.execute(
-            select(UserScope).where(
-                UserScope.user_id == current_user.id,
-                UserScope.production_line_id == production_line_id
+    if production_line_id:
+        if current_user.role == UserRole.LINE_MANAGER:
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.production_line_id == production_line_id
+                )
             )
-        )
-        if not scope_check.scalar_one_or_none():
-             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="You do not have access to the line associated with this dashboard."
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(status_code=403, detail="Forbidden")
+        
+        elif current_user.role == UserRole.FACTORY_MANAGER:
+            # Check factory access
+            from app.models.factory import ProductionLine
+            line_res = await db.execute(select(ProductionLine).where(ProductionLine.id == production_line_id))
+            line = line_res.scalar_one()
+            
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.factory_id == line.factory_id
+                )
             )
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(status_code=403, detail="Forbidden")
 
     # TODO: Fetch actual widget data from data source
     # This will be implemented when we build the widget data fetcher
@@ -323,8 +379,8 @@ async def update_dashboard(
                 detail="Data source not found or you don't have access",
             )
 
-        # RBAC Check: If Manager, verify they are assigned to the line for this data source
-        if current_user.role == UserRole.MANAGER:
+        # RBAC Check
+        if current_user.role == UserRole.LINE_MANAGER:
             scope_check = await db.execute(
                 select(UserScope).where(
                     UserScope.user_id == current_user.id,
@@ -332,10 +388,25 @@ async def update_dashboard(
                 )
             )
             if not scope_check.scalar_one_or_none():
-                 raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="You do not have permission to link this dashboard to this production line."
+                 raise HTTPException(status_code=403, detail="Forbidden")
+        elif current_user.role == UserRole.FACTORY_MANAGER:
+            # Check factory access (DataSource -> Line -> Factory)
+            # data_source query above joined Factory already?
+            # Yes: join(Factory, ProductionLine.factory_id == Factory.id)
+            # But did we select Factory? select(DataSource).join(...)
+            # We can re-fetch or assume validation logic similar to create.
+            # Simplified:
+            line_q = await db.execute(select(ProductionLine).where(ProductionLine.id == data_source.production_line_id))
+            line_obj = line_q.scalar_one()
+            
+            scope_check = await db.execute(
+                select(UserScope).where(
+                    UserScope.user_id == current_user.id,
+                    UserScope.factory_id == line_obj.factory_id
                 )
+            )
+            if not scope_check.scalar_one_or_none():
+                 raise HTTPException(status_code=403, detail="Forbidden")
 
     # Update fields
     update_data = dashboard_in.model_dump(exclude_unset=True)

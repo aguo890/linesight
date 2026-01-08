@@ -321,7 +321,7 @@ async def delete_data_source(
 
     from app.models.user import UserRole
 
-    if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER]:
         raise HTTPException(
             status_code=403, detail="Not authorized to delete data sources"
         )

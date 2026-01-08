@@ -49,13 +49,10 @@ async def list_factories(
         Factory.is_active
     )
 
-    if current_user.role == UserRole.MANAGER:
-        # Get factory IDs from user's line assignments
-        # We look for scopes that have a production_line_id
-        # The factory_id is also stored in scope, but let's be robust
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER]:
+        # Get factory IDs from user's scope assignments
         scope_query = select(UserScope.factory_id).where(
-            UserScope.user_id == current_user.id,
-            UserScope.production_line_id.isnot(None)
+            UserScope.user_id == current_user.id
         ).distinct()
         
         scope_result = await db.execute(scope_query)
@@ -99,8 +96,8 @@ async def get_factory(
             detail="Factory not found",
         )
 
-    # RBAC: Filter lines for managers
-    if current_user.role == UserRole.MANAGER:
+    # RBAC: Filter lines for LINE_MANAGER (Factory Manager sees all)
+    if current_user.role == UserRole.LINE_MANAGER:
         # Get line IDs assigned to this manager
         scope_result = await db.execute(
             select(UserScope.production_line_id)
@@ -302,8 +299,8 @@ async def list_production_lines(
         .where(ProductionLine.is_active)
     )
 
-    # RBAC: Managers only see their assigned lines
-    if current_user.role == UserRole.MANAGER:
+    # RBAC: Line Managers only see their assigned lines
+    if current_user.role == UserRole.LINE_MANAGER:
         # Get line IDs assigned to this manager
         scope_result = await db.execute(
             select(UserScope.production_line_id)
