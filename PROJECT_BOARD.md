@@ -46,12 +46,17 @@
 
 
 ### 🔄 In Progress
+- [ ] **Phase 1: Infrastructure (High Priority)**
+  - [ ] Migrate Database to PostgreSQL
+  - [ ] Provision/Configure PostgreSQL instance
+  - [ ] Update connection strings in `config.py` / `database.py`
+  - [ ] Run migrations and verify schema parity
+  - [ ] Verify connection persistence
+- [ ] **Phase 2: Ingestion Reliability (Dependent on Phase 1)**
+  - [ ] Sub-Task 2a: Add `line_id` synonym to `ProductionRun` model
+  - [ ] Sub-Task 2b: Implement smart date inference logic
+  - [ ] Sub-Task 2c: Implement PO safety (UNKNOWN_PO_{hash})
 - [/] Frontend unit tests - 8/10 passing (2 minor timing issues in FilePreviewModal)
-- [ ] Frontend dashboard widget enhancements
-- [ ] Database seeding utilities for development
-- [ ] Implement Redis caching layer for dashboard stats
-- [ ] Refactor DashboardWizard into smaller components
-- [ ] Implement DashboardDataProvider to prevent waterfall fetching
 
 ### 📋 Up Next
 - [ ] Complete frontend widget tests (6 widgets remaining)
