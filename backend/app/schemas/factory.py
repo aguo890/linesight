@@ -31,21 +31,8 @@ class ShiftConfig(BaseModel):
     )
 
 
-class ProductionLineSettings(BaseModel):
-    """
-    Settings specific to a production line.
-    Can be inherited from Factory defaults or overridden.
-    """
-
-    is_custom_schedule: bool = Field(
-        default=False, description="If false, uses factory defaults"
-    )
-
-    # Effective Schedule (Snapshotted or Custom)
-    shift_pattern: list[ShiftConfig] | None = None
-    non_working_days: list[int] | None = None
-
-    model_config = ConfigDict(extra="allow")
+# NOTE: ProductionLineSettings has been moved to schemas/datasource.py as DataSourceSettings
+# The import below re-exports it as ProductionLineSettings for backward compatibility
 
 
 class FactorySettings(BaseModel):
@@ -73,54 +60,21 @@ class FactorySettings(BaseModel):
 
 
 # =============================================================================
-# ProductionLine Schemas
+# DataSource Schemas (moved to schemas/datasource.py)
 # =============================================================================
 
-
-class ProductionLineBase(BaseModel):
-    """Base production line schema."""
-
-    name: str = Field(..., min_length=1, max_length=100)
-    code: str | None = Field(None, max_length=50)
-    specialty: str | None = Field(None, max_length=100)
-    target_operators: int | None = Field(None, ge=0)
-    target_efficiency_pct: int | None = Field(None, ge=0, le=100)
-
-
-class ProductionLineCreate(ProductionLineBase):
-    """Schema for creating a production line."""
-
-    settings: ProductionLineSettings | None = None
-
-
-class ProductionLineUpdate(BaseModel):
-    """Schema for updating a production line."""
-
-    name: str | None = Field(None, min_length=1, max_length=100)
-    specialty: str | None = None
-    target_operators: int | None = Field(None, ge=0)
-    target_efficiency_pct: int | None = Field(None, ge=0, le=100)
-    is_active: bool | None = None
-    settings: ProductionLineSettings | dict[str, Any] | None = None
-
-
-class ProductionLineRead(ProductionLineBase):
-    """Schema for reading a production line."""
-
-    model_config = ConfigDict(from_attributes=True)
-
-    id: str
-    factory_id: str
-    specialty: str | None = None
-    supervisor_id: str | None = None
-    target_efficiency_pct: int | None = None
-
-    # Settings
-    settings: ProductionLineSettings | dict[str, Any] | None = None
-
-    is_active: bool
-    created_at: datetime
-    updated_at: datetime
+# Import DataSource schemas for use in FactoryWithLines
+# Legacy ProductionLine aliases are also available from datasource.py
+from app.schemas.datasource import (
+    DataSourceRead,
+    DataSourceSettings,
+    # Legacy aliases for backward compatibility
+    ProductionLineBase,
+    ProductionLineCreate,
+    ProductionLineRead,
+    ProductionLineSettings,
+    ProductionLineUpdate,
+)
 
 
 # =============================================================================
@@ -214,7 +168,11 @@ class FactoryRead(FactoryBase):
     updated_at: datetime
 
 
-class FactoryWithLines(FactoryRead):
-    """Factory with production lines."""
+class FactoryWithDataSources(FactoryRead):
+    """Factory with its data sources."""
 
-    production_lines: list[ProductionLineRead] = []
+    data_sources: list[DataSourceRead] = []
+
+
+# Backward compatibility alias
+FactoryWithLines = FactoryWithDataSources

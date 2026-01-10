@@ -7,9 +7,9 @@
  */
 
 /**
- * Request body for assigning a user to a production line.
+ * Request body for assigning a user to a data source.
  */
 export interface ScopeAssign {
-  production_line_id: string;
+  data_source_id: string;
   role?: string;
 }

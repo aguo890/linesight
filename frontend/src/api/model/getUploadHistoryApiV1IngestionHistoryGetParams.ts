@@ -7,6 +7,6 @@
  */
 
 export type GetUploadHistoryApiV1IngestionHistoryGetParams = {
-production_line_id?: string | null;
+data_source_id?: string | null;
 limit?: number;
 };

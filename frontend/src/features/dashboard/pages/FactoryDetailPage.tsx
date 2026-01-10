@@ -5,7 +5,7 @@
  * Features:
  * - High-level metrics overview
  * - Dashboard management with ghost-card creation
- * - Production Line management with Grid/List views
+ * - Data Source management with Grid/List views
  * - Search filtering for resources
  */
 import React, { useState, useMemo } from 'react';
@@ -24,14 +24,13 @@ import {
     MonitorPlay,
     Grid3x3,
     ChevronRight,
-    Calendar,
-    Trash2
+    Database
 } from 'lucide-react';
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 import { MainLayout } from '../../../components/layout/MainLayout';
-import { ProductionLineCard } from '../components/ProductionLineCard';
-import { CreateLineModal } from '../../organization/components/CreateLineModal';
-import { LineUploadModal } from '../components/LineUploadModal';
+import { DataSourceCard } from '../components/DataSourceCard';
+import { CreateDataSourceModal } from '../../organization/components/CreateDataSourceModal';
+import { DataSourceUploadModal } from '../components/DataSourceUploadModal';
 import { MappingFlowModal } from '../components/MappingFlowModal';
 import { DashboardWizard } from '../components/DashboardWizard';
 import { CardsSkeleton } from '../components/CardsSkeleton';
@@ -41,16 +40,13 @@ import { FactorySettingsModal } from '../components/FactorySettingsModal';
 import { dashboardStorage } from '../storage';
 
 import { useOrganization } from '../../../contexts/OrganizationContext';
-import {
-    useGetFactoryApiV1FactoriesFactoryIdGet,
-    useListProductionLinesApiV1FactoriesFactoryIdLinesGet
-} from '../../../api/endpoints/factories/factories';
+import { useFactory } from '../../../hooks/useFactory';
 import {
     useListDashboardsApiV1DashboardsGet,
     useDeleteDashboardApiV1DashboardsDashboardIdDelete
 } from '../../../api/endpoints/dashboards/dashboards';
-import type { ProductionLineRead } from '../../../api/model';
 import type { Dashboard } from '../types';
+import type { DataSource } from '../../../lib/factoryApi';
 import { usePermissions } from '../../../hooks/usePermissions';
 
 type ViewMode = 'grid' | 'list';
@@ -73,24 +69,22 @@ export const FactoryDetailPage: React.FC = () => {
     // Logic State
     const [currentRawImportId, setCurrentRawImportId] = useState<string | null>(null);
     const [mappingLineId, setMappingLineId] = useState<string | null>(null);
-    const [selectedLineForUpload, setSelectedLineForUpload] = useState<ProductionLineRead | null>(null);
+    const [selectedDataSourceForUpload, setSelectedDataSourceForUpload] = useState<DataSource | null>(null);
 
     // Filter & View State
     const [dashboardSearch, setDashboardSearch] = useState('');
-    const [lineSearch, setLineSearch] = useState('');
-    const [lineViewMode, setLineViewMode] = useState<ViewMode>('grid');
+    const [sourceSearch, setSourceSearch] = useState('');
+    const [sourceViewMode, setSourceViewMode] = useState<ViewMode>('grid');
 
     // --- Data Fetching ---
 
-    const { data: factory, isLoading: factoryLoading, refetch: refetchFactory } = useGetFactoryApiV1FactoriesFactoryIdGet(
-        factoryId!,
-        { query: { enabled: !!factoryId } }
-    );
-
-    const { data: linesData, isLoading: linesLoading, refetch: refetchLines } = useListProductionLinesApiV1FactoriesFactoryIdLinesGet(
-        factoryId!,
-        { query: { enabled: !!factoryId } }
-    );
+    // Using the unified hook
+    const {
+        factory,
+        dataSources,
+        isLoading: factoryLoading,
+        refresh: refreshFactoryData
+    } = useFactory(factoryId);
 
     const { data: dashboardsResponse, isLoading: dashboardsLoading, refetch: refetchDashboards } = useListDashboardsApiV1DashboardsGet(
         { factory_id: factoryId },
@@ -102,8 +96,7 @@ export const FactoryDetailPage: React.FC = () => {
     // --- Transformations & Memoization ---
 
     const dashboards = useMemo(() => (dashboardsResponse?.dashboards || []) as unknown as Dashboard[], [dashboardsResponse]);
-    const lines = useMemo(() => linesData || [], [linesData]);
-    // const isLoading = factoryLoading || linesLoading || dashboardsLoading; // Removed unused variable
+    // const isLoading = factoryLoading || dashboardsLoading;
 
     // Filtered Lists
     const filteredDashboards = useMemo(() => {
@@ -114,44 +107,44 @@ export const FactoryDetailPage: React.FC = () => {
         );
     }, [dashboards, dashboardSearch]);
 
-    const filteredLines = useMemo(() => {
-        if (!lineSearch) return lines;
-        const q = lineSearch.toLowerCase();
-        return lines.filter(l =>
-            l.name.toLowerCase().includes(q)
+    const filteredDataSources = useMemo(() => {
+        if (!sourceSearch) return dataSources;
+        const q = sourceSearch.toLowerCase();
+        return dataSources.filter(ds =>
+            ds.name.toLowerCase().includes(q) ||
+            (ds.code && ds.code.toLowerCase().includes(q))
         );
-    }, [lines, lineSearch]);
+    }, [dataSources, sourceSearch]);
 
     // --- Actions ---
 
-    const loadFactoryData = () => {
-        refetchFactory();
-        refetchLines();
-        refetchDashboards();
+    const loadAllData = async () => {
+        await refreshFactoryData();
+        await refetchDashboards();
     };
 
-    const handleCreateLine = () => setIsCreateModalOpen(true);
+    const handleCreateSource = () => setIsCreateModalOpen(true);
     const handleCreateDashboard = () => setIsWizardOpen(true);
 
-    const handleLineCreationSuccess = () => {
-        if (factoryId) loadFactoryData();
+    const handleSourceCreationSuccess = () => {
+        if (factoryId) loadAllData();
     };
 
-    const handleEditLine = (lineId: string) => {
-        console.log('Edit line:', lineId);
+    const handleEditSource = (sourceId: string) => {
+        console.log('Edit source:', sourceId);
         alert('Edit functionality coming soon');
     };
 
-    const handleDeleteLine = (lineId: string) => {
-        if (confirm('Are you sure you want to delete this line?')) {
+    const handleDeleteSource = (sourceId: string) => {
+        if (confirm('Are you sure you want to delete this data source?')) {
             alert('Delete functionality coming soon');
         }
     };
 
-    const handleUploadLine = (lineId: string) => {
-        const line = lines.find(l => l.id === lineId);
-        if (line) {
-            setSelectedLineForUpload(line);
+    const handleUploadSource = (sourceId: string) => {
+        const source = dataSources.find(s => s.id === sourceId);
+        if (source) {
+            setSelectedDataSourceForUpload(source);
             setIsUploadModalOpen(true);
         }
     };
@@ -159,11 +152,11 @@ export const FactoryDetailPage: React.FC = () => {
     const handleUploadSuccess = (data: any) => {
         if (data && data.raw_import_id) {
             setCurrentRawImportId(data.raw_import_id);
-            setMappingLineId(selectedLineForUpload?.id || null);
+            setMappingLineId(selectedDataSourceForUpload?.id || null);
             setIsUploadModalOpen(false);
             setIsMappingModalOpen(true);
         } else {
-            if (factoryId) loadFactoryData();
+            if (factoryId) loadAllData();
         }
     };
 
@@ -171,12 +164,12 @@ export const FactoryDetailPage: React.FC = () => {
         setIsMappingModalOpen(false);
         setCurrentRawImportId(null);
         setMappingLineId(null);
-        if (factoryId) loadFactoryData();
+        if (factoryId) loadAllData();
     };
 
     const handleWizardComplete = async (dashboardId: string) => {
         setIsWizardOpen(false);
-        if (factoryId) await loadFactoryData();
+        if (factoryId) await loadAllData();
         navigate(`/dashboard/factories/${factoryId}/dashboards/${dashboardId}`);
     };
 
@@ -190,7 +183,7 @@ export const FactoryDetailPage: React.FC = () => {
             try {
                 await deleteDashboardMutation.mutateAsync({ dashboardId });
                 dashboardStorage.deleteDashboard(dashboardId);
-                if (factoryId) loadFactoryData();
+                if (factoryId) loadAllData();
             } catch (error) {
                 console.error('Failed to delete dashboard:', error);
                 alert('Failed to delete dashboard.');
@@ -209,65 +202,52 @@ export const FactoryDetailPage: React.FC = () => {
     };
     stats.avgWidgets = stats.totalDashboards ? Math.round(stats.totalWidgets / stats.totalDashboards) : 0;
 
+    // TODO: Update quota logic for Data Sources
+    // Assuming "lines_per_factory" quota applies to "data_sources_per_factory" for now
     const factoryQuota = quotaStatus?.lines_per_factory.by_factory.find(f => f.factory_id === factory?.id);
-    const canCreateLine = factoryQuota?.can_create ?? true;
+    const canCreateSource = factoryQuota?.can_create ?? true;
 
     // --- Render ---
 
     // 1. Initial Page Load (Factory details missing)
     if (factoryLoading) {
-        // Helper: Exact Replica of DashboardCard Skeleton
+        // Reuse skeleton structure
         const DashboardCardSkeleton = () => (
             <div className="bg-white rounded-xl border border-slate-200 p-5 h-full">
                 <div className="flex justify-between items-start mb-4">
-                    <Skeleton className="h-9 w-9 rounded-lg" /> {/* Icon Box */}
-                    {/* Trash icon is hidden by default, so we don't skeleton it to keep UI clean */}
+                    <Skeleton className="h-9 w-9 rounded-lg" />
                 </div>
-
-                <Skeleton className="h-6 w-3/4 mb-1" /> {/* Title */}
-
+                <Skeleton className="h-6 w-3/4 mb-1" />
                 <div className="space-y-2 mt-4">
                     <div className="flex items-center gap-2">
                         <Skeleton className="h-3.5 w-3.5 rounded-full" />
-                        <Skeleton className="h-3 w-16" /> {/* Widget count */}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Skeleton className="h-3.5 w-3.5 rounded-full" />
-                        <Skeleton className="h-3 w-24" /> {/* Date */}
+                        <Skeleton className="h-3 w-16" />
                     </div>
                 </div>
-
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <Skeleton className="h-4 w-32" /> {/* Data Source Name */}
-                    <Skeleton className="h-4 w-4 rounded" /> {/* Chevron */}
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-4 w-4 rounded" />
                 </div>
             </div>
         );
 
-        // Helper: Exact Replica of ProductionLineCard Skeleton
-        const ProductionLineCardSkeleton = () => (
+        const DataSourceCardSkeleton = () => (
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden h-full">
-                {/* Top Border Replica */}
                 <div className="h-1.5 w-full bg-slate-100" />
-
                 <div className="p-5">
                     <div className="flex items-start justify-between mb-4">
-                        <Skeleton className="h-10 w-10 rounded-lg" /> {/* Settings Icon */}
-                        <Skeleton className="h-6 w-16 rounded-full" /> {/* Status Badge */}
+                        <Skeleton className="h-10 w-10 rounded-lg" />
+                        <Skeleton className="h-6 w-16 rounded-full" />
                     </div>
-
                     <div className="mb-4">
-                        <Skeleton className="h-6 w-48 mb-2" /> {/* Line Name */}
-                        <Skeleton className="h-4 w-20" />    {/* Code */}
+                        <Skeleton className="h-6 w-48 mb-2" />
+                        <Skeleton className="h-4 w-20" />
                     </div>
-
-                    {/* Specialty Box Skeleton */}
                     <Skeleton className="h-9 w-full rounded-md mb-4" />
-
                     <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-100">
-                        <Skeleton className="h-8 w-8 rounded-lg" /> {/* Upload Btn */}
-                        <Skeleton className="h-8 w-8 rounded-lg" /> {/* Edit Btn */}
-                        <Skeleton className="h-8 w-8 rounded-lg" /> {/* Delete Btn */}
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-lg" />
+                        <Skeleton className="h-8 w-8 rounded-lg" />
                     </div>
                 </div>
             </div>
@@ -275,43 +255,36 @@ export const FactoryDetailPage: React.FC = () => {
 
         return (
             <MainLayout>
-                {/* Header Section */}
                 <div className="mb-8">
-                    <Skeleton className="h-4 w-48 mb-4" /> {/* Breadcrumb */}
-
+                    <Skeleton className="h-4 w-48 mb-4" />
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                         <div className="flex items-center gap-4">
-                            {/* Factory Icon Box */}
                             <div className="h-14 w-14 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center justify-center">
                                 <Skeleton className="w-7 h-7 rounded" />
                             </div>
                             <div>
-                                <Skeleton className="h-8 w-64 mb-2" /> {/* Factory Name */}
+                                <Skeleton className="h-8 w-64 mb-2" />
                                 <div className="flex gap-4">
-                                    <Skeleton className="h-5 w-20 rounded" /> {/* Code Tag */}
-                                    <Skeleton className="h-5 w-32" /> {/* Location */}
+                                    <Skeleton className="h-5 w-20 rounded" />
+                                    <Skeleton className="h-5 w-32" />
                                 </div>
                             </div>
                         </div>
-                        <Skeleton className="h-10 w-28 rounded-lg" /> {/* Settings Button */}
+                        <Skeleton className="h-10 w-28 rounded-lg" />
                     </div>
                 </div>
-
-                {/* Quick Stats Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                     {[1, 2, 3].map((i) => (
                         <div key={i} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
                             <div>
-                                <Skeleton className="h-3 w-24 mb-2" /> {/* Label */}
-                                <Skeleton className="h-8 w-12" />      {/* Number */}
+                                <Skeleton className="h-3 w-24 mb-2" />
+                                <Skeleton className="h-8 w-12" />
                             </div>
-                            <Skeleton className="h-11 w-11 rounded-lg" /> {/* Icon Box */}
+                            <Skeleton className="h-11 w-11 rounded-lg" />
                         </div>
                     ))}
                 </div>
-
                 <div className="space-y-12">
-                    {/* ---------------- Dashboards Section ---------------- */}
                     <section>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
@@ -319,30 +292,12 @@ export const FactoryDetailPage: React.FC = () => {
                                 <Skeleton className="h-6 w-32" />
                             </div>
                         </div>
-
-                        {/* Dashboard Control Bar */}
-                        <div className="flex items-center gap-3 mb-6 p-1">
-                            <Skeleton className="h-10 w-full max-w-sm rounded-lg" /> {/* Search Input */}
-                            <div className="flex-1"></div>
-                            <Skeleton className="hidden sm:block h-10 w-36 rounded-lg" /> {/* New Dash Button */}
-                        </div>
-
-                        {/* Dashboard Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                            {/* Ghost Card Skeleton */}
-                            <div className="min-h-[160px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 flex flex-col items-center justify-center">
-                                <Skeleton className="h-10 w-10 rounded-full mb-3" />
-                                <Skeleton className="h-5 w-36" />
-                            </div>
-                            {/* Detailed Card Skeletons */}
                             <DashboardCardSkeleton />
                             <DashboardCardSkeleton />
                         </div>
                     </section>
-
                     <div className="h-px bg-slate-200 w-full" />
-
-                    {/* ---------------- Production Lines Section ---------------- */}
                     <section>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
@@ -350,30 +305,10 @@ export const FactoryDetailPage: React.FC = () => {
                                 <Skeleton className="h-6 w-40" />
                             </div>
                         </div>
-
-                        {/* Production Line Control Bar */}
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 py-2">
-                            <Skeleton className="h-10 w-full sm:max-w-xs rounded-lg" /> {/* Search */}
-
-                            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                                <div className="flex items-center p-1 bg-white border border-slate-200 rounded-lg shadow-sm h-9 w-16">
-                                    {/* Toggle placeholder */}
-                                </div>
-                                <Skeleton className="h-10 w-28 rounded-lg" /> {/* New Line Button */}
-                            </div>
-                        </div>
-
-                        {/* Production Line Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {/* Ghost Card Skeleton */}
-                            <div className="min-h-[180px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 flex flex-col items-center justify-center">
-                                <Skeleton className="h-12 w-12 rounded-full mb-3" />
-                                <Skeleton className="h-5 w-40" />
-                            </div>
-                            {/* Detailed Card Skeletons */}
-                            <ProductionLineCardSkeleton />
-                            <ProductionLineCardSkeleton />
-                            <ProductionLineCardSkeleton />
+                            <DataSourceCardSkeleton />
+                            <DataSourceCardSkeleton />
+                            <DataSourceCardSkeleton />
                         </div>
                     </section>
                 </div>
@@ -461,8 +396,9 @@ export const FactoryDetailPage: React.FC = () => {
                 </div>
                 <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-emerald-200 transition-colors">
                     <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Avg Complexity</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{stats.avgWidgets} <span className="text-xs font-normal text-slate-400">widgets/dash</span></h3>
+                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Active Sources</p>
+                        {/* Counting data sources instead of complexity for now */}
+                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{dataSources.length}</h3>
                     </div>
                     <div className="p-3 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors">
                         <TrendingUp className="w-5 h-5 text-emerald-600" />
@@ -520,29 +456,25 @@ export const FactoryDetailPage: React.FC = () => {
                         </button>
 
                         {/* Dashboard Cards */}
-                        {dashboardsLoading ? (
-                            <CardsSkeleton count={3} />
-                        ) : (
-                            filteredDashboards.map((dashboard: Dashboard) => (
-                                <DashboardCard
-                                    key={dashboard.id}
-                                    dashboard={dashboard}
-                                    onClick={handleOpenDashboard}
-                                    onDelete={handleDeleteDashboard}
-                                />
-                            ))
-                        )}
+                        {filteredDashboards.map((dashboard: Dashboard) => (
+                            <DashboardCard
+                                key={dashboard.id}
+                                dashboard={dashboard}
+                                onClick={handleOpenDashboard}
+                                onDelete={handleDeleteDashboard}
+                            />
+                        ))}
                     </div>
                 </section>
 
                 <div className="h-px bg-slate-200 w-full" />
 
-                {/* ---------------- Production Lines Section ---------------- */}
+                {/* ---------------- Data Sources Section ---------------- */}
                 <section>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                             <Activity className="w-5 h-5 text-slate-400" />
-                            <h2 className="text-lg font-bold text-slate-900">Production Lines</h2>
+                            <h2 className="text-lg font-bold text-slate-900">Data Sources</h2>
                             {factoryQuota && (
                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${factoryQuota.current >= (quotaStatus?.lines_per_factory.max || 0)
                                     ? 'bg-amber-50 text-amber-700 border-amber-200'
@@ -554,15 +486,15 @@ export const FactoryDetailPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Control Bar - Production Lines */}
+                    {/* Control Bar - Data Sources */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sticky top-0 z-10 bg-slate-50/90 backdrop-blur-sm py-2 rounded-lg">
                         <div className="relative w-full sm:max-w-xs group">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                             <input
                                 type="text"
-                                placeholder="Search lines..."
-                                value={lineSearch}
-                                onChange={(e) => setLineSearch(e.target.value)}
+                                placeholder="Search sources..."
+                                value={sourceSearch}
+                                onChange={(e) => setSourceSearch(e.target.value)}
                                 className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm"
                             />
                         </div>
@@ -570,134 +502,125 @@ export const FactoryDetailPage: React.FC = () => {
                         <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
                             <div className="flex items-center p-1 bg-white border border-slate-200 rounded-lg shadow-sm">
                                 <button
-                                    onClick={() => setLineViewMode('grid')}
-                                    className={`p-1.5 rounded-md transition-all ${lineViewMode === 'grid' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                    onClick={() => setSourceViewMode('grid')}
+                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'grid' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                                 >
                                     <LayoutGrid className="w-4 h-4" />
                                 </button>
                                 <button
-                                    onClick={() => setLineViewMode('list')}
-                                    className={`p-1.5 rounded-md transition-all ${lineViewMode === 'list' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                    onClick={() => setSourceViewMode('list')}
+                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'list' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                                 >
                                     <List className="w-4 h-4" />
                                 </button>
                             </div>
 
-                            {/* New Line Button - Only for users who can manage infrastructure */}
+                            {/* New Source Button - Only for users who can manage infrastructure */}
                             {canManageInfrastructure && (
                                 <button
-                                    onClick={handleCreateLine}
-                                    disabled={!canCreateLine}
+                                    onClick={handleCreateSource}
+                                    disabled={!canCreateSource}
                                     className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors whitespace-nowrap"
                                 >
                                     <Plus className="w-4 h-4" />
-                                    New Line
+                                    New Source
                                 </button>
                             )}
                         </div>
                     </div>
 
                     {/* Content - Grid View */}
-                    {lineViewMode === 'grid' && (
+                    {sourceViewMode === 'grid' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {/* Ghost Card for New Line - Only for users who can manage infrastructure */}
+                            {/* Ghost Card for New Source */}
                             {canManageInfrastructure && (
                                 <button
-                                    onClick={handleCreateLine}
-                                    disabled={!canCreateLine}
+                                    onClick={handleCreateSource}
+                                    disabled={!canCreateSource}
                                     className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 hover:bg-white hover:border-indigo-400 hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <div className="h-12 w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-sm transition-all duration-200">
                                         <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                                     </div>
-                                    <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Production Line</span>
-                                    {!canCreateLine && <span className="text-xs text-red-400 mt-1">Quota limit reached</span>}
+                                    <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Data Source</span>
+                                    {!canCreateSource && <span className="text-xs text-red-400 mt-1">Quota limit reached</span>}
                                 </button>
                             )}
 
-                            {linesLoading ? (
-                                <CardsSkeleton count={4} />
-                            ) : (
-                                filteredLines.map((line) => (
-                                    <ProductionLineCard
-                                        key={line.id}
-                                        line={line}
-                                        onEdit={handleEditLine}
-                                        onDelete={handleDeleteLine}
-                                        onUpload={handleUploadLine}
-                                        onClick={(lineId) => navigate(`/dashboard/factories/${factoryId}/lines/${lineId}`)}
-                                    />
-                                ))
-                            )}
+                            {filteredDataSources.map((source) => (
+                                <DataSourceCard
+                                    key={source.id}
+                                    dataSource={source}
+                                    onEdit={handleEditSource}
+                                    onDelete={handleDeleteSource}
+                                    onUpload={handleUploadSource}
+                                    onClick={(sourceId) => navigate(`/dashboard/factories/${factoryId}/lines/${sourceId}`)}
+                                />
+                            ))}
                         </div>
                     )}
 
                     {/* Content - List View */}
-                    {lineViewMode === 'list' && (
+                    {sourceViewMode === 'list' && (
                         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                            {linesLoading ? (
-                                <div className="p-0">
-                                    <CardsSkeleton count={5} viewMode="list" />
+                            <table className="w-full text-left border-collapse">
+                                <thead className="bg-slate-50 border-b border-slate-200">
+                                    <tr>
+                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100">
+                                    {filteredDataSources.map(source => (
+                                        <tr
+                                            key={source.id}
+                                            onClick={() => navigate(`/dashboard/factories/${factoryId}/lines/${source.id}`)}
+                                            className="hover:bg-slate-50 transition-colors cursor-pointer group"
+                                        >
+                                            <td className="py-3 px-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-slate-100 rounded-lg text-slate-500">
+                                                        <Database className="w-4 h-4" />
+                                                    </div>
+                                                    <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">{source.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="py-3 px-4">
+                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.is_active
+                                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                                    : 'bg-gray-100 text-gray-600 border-gray-200'
+                                                    }`}>
+                                                    {source.is_active ? 'Active' : 'Inactive'}
+                                                </span>
+                                            </td>
+                                            <td className="py-3 px-4 text-right">
+                                                <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
+                                                    {/* Upload button - permission aware */}
+                                                    {canUploadAny && (
+                                                        <button
+                                                            onClick={() => canUploadToLine(source.id) && handleUploadSource(source.id)}
+                                                            disabled={!canUploadToLine(source.id)}
+                                                            className={`p-1.5 rounded ${canUploadToLine(source.id)
+                                                                ? 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
+                                                                : 'text-slate-300 cursor-not-allowed'
+                                                                }`}
+                                                            title={canUploadToLine(source.id) ? 'Upload data' : 'No write access to this source'}
+                                                        >
+                                                            <Settings className="w-4 h-4" />
+                                                        </button>
+                                                    )}
+                                                    <ChevronRight className="w-4 h-4 text-slate-300 ml-2" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {filteredDataSources.length === 0 && (
+                                <div className="p-8 text-center text-slate-500">
+                                    No sources found matching your search.
                                 </div>
-                            ) : (
-                                <>
-                                    <table className="w-full text-left border-collapse">
-                                        <thead className="bg-slate-50 border-b border-slate-200">
-                                            <tr>
-                                                <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
-                                                <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                                <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                            {filteredLines.map(line => (
-                                                <tr
-                                                    key={line.id}
-                                                    onClick={() => navigate(`/dashboard/factories/${factoryId}/lines/${line.id}`)}
-                                                    className="hover:bg-slate-50 transition-colors cursor-pointer group"
-                                                >
-                                                    <td className="py-3 px-4">
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-slate-100 rounded-lg text-slate-500">
-                                                                <Activity className="w-4 h-4" />
-                                                            </div>
-                                                            <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">{line.name}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-3 px-4">
-                                                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                            Active
-                                                        </span>
-                                                    </td>
-                                                    <td className="py-3 px-4 text-right">
-                                                        <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
-                                                            {/* Upload button - permission aware */}
-                                                            {canUploadAny && (
-                                                                <button
-                                                                    onClick={() => canUploadToLine(line.id) && handleUploadLine(line.id)}
-                                                                    disabled={!canUploadToLine(line.id)}
-                                                                    className={`p-1.5 rounded ${canUploadToLine(line.id)
-                                                                            ? 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
-                                                                            : 'text-slate-300 cursor-not-allowed'
-                                                                        }`}
-                                                                    title={canUploadToLine(line.id) ? 'Upload data' : 'No write access to this line'}
-                                                                >
-                                                                    <Settings className="w-4 h-4" />
-                                                                </button>
-                                                            )}
-                                                            <ChevronRight className="w-4 h-4 text-slate-300 ml-2" />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    {filteredLines.length === 0 && (
-                                        <div className="p-8 text-center text-slate-500">
-                                            No lines found matching your search.
-                                        </div>
-                                    )}
-                                </>
                             )}
                         </div>
                     )}
@@ -711,24 +634,23 @@ export const FactoryDetailPage: React.FC = () => {
                 onComplete={handleWizardComplete}
                 preselectedFactoryId={factory?.id}
             />
-            <CreateLineModal
+            <CreateDataSourceModal
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
-                onSuccess={handleLineCreationSuccess}
+                onSuccess={handleSourceCreationSuccess}
                 factoryId={factory.id}
                 factoryName={factory.name}
-                quotaStatus={quotaStatus}
             />
-            {selectedLineForUpload && (
-                <LineUploadModal
+            {selectedDataSourceForUpload && (
+                <DataSourceUploadModal
                     isOpen={isUploadModalOpen}
                     onClose={() => {
                         setIsUploadModalOpen(false);
-                        setSelectedLineForUpload(null);
+                        setSelectedDataSourceForUpload(null);
                     }}
                     onSuccess={handleUploadSuccess}
-                    lineId={selectedLineForUpload.id}
-                    lineName={selectedLineForUpload.name}
+                    dataSourceId={selectedDataSourceForUpload.id}
+                    dataSourceName={selectedDataSourceForUpload.name}
                     factoryId={factory.id}
                 />
             )}
@@ -736,7 +658,7 @@ export const FactoryDetailPage: React.FC = () => {
                 isOpen={isMappingModalOpen}
                 onClose={() => setIsMappingModalOpen(false)}
                 rawImportId={currentRawImportId}
-                lineId={mappingLineId}
+                dataSourceId={mappingLineId}
                 onSuccess={handleMappingSuccess}
             />
             {factory && (

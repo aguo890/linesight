@@ -269,7 +269,7 @@ const StatusIndicator: React.FC<{
     const Icon = config.icon;
     const [showTooltip, setShowTooltip] = useState(false);
 
-    const tooltipText = reasoning || `${config.tooltip} (${Math.round(confidence * 100)}% confidence)`;
+    const tooltipText = reasoning || `${config.tooltip} (${Math.round((confidence ?? 0) * 100)}% confidence)`;
 
     return (
         <div
@@ -280,7 +280,7 @@ const StatusIndicator: React.FC<{
             <div className={`flex items-center gap-1.5 px-2 py-1 rounded-md ${config.bgColor} ${config.borderColor} border`}>
                 <Icon className={`w-3.5 h-3.5 ${config.color}`} />
                 <span className={`text-xs font-medium ${config.color}`}>
-                    {Math.round(confidence * 100)}%
+                    {Math.round((confidence ?? 0) * 100)}%
                 </span>
             </div>
 

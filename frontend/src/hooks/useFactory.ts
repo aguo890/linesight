@@ -1,20 +1,20 @@
 /**
  * useFactory Hook
  * 
- * Provides factory and production line data fetching with state management.
+ * Provides factory and data source fetching with state management.
  * Encapsulates API calls and loading states from components.
  */
 import { useState, useEffect, useCallback } from 'react';
 import {
     listFactories,
     getFactory,
-    listFactoryLines,
+    listDataSources,
     createFactory as createFactoryApi,
-    createProductionLine as createLineApi,
+    createDataSource as createDataSourceApi,
     deleteFactory as deleteFactoryApi,
-    getProductionLine,
+    getDataSource,
     type Factory,
-    type ProductionLine,
+    type DataSource,
 } from '../lib/factoryApi';
 
 // =============================================================================
@@ -45,31 +45,32 @@ export interface UseFactoriesReturn {
 export interface UseFactoryReturn {
     /** Factory details */
     factory: Factory | null;
-    /** Production lines for this factory */
-    lines: ProductionLine[];
+    /** Data sources for this factory */
+    dataSources: DataSource[];
     /** Loading state */
     isLoading: boolean;
     /** Error message if any */
     error: string | null;
-    /** Create a new production line */
-    createLine: (data: {
+    /** Create a new data source */
+    createDataSource: (data: {
+        source_name: string;
         name: string;
         code?: string;
         description?: string;
         specialty?: string;
-    }) => Promise<ProductionLine>;
-    /** Refresh factory and lines */
+    }) => Promise<DataSource>;
+    /** Refresh factory and data sources */
     refresh: () => Promise<void>;
 }
 
-export interface UseProductionLineReturn {
-    /** Production line details */
-    line: ProductionLine | null;
+export interface UseDataSourceReturn {
+    /** Data source details */
+    dataSource: DataSource | null;
     /** Loading state */
     isLoading: boolean;
     /** Error message if any */
     error: string | null;
-    /** Refresh line data */
+    /** Refresh data source data */
     refresh: () => Promise<void>;
 }
 
@@ -95,14 +96,14 @@ export function useFactories(): UseFactoriesReturn {
         setError(null);
         try {
             const data = await listFactories();
-            // Enrich with line count
+            // Enrich with source count
             const enriched = await Promise.all(
                 data.map(async (factory) => {
                     try {
-                        const lines = await listFactoryLines(factory.id);
-                        return { ...factory, lineCount: lines.length };
+                        const sources = await listDataSources(factory.id);
+                        return { ...factory, sourceCount: sources.length };
                     } catch {
-                        return { ...factory, lineCount: 0 };
+                        return { ...factory, sourceCount: 0 };
                     }
                 })
             );
@@ -150,23 +151,23 @@ export function useFactories(): UseFactoriesReturn {
 // =============================================================================
 
 /**
- * Hook for managing a single factory and its production lines.
+ * Hook for managing a single factory and its data sources.
  * 
  * @example
  * ```tsx
- * const { factory, lines, createLine } = useFactory(factoryId);
+ * const { factory, dataSources, createDataSource } = useFactory(factoryId);
  * ```
  */
 export function useFactory(factoryId: string | undefined): UseFactoryReturn {
     const [factory, setFactory] = useState<Factory | null>(null);
-    const [lines, setLines] = useState<ProductionLine[]>([]);
+    const [dataSources, setDataSources] = useState<DataSource[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const loadFactory = useCallback(async () => {
         if (!factoryId) {
             setFactory(null);
-            setLines([]);
+            setDataSources([]);
             setIsLoading(false);
             return;
         }
@@ -174,12 +175,12 @@ export function useFactory(factoryId: string | undefined): UseFactoryReturn {
         setIsLoading(true);
         setError(null);
         try {
-            const [factoryData, linesData] = await Promise.all([
+            const [factoryData, sourcesData] = await Promise.all([
                 getFactory(factoryId),
-                listFactoryLines(factoryId),
+                listDataSources(factoryId),
             ]);
             setFactory(factoryData);
-            setLines(linesData);
+            setDataSources(sourcesData);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to load factory');
         } finally {
@@ -191,48 +192,49 @@ export function useFactory(factoryId: string | undefined): UseFactoryReturn {
         loadFactory();
     }, [loadFactory]);
 
-    const createLine = useCallback(async (data: {
+    const createDataSource = useCallback(async (data: {
+        source_name: string;
         name: string;
         code?: string;
         description?: string;
         specialty?: string;
-    }): Promise<ProductionLine> => {
+    }): Promise<DataSource> => {
         if (!factoryId) throw new Error('Factory ID required');
-        const line = await createLineApi(factoryId, data);
+        const source = await createDataSourceApi(factoryId, data);
         await loadFactory(); // Refresh
-        return line;
+        return source;
     }, [factoryId, loadFactory]);
 
     return {
         factory,
-        lines,
+        dataSources,
         isLoading,
         error,
-        createLine,
+        createDataSource,
         refresh: loadFactory,
     };
 }
 
 // =============================================================================
-// Production Line Hook
+// Data Source Hook
 // =============================================================================
 
 /**
- * Hook for managing a single production line.
+ * Hook for managing a single data source.
  * 
  * @example
  * ```tsx
- * const { line, isLoading } = useProductionLine(lineId);
+ * const { dataSource, isLoading } = useDataSource(dataSourceId);
  * ```
  */
-export function useProductionLine(lineId: string | undefined): UseProductionLineReturn {
-    const [line, setLine] = useState<ProductionLine | null>(null);
+export function useDataSource(dataSourceId: string | undefined): UseDataSourceReturn {
+    const [dataSource, setDataSource] = useState<DataSource | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const loadLine = useCallback(async () => {
-        if (!lineId) {
-            setLine(null);
+    const loadDataSource = useCallback(async () => {
+        if (!dataSourceId) {
+            setDataSource(null);
             setIsLoading(false);
             return;
         }
@@ -240,23 +242,25 @@ export function useProductionLine(lineId: string | undefined): UseProductionLine
         setIsLoading(true);
         setError(null);
         try {
-            const data = await getProductionLine(lineId);
-            setLine(data);
+            const data = await getDataSource(dataSourceId);
+            setDataSource(data);
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to load production line');
+            setError(err instanceof Error ? err.message : 'Failed to load data source');
         } finally {
             setIsLoading(false);
         }
-    }, [lineId]);
+    }, [dataSourceId]);
 
     useEffect(() => {
-        loadLine();
-    }, [loadLine]);
+        loadDataSource();
+    }, [loadDataSource]);
 
     return {
-        line,
+        dataSource,
         isLoading,
         error,
-        refresh: loadLine,
+        refresh: loadDataSource,
     };
 }
+
+

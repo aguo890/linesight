@@ -12,7 +12,7 @@ export type UploadFileForIngestionApiV1IngestionUploadPostParams = {
  */
 factory_id: string;
 /**
- * Optional: Production line to upload data to
+ * Optional: Data source to upload data to
  */
-production_line_id?: string | null;
+data_source_id?: string | null;
 };

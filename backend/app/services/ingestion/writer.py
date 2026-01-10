@@ -48,7 +48,7 @@ class ProductionWriter:
         order_map: dict[tuple[str, str], Order],
         existing_run_map: dict[tuple[str, date, str], ProductionRun],
         factory_id: str,
-        production_line_id: str,
+        data_source_id: str,
         raw_import_id: str,
     ) -> dict[str, Any]:
         """
@@ -79,7 +79,7 @@ class ProductionWriter:
                     order_map=order_map,
                     existing_run_map=existing_run_map,
                     factory_id=factory_id,
-                    production_line_id=production_line_id,
+                    data_source_id=data_source_id,
                     raw_import_id=raw_import_id,
                     now=now,
                 )
@@ -134,7 +134,7 @@ class ProductionWriter:
         order_map: dict[tuple[str, str], Order],
         existing_run_map: dict[tuple[str, date, str], ProductionRun],
         factory_id: str,
-        production_line_id: str,
+        data_source_id: str,
         raw_import_id: str,
         now: datetime,
     ) -> dict[str, Any] | None:
@@ -211,7 +211,7 @@ class ProductionWriter:
                 result["event"] = {
                     "id": str(uuid.uuid4()),
                     "production_run_id": existing_run.id,
-                    "line_id": production_line_id,
+                    "data_source_id": data_source_id,
                     "order_id": order.id,
                     "style_id": style.id,
                     "timestamp": datetime.combine(p_date, time(12, 0)).replace(
@@ -232,7 +232,7 @@ class ProductionWriter:
                 "id": new_id,
                 "factory_id": factory_id,
                 "order_id": order.id,
-                "line_id": production_line_id,
+                "data_source_id": data_source_id,
                 "source_import_id": raw_import_id,
                 "production_date": record.get("production_date", now.date()),
                 "shift": shift,
@@ -245,7 +245,7 @@ class ProductionWriter:
             result["event"] = {
                 "id": str(uuid.uuid4()),
                 "production_run_id": new_id,
-                "line_id": production_line_id,
+                "data_source_id": data_source_id,
                 "order_id": order.id,
                 "style_id": style.id,
                 "timestamp": datetime.combine(p_date, time(12, 0)).replace(
@@ -308,12 +308,26 @@ class ProductionWriter:
         Note: Caller should wrap in transaction context for atomicity.
         """
         # Insert new runs
+        # Insert new runs
         if runs_to_insert:
             logger.info(f"Inserting {len(runs_to_insert)} new runs...")
-            for i in range(0, len(runs_to_insert), BATCH_SIZE):
-                await self.db.execute(
-                    insert(ProductionRun).values(runs_to_insert[i : i + BATCH_SIZE])
-                )
+            print(f"🐛 DEBUG: Starting Row-by-Row Insert for {len(runs_to_insert)} runs")
+            
+            for i, row in enumerate(runs_to_insert):
+                try:
+                    # Row-Level Debugging: Insert one by one and flush
+                    # print(f"Processing row {i}...") # Optional noise
+                    await self.db.execute(
+                        insert(ProductionRun).values([row])
+                    )
+                    await self.db.flush()
+                except Exception as e:
+                    print(f"\n{'!'*50}")
+                    print(f"❌ CRASH ON ROW {i+1}")
+                    print(f"DATA: {row}")
+                    print(f"ERROR: {e}")
+                    print(f"{'!'*50}\n")
+                    raise e
 
         # Update existing runs
         if runs_to_update:

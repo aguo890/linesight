@@ -97,11 +97,11 @@
           "ingestion"
         ],
         "summary": "Get Upload History",
-        "description": "Fetch recent file uploads, optionally filtered by line.",
+        "description": "Fetch recent file uploads, optionally filtered by data source.",
         "operationId": "get_upload_history_api_v1_ingestion_history_get",
         "parameters": [
           {
-            "name": "production_line_id",
+            "name": "data_source_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -113,7 +113,7 @@
                   "type": "null"
                 }
               ],
-              "title": "Production Line Id"
+              "title": "Data Source Id"
             }
           },
           {
@@ -156,7 +156,7 @@
           "ingestion"
         ],
         "summary": "Upload File For Ingestion",
-        "description": "Upload a file and create a RawImport record.\n\nThis is step 1 of the HITL flow. The file is saved and parsed.\nStorage structure: uploads/{factory_id}/{line_id}/{year}/{month}/{filename}\n\nREQUIRES: factory_id - Data must be uploaded to a specific factory.\nOPTIONAL: production_line_id - If provided, upload is associated with a specific line.",
+        "description": "Upload a file and create a RawImport record.\n\nThis is step 1 of the HITL flow. The file is saved and parsed.\nStorage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}\n\nREQUIRES: factory_id - Data must be uploaded to a specific factory.\nOPTIONAL: data_source_id - If provided, upload is associated with a specific data source.",
         "operationId": "upload_file_for_ingestion_api_v1_ingestion_upload_post",
         "security": [
           {
@@ -176,7 +176,7 @@
             "description": "REQUIRED: Factory to upload data to"
           },
           {
-            "name": "production_line_id",
+            "name": "data_source_id",
             "in": "query",
             "required": false,
             "schema": {
@@ -188,10 +188,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Optional: Production line to upload data to",
-              "title": "Production Line Id"
+              "description": "Optional: Data source to upload data to",
+              "title": "Data Source Id"
             },
-            "description": "Optional: Production line to upload data to"
+            "description": "Optional: Data source to upload data to"
           }
         ],
         "requestBody": {
@@ -1104,7 +1104,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FactoryWithLines"
+                  "$ref": "#/components/schemas/FactoryWithDataSources"
                 }
               }
             }
@@ -1217,14 +1217,14 @@
         }
       }
     },
-    "/api/v1/factories/{factory_id}/lines": {
+    "/api/v1/factories/{factory_id}/data-sources": {
       "get": {
         "tags": [
           "Factories"
         ],
-        "summary": "List Production Lines",
-        "description": "Get production lines for a factory.\n\nRBAC Filtering:\n- SYSTEM_ADMIN/OWNER: See all lines in the factory\n- MANAGER: Only see lines assigned via UserScope\n- ANALYST/VIEWER: See all lines (read-only)",
-        "operationId": "list_production_lines_api_v1_factories__factory_id__lines_get",
+        "summary": "List Data Sources",
+        "description": "Get data sources for a factory.\n\nRBAC Filtering:\n- SYSTEM_ADMIN/OWNER: See all data sources in the factory\n- MANAGER: Only see data sources assigned via UserScope\n- ANALYST/VIEWER: See all data sources (read-only)",
+        "operationId": "list_data_sources_api_v1_factories__factory_id__data_sources_get",
         "security": [
           {
             "HTTPBearer": []
@@ -1249,9 +1249,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProductionLineRead"
+                    "$ref": "#/components/schemas/DataSourceRead"
                   },
-                  "title": "Response List Production Lines Api V1 Factories  Factory Id  Lines Get"
+                  "title": "Response List Data Sources Api V1 Factories  Factory Id  Data Sources Get"
                 }
               }
             }
@@ -1272,9 +1272,9 @@
         "tags": [
           "Factories"
         ],
-        "summary": "Create Production Line",
-        "description": "Create a new production line with quota enforcement.",
-        "operationId": "create_production_line_api_v1_factories__factory_id__lines_post",
+        "summary": "Create Data Source",
+        "description": "Create a new data source with quota enforcement.",
+        "operationId": "create_data_source_api_v1_factories__factory_id__data_sources_post",
         "security": [
           {
             "HTTPBearer": []
@@ -1296,7 +1296,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductionLineCreate"
+                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceCreate"
               }
             }
           }
@@ -1307,7 +1307,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductionLineRead"
+                  "$ref": "#/components/schemas/DataSourceRead"
                 }
               }
             }
@@ -1325,14 +1325,14 @@
         }
       }
     },
-    "/api/v1/factories/lines/{line_id}": {
+    "/api/v1/factories/data-sources/{ds_id}": {
       "get": {
         "tags": [
           "Factories"
         ],
-        "summary": "Get Production Line",
-        "description": "Get a specific production line.\nPath: /factories/lines/{line_id}",
-        "operationId": "get_production_line_api_v1_factories_lines__line_id__get",
+        "summary": "Get Data Source",
+        "description": "Get a specific data source.\nPath: /factories/data-sources/{ds_id}",
+        "operationId": "get_data_source_api_v1_factories_data_sources__ds_id__get",
         "security": [
           {
             "HTTPBearer": []
@@ -1340,12 +1340,12 @@
         ],
         "parameters": [
           {
-            "name": "line_id",
+            "name": "ds_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Line Id"
+              "title": "Ds Id"
             }
           }
         ],
@@ -1355,7 +1355,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductionLineRead"
+                  "$ref": "#/components/schemas/DataSourceRead"
                 }
               }
             }
@@ -1376,9 +1376,9 @@
         "tags": [
           "Factories"
         ],
-        "summary": "Update Production Line",
-        "description": "Update a production line.\nPath: /factories/lines/{line_id}",
-        "operationId": "update_production_line_api_v1_factories_lines__line_id__patch",
+        "summary": "Update Data Source",
+        "description": "Update a data source.\nPath: /factories/data-sources/{ds_id}",
+        "operationId": "update_data_source_api_v1_factories_data_sources__ds_id__patch",
         "security": [
           {
             "HTTPBearer": []
@@ -1386,12 +1386,12 @@
         ],
         "parameters": [
           {
-            "name": "line_id",
+            "name": "ds_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Line Id"
+              "title": "Ds Id"
             }
           }
         ],
@@ -1400,7 +1400,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductionLineUpdate"
+                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceUpdate"
               }
             }
           }
@@ -1411,7 +1411,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductionLineRead"
+                  "$ref": "#/components/schemas/DataSourceRead"
                 }
               }
             }
@@ -1432,9 +1432,9 @@
         "tags": [
           "Factories"
         ],
-        "summary": "Delete Production Line",
-        "description": "Soft-delete a production line.\nPath: /factories/lines/{line_id}",
-        "operationId": "delete_production_line_api_v1_factories_lines__line_id__delete",
+        "summary": "Delete Data Source",
+        "description": "Soft-delete a data source.\nPath: /factories/data-sources/{ds_id}",
+        "operationId": "delete_data_source_api_v1_factories_data_sources__ds_id__delete",
         "security": [
           {
             "HTTPBearer": []
@@ -1442,12 +1442,12 @@
         ],
         "parameters": [
           {
-            "name": "line_id",
+            "name": "ds_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Line Id"
+              "title": "Ds Id"
             }
           }
         ],
@@ -2694,7 +2694,7 @@
           "Team Management"
         ],
         "summary": "List Organization Members",
-        "description": "List all organization members with their scope assignments.\n\nOnly accessible by organization owners.\nReturns all users in the organization with their production line assignments.",
+        "description": "List all organization members with their scope assignments.\n\nOnly accessible by organization owners.\nReturns all users in the organization with their data source assignments.",
         "operationId": "list_organization_members_api_v1_organizations_members_get",
         "responses": {
           "200": {
@@ -2724,9 +2724,9 @@
         "tags": [
           "Team Management"
         ],
-        "summary": "Assign User To Line",
-        "description": "Assign a user to a production line.\n\nOnly accessible by organization owners.\nCreates a new UserScope entry linking the user to the specified production line.",
-        "operationId": "assign_user_to_line_api_v1_organizations_members__user_id__scopes_post",
+        "summary": "Assign User To Data Source",
+        "description": "Assign a user to a data source.\n\nOnly accessible by organization owners.\nCreates a new UserScope entry linking the user to the specified data source.",
+        "operationId": "assign_user_to_data_source_api_v1_organizations_members__user_id__scopes_post",
         "security": [
           {
             "HTTPBearer": []
@@ -3880,14 +3880,14 @@
         }
       }
     },
-    "/api/v1/datasources": {
+    "/api/v1/data-sources": {
       "post": {
         "tags": [
           "Data Sources"
         ],
         "summary": "Create Data Source",
         "description": "Create a new data source for a production line.",
-        "operationId": "create_data_source_api_v1_datasources_post",
+        "operationId": "create_data_source_api_v1_data_sources_post",
         "security": [
           {
             "HTTPBearer": []
@@ -3932,7 +3932,7 @@
         ],
         "summary": "List Data Sources",
         "description": "List all data sources with mappings loaded.",
-        "operationId": "list_data_sources_api_v1_datasources_get",
+        "operationId": "list_data_sources_api_v1_data_sources_get",
         "security": [
           {
             "HTTPBearer": []
@@ -3970,7 +3970,7 @@
                   "items": {
                     "$ref": "#/components/schemas/DataSourceResponse"
                   },
-                  "title": "Response List Data Sources Api V1 Datasources Get"
+                  "title": "Response List Data Sources Api V1 Data Sources Get"
                 }
               }
             }
@@ -3988,14 +3988,14 @@
         }
       }
     },
-    "/api/v1/datasources/{data_source_id}": {
+    "/api/v1/data-sources/{data_source_id}": {
       "get": {
         "tags": [
           "Data Sources"
         ],
         "summary": "Get Data Source",
         "description": "Get data source by ID.",
-        "operationId": "get_data_source_api_v1_datasources__data_source_id__get",
+        "operationId": "get_data_source_api_v1_data_sources__data_source_id__get",
         "security": [
           {
             "HTTPBearer": []
@@ -4041,7 +4041,7 @@
         ],
         "summary": "Update Data Source",
         "description": "Update mappings or time column for a specific DataSource.",
-        "operationId": "update_data_source_api_v1_datasources__data_source_id__put",
+        "operationId": "update_data_source_api_v1_data_sources__data_source_id__put",
         "security": [
           {
             "HTTPBearer": []
@@ -4096,8 +4096,8 @@
           "Data Sources"
         ],
         "summary": "Delete Data Source",
-        "description": "Delete a data source and all its associated schema mappings.\nThe database cascade should handle the mappings, but we'll be explicit if needed.",
-        "operationId": "delete_data_source_api_v1_datasources__data_source_id__delete",
+        "description": "Delete a data source and all its associated schema mappings.",
+        "operationId": "delete_data_source_api_v1_data_sources__data_source_id__delete",
         "security": [
           {
             "HTTPBearer": []
@@ -4131,14 +4131,14 @@
         }
       }
     },
-    "/api/v1/datasources/line/{line_id}": {
+    "/api/v1/data-sources/line/{line_id}": {
       "get": {
         "tags": [
           "Data Sources"
         ],
         "summary": "Get Data Source By Line",
-        "description": "Get data source for a specific production line.",
-        "operationId": "get_data_source_by_line_api_v1_datasources_line__line_id__get",
+        "description": "Get data source by ID (line_id IS the DataSource.id after refactor).",
+        "operationId": "get_data_source_by_line_api_v1_data_sources_line__line_id__get",
         "security": [
           {
             "HTTPBearer": []
@@ -4169,7 +4169,7 @@
                       "type": "null"
                     }
                   ],
-                  "title": "Response Get Data Source By Line Api V1 Datasources Line  Line Id  Get"
+                  "title": "Response Get Data Source By Line Api V1 Data Sources Line  Line Id  Get"
                 }
               }
             }
@@ -4187,14 +4187,14 @@
         }
       }
     },
-    "/api/v1/datasources/by-line/{production_line_id}": {
+    "/api/v1/data-sources/by-line/{production_line_id}": {
       "get": {
         "tags": [
           "Data Sources"
         ],
         "summary": "Get Datasource By Line Explicit",
-        "description": "Fetch DataSource config for a specific line.\nReturns 200 with null if not found (graceful init).\nAlias/Explicit endpoint for validate-mapping flow.",
-        "operationId": "get_datasource_by_line_explicit_api_v1_datasources_by_line__production_line_id__get",
+        "description": "Fetch DataSource config for a specific line.\nReturns 200 with null if not found (graceful init).\nAfter refactor: production_line_id IS the DataSource.id directly.",
+        "operationId": "get_datasource_by_line_explicit_api_v1_data_sources_by_line__production_line_id__get",
         "security": [
           {
             "HTTPBearer": []
@@ -4225,7 +4225,7 @@
                       "type": "null"
                     }
                   ],
-                  "title": "Response Get Datasource By Line Explicit Api V1 Datasources By Line  Production Line Id  Get"
+                  "title": "Response Get Datasource By Line Explicit Api V1 Data Sources By Line  Production Line Id  Get"
                 }
               }
             }
@@ -4243,14 +4243,14 @@
         }
       }
     },
-    "/api/v1/datasources/{data_source_id}/mapping": {
+    "/api/v1/data-sources/{data_source_id}/mapping": {
       "put": {
         "tags": [
           "Data Sources"
         ],
         "summary": "Update Schema Mapping",
         "description": "Create a new version of the schema mapping after user validation.",
-        "operationId": "update_schema_mapping_api_v1_datasources__data_source_id__mapping_put",
+        "operationId": "update_schema_mapping_api_v1_data_sources__data_source_id__mapping_put",
         "security": [
           {
             "HTTPBearer": []
@@ -5714,6 +5714,208 @@
         ],
         "title": "DataSourceCreate"
       },
+      "DataSourceRead": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "factory_id": {
+            "type": "string",
+            "title": "Factory Id"
+          },
+          "supervisor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supervisor Id"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "time_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
+          "parent_data_source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Data Source Id"
+          },
+          "is_segment": {
+            "type": "boolean",
+            "title": "Is Segment",
+            "default": false
+          },
+          "date_range_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Range Start"
+          },
+          "date_range_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Range End"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "id",
+          "factory_id",
+          "is_active",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DataSourceRead",
+        "description": "Schema for reading a data source."
+      },
       "DataSourceResponse": {
         "properties": {
           "id": {
@@ -5721,11 +5923,25 @@
             "title": "Id"
           },
           "production_line_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Production Line Id"
           },
           "source_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Source Name"
           },
           "description": {
@@ -5782,16 +5998,135 @@
         "type": "object",
         "required": [
           "id",
-          "production_line_id",
-          "source_name",
           "description",
           "is_active",
           "created_at"
         ],
         "title": "DataSourceResponse"
       },
+      "DataSourceSettings": {
+        "properties": {
+          "is_custom_schedule": {
+            "type": "boolean",
+            "title": "Is Custom Schedule",
+            "description": "If false, uses factory defaults",
+            "default": false
+          },
+          "shift_pattern": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shift Pattern"
+          },
+          "non_working_days": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Non Working Days"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "DataSourceSettings",
+        "description": "Settings specific to a data source.\nCan be inherited from Factory defaults or overridden."
+      },
       "DataSourceUpdate": {
         "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
           "time_column": {
             "anyOf": [
               {
@@ -6392,7 +6727,7 @@
         "title": "FactoryUpdate",
         "description": "Schema for updating a factory."
       },
-      "FactoryWithLines": {
+      "FactoryWithDataSources": {
         "properties": {
           "name": {
             "type": "string",
@@ -6551,12 +6886,12 @@
             "format": "date-time",
             "title": "Updated At"
           },
-          "production_lines": {
+          "data_sources": {
             "items": {
-              "$ref": "#/components/schemas/ProductionLineRead"
+              "$ref": "#/components/schemas/DataSourceRead"
             },
             "type": "array",
-            "title": "Production Lines",
+            "title": "Data Sources",
             "default": []
           }
         },
@@ -6569,8 +6904,8 @@
           "created_at",
           "updated_at"
         ],
-        "title": "FactoryWithLines",
-        "description": "Factory with production lines."
+        "title": "FactoryWithDataSources",
+        "description": "Factory with its data sources."
       },
       "HTTPValidationError": {
         "properties": {
@@ -7619,320 +7954,6 @@
         "title": "ProductionEventItem",
         "description": "Single production event."
       },
-      "ProductionLineCreate": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProductionLineSettings"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "name"
-        ],
-        "title": "ProductionLineCreate",
-        "description": "Schema for creating a production line."
-      },
-      "ProductionLineRead": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "factory_id": {
-            "type": "string",
-            "title": "Factory Id"
-          },
-          "supervisor_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Supervisor Id"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProductionLineSettings"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Settings"
-          },
-          "is_active": {
-            "type": "boolean",
-            "title": "Is Active"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Updated At"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "id",
-          "factory_id",
-          "is_active",
-          "created_at",
-          "updated_at"
-        ],
-        "title": "ProductionLineRead",
-        "description": "Schema for reading a production line."
-      },
-      "ProductionLineSettings": {
-        "properties": {
-          "is_custom_schedule": {
-            "type": "boolean",
-            "title": "Is Custom Schedule",
-            "description": "If false, uses factory defaults",
-            "default": false
-          },
-          "shift_pattern": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ShiftConfig"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Shift Pattern"
-          },
-          "non_working_days": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "integer"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Non Working Days"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "ProductionLineSettings",
-        "description": "Settings specific to a production line.\nCan be inherited from Factory defaults or overridden."
-      },
-      "ProductionLineUpdate": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProductionLineSettings"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Settings"
-          }
-        },
-        "type": "object",
-        "title": "ProductionLineUpdate",
-        "description": "Schema for updating a production line."
-      },
       "ProductionRunCreate": {
         "properties": {
           "factory_id": {
@@ -8627,9 +8648,9 @@
       },
       "ScopeAssign": {
         "properties": {
-          "production_line_id": {
+          "data_source_id": {
             "type": "string",
-            "title": "Production Line Id"
+            "title": "Data Source Id"
           },
           "role": {
             "type": "string",
@@ -8639,10 +8660,10 @@
         },
         "type": "object",
         "required": [
-          "production_line_id"
+          "data_source_id"
         ],
         "title": "ScopeAssign",
-        "description": "Request body for assigning a user to a production line."
+        "description": "Request body for assigning a user to a data source."
       },
       "ScopeRead": {
         "properties": {
@@ -8676,7 +8697,7 @@
             ],
             "title": "Factory Id"
           },
-          "production_line_id": {
+          "data_source_id": {
             "anyOf": [
               {
                 "type": "string"
@@ -8685,7 +8706,7 @@
                 "type": "null"
               }
             ],
-            "title": "Production Line Id"
+            "title": "Data Source Id"
           },
           "role": {
             "type": "string",
@@ -9652,6 +9673,271 @@
         ],
         "title": "WorkforceStats",
         "description": "Workforce attendance statistics."
+      },
+      "app__schemas__datasource__DataSourceCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "factory_id": {
+            "type": "string",
+            "title": "Factory Id",
+            "description": "ID of the factory this data source belongs to"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "time_column": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "factory_id"
+        ],
+        "title": "DataSourceCreate",
+        "description": "Schema for creating a data source."
+      },
+      "app__schemas__datasource__DataSourceUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "time_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
+          }
+        },
+        "type": "object",
+        "title": "DataSourceUpdate",
+        "description": "Schema for updating a data source."
       }
     },
     "securitySchemes": {

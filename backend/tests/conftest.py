@@ -29,9 +29,9 @@ USE_REAL_DB = os.getenv("USE_REAL_DB", "false").lower() == "true"
 
 # Use SQLite for tests (in-memory) by default
 if USE_REAL_DB:
-    # Use the port verified from docker ps (3307)
-    TEST_DATABASE_URL = "mysql+aiomysql://root:root@localhost:3307/linesight"
-    SYNC_TEST_DATABASE_URL = "mysql+pymysql://root:root@localhost:3307/linesight"
+    # Use local MySQL (port 3306) and the dedicated TEST database
+    TEST_DATABASE_URL = "mysql+aiomysql://root:root@localhost:3306/linesight_test"
+    SYNC_TEST_DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/linesight_test"
 else:
     TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
     SYNC_TEST_DATABASE_URL = "sqlite:///:memory:"
@@ -210,7 +210,7 @@ def client_with_auth(client) -> Generator[TestClient, None, None]:
     fake_user = {
         "id": "test-user-id",
         "email": "test@example.com",
-        "role": "admin",
+        "role": "system_admin",
         "organization_id": "test-org-id",
     }
 
@@ -255,7 +255,7 @@ async def test_user(db_session: AsyncSession, test_organization):
         email="test@example.com",
         hashed_password=hash_password("testpassword123"),
         full_name="Test User",
-        role=UserRole.ADMIN,
+        role=UserRole.SYSTEM_ADMIN,
         is_active=True,
         is_verified=True,
     )

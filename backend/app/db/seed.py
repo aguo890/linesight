@@ -14,7 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.security import hash_password
 from app.enums import OrderPriority, OrderStatus, RoleScope, UserRole
 from app.models.analytics import EfficiencyMetric
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource as ProductionLine, SchemaMapping
 from app.models.production import (
     Order,
     ProductionRun,
@@ -33,20 +34,38 @@ def gravatar_url(email: str) -> str:
 async def seed_data(db: AsyncSession):
     """Seed the database with initial development data."""
 
-    # 0. Clear existing data for idempotency
+    # 0. Clear existing data for idempotency (Strict Reverse-Dependency Order)
     print("Clearing existing seed data for idempotency...")
-    # Fix: Remove legacy 'MANAGER' roles that might exist from previous versions
-    # This prevents "LookupError: 'MANAGER' is not among the defined enum values"
-    from sqlalchemy import text
-    await db.execute(text("DELETE FROM users WHERE role = 'MANAGER'"))
     
+    # 1. Metrics & Logs
     await db.execute(delete(EfficiencyMetric))
+    
+    # 2. Production Data
     await db.execute(delete(ProductionRun))
+    await db.execute(delete(WorkerSkill))
+    await db.execute(delete(Worker))
+    await db.execute(delete(Order))
+    await db.execute(delete(Style))
+    
+    # 3. Configuration & Relations
+    await db.execute(delete(SchemaMapping))
     await db.execute(delete(UserScope))
-    # Delete managers, analysts, viewers only (preserve admin/owner accounts)
-    await db.execute(delete(User).where(User.role.in_([UserRole.FACTORY_MANAGER, UserRole.LINE_MANAGER, UserRole.ANALYST, UserRole.VIEWER])))
+    
+    # 4. Core Structure
     await db.execute(delete(ProductionLine))
+    
+    # 5. Organizations (Factories)
     await db.execute(delete(Factory))
+    
+    # 6. Users (Keep System Admin & Owner if possible, but for full reset we often clear all except maybe admin)
+    # For this seed script, we'll clear dependent roles
+    await db.execute(delete(User).where(User.role.in_([
+        UserRole.FACTORY_MANAGER, 
+        UserRole.LINE_MANAGER, 
+        UserRole.ANALYST, 
+        UserRole.VIEWER
+    ])))
+    
     await db.flush()
 
     # 1. Create Organization
@@ -276,11 +295,35 @@ async def seed_data(db: AsyncSession):
         line = ProductionLine(
             factory_id=factory_a.id,
             name=name,
+            source_name=name,
             code=f"DET-L{i:02d}",
             is_active=True,
             target_efficiency_pct=85,
         )
+        # Golden Path Configuration for Chassis Assembly (DET-L01)
+        if i == 1:
+            line.time_column = "Date"
+            line.settings = {"allow_overwrites": True, "match_strategy": "fuzzy"}
+            line.source_name = "chassis_production_2025.xlsx"
+            
         db.add(line)
+        await db.flush() # Flush to get the ID
+        
+        # Create SchemaMapping for Chassis Assembly
+        if i == 1:
+            mapping = SchemaMapping(
+                data_source_id=line.id,
+                column_map={
+                    "Date": "production_date", 
+                    "Style": "style_number", 
+                    "Qty": "actual_qty", 
+                    "Efficiency": "efficiency_pct"
+                },
+                is_active=True,
+                version=1
+            )
+            db.add(mapping)
+            
         detroit_lines.append(line)
     
     # 10 Generic lines
@@ -288,6 +331,7 @@ async def seed_data(db: AsyncSession):
         line = ProductionLine(
             factory_id=factory_a.id,
             name=f"Assembly Line {i}",
+            source_name=f"Assembly Line {i}",
             code=f"DET-L{i:02d}",
             is_active=True,
             target_efficiency_pct=80,
@@ -319,6 +363,7 @@ async def seed_data(db: AsyncSession):
     proper_line = ProductionLine(
         factory_id=factory_b.id,
         name="Prototype Assembly",
+        source_name="Prototype Assembly",
         code="SH-L01",
         is_active=True,
         target_efficiency_pct=75,
@@ -332,6 +377,7 @@ async def seed_data(db: AsyncSession):
         line = ProductionLine(
             factory_id=factory_b.id,
             name=uuid_name,  # Raw UUID as name - should show "Untitled Line" in UI
+            source_name=uuid_name,
             code=f"SH-UUID-{i+1}",
             is_active=True,
             target_efficiency_pct=70,
@@ -344,6 +390,7 @@ async def seed_data(db: AsyncSession):
         line = ProductionLine(
             factory_id=factory_b.id,
             name=f"Shanghai Line {i}",
+            source_name=f"Shanghai Line {i}",
             code=f"SH-L{i:02d}",
             is_active=True,
             target_efficiency_pct=72,
@@ -394,7 +441,7 @@ async def seed_data(db: AsyncSession):
             scope_type=RoleScope.LINE,
             organization_id=demo_org.id,
             factory_id=factory_a.id,
-            production_line_id=detroit_lines[0].id,
+            data_source_id=detroit_lines[0].id,
             role=UserRole.LINE_MANAGER
         ))
     
@@ -522,7 +569,7 @@ async def seed_data(db: AsyncSession):
             target_line = detroit_lines[line_idx]
             stmt = select(UserScope).where(
                 UserScope.user_id == user.id, 
-                UserScope.production_line_id == target_line.id
+                UserScope.data_source_id == target_line.id
             )
             if not (await db.execute(stmt)).scalar_one_or_none():
                 db.add(UserScope(
@@ -530,7 +577,7 @@ async def seed_data(db: AsyncSession):
                     scope_type=RoleScope.LINE,
                     organization_id=demo_org.id,
                     factory_id=factory_a.id,
-                    production_line_id=target_line.id,
+                    data_source_id=target_line.id,
                     role=UserRole.LINE_MANAGER 
                 ))
                 scopes_created += 1
@@ -556,7 +603,7 @@ async def seed_data(db: AsyncSession):
             scope_type=RoleScope.LINE,
             organization_id=demo_org.id,
             factory_id=factory_a.id,
-            production_line_id=detroit_lines[4].id,
+            data_source_id=detroit_lines[4].id,
             role=UserRole.LINE_MANAGER,
         ))
         scopes_created += 1
@@ -569,7 +616,7 @@ async def seed_data(db: AsyncSession):
             scope_type=RoleScope.LINE,
             organization_id=demo_org.id,
             factory_id=factory_b.id,
-            production_line_id=shanghai_lines[0].id,
+            data_source_id=shanghai_lines[0].id,
             role=UserRole.LINE_MANAGER,
         ))
         scopes_created += 1
@@ -612,7 +659,7 @@ async def seed_data(db: AsyncSession):
                 scope_type=RoleScope.LINE,
                 organization_id=demo_org.id,
                 factory_id=line.factory_id,
-                production_line_id=line.id,
+                data_source_id=line.id,
                 role=UserRole.LINE_MANAGER
             ))
             scopes_created += 1
@@ -688,7 +735,7 @@ async def seed_data(db: AsyncSession):
                 factory_id=factory_a.id,
                 employee_id=emp_id,
                 full_name=name,
-                line_id=detroit_lines[i % len(detroit_lines)].id,
+                data_source_id=detroit_lines[i % len(detroit_lines)].id,
                 is_active=True,
             )
             db.add(worker)
@@ -715,7 +762,7 @@ async def seed_data(db: AsyncSession):
         target_date = today - timedelta(days=d)
         for line in detroit_lines:
             run_query = select(ProductionRun).where(
-                ProductionRun.line_id == line.id,
+                ProductionRun.data_source_id == line.id,
                 ProductionRun.production_date == target_date,
             )
             run_result = await db.execute(run_query)
@@ -731,7 +778,7 @@ async def seed_data(db: AsyncSession):
                     factory_id=factory_a.id,
                     production_date=target_date,
                     order_id=order.id,
-                    line_id=line.id,
+                    data_source_id=line.id,
                     planned_qty=planned,
                     actual_qty=actual,
                     worked_minutes=Decimal("480"),

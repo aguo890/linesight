@@ -1,6 +1,6 @@
 """
 Team Management endpoints for LineSight.
-Enables organization owners to manage user assignments to production lines.
+Enables organization owners to manage user assignments to data sources.
 """
 
 from typing import Annotated
@@ -12,7 +12,8 @@ from sqlalchemy.orm import selectinload
 
 from app.api.deps import OwnerUser, get_db
 from app.enums import RoleScope, UserRole
-from app.models.factory import Factory, ProductionLine
+from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import User, UserScope
 from app.schemas.team import MemberRead, ScopeAssign, ScopeRead
 
@@ -28,7 +29,7 @@ async def list_organization_members(
     List all organization members with their scope assignments.
 
     Only accessible by organization owners.
-    Returns all users in the organization with their production line assignments.
+    Returns all users in the organization with their data source assignments.
     """
     # Fetch all users in the organization with their scopes
     result = await db.execute(
@@ -51,7 +52,7 @@ async def list_organization_members(
                 scope_type=scope.scope_type.value if hasattr(scope.scope_type, 'value') else str(scope.scope_type),
                 organization_id=str(scope.organization_id) if scope.organization_id else None,
                 factory_id=str(scope.factory_id) if scope.factory_id else None,
-                production_line_id=str(scope.production_line_id) if scope.production_line_id else None,
+                data_source_id=str(scope.data_source_id) if scope.data_source_id else None,
                 role=scope.role.value if hasattr(scope.role, 'value') else str(scope.role),
             )
             for scope in user.scopes
@@ -71,17 +72,17 @@ async def list_organization_members(
 
 
 @router.post("/members/{user_id}/scopes", response_model=ScopeRead, status_code=status.HTTP_201_CREATED)
-async def assign_user_to_line(
+async def assign_user_to_data_source(
     user_id: str,
     scope_data: ScopeAssign,
     current_user: OwnerUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Assign a user to a production line.
+    Assign a user to a data source.
 
     Only accessible by organization owners.
-    Creates a new UserScope entry linking the user to the specified production line.
+    Creates a new UserScope entry linking the user to the specified data source.
     """
     # Verify target user exists and belongs to same organization
     user_result = await db.execute(
@@ -101,26 +102,26 @@ async def assign_user_to_line(
             detail="Cannot assign users from a different organization",
         )
 
-    # Verify production line exists and belongs to owner's organization
-    line_result = await db.execute(
-        select(ProductionLine)
+    # Verify data source exists and belongs to owner's organization
+    ds_result = await db.execute(
+        select(DataSource)
         .join(Factory)
         .where(
-            ProductionLine.id == scope_data.production_line_id,
+            DataSource.id == scope_data.data_source_id,
             Factory.organization_id == current_user.organization_id,
         )
     )
-    line = line_result.scalar_one_or_none()
+    data_source = ds_result.scalar_one_or_none()
 
-    if not line:
+    if not data_source:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Production line not found or not in your organization",
+            detail="Data source not found or not in your organization",
         )
 
     # Get factory ID for the scope
     factory_result = await db.execute(
-        select(Factory).where(Factory.id == line.factory_id)
+        select(Factory).where(Factory.id == data_source.factory_id)
     )
     factory = factory_result.scalar_one()
 
@@ -128,13 +129,13 @@ async def assign_user_to_line(
     existing_scope = await db.execute(
         select(UserScope).where(
             UserScope.user_id == user_id,
-            UserScope.production_line_id == scope_data.production_line_id,
+            UserScope.data_source_id == scope_data.data_source_id,
         )
     )
     if existing_scope.scalar_one_or_none():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="User is already assigned to this production line",
+            detail="User is already assigned to this data source",
         )
 
     # Create the scope assignment
@@ -142,10 +143,10 @@ async def assign_user_to_line(
     
     new_scope = UserScope(
         user_id=user_id,
-        scope_type=RoleScope.LINE,
+        scope_type=RoleScope.DATA_SOURCE,  # Changed from LINE
         organization_id=current_user.organization_id,
         factory_id=factory.id,
-        production_line_id=scope_data.production_line_id,
+        data_source_id=scope_data.data_source_id,
         role=role,
     )
     db.add(new_scope)
@@ -157,7 +158,7 @@ async def assign_user_to_line(
         scope_type=new_scope.scope_type.value,
         organization_id=str(new_scope.organization_id) if new_scope.organization_id else None,
         factory_id=str(new_scope.factory_id) if new_scope.factory_id else None,
-        production_line_id=str(new_scope.production_line_id) if new_scope.production_line_id else None,
+        data_source_id=str(new_scope.data_source_id) if new_scope.data_source_id else None,
         role=new_scope.role.value,
     )
 

@@ -7,7 +7,7 @@
  */
 import type { ScopeReadOrganizationId } from './scopeReadOrganizationId';
 import type { ScopeReadFactoryId } from './scopeReadFactoryId';
-import type { ScopeReadProductionLineId } from './scopeReadProductionLineId';
+import type { ScopeReadDataSourceId } from './scopeReadDataSourceId';
 
 /**
  * Response schema for a user scope assignment.
@@ -17,6 +17,6 @@ export interface ScopeRead {
   scope_type: string;
   organization_id?: ScopeReadOrganizationId;
   factory_id?: ScopeReadFactoryId;
-  production_line_id?: ScopeReadProductionLineId;
+  data_source_id?: ScopeReadDataSourceId;
   role: string;
 }

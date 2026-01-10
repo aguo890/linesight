@@ -1,0 +1,111 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\19803\business\FactoryExcelManager\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\business\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.1.0, langsmith-0.6.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_sequential_ingestion.py::test_jan_feb_march_continuity --- Created Test Data Source: 9fb3b7b0-4466-451c-a73b-bdceb4bd0834 ---
+--- Uploading Jan.xlsx ---
+{"timestamp": "2026-01-09T20:12:43.865049Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=c03b6903-89c0-44f7-bfe2-855cf547a928&data_source_id=9fb3b7b0-4466-451c-a73b-bdceb4bd0834 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:12:44.118742Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:12:44.119100Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)"}
+{"timestamp": "2026-01-09T20:12:44.119182Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:12:44.132755Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/process/288c6c3b-a80a-4820-ab5b-cf0db4bf28bf?factory_id=c03b6903-89c0-44f7-bfe2-855cf547a928 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:12:44.134243Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:12:44.134309Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:12:44.134358Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf"}
+{"timestamp": "2026-01-09T20:12:44.134393Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: None"}
+{"timestamp": "2026-01-09T20:12:44.134420Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: c03b6903-89c0-44f7-bfe2-855cf547a928"}
+{"timestamp": "2026-01-09T20:12:44.134446Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: 9fb3b7b0-4466-451c-a73b-bdceb4bd0834"}
+{"timestamp": "2026-01-09T20:12:44.134479Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 2"}
+{"timestamp": "2026-01-09T20:12:44.134513Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:12:44.143569Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:12:44.146984Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:12:44.147056Z", "level": "INFO", "logger": "ingestion.promote", "message": "PROMOTE ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:12:44.147097Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import_id: 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf"}
+{"timestamp": "2026-01-09T20:12:44.147135Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:12:44.154417Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.status: confirmed"}
+{"timestamp": "2026-01-09T20:12:44.154492Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.factory_id: c03b6903-89c0-44f7-bfe2-855cf547a928"}
+{"timestamp": "2026-01-09T20:12:44.154531Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.production_line_id: None"}
+{"timestamp": "2026-01-09T20:12:44.154562Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.data_source_id: 9fb3b7b0-4466-451c-a73b-bdceb4bd0834"}
+{"timestamp": "2026-01-09T20:12:44.154591Z", "level": "INFO", "logger": "ingestion.promote", "message": "Creating FileProcessingService..."}
+{"timestamp": "2026-01-09T20:12:44.154659Z", "level": "INFO", "logger": "ingestion.promote", "message": "Calling promote_to_production..."}
+{"timestamp": "2026-01-09T20:12:44.154742Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "ORCHESTRATOR: promote_to_production for 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf"}
+{"timestamp": "2026-01-09T20:12:44.163649Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Checking mappings for DS 9fb3b7b0-4466-451c-a73b-bdceb4bd0834"}
+{"timestamp": "2026-01-09T20:12:44.163733Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: No schema mappings loaded!"}
+{"timestamp": "2026-01-09T20:12:44.163786Z", "level": "ERROR", "logger": "ingestion.promote", "message": "Promotion FAILED: No active schema mapping found."}
+{"timestamp": "2026-01-09T20:12:44.164779Z", "level": "ERROR", "logger": "ingestion.promote", "message": "Traceback (most recent call last):\n  File \"C:\\Users\\19803\\business\\FactoryExcelManager\\backend\\app\\api\\v1\\endpoints\\ingestion.py\", line 947, in promote_to_production\n    results = await service.promote_to_production(raw_import_id)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\business\\FactoryExcelManager\\backend\\app\\services\\file_processor.py\", line 215, in promote_to_production\n    return await self._orchestrator.promote_to_production(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<2 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\business\\FactoryExcelManager\\backend\\app\\services\\ingestion\\orchestrator.py\", line 103, in promote_to_production\n    raise ValueError(\"No active schema mapping found.\")\nValueError: No active schema mapping found.\n"}
+Traceback (most recent call last):
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\api\v1\endpoints\ingestion.py", line 947, in promote_to_production
+    results = await service.promote_to_production(raw_import_id)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\services\file_processor.py", line 215, in promote_to_production
+    return await self._orchestrator.promote_to_production(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\services\ingestion\orchestrator.py", line 103, in promote_to_production
+    raise ValueError("No active schema mapping found.")
+ValueError: No active schema mapping found.
+
+{"timestamp": "2026-01-09T20:12:44.165489Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/promote/288c6c3b-a80a-4820-ab5b-cf0db4bf28bf \"HTTP/1.1 500 Internal Server Error\""}
+FAILED
+
+================================== FAILURES ===================================
+________________________ test_jan_feb_march_continuity ________________________
+tests\test_sequential_ingestion.py:116: in test_jan_feb_march_continuity
+    assert resp.status_code == 200, f"Promote failed: {resp.text}"
+E   AssertionError: Promote failed: {"detail":"Promotion failed: No active schema mapping found."}
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=c03b6903-89c0-44f7-bfe2-855cf547a928&data_source_id=9fb3b7b0-4466-451c-a73b-bdceb4bd0834 "HTTP/1.1 200 OK"
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:171 MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/process/288c6c3b-a80a-4820-ab5b-cf0db4bf28bf?factory_id=c03b6903-89c0-44f7-bfe2-855cf547a928 "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:417 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:418 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:419   raw_import_id: 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf
+INFO     ingestion.confirm_mapping:ingestion.py:420   production_line_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:421   factory_id: c03b6903-89c0-44f7-bfe2-855cf547a928
+INFO     ingestion.confirm_mapping:ingestion.py:422   data_source_id: 9fb3b7b0-4466-451c-a73b-bdceb4bd0834
+INFO     ingestion.confirm_mapping:ingestion.py:423   mappings count: 2
+INFO     ingestion.confirm_mapping:ingestion.py:424 ============================================================
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     ingestion.promote:ingestion.py:916 ============================================================
+INFO     ingestion.promote:ingestion.py:917 PROMOTE ENDPOINT CALLED
+INFO     ingestion.promote:ingestion.py:918   raw_import_id: 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf
+INFO     ingestion.promote:ingestion.py:919 ============================================================
+INFO     ingestion.promote:ingestion.py:931   raw_import.status: confirmed
+INFO     ingestion.promote:ingestion.py:932   raw_import.factory_id: c03b6903-89c0-44f7-bfe2-855cf547a928
+INFO     ingestion.promote:ingestion.py:933   raw_import.production_line_id: None
+INFO     ingestion.promote:ingestion.py:934   raw_import.data_source_id: 9fb3b7b0-4466-451c-a73b-bdceb4bd0834
+INFO     ingestion.promote:ingestion.py:944 Creating FileProcessingService...
+INFO     ingestion.promote:ingestion.py:946 Calling promote_to_production...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:75 ORCHESTRATOR: promote_to_production for 288c6c3b-a80a-4820-ab5b-cf0db4bf28bf
+INFO     app.services.ingestion.orchestrator:orchestrator.py:91 DEBUG: Checking mappings for DS 9fb3b7b0-4466-451c-a73b-bdceb4bd0834
+INFO     app.services.ingestion.orchestrator:orchestrator.py:96 DEBUG: No schema mappings loaded!
+ERROR    ingestion.promote:ingestion.py:951 Promotion FAILED: No active schema mapping found.
+ERROR    ingestion.promote:ingestion.py:952 Traceback (most recent call last):
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\api\v1\endpoints\ingestion.py", line 947, in promote_to_production
+    results = await service.promote_to_production(raw_import_id)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\services\file_processor.py", line 215, in promote_to_production
+    return await self._orchestrator.promote_to_production(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "C:\Users\19803\business\FactoryExcelManager\backend\app\services\ingestion\orchestrator.py", line 103, in promote_to_production
+    raise ValueError("No active schema mapping found.")
+ValueError: No active schema mapping found.
+
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/promote/288c6c3b-a80a-4820-ab5b-cf0db4bf28bf "HTTP/1.1 500 Internal Server Error"
+=========================== short test summary info ===========================
+FAILED tests/test_sequential_ingestion.py::test_jan_feb_march_continuity - As...
+============================== 1 failed in 2.52s ==============================

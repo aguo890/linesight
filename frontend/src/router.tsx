@@ -10,7 +10,7 @@ const LoginPage = lazy(() => import('./features/auth/pages/LoginPage'));
 const DynamicDashboardPage = lazy(() => import('./features/dashboard/pages/DynamicDashboardPage'));
 const MyDashboardsPage = lazy(() => import('./features/dashboard/pages/MyDashboardsPage'));
 const FactoryDetailPage = lazy(() => import('./features/dashboard/pages/FactoryDetailPage'));
-const ProductionLinePage = lazy(() => import('./features/dashboard/pages/ProductionLinePage'));
+const DataSourceDetailPage = lazy(() => import('./features/dashboard/pages/DataSourceDetailPage')); // Updated import
 const ProfilePage = lazy(() => import('./features/user/ProfilePage'));
 const NotFound = lazy(() => import('./features/dashboard/pages/NotFound'));
 
@@ -172,7 +172,7 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute>
                 <Suspense fallback={<PageLoader />}>
-                    <ProductionLinePage />
+                    <DataSourceDetailPage /> {/* Updated Element */}
                 </Suspense>
             </ProtectedRoute>
         ),

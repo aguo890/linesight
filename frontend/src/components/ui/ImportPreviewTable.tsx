@@ -1,15 +1,8 @@
 import React from 'react';
 import { AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
-import { cn } from '../..//lib/utils';
+import { cn } from '../../lib/utils';
 
-// Matches the Backend 'DryRunRecord' schema
-interface DryRunRecord {
-    row_index: number;
-    raw_data: Record<string, any>;
-    cleaned_data: Record<string, any>;
-    status: 'valid' | 'warning' | 'error';
-    issues: string[];
-}
+import type { DryRunRecord } from '../../types/ingestion';
 
 interface ImportPreviewTableProps {
     records: DryRunRecord[];
@@ -24,6 +17,16 @@ export const ImportPreviewTable: React.FC<ImportPreviewTableProps> = ({
     onCancel,
     isSubmitting
 }) => {
+
+    // Safety check: handle null/undefined/empty records after database reset
+    if (!records || !Array.isArray(records) || records.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-64 text-slate-500">
+                <p className="text-lg font-medium">No preview data available</p>
+                <p className="text-sm mt-2">Please upload a file to see the preview.</p>
+            </div>
+        );
+    }
 
     // Count specific issues for the summary header
     const warningCount = records.filter(r => r.status === 'warning').length;
@@ -70,19 +73,19 @@ export const ImportPreviewTable: React.FC<ImportPreviewTableProps> = ({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                        {records.map((record) => (
+                        {records.map((record, index) => (
                             <tr
-                                key={record.row_index}
+                                key={record.row_index ?? `row-${index}`}
                                 className={cn(
                                     "hover:bg-slate-50 transition-colors",
                                     record.status === 'warning' && "bg-yellow-50 hover:bg-yellow-100"
                                 )}
                             >
-                                <td className="p-3 text-slate-400 font-mono">{record.row_index + 1}</td>
+                                <td className="p-3 text-slate-400 font-mono">{index + 1}</td>
 
                                 {/* Raw Data Column */}
                                 <td className="p-3 font-mono text-xs text-slate-500 truncate max-w-[200px]">
-                                    {Object.entries(record.raw_data).map(([k, v]) => (
+                                    {record.raw_data && Object.entries(record.raw_data).map(([k, v]) => (
                                         <div key={k}>
                                             <span className="font-semibold">{k}:</span> {String(v)}
                                         </div>
@@ -96,7 +99,7 @@ export const ImportPreviewTable: React.FC<ImportPreviewTableProps> = ({
 
                                 {/* Cleaned Data Column - Highlights Dates */}
                                 <td className="p-3">
-                                    {Object.entries(record.cleaned_data).map(([k, v]) => (
+                                    {record.cleaned_data && Object.entries(record.cleaned_data).map(([k, v]) => (
                                         <div key={k} className={cn(
                                             "text-xs mb-1",
                                             k === 'production_date' && record.status === 'warning' ? "font-bold text-yellow-700 bg-yellow-200/50 px-1 rounded w-fit" : ""

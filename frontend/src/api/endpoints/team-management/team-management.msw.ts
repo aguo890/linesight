@@ -24,9 +24,9 @@ import type {
 } from '../../model';
 
 
-export const getListOrganizationMembersApiV1OrganizationsMembersGetResponseMock = (): MemberRead[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), email: faker.internet.email(), full_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), avatar_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}}), is_active: faker.datatype.boolean(), last_login: faker.helpers.arrayElement([faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), undefined]), scopes: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), scope_type: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), factory_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}})})), undefined])})))
+export const getListOrganizationMembersApiV1OrganizationsMembersGetResponseMock = (): MemberRead[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), email: faker.internet.email(), full_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), avatar_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}}), is_active: faker.datatype.boolean(), last_login: faker.helpers.arrayElement([faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), undefined]), scopes: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), scope_type: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), factory_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), data_source_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}})})), undefined])})))
 
-export const getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostResponseMock = (overrideResponse: Partial< ScopeRead > = {}): ScopeRead => ({id: faker.string.alpha({length: {min: 10, max: 20}}), scope_type: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), factory_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
+export const getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostResponseMock = (overrideResponse: Partial< ScopeRead > = {}): ScopeRead => ({id: faker.string.alpha({length: {min: 10, max: 20}}), scope_type: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), factory_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), data_source_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
 
 
 export const getListOrganizationMembersApiV1OrganizationsMembersGetMockHandler = (overrideResponse?: MemberRead[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<MemberRead[]> | MemberRead[]), options?: RequestHandlerOptions) => {
@@ -41,12 +41,12 @@ export const getListOrganizationMembersApiV1OrganizationsMembersGetMockHandler =
   }, options)
 }
 
-export const getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMockHandler = (overrideResponse?: ScopeRead | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScopeRead> | ScopeRead), options?: RequestHandlerOptions) => {
+export const getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMockHandler = (overrideResponse?: ScopeRead | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ScopeRead> | ScopeRead), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/organizations/members/:userId/scopes', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostResponseMock()),
+    : getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostResponseMock()),
       { status: 201,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -64,6 +64,6 @@ export const getRemoveUserScopeApiV1OrganizationsMembersUserIdScopesScopeIdDelet
 }
 export const getTeamManagementMock = () => [
   getListOrganizationMembersApiV1OrganizationsMembersGetMockHandler(),
-  getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMockHandler(),
+  getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMockHandler(),
   getRemoveUserScopeApiV1OrganizationsMembersUserIdScopesScopeIdDeleteMockHandler()
 ]

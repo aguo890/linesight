@@ -1,12 +1,12 @@
 /**
  * Factory Creation Modal Component
  * 
- * Modal for creating new factories and their initial production line.
+ * Modal for creating new factories and their initial data source.
  * Extracted from DashboardWizard to provide dedicated factory management.
  */
 import React, { useState, useEffect } from 'react';
 import { X, Factory as FactoryIcon, AlertCircle, CheckCircle } from 'lucide-react';
-import { createFactory, createProductionLine } from '../../../lib/factoryApi';
+import { createFactory, createDataSource } from '../../../lib/factoryApi';
 import type { QuotaStatus } from '../../../lib/quotaApi';
 
 interface FactoryCreationModalProps {
@@ -24,14 +24,14 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
 }) => {
     const [factoryName, setFactoryName] = useState('');
     const [factoryCode, setFactoryCode] = useState('');
-    const [lineName, setLineName] = useState('');
-    const [lineSpecialty, setLineSpecialty] = useState('');
-    const [lineDescription, setLineDescription] = useState('');
+    const [sourceName, setSourceName] = useState('');
+    const [sourceSpecialty, setSourceSpecialty] = useState('');
+    const [sourceDescription, setSourceDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<{
         factoryName?: string;
-        lineName?: string;
+        sourceName?: string;
     }>({});
 
     // Reset form when modal opens/closes
@@ -39,23 +39,23 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
         if (!isOpen) {
             setFactoryName('');
             setFactoryCode('');
-            setLineName('');
-            setLineSpecialty('');
-            setLineDescription('');
+            setSourceName('');
+            setSourceSpecialty('');
+            setSourceDescription('');
             setError(null);
             setValidationErrors({});
         }
     }, [isOpen]);
 
     const validateForm = (): boolean => {
-        const errors: { factoryName?: string; lineName?: string } = {};
+        const errors: { factoryName?: string; sourceName?: string } = {};
 
         if (!factoryName.trim()) {
             errors.factoryName = 'Factory name is required';
         }
 
-        if (!lineName.trim()) {
-            errors.lineName = 'Production line name is required';
+        if (!sourceName.trim()) {
+            errors.sourceName = 'Data Source name is required';
         }
 
         setValidationErrors(errors);
@@ -88,11 +88,11 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                 timezone: 'UTC' // Default for now
             });
 
-            // Step 2: Create initial production line
-            await createProductionLine(factory.id, {
-                name: lineName.trim(),
-                description: lineDescription.trim() || undefined,
-                specialty: lineSpecialty.trim() || undefined
+            // Step 2: Create initial data source
+            await createDataSource(factory.id, {
+                name: sourceName.trim(),
+                description: sourceDescription.trim() || undefined,
+                specialty: sourceSpecialty.trim() || undefined
             });
 
             // Success!
@@ -125,7 +125,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                         <div>
                             <h2 className="text-xl font-bold text-gray-900">Create New Factory</h2>
                             <p className="text-sm text-gray-500 mt-0.5">
-                                Set up a new factory with an initial production line
+                                Set up a new factory with an initial data source
                             </p>
                         </div>
                     </div>
@@ -206,62 +206,62 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                                 <p className="mt-1 text-xs text-gray-500">Short identifier for this factory</p>
                             </div>
 
-                            {/* Production Line Name */}
+                            {/* Data Source Name */}
                             <div>
-                                <label htmlFor="lineName" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Initial Production Line <span className="text-red-500">*</span>
+                                <label htmlFor="sourceName" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Initial Data Source <span className="text-red-500">*</span>
                                 </label>
                                 <input
-                                    id="lineName"
-                                    data-testid="production-line-input"
+                                    id="sourceName"
+                                    data-testid="data-source-input"
                                     type="text"
-                                    value={lineName}
-                                    onChange={(e) => setLineName(e.target.value)}
+                                    value={sourceName}
+                                    onChange={(e) => setSourceName(e.target.value)}
                                     placeholder="e.g. Assembly Line A"
-                                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${validationErrors.lineName ? 'border-red-300' : 'border-gray-300'
+                                    className={`w-full px-3 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${validationErrors.sourceName ? 'border-red-300' : 'border-gray-300'
                                         }`}
                                     disabled={isSubmitting || !canCreate}
                                 />
-                                {validationErrors.lineName && (
-                                    <p className="mt-1 text-xs text-red-600">{validationErrors.lineName}</p>
+                                {validationErrors.sourceName && (
+                                    <p className="mt-1 text-xs text-red-600">{validationErrors.sourceName}</p>
                                 )}
                             </div>
 
-                            {/* Production Line Specialty */}
+                            {/* Data Source Specialty */}
                             <div>
-                                <label htmlFor="lineSpecialty" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Line Specialty <span className="text-gray-400 text-xs">(optional)</span>
+                                <label htmlFor="sourceSpecialty" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Source Specialty <span className="text-gray-400 text-xs">(optional)</span>
                                 </label>
                                 <input
-                                    id="lineSpecialty"
+                                    id="sourceSpecialty"
                                     type="text"
-                                    value={lineSpecialty}
-                                    onChange={(e) => setLineSpecialty(e.target.value)}
+                                    value={sourceSpecialty}
+                                    onChange={(e) => setSourceSpecialty(e.target.value)}
                                     placeholder="e.g. Assembly, Testing, Packaging"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     disabled={isSubmitting || !canCreate}
                                 />
                                 <p className="mt-1 text-xs text-gray-500">
-                                    Primary function or type of this line
+                                    Primary function or type of this source
                                 </p>
                             </div>
 
-                            {/* Production Line Description */}
+                            {/* Data Source Description */}
                             <div>
-                                <label htmlFor="lineDescription" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Line Description <span className="text-gray-400 text-xs">(optional)</span>
+                                <label htmlFor="sourceDescription" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Source Description <span className="text-gray-400 text-xs">(optional)</span>
                                 </label>
                                 <textarea
-                                    id="lineDescription"
-                                    value={lineDescription}
-                                    onChange={(e) => setLineDescription(e.target.value)}
+                                    id="sourceDescription"
+                                    value={sourceDescription}
+                                    onChange={(e) => setSourceDescription(e.target.value)}
                                     placeholder="e.g. Primary assembly line for sportswear"
                                     rows={2}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     disabled={isSubmitting || !canCreate}
                                 />
                                 <p className="mt-1 text-xs text-gray-500">
-                                    Briefly describe the function of this line
+                                    Briefly describe the function of this source
                                 </p>
                             </div>
 
@@ -277,7 +277,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             {isSubmitting && (
                                 <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
-                                    <p className="text-sm text-blue-700">Creating factory and production line...</p>
+                                    <p className="text-sm text-blue-700">Creating factory and data source...</p>
                                 </div>
                             )}
                         </div>

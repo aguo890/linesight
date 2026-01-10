@@ -48,7 +48,7 @@ export interface IngestionState {
 
 export interface UseIngestionReturn extends IngestionState {
     /** Upload a file */
-    upload: (file: File, factoryId?: string, lineId?: string) => Promise<UploadResponse>;
+    upload: (file: File, factoryId?: string, dataSourceId?: string) => Promise<UploadResponse>;
     /** Process an uploaded file */
     process: (options?: { factoryId?: string; llmEnabled?: boolean }) => Promise<ProcessingResponse>;
     /** Get current mapping state without reprocessing */
@@ -88,7 +88,7 @@ const initialState: IngestionState = {
  * const { upload, process, confirm, step, mappings } = useIngestion();
  * 
  * // Upload file
- * await upload(file, factoryId, lineId);
+ * await upload(file, factoryId, dataSourceId);
  * 
  * // Process through matching engine
  * await process({ llmEnabled: true });
@@ -104,12 +104,12 @@ export function useIngestion(): UseIngestionReturn {
     const upload = useCallback(async (
         file: File,
         factoryId?: string,
-        lineId?: string
+        dataSourceId?: string
     ): Promise<UploadResponse> => {
         setState(prev => ({ ...prev, step: 'uploading', isLoading: true, error: null }));
 
         try {
-            const response = await uploadFileForIngestion(file, factoryId, lineId);
+            const response = await uploadFileForIngestion(file, factoryId, dataSourceId);
             setState(prev => ({
                 ...prev,
                 step: 'processing',

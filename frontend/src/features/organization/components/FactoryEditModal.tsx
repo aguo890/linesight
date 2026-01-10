@@ -9,7 +9,7 @@ interface FactoryEditModalProps {
     factory: {
         id: string;
         name: string;
-        code: string;
+        code?: string;
     } | null;
 }
 

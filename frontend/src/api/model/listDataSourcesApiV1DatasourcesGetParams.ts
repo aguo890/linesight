@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListDataSourcesApiV1DatasourcesGetParams = {
+export type ListDataSourcesApiV1DataSourcesGetParams = {
 skip?: number;
 limit?: number;
 };

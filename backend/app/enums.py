@@ -113,11 +113,15 @@ class UserRole(str, Enum):
 
 
 class RoleScope(str, Enum):
-    """Scope levels for user permissions."""
+    """Scope levels for user permissions.
+    
+    DATA_SOURCE replaces LINE after the refactor.
+    """
 
     ORGANIZATION = "organization"
     FACTORY = "factory"
-    LINE = "line"
+    DATA_SOURCE = "data_source"  # New: replaces LINE
+    LINE = "line"  # Deprecated: kept for migration compatibility
 
 
 # =============================================================================
@@ -186,4 +190,5 @@ class AliasScope(str, Enum):
     GLOBAL = "global"
     ORGANIZATION = "organization"
     FACTORY = "factory"
-    LINE = "line"
+    DATA_SOURCE = "data_source"  # New: replaces LINE
+    LINE = "line"  # Deprecated: kept for migration compatibility

@@ -1,6 +1,6 @@
 """
 Factory endpoints for LineSight.
-CRUD operations for factories and production lines.
+CRUD operations for factories and data sources (formerly production lines).
 """
 
 from typing import Annotated
@@ -12,16 +12,19 @@ from sqlalchemy.orm import selectinload
 
 from app.api.deps import CurrentUser, ManagerUser, get_db
 from app.enums import UserRole
-from app.models.factory import Factory, ProductionLine
+from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import Organization, UserScope
+from app.schemas.datasource import (
+    DataSourceCreate,
+    DataSourceRead,
+    DataSourceUpdate,
+)
 from app.schemas.factory import (
     FactoryCreate,
     FactoryRead,
     FactoryUpdate,
-    FactoryWithLines,
-    ProductionLineCreate,
-    ProductionLineRead,
-    ProductionLineUpdate,
+    FactoryWithDataSources,
 )
 
 router = APIRouter()
@@ -69,7 +72,7 @@ async def list_factories(
     return factories
 
 
-@router.get("/{factory_id}", response_model=FactoryWithLines)
+@router.get("/{factory_id}", response_model=FactoryWithDataSources)
 async def get_factory(
     factory_id: str,
     current_user: CurrentUser,
@@ -84,7 +87,7 @@ async def get_factory(
     """
     result = await db.execute(
         select(Factory)
-        .options(selectinload(Factory.production_lines))
+        .options(selectinload(Factory.data_sources))
         .where(Factory.id == factory_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
@@ -96,20 +99,20 @@ async def get_factory(
             detail="Factory not found",
         )
 
-    # RBAC: Filter lines for LINE_MANAGER (Factory Manager sees all)
+    # RBAC: Filter data sources for LINE_MANAGER (Factory Manager sees all)
     if current_user.role == UserRole.LINE_MANAGER:
-        # Get line IDs assigned to this manager
+        # Get data source IDs assigned to this manager
         scope_result = await db.execute(
-            select(UserScope.production_line_id)
+            select(UserScope.data_source_id)
             .where(UserScope.user_id == current_user.id)
-            .where(UserScope.production_line_id.isnot(None))
+            .where(UserScope.data_source_id.isnot(None))
         )
-        allowed_line_ids = {row[0] for row in scope_result.fetchall()}
+        allowed_ds_ids = {row[0] for row in scope_result.fetchall()}
         
-        # Filter production_lines to only allowed ones
-        factory.production_lines = [
-            line for line in factory.production_lines 
-            if line.id in allowed_line_ids and line.is_active
+        # Filter data_sources to only allowed ones
+        factory.data_sources = [
+            ds for ds in factory.data_sources 
+            if ds.id in allowed_ds_ids and ds.is_active
         ]
 
     return factory
@@ -248,10 +251,10 @@ async def delete_factory(
     if factory.code:
         factory.code = f"{factory.code}_deleted_{factory.id[:8]}"
 
-    # Cascade soft delete to production lines
+    # Cascade soft delete to data sources
     await db.execute(
-        update(ProductionLine)
-        .where(ProductionLine.factory_id == factory_id)
+        update(DataSource)
+        .where(DataSource.factory_id == factory_id)
         .values(is_active=False)
     )
 
@@ -260,23 +263,23 @@ async def delete_factory(
 
 
 # =============================================================================
-# Production Line Endpoints
+# Data Source Endpoints (formerly Production Lines)
 # =============================================================================
 
 
-@router.get("/{factory_id}/lines", response_model=list[ProductionLineRead])
-async def list_production_lines(
+@router.get("/{factory_id}/data-sources", response_model=list[DataSourceRead])
+async def list_data_sources(
     factory_id: str,
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Get production lines for a factory.
+    Get data sources for a factory.
     
     RBAC Filtering:
-    - SYSTEM_ADMIN/OWNER: See all lines in the factory
-    - MANAGER: Only see lines assigned via UserScope
-    - ANALYST/VIEWER: See all lines (read-only)
+    - SYSTEM_ADMIN/OWNER: See all data sources in the factory
+    - MANAGER: Only see data sources assigned via UserScope
+    - ANALYST/VIEWER: See all data sources (read-only)
     """
     # Verify factory belongs to user's org
     result = await db.execute(
@@ -294,43 +297,43 @@ async def list_production_lines(
 
     # Build base query
     query = (
-        select(ProductionLine)
-        .where(ProductionLine.factory_id == factory_id)
-        .where(ProductionLine.is_active)
+        select(DataSource)
+        .where(DataSource.factory_id == factory_id)
+        .where(DataSource.is_active)
     )
 
-    # RBAC: Line Managers only see their assigned lines
+    # RBAC: Line Managers only see their assigned data sources
     if current_user.role == UserRole.LINE_MANAGER:
-        # Get line IDs assigned to this manager
+        # Get data source IDs assigned to this manager
         scope_result = await db.execute(
-            select(UserScope.production_line_id)
+            select(UserScope.data_source_id)
             .where(UserScope.user_id == current_user.id)
-            .where(UserScope.production_line_id.isnot(None))
+            .where(UserScope.data_source_id.isnot(None))
         )
-        allowed_line_ids = [row[0] for row in scope_result.fetchall()]
+        allowed_ds_ids = [row[0] for row in scope_result.fetchall()]
         
-        # Filter to only allowed lines
-        query = query.where(ProductionLine.id.in_(allowed_line_ids))
+        # Filter to only allowed data sources
+        query = query.where(DataSource.id.in_(allowed_ds_ids))
 
     # Execute query
-    result = await db.execute(query.order_by(ProductionLine.name))
-    lines = result.scalars().all()
-    return lines
+    result = await db.execute(query.order_by(DataSource.name))
+    data_sources = result.scalars().all()
+    return data_sources
 
 
 @router.post(
-    "/{factory_id}/lines",
-    response_model=ProductionLineRead,
+    "/{factory_id}/data-sources",
+    response_model=DataSourceRead,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_production_line(
+async def create_data_source(
     factory_id: str,
-    line_data: ProductionLineCreate,
+    ds_data: DataSourceCreate,
     current_user: ManagerUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Create a new production line with quota enforcement.
+    Create a new data source with quota enforcement.
     """
     # Verify factory ownership
     result = await db.execute(
@@ -352,22 +355,22 @@ async def create_production_line(
     )
     organization = org_result.scalar_one()
 
-    # Count existing lines for this factory
-    line_count_result = await db.execute(
-        select(func.count(ProductionLine.id)).where(
-            ProductionLine.factory_id == factory_id, ProductionLine.is_active
+    # Count existing data sources for this factory
+    ds_count_result = await db.execute(
+        select(func.count(DataSource.id)).where(
+            DataSource.factory_id == factory_id, DataSource.is_active
         )
     )
-    existing_line_count = line_count_result.scalar()
+    existing_ds_count = ds_count_result.scalar()
 
-    # Enforce quota
-    if int(existing_line_count or 0) >= int(organization.max_lines_per_factory or 0):
+    # Enforce quota (max_lines_per_factory applies to data sources now)
+    if int(existing_ds_count or 0) >= int(organization.max_lines_per_factory or 0):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail={
                 "error": "quota_exceeded",
-                "message": f"Factory has reached maximum line limit ({organization.max_lines_per_factory})",
-                "current_count": existing_line_count,
+                "message": f"Factory has reached maximum data source limit ({organization.max_lines_per_factory})",
+                "current_count": existing_ds_count,
                 "max_allowed": organization.max_lines_per_factory,
                 "factory_id": factory_id,
                 "upgrade_required": True,
@@ -375,145 +378,140 @@ async def create_production_line(
         )
 
     # Prepare settings (Snapshot Strategy)
-    line_settings = {}
+    ds_settings = {}
 
     # 1. Start with what was passed in request (if any)
-    if line_data.settings:
-        if hasattr(line_data.settings, "model_dump"):
-            line_settings = line_data.settings.model_dump()
+    if ds_data.settings:
+        if hasattr(ds_data.settings, "model_dump"):
+            ds_settings = ds_data.settings.model_dump()
         else:
-            line_settings = line_data.settings
+            ds_settings = ds_data.settings
 
     # 2. If NOT custom schedule, enforce snapshot of factory defaults
-    is_custom = line_settings.get("is_custom_schedule", False)
+    is_custom = ds_settings.get("is_custom_schedule", False)
 
     if not is_custom:
         # Get Factory Settings
         factory_settings = factory.settings or {}
 
         # Snapshot the defaults
-        line_settings["is_custom_schedule"] = False
-        line_settings["shift_pattern"] = factory_settings.get(
+        ds_settings["is_custom_schedule"] = False
+        ds_settings["shift_pattern"] = factory_settings.get(
             "default_shift_pattern", []
         )
-        line_settings["non_working_days"] = factory_settings.get(
+        ds_settings["non_working_days"] = factory_settings.get(
             "standard_non_working_days", [5, 6]
         )
 
-    # Create line
-    line = ProductionLine(
+    # Create data source
+    data_source = DataSource(
         factory_id=factory_id,
-        name=line_data.name,
-        code=line_data.code,
-        specialty=line_data.specialty,
-        target_operators=line_data.target_operators,
-        target_efficiency_pct=line_data.target_efficiency_pct,
-        settings=line_settings,
+        name=ds_data.name,
+        code=ds_data.code,
+        specialty=ds_data.specialty,
+        target_operators=ds_data.target_operators,
+        target_efficiency_pct=ds_data.target_efficiency_pct,
+        settings=ds_settings,
+        source_name=ds_data.source_name,
+        description=ds_data.description,
+        time_column=ds_data.time_column,
+        time_format=ds_data.time_format,
     )
-    db.add(line)
+    db.add(data_source)
     await db.commit()
-    await db.refresh(line)
-    return line
+    await db.refresh(data_source)
+    return data_source
 
 
-# Note: We register these under the main router but the path is /lines/{id},
-# so we can't easily put them under /factories prefix unless we change the design.
-# A better REST design would be /factories/{id}/lines/{line_id} OR just /lines/{line_id}.
-# Given the router prefix is /factories, we can't easily handle /lines root here.
-# But we can handle /lines operations if we change how they are registered or add a new router section.
-# For now, to keep it simple, I will add them as /factories/lines/{line_id}
-# OR I need to export a separate router for lines?
-# Actually, I can just use the same router object.
-# BUT the router is included with prefix "/factories".
-# So `@router.get("/lines/{line_id}")` would become `/factories/lines/{line_id}`.
-# This is acceptable functionality.
+# Note: Data source CRUD by ID uses /data-sources/{id} path
+# The router prefix is /factories so full path is /factories/data-sources/{ds_id}
 
 
-@router.get("/lines/{line_id}", response_model=ProductionLineRead)
-async def get_production_line(
-    line_id: str,
+@router.get("/data-sources/{ds_id}", response_model=DataSourceRead)
+async def get_data_source(
+    ds_id: str,
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Get a specific production line.
-    Path: /factories/lines/{line_id}
+    Get a specific data source.
+    Path: /factories/data-sources/{ds_id}
     """
     result = await db.execute(
-        select(ProductionLine)
+        select(DataSource)
         .join(Factory)
-        .where(ProductionLine.id == line_id)
+        .where(DataSource.id == ds_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
-    line = result.scalar_one_or_none()
+    data_source = result.scalar_one_or_none()
 
-    if not line:
+    if not data_source:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Production line not found",
+            detail="Data source not found",
         )
 
-    return line
+    return data_source
 
 
-@router.patch("/lines/{line_id}", response_model=ProductionLineRead)
-async def update_production_line(
-    line_id: str,
-    line_data: ProductionLineUpdate,
+@router.patch("/data-sources/{ds_id}", response_model=DataSourceRead)
+async def update_data_source(
+    ds_id: str,
+    ds_data: DataSourceUpdate,
     current_user: ManagerUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Update a production line.
-    Path: /factories/lines/{line_id}
+    Update a data source.
+    Path: /factories/data-sources/{ds_id}
     """
     result = await db.execute(
-        select(ProductionLine)
+        select(DataSource)
         .join(Factory)
-        .where(ProductionLine.id == line_id)
+        .where(DataSource.id == ds_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
-    line = result.scalar_one_or_none()
+    data_source = result.scalar_one_or_none()
 
-    if not line:
+    if not data_source:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Production line not found",
+            detail="Data source not found",
         )
 
-    update_data = line_data.model_dump(exclude_unset=True)
+    update_data = ds_data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
-        setattr(line, field, value)
+        setattr(data_source, field, value)
 
     await db.commit()
-    await db.refresh(line)
-    return line
+    await db.refresh(data_source)
+    return data_source
 
 
-@router.delete("/lines/{line_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_production_line(
-    line_id: str,
+@router.delete("/data-sources/{ds_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_data_source(
+    ds_id: str,
     current_user: ManagerUser,
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
-    Soft-delete a production line.
-    Path: /factories/lines/{line_id}
+    Soft-delete a data source.
+    Path: /factories/data-sources/{ds_id}
     """
     result = await db.execute(
-        select(ProductionLine)
+        select(DataSource)
         .join(Factory)
-        .where(ProductionLine.id == line_id)
+        .where(DataSource.id == ds_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
-    line = result.scalar_one_or_none()
+    data_source = result.scalar_one_or_none()
 
-    if not line:
+    if not data_source:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Production line not found",
+            detail="Data source not found",
         )
 
-    line.is_active = False
+    data_source.is_active = False
     await db.commit()
     return None

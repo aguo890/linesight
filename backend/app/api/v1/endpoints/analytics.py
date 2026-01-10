@@ -17,7 +17,8 @@ from app.api.deps import CurrentUser, get_db
 from app.models.analytics import DHUReport, EfficiencyMetric
 # from app.models.compliance import TraceabilityRecord, VerificationStatus
 from app.models.events import ProductionEvent
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.production import Order, OrderStatus, ProductionRun, Style
 from app.models.workforce import Worker, WorkerSkill
 from app.schemas.analytics import (

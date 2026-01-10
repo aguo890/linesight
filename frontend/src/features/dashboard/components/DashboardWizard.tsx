@@ -5,7 +5,7 @@ import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
 import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource } from '../../../lib/ingestionApi';
-import { listFactories, listFactoryLines, type ProductionLine } from '../../../lib/factoryApi';
+import { listFactories, listDataSources, type DataSource as FactoryDataSource } from '../../../lib/factoryApi';
 import { LayoutMiniMap } from './LayoutMiniMap';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus } from '../registry';
 
@@ -14,7 +14,7 @@ export interface DashboardWizardProps {
     onClose: () => void;
     onComplete: (dashboardId: string) => void;
     preselectedFactoryId?: string;
-    preselectedLineId?: string;
+    preselectedDataSourceId?: string;
     mode?: 'create' | 'upload';
 }
 
@@ -25,7 +25,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     onClose,
     onComplete,
     preselectedFactoryId,
-    preselectedLineId,
+    preselectedDataSourceId,
     mode = 'create'
 }) => {
     // --- Hooks ---
@@ -44,12 +44,12 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     const [dashboardName, setDashboardName] = useState('');
 
     const [factories, setFactories] = useState<{ id: string, name: string, code?: string }[]>([]);
-    const [lines, setLines] = useState<ProductionLine[]>([]);
+    const [dataSources, setDataSources] = useState<FactoryDataSource[]>([]);
     const [selectedFactoryId, setSelectedFactoryId] = useState<string>('');
-    const [selectedLineId, setSelectedLineId] = useState<string>('');
+    const [selectedDataSourceId, setSelectedDataSourceId] = useState<string>('');
 
     const [isLoadingContext, setIsLoadingContext] = useState(false);
-    const [isLoadingLines, setIsLoadingLines] = useState(false);
+    const [isLoadingSources, setIsLoadingSources] = useState(false);
 
     // Widget Selection State (Lifted for Sidebar Preview)
     const [selectedWidgets, setSelectedWidgets] = useState<string[]>([]);
@@ -76,7 +76,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
             setDashboardName(''); // Reset name
 
             if (preselectedFactoryId) setSelectedFactoryId(preselectedFactoryId);
-            if (preselectedLineId) setSelectedLineId(preselectedLineId);
+            if (preselectedDataSourceId) setSelectedDataSourceId(preselectedDataSourceId);
 
             const loadContext = async () => {
                 setIsLoadingContext(true);
@@ -99,48 +99,53 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
             };
             loadContext();
         }
-    }, [isOpen, preselectedFactoryId, preselectedLineId]);
+    }, [isOpen, preselectedFactoryId, preselectedDataSourceId]);
 
     useEffect(() => {
         if (selectedFactoryId) {
-            const fetchLines = async () => {
-                setIsLoadingLines(true);
+            const fetchSources = async () => {
+                setIsLoadingSources(true);
                 try {
-                    const factoryLines = await listFactoryLines(selectedFactoryId);
-                    setLines(factoryLines);
-                    if (!selectedLineId && !preselectedLineId && factoryLines.length > 0) {
-                        setSelectedLineId(factoryLines[0].id);
-                    } else if (preselectedLineId) {
-                        setSelectedLineId(preselectedLineId);
-                    } else if (!selectedLineId && factoryLines.length === 0) {
-                        setSelectedLineId('');
+                    const factorySources = await listDataSources(selectedFactoryId);
+                    setDataSources(factorySources);
+                    if (!selectedDataSourceId && !preselectedDataSourceId && factorySources.length > 0) {
+                        setSelectedDataSourceId(factorySources[0].id);
+                    } else if (preselectedDataSourceId) {
+                        setSelectedDataSourceId(preselectedDataSourceId);
+                    } else if (!selectedDataSourceId && factorySources.length === 0) {
+                        setSelectedDataSourceId('');
                     }
                 } catch (error) {
-                    console.error('Failed to fetch lines:', error);
-                    setLines([]);
-                    setSelectedLineId('');
+                    console.error('Failed to fetch data sources:', error);
+                    setDataSources([]);
+                    setSelectedDataSourceId('');
                 } finally {
-                    setIsLoadingLines(false);
+                    setIsLoadingSources(false);
                 }
             };
-            fetchLines();
+            fetchSources();
         } else {
-            setLines([]);
-            setSelectedLineId('');
+            setDataSources([]);
+            setSelectedDataSourceId('');
         }
-    }, [selectedFactoryId, preselectedLineId]);
+    }, [selectedFactoryId, preselectedDataSourceId]);
 
     useEffect(() => {
         const checkExistingData = async () => {
-            if (selectedLineId) {
-                const sources = await getDataSourcesForLine(selectedLineId);
-                setExistingDataSources(sources);
+            if (selectedDataSourceId) {
+                try {
+                    // Fetch files uploaded for this Data Source
+                    const sources = await getDataSourcesForLine(selectedDataSourceId);
+                    setExistingDataSources(sources);
+                } catch {
+                    setExistingDataSources([]);
+                }
             } else {
                 setExistingDataSources([]);
             }
         };
         checkExistingData();
-    }, [selectedLineId]);
+    }, [selectedDataSourceId]);
 
     // --- Handlers (Kept existing logic) ---
 
@@ -200,11 +205,6 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
             return Promise.resolve();
         }
 
-        // Note: We intentionally do NOT set isSubmitting(true) here.
-        // Why? The WizardStep2Mapping component handles its own full-screen "Processing" UI (AIProcessingView).
-        // If we set state in the Parent, the Parent re-renders, creating a new function reference
-        // for this handler, which forces the Child to re-render, potentially resetting the processing loop.
-
         try {
             // ---------------------------------------------------------
             // PATH A: Existing Data Source (Skip raw import processing)
@@ -217,8 +217,8 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
             // ---------------------------------------------------------
             // PATH B: New File Upload (Full processing)
             // ---------------------------------------------------------
-            if (!rawImportId || !selectedLineId) {
-                if (!selectedLineId) alert('Please select a Target Production Line.');
+            if (!rawImportId || !selectedDataSourceId) {
+                if (!selectedDataSourceId) alert('Please select a Target Data Source.');
                 throw new Error('Missing required IDs for new import.');
             }
 
@@ -229,13 +229,12 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                 user_corrected: m.tier === 'manual'
             }));
 
-            // FIX: Using static imports (top of file) instead of dynamic import to avoid chunk loading issues
-
             // 1. Confirm Mapping
             const response = await confirmMapping({
                 raw_import_id: rawImportId,
                 mappings: confirmationData,
-                production_line_id: selectedLineId || undefined,
+                // Correctly passing the Data Source ID to the backend
+                production_line_id: selectedDataSourceId || undefined,
                 factory_id: selectedFactoryId || undefined,
                 time_column: "Date",
                 time_format: "YYYY-MM-DD",
@@ -266,15 +265,14 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
             setSelectedWidgets(filteredRecommendations);
             return Promise.resolve();
-
         } catch (error) {
             console.error('Failed to confirm mapping:', error);
             alert("Failed to process data. Please try again.");
             return Promise.reject(error);
         }
-    }, [rawImportId, selectedLineId, selectedFactoryId, dataSourceId, validatedMappings.length]);
+    }, [rawImportId, selectedDataSourceId, selectedFactoryId, dataSourceId, validatedMappings.length]);
 
-    // Memoized callbacks to prevent child re-renders that cause AIProcessingView to unmount
+    // Memoized callbacks
     const handleBackToUpload = React.useCallback(() => {
         setCurrentStep('upload');
     }, []);
@@ -293,7 +291,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     const currentStepIndex = steps.findIndex(s => s.id === currentStep);
 
     // Helper to determine if the upload area should be locked
-    const isSelectionComplete = selectedFactoryId && selectedLineId && !isLoadingLines && !isLoadingContext;
+    const isSelectionComplete = selectedFactoryId && selectedDataSourceId && !isLoadingSources && !isLoadingContext;
 
     return (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -363,7 +361,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                             </div>
                             <div className="flex items-center text-sm text-gray-700">
                                 <ChevronRight className="w-3.5 h-3.5 mr-2 text-slate-400" />
-                                <span className="truncate font-medium">{lines.find(l => l.id === selectedLineId)?.name || 'Select Line'}</span>
+                                <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || 'Select Data Source'}</span>
                             </div>
                         </div>
                     </div>
@@ -426,44 +424,44 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         )}
                                     </div>
 
-                                    {/* Line Selection */}
+                                    {/* Data Source Selection */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <label className="block text-sm font-medium text-gray-700">Production Line</label>
-                                            {isLoadingLines && (
+                                            <label className="block text-sm font-medium text-gray-700">Data Source</label>
+                                            {isLoadingSources && (
                                                 <span className="flex items-center text-xs text-blue-600 animate-pulse">
                                                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                                                    Fetching lines...
+                                                    Fetching sources...
                                                 </span>
                                             )}
                                         </div>
                                         <div className="relative">
                                             <select
-                                                value={selectedLineId}
-                                                onChange={(e) => setSelectedLineId(e.target.value)}
+                                                value={selectedDataSourceId}
+                                                onChange={(e) => setSelectedDataSourceId(e.target.value)}
                                                 className="block w-full pl-3 pr-10 py-2.5 bg-gray-50 border-0 ring-1 ring-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm transition-shadow disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
-                                                disabled={!selectedFactoryId || isLoadingLines || isLoadingContext}
+                                                disabled={!selectedFactoryId || isLoadingSources || isLoadingContext}
                                             >
                                                 <option value="">
                                                     {!selectedFactoryId
                                                         ? 'Select Factory First'
-                                                        : isLoadingLines
-                                                            ? 'Loading Lines...'
-                                                            : 'Select Line...'}
+                                                        : isLoadingSources
+                                                            ? 'Loading Sources...'
+                                                            : 'Select Data Source...'}
                                                 </option>
-                                                {lines.map(l => (
-                                                    <option key={l.id} value={l.id}>{l.name}</option>
+                                                {dataSources.map(ds => (
+                                                    <option key={ds.id} value={ds.id}>{ds.name} ({ds.code})</option>
                                                 ))}
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Warning when no lines exist */}
-                                {selectedFactoryId && lines.length === 0 && !isLoadingLines && (
+                                {/* Warning when no sources exist */}
+                                {selectedFactoryId && dataSources.length === 0 && !isLoadingSources && (
                                     <div className="bg-amber-50 text-amber-800 px-4 py-3 rounded-lg text-sm flex items-center">
                                         <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
-                                        <span>No production lines available. Configure lines from the Factory settings page first.</span>
+                                        <span>No data sources available. Configure sources from the Factory settings page first.</span>
                                     </div>
                                 )}
 
@@ -486,10 +484,10 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         />
 
                                         {/* Optional: Add a friendly message overlay if waiting */}
-                                        {!isSelectionComplete && !isLoadingContext && !isLoadingLines && (
+                                        {!isSelectionComplete && !isLoadingContext && !isLoadingSources && (
                                             <div className="absolute inset-0 flex items-center justify-center z-10">
                                                 <div className="bg-white/80 px-4 py-2 rounded-full shadow-sm text-sm text-gray-500 font-medium">
-                                                    Select a Production Line to continue
+                                                    Select a Data Source to continue
                                                 </div>
                                             </div>
                                         )}
@@ -530,7 +528,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                                 name: dashboardName, // Use state from Step 1
                                                 description: `Generated from ${uploadedFile?.name || 'existing source'}`,
                                                 data_source_id: dataSourceId!,
-                                                production_line_id: selectedLineId,
+                                                production_line_id: selectedDataSourceId, // Using DS ID as Line ID for now
                                                 widget_config: { enabled_widgets: config.widgets.map(w => w.widget), widget_settings: {} },
                                                 layout_config: { layouts: config.widgets.map(w => ({ widget_id: w.i, x: w.x, y: w.y, w: w.w, h: w.h })) }
                                             });

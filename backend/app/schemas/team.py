@@ -16,7 +16,7 @@ class ScopeRead(BaseModel):
     scope_type: str
     organization_id: str | None = None
     factory_id: str | None = None
-    production_line_id: str | None = None
+    data_source_id: str | None = None  # Renamed from production_line_id
     role: str
 
 
@@ -36,7 +36,7 @@ class MemberRead(BaseModel):
 
 
 class ScopeAssign(BaseModel):
-    """Request body for assigning a user to a production line."""
+    """Request body for assigning a user to a data source."""
 
-    production_line_id: str
+    data_source_id: str
     role: str = "manager"

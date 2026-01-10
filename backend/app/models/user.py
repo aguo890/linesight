@@ -169,9 +169,10 @@ class UserScope(Base, UUIDMixin, TimestampMixin):
         ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=True,
     )
-    production_line_id: Mapped[str | None] = mapped_column(
+    # Renamed from production_line_id to data_source_id in migration
+    data_source_id: Mapped[str | None] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="CASCADE"),
+        ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=True,
     )
 

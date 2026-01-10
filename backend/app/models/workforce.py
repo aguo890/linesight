@@ -25,7 +25,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from app.models.factory import Factory, ProductionLine
+    from app.models.datasource import DataSource
+    from app.models.factory import Factory
     from app.models.production import ProductionRun
 
 
@@ -65,10 +66,10 @@ class Worker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
         String(100), nullable=True
     )  # Main operation
 
-    # Assignment
-    line_id: Mapped[str | None] = mapped_column(
+    # Assignment (renamed from line_id after migration)
+    data_source_id: Mapped[str | None] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="SET NULL"),
+        ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True,
     )
 
@@ -90,9 +91,9 @@ class Worker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
         "Factory",
         back_populates="workers",
     )
-    assigned_line: Mapped[Optional["ProductionLine"]] = relationship(
-        "ProductionLine",
-        foreign_keys=[line_id],
+    assigned_data_source: Mapped[Optional["DataSource"]] = relationship(
+        "DataSource",
+        foreign_keys=[data_source_id],
     )
     skills: Mapped[list["WorkerSkill"]] = relationship(
         "WorkerSkill",

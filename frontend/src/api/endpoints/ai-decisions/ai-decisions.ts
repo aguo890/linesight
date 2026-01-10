@@ -46,44 +46,45 @@ Useful for:
  * @summary List Ai Decisions
  */
 export const listAiDecisionsApiV1AiDecisionsGet = (
-    params?: ListAiDecisionsApiV1AiDecisionsGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  params?: ListAiDecisionsApiV1AiDecisionsGetParams,
+  options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
-      
-      
-      return customInstance<AIDecisionListResponse>(
-      {url: `/api/v1/ai-decisions`, method: 'GET',
-        params, signal
+
+
+  return customInstance<AIDecisionListResponse>(
+    {
+      url: `/api/v1/ai-decisions`, method: 'GET',
+      params, signal
     },
-      options);
-    }
-  
+    options);
+}
+
 
 
 
 export const getListAiDecisionsApiV1AiDecisionsGetQueryKey = (params?: ListAiDecisionsApiV1AiDecisionsGetParams,) => {
-    return [
-    `/api/v1/ai-decisions`, ...(params ? [params]: [])
-    ] as const;
-    }
+  return [
+    `/api/v1/ai-decisions`, ...(params ? [params] : [])
+  ] as const;
+}
 
-    
-export const getListAiDecisionsApiV1AiDecisionsGetQueryOptions = <TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+export const getListAiDecisionsApiV1AiDecisionsGetQueryOptions = <TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
 ) => {
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getListAiDecisionsApiV1AiDecisionsGetQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getListAiDecisionsApiV1AiDecisionsGetQueryKey(params);
 
-  
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>> = ({ signal }) => listAiDecisionsApiV1AiDecisionsGet(params, requestOptions, signal);
 
-      
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>> = ({ signal }) => listAiDecisionsApiV1AiDecisionsGet(params, requestOptions, signal);
 
-      
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type ListAiDecisionsApiV1AiDecisionsGetQueryResult = NonNullable<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>>
@@ -91,43 +92,47 @@ export type ListAiDecisionsApiV1AiDecisionsGetQueryError = HTTPValidationError
 
 
 export function useListAiDecisionsApiV1AiDecisionsGet<TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(
- params: undefined |  ListAiDecisionsApiV1AiDecisionsGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>,
-          TError,
-          Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  params: undefined | ListAiDecisionsApiV1AiDecisionsGetParams, options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>> & Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>,
+        TError,
+        Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListAiDecisionsApiV1AiDecisionsGet<TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(
- params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>,
-          TError,
-          Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>> & Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>,
+        TError,
+        Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useListAiDecisionsApiV1AiDecisionsGet<TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(
- params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Ai Decisions
  */
 
 export function useListAiDecisionsApiV1AiDecisionsGet<TData = Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError = HTTPValidationError>(
- params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  params?: ListAiDecisionsApiV1AiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof listAiDecisionsApiV1AiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getListAiDecisionsApiV1AiDecisionsGetQueryOptions(params,options)
+  const queryOptions = getListAiDecisionsApiV1AiDecisionsGetQueryOptions(params, options)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
@@ -139,43 +144,44 @@ export function useListAiDecisionsApiV1AiDecisionsGet<TData = Awaited<ReturnType
  * @summary Get Ai Decision
  */
 export const getAiDecisionApiV1AiDecisionsDecisionIdGet = (
-    decisionId: string,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  decisionId: string,
+  options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
-      
-      
-      return customInstance<AIDecisionResponse>(
-      {url: `/api/v1/ai-decisions/${decisionId}`, method: 'GET', signal
+
+
+  return customInstance<AIDecisionResponse>(
+    {
+      url: `/api/v1/ai-decisions/${decisionId}`, method: 'GET', signal
     },
-      options);
-    }
-  
+    options);
+}
+
 
 
 
 export const getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryKey = (decisionId?: string,) => {
-    return [
+  return [
     `/api/v1/ai-decisions/${decisionId}`
-    ] as const;
-    }
+  ] as const;
+}
 
-    
-export const getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(decisionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+export const getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(decisionId: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
 ) => {
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryKey(decisionId);
+  const queryKey = queryOptions?.queryKey ?? getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryKey(decisionId);
 
-  
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>> = ({ signal }) => getAiDecisionApiV1AiDecisionsDecisionIdGet(decisionId, requestOptions, signal);
 
-      
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>> = ({ signal }) => getAiDecisionApiV1AiDecisionsDecisionIdGet(decisionId, requestOptions, signal);
 
-      
 
-   return  { queryKey, queryFn, enabled: !!(decisionId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+
+
+  return { queryKey, queryFn, enabled: !!(decisionId), ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAiDecisionApiV1AiDecisionsDecisionIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>>
@@ -183,43 +189,47 @@ export type GetAiDecisionApiV1AiDecisionsDecisionIdGetQueryError = HTTPValidatio
 
 
 export function useGetAiDecisionApiV1AiDecisionsDecisionIdGet<TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(
- decisionId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>,
-          TError,
-          Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  decisionId: string, options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>> & Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>,
+        TError,
+        Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAiDecisionApiV1AiDecisionsDecisionIdGet<TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(
- decisionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>,
-          TError,
-          Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  decisionId: string, options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>> & Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>,
+        TError,
+        Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAiDecisionApiV1AiDecisionsDecisionIdGet<TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(
- decisionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  decisionId: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Ai Decision
  */
 
 export function useGetAiDecisionApiV1AiDecisionsDecisionIdGet<TData = Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError = HTTPValidationError>(
- decisionId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  decisionId: string, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getAiDecisionApiV1AiDecisionsDecisionIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryOptions(decisionId,options)
+  const queryOptions = getGetAiDecisionApiV1AiDecisionsDecisionIdGetQueryOptions(decisionId, options)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }
@@ -233,47 +243,48 @@ Useful for debugging a specific file's processing history.
  * @summary Get Data Source Ai Decisions
  */
 export const getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet = (
-    dataSourceId: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+  dataSourceId: string,
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams,
+  options?: SecondParameter<typeof customInstance>, signal?: AbortSignal
 ) => {
-      
-      
-      return customInstance<AIDecisionResponse[]>(
-      {url: `/api/v1/datasources/${dataSourceId}/ai-decisions`, method: 'GET',
-        params, signal
+
+
+  return customInstance<AIDecisionResponse[]>(
+    {
+      url: `/api/v1/data-sources/${dataSourceId}/ai-decisions`, method: 'GET',
+      params, signal
     },
-      options);
-    }
-  
+    options);
+}
+
 
 
 
 export const getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryKey = (dataSourceId?: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams,) => {
-    return [
-    `/api/v1/datasources/${dataSourceId}/ai-decisions`, ...(params ? [params]: [])
-    ] as const;
-    }
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams,) => {
+  return [
+    `/api/v1/data-sources/${dataSourceId}/ai-decisions`, ...(params ? [params] : [])
+  ] as const;
+}
 
-    
+
 export const getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError = HTTPValidationError>(dataSourceId: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
 ) => {
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryKey(dataSourceId,params);
+  const queryKey = queryOptions?.queryKey ?? getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryKey(dataSourceId, params);
 
-  
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>> = ({ signal }) => getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet(dataSourceId,params, requestOptions, signal);
 
-      
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>> = ({ signal }) => getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet(dataSourceId, params, requestOptions, signal);
 
-      
 
-   return  { queryKey, queryFn, enabled: !!(dataSourceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+
+
+  return { queryKey, queryFn, enabled: !!(dataSourceId), ...queryOptions } as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>>
@@ -281,47 +292,51 @@ export type GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQu
 
 
 export function useGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet<TData = Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError = HTTPValidationError>(
- dataSourceId: string,
-    params: undefined |  GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>> & Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>,
-          TError,
-          Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  dataSourceId: string,
+  params: undefined | GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>> & Pick<
+      DefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>,
+        TError,
+        Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet<TData = Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError = HTTPValidationError>(
- dataSourceId: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>> & Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>,
-          TError,
-          Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  dataSourceId: string,
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>> & Pick<
+      UndefinedInitialDataOptions<
+        Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>,
+        TError,
+        Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>
+      >, 'initialData'
+    >, request?: SecondParameter<typeof customInstance>
+  }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet<TData = Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError = HTTPValidationError>(
- dataSourceId: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+  dataSourceId: string,
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Data Source Ai Decisions
  */
 
 export function useGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet<TData = Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError = HTTPValidationError>(
- dataSourceId: string,
-    params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient 
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+  dataSourceId: string,
+  params?: GetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetParams, options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance> }
+  , queryClient?: QueryClient
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryOptions(dataSourceId,params,options)
+  const queryOptions = getGetDataSourceAiDecisionsApiV1DatasourcesDataSourceIdAiDecisionsGetQueryOptions(dataSourceId, params, options)
 
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
 }

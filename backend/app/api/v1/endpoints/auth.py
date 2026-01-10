@@ -125,7 +125,7 @@ async def register(
         email=request.email,
         hashed_password=hash_password(request.password),
         full_name=request.full_name,
-        role=UserRole.ADMIN,
+        role=UserRole.OWNER,
         is_active=True,
         is_verified=True,  # Auto-verify for MVP
     )

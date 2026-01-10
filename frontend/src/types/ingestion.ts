@@ -192,7 +192,7 @@ export interface FilePreview {
  * A single record from dry run preview with validation status.
  */
 export interface DryRunRecord {
-    row_index: number;
+    row_index?: number | null; // Optional: backend may not always provide this, or may return null
     raw_data: Record<string, unknown>;
     cleaned_data: Record<string, unknown>;
     status: DryRunRecordStatus;

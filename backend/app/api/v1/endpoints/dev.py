@@ -15,7 +15,8 @@ from app.api.deps import get_db
 from app.core.config import settings
 from app.db.seed import seed_data
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.raw_import import RawImport
 from app.models.user import Organization, SubscriptionTier, User
 

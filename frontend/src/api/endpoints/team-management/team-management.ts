@@ -42,7 +42,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * List all organization members with their scope assignments.
 
 Only accessible by organization owners.
-Returns all users in the organization with their production line assignments.
+Returns all users in the organization with their data source assignments.
  * @summary List Organization Members
  */
 export const listOrganizationMembersApiV1OrganizationsMembersGet = (
@@ -134,13 +134,13 @@ export function useListOrganizationMembersApiV1OrganizationsMembersGet<TData = A
 
 
 /**
- * Assign a user to a production line.
+ * Assign a user to a data source.
 
 Only accessible by organization owners.
-Creates a new UserScope entry linking the user to the specified production line.
- * @summary Assign User To Line
+Creates a new UserScope entry linking the user to the specified data source.
+ * @summary Assign User To Data Source
  */
-export const assignUserToLineApiV1OrganizationsMembersUserIdScopesPost = (
+export const assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost = (
     userId: string,
     scopeAssign: ScopeAssign,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
@@ -157,11 +157,11 @@ export const assignUserToLineApiV1OrganizationsMembersUserIdScopesPost = (
   
 
 
-export const getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext> => {
+export const getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext> => {
 
-const mutationKey = ['assignUserToLineApiV1OrganizationsMembersUserIdScopesPost'];
+const mutationKey = ['assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -171,10 +171,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>, {userId: string;data: ScopeAssign}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>, {userId: string;data: ScopeAssign}> = (props) => {
           const {userId,data} = props ?? {};
 
-          return  assignUserToLineApiV1OrganizationsMembersUserIdScopesPost(userId,data,requestOptions)
+          return  assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost(userId,data,requestOptions)
         }
 
         
@@ -182,23 +182,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMutationResult = NonNullable<Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>>
-    export type AssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMutationBody = ScopeAssign
-    export type AssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMutationError = HTTPValidationError
+    export type AssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMutationResult = NonNullable<Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>>
+    export type AssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMutationBody = ScopeAssign
+    export type AssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMutationError = HTTPValidationError
 
     /**
- * @summary Assign User To Line
+ * @summary Assign User To Data Source
  */
-export const useAssignUserToLineApiV1OrganizationsMembersUserIdScopesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>, TError,{userId: string;data: ScopeAssign}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof assignUserToLineApiV1OrganizationsMembersUserIdScopesPost>>,
+        Awaited<ReturnType<typeof assignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPost>>,
         TError,
         {userId: string;data: ScopeAssign},
         TContext
       > => {
 
-      const mutationOptions = getAssignUserToLineApiV1OrganizationsMembersUserIdScopesPostMutationOptions(options);
+      const mutationOptions = getAssignUserToDataSourceApiV1OrganizationsMembersUserIdScopesPostMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

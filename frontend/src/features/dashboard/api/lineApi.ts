@@ -43,24 +43,17 @@ export interface UploadsListResponse {
 
 // API Functions
 
-export const getDataSource = async (lineId: string): Promise<LineDataSource | null> => {
-    try {
-        const response = await api.get<LineDataSource>(`/datasources/line/${lineId}`);
-        return response.data;
-    } catch (error: any) {
-        if (error.response?.status === 404) {
-            return null;
-        }
-        throw error;
-    }
+export const getDataSource = async (lineId: string): Promise<LineDataSource> => {
+    const response = await api.get<LineDataSource>(`/data-sources/line/${lineId}`);
+    return response.data;
 };
 
 export const deleteDataSource = async (dataSourceId: string): Promise<void> => {
-    await api.delete(`/datasources/${dataSourceId}`);
+    await api.delete(`/data-sources/${dataSourceId}`);
 };
 
 export const updateDataSource = async (dataSourceId: string, updates: { time_column?: string; is_active?: boolean }): Promise<LineDataSource> => {
-    const response = await api.put<LineDataSource>(`/datasources/${dataSourceId}`, updates);
+    const response = await api.put<LineDataSource>(`/data-sources/${dataSourceId}`, updates);
     return response.data;
 };
 

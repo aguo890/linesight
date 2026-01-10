@@ -7,7 +7,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useGetDataSourceApiV1DatasourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
+import { useGetDataSourceApiV1DataSourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
 import { Skeleton } from '../../../components/ui/Skeleton';
 import type { Dashboard } from '../types';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
@@ -26,7 +26,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, onDelet
     const lastModified = dashboard.updated_at ? formatDate(dashboard.updated_at) : 'Never';
 
     // Fetch Data Source Name if ID exists
-    const { data: dataSource, isLoading: isDataSourceLoading, isError } = useGetDataSourceApiV1DatasourcesDataSourceIdGet(
+    const { data: dataSource, isLoading: isDataSourceLoading, isError } = useGetDataSourceApiV1DataSourcesDataSourceIdGet(
         dashboard.data_source_id!,
         {
             query: {

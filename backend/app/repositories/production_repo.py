@@ -18,7 +18,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import EfficiencyMetric
 from app.models.events import ProductionEvent
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.production import Order, ProductionRun, Style
 
 

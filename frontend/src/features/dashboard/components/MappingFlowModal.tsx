@@ -16,7 +16,7 @@ interface MappingFlowModalProps {
     isOpen: boolean;
     onClose: () => void;
     rawImportId: string | null;
-    lineId: string | null; // Required for confirmation
+    dataSourceId: string | null; // Required for confirmation
     onSuccess: () => void;
 }
 
@@ -24,7 +24,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
     isOpen,
     onClose,
     rawImportId,
-    lineId,
+    dataSourceId,
     onSuccess
 }) => {
     const [loading, setLoading] = useState(true);
@@ -63,7 +63,6 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
             setAvailableFields(fieldsRes.data);
             setMappings(processRes.data.columns);
             setFilename(processRes.data.filename);
-            setFilename(processRes.data.filename);
 
         } catch (err: any) {
             console.error('Mapping flow initialization failed:', err);
@@ -74,8 +73,8 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
     };
 
     const handleConfirmMapping = async (confirmedMappings: any[]) => {
-        if (!rawImportId || !lineId) {
-            setError('Missing import or line ID');
+        if (!rawImportId || !dataSourceId) {
+            setError('Missing import or data source ID');
             return;
         }
 
@@ -99,7 +98,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
                     user_corrected: m.tier === 'manual'
                 })),
                 time_column: timeColumn,
-                production_line_id: lineId,
+                production_line_id: dataSourceId, // Alias for backend compatibility
                 learn_corrections: true
             };
 

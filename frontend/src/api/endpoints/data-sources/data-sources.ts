@@ -28,10 +28,10 @@ import type {
   DataSourceCreate,
   DataSourceResponse,
   DataSourceUpdate,
-  GetDataSourceByLineApiV1DatasourcesLineLineIdGet200,
-  GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200,
+  GetDataSourceByLineApiV1DataSourcesLineLineIdGet200,
+  GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200,
   HTTPValidationError,
-  ListDataSourcesApiV1DatasourcesGetParams,
+  ListDataSourcesApiV1DataSourcesGetParams,
   SchemaMappingCreate,
   SchemaMappingResponse
 } from '../../model';
@@ -47,14 +47,14 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * Create a new data source for a production line.
  * @summary Create Data Source
  */
-export const createDataSourceApiV1DatasourcesPost = (
+export const createDataSourceApiV1DataSourcesPost = (
     dataSourceCreate: DataSourceCreate,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<DataSourceResponse>(
-      {url: `/api/v1/datasources`, method: 'POST',
+      {url: `/api/v1/data-sources`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: dataSourceCreate, signal
     },
@@ -63,11 +63,11 @@ export const createDataSourceApiV1DatasourcesPost = (
   
 
 
-export const getCreateDataSourceApiV1DatasourcesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>, TError,{data: DataSourceCreate}, TContext> => {
+export const getCreateDataSourceApiV1DataSourcesPostMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext> => {
 
-const mutationKey = ['createDataSourceApiV1DatasourcesPost'];
+const mutationKey = ['createDataSourceApiV1DataSourcesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -77,10 +77,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>, {data: DataSourceCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, {data: DataSourceCreate}> = (props) => {
           const {data} = props ?? {};
 
-          return  createDataSourceApiV1DatasourcesPost(data,requestOptions)
+          return  createDataSourceApiV1DataSourcesPost(data,requestOptions)
         }
 
         
@@ -88,23 +88,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type CreateDataSourceApiV1DatasourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>>
-    export type CreateDataSourceApiV1DatasourcesPostMutationBody = DataSourceCreate
-    export type CreateDataSourceApiV1DatasourcesPostMutationError = HTTPValidationError
+    export type CreateDataSourceApiV1DataSourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>>
+    export type CreateDataSourceApiV1DataSourcesPostMutationBody = DataSourceCreate
+    export type CreateDataSourceApiV1DataSourcesPostMutationError = HTTPValidationError
 
     /**
  * @summary Create Data Source
  */
-export const useCreateDataSourceApiV1DatasourcesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useCreateDataSourceApiV1DataSourcesPost = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof createDataSourceApiV1DatasourcesPost>>,
+        Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>,
         TError,
         {data: DataSourceCreate},
         TContext
       > => {
 
-      const mutationOptions = getCreateDataSourceApiV1DatasourcesPostMutationOptions(options);
+      const mutationOptions = getCreateDataSourceApiV1DataSourcesPostMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
@@ -112,14 +112,14 @@ export const useCreateDataSourceApiV1DatasourcesPost = <TError = HTTPValidationE
  * List all data sources with mappings loaded.
  * @summary List Data Sources
  */
-export const listDataSourcesApiV1DatasourcesGet = (
-    params?: ListDataSourcesApiV1DatasourcesGetParams,
+export const listDataSourcesApiV1DataSourcesGet = (
+    params?: ListDataSourcesApiV1DataSourcesGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<DataSourceResponse[]>(
-      {url: `/api/v1/datasources`, method: 'GET',
+      {url: `/api/v1/data-sources`, method: 'GET',
         params, signal
     },
       options);
@@ -128,69 +128,69 @@ export const listDataSourcesApiV1DatasourcesGet = (
 
 
 
-export const getListDataSourcesApiV1DatasourcesGetQueryKey = (params?: ListDataSourcesApiV1DatasourcesGetParams,) => {
+export const getListDataSourcesApiV1DataSourcesGetQueryKey = (params?: ListDataSourcesApiV1DataSourcesGetParams,) => {
     return [
-    `/api/v1/datasources`, ...(params ? [params]: [])
+    `/api/v1/data-sources`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getListDataSourcesApiV1DatasourcesGetQueryOptions = <TData = Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError = HTTPValidationError>(params?: ListDataSourcesApiV1DatasourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getListDataSourcesApiV1DataSourcesGetQueryOptions = <TData = Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError = HTTPValidationError>(params?: ListDataSourcesApiV1DataSourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getListDataSourcesApiV1DatasourcesGetQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getListDataSourcesApiV1DataSourcesGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>> = ({ signal }) => listDataSourcesApiV1DatasourcesGet(params, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>> = ({ signal }) => listDataSourcesApiV1DataSourcesGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ListDataSourcesApiV1DatasourcesGetQueryResult = NonNullable<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>>
-export type ListDataSourcesApiV1DatasourcesGetQueryError = HTTPValidationError
+export type ListDataSourcesApiV1DataSourcesGetQueryResult = NonNullable<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>>
+export type ListDataSourcesApiV1DataSourcesGetQueryError = HTTPValidationError
 
 
-export function useListDataSourcesApiV1DatasourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError = HTTPValidationError>(
- params: undefined |  ListDataSourcesApiV1DatasourcesGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData>> & Pick<
+export function useListDataSourcesApiV1DataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError = HTTPValidationError>(
+ params: undefined |  ListDataSourcesApiV1DataSourcesGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>,
+          Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>,
           TError,
-          Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>
+          Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListDataSourcesApiV1DatasourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError = HTTPValidationError>(
- params?: ListDataSourcesApiV1DatasourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData>> & Pick<
+export function useListDataSourcesApiV1DataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError = HTTPValidationError>(
+ params?: ListDataSourcesApiV1DataSourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>,
+          Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>,
           TError,
-          Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>
+          Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListDataSourcesApiV1DatasourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError = HTTPValidationError>(
- params?: ListDataSourcesApiV1DatasourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListDataSourcesApiV1DataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError = HTTPValidationError>(
+ params?: ListDataSourcesApiV1DataSourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary List Data Sources
  */
 
-export function useListDataSourcesApiV1DatasourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError = HTTPValidationError>(
- params?: ListDataSourcesApiV1DatasourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DatasourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListDataSourcesApiV1DataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError = HTTPValidationError>(
+ params?: ListDataSourcesApiV1DataSourcesGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1DataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getListDataSourcesApiV1DatasourcesGetQueryOptions(params,options)
+  const queryOptions = getListDataSourcesApiV1DataSourcesGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -205,14 +205,14 @@ export function useListDataSourcesApiV1DatasourcesGet<TData = Awaited<ReturnType
  * Get data source by ID.
  * @summary Get Data Source
  */
-export const getDataSourceApiV1DatasourcesDataSourceIdGet = (
+export const getDataSourceApiV1DataSourcesDataSourceIdGet = (
     dataSourceId: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<DataSourceResponse>(
-      {url: `/api/v1/datasources/${dataSourceId}`, method: 'GET', signal
+      {url: `/api/v1/data-sources/${dataSourceId}`, method: 'GET', signal
     },
       options);
     }
@@ -220,69 +220,69 @@ export const getDataSourceApiV1DatasourcesDataSourceIdGet = (
 
 
 
-export const getGetDataSourceApiV1DatasourcesDataSourceIdGetQueryKey = (dataSourceId?: string,) => {
+export const getGetDataSourceApiV1DataSourcesDataSourceIdGetQueryKey = (dataSourceId?: string,) => {
     return [
-    `/api/v1/datasources/${dataSourceId}`
+    `/api/v1/data-sources/${dataSourceId}`
     ] as const;
     }
 
     
-export const getGetDataSourceApiV1DatasourcesDataSourceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError = HTTPValidationError>(dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetDataSourceApiV1DataSourcesDataSourceIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError = HTTPValidationError>(dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceApiV1DatasourcesDataSourceIdGetQueryKey(dataSourceId);
+  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceApiV1DataSourcesDataSourceIdGetQueryKey(dataSourceId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>> = ({ signal }) => getDataSourceApiV1DatasourcesDataSourceIdGet(dataSourceId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>> = ({ signal }) => getDataSourceApiV1DataSourcesDataSourceIdGet(dataSourceId, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(dataSourceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(dataSourceId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetDataSourceApiV1DatasourcesDataSourceIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>>
-export type GetDataSourceApiV1DatasourcesDataSourceIdGetQueryError = HTTPValidationError
+export type GetDataSourceApiV1DataSourcesDataSourceIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>>
+export type GetDataSourceApiV1DataSourcesDataSourceIdGetQueryError = HTTPValidationError
 
 
-export function useGetDataSourceApiV1DatasourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError = HTTPValidationError>(
- dataSourceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceApiV1DataSourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError = HTTPValidationError>(
+ dataSourceId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>
+          Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDataSourceApiV1DatasourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError = HTTPValidationError>(
- dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceApiV1DataSourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError = HTTPValidationError>(
+ dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>
+          Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDataSourceApiV1DatasourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError = HTTPValidationError>(
- dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceApiV1DataSourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError = HTTPValidationError>(
+ dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Data Source
  */
 
-export function useGetDataSourceApiV1DatasourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError = HTTPValidationError>(
- dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DatasourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceApiV1DataSourcesDataSourceIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError = HTTPValidationError>(
+ dataSourceId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1DataSourcesDataSourceIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDataSourceApiV1DatasourcesDataSourceIdGetQueryOptions(dataSourceId,options)
+  const queryOptions = getGetDataSourceApiV1DataSourcesDataSourceIdGetQueryOptions(dataSourceId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -297,14 +297,14 @@ export function useGetDataSourceApiV1DatasourcesDataSourceIdGet<TData = Awaited<
  * Update mappings or time column for a specific DataSource.
  * @summary Update Data Source
  */
-export const updateDataSourceApiV1DatasourcesDataSourceIdPut = (
+export const updateDataSourceApiV1DataSourcesDataSourceIdPut = (
     dataSourceId: string,
     dataSourceUpdate: DataSourceUpdate,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
       return customInstance<DataSourceResponse>(
-      {url: `/api/v1/datasources/${dataSourceId}`, method: 'PUT',
+      {url: `/api/v1/data-sources/${dataSourceId}`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: dataSourceUpdate
     },
@@ -313,11 +313,11 @@ export const updateDataSourceApiV1DatasourcesDataSourceIdPut = (
   
 
 
-export const getUpdateDataSourceApiV1DatasourcesDataSourceIdPutMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext> => {
+export const getUpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext> => {
 
-const mutationKey = ['updateDataSourceApiV1DatasourcesDataSourceIdPut'];
+const mutationKey = ['updateDataSourceApiV1DataSourcesDataSourceIdPut'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -327,10 +327,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>, {dataSourceId: string;data: DataSourceUpdate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, {dataSourceId: string;data: DataSourceUpdate}> = (props) => {
           const {dataSourceId,data} = props ?? {};
 
-          return  updateDataSourceApiV1DatasourcesDataSourceIdPut(dataSourceId,data,requestOptions)
+          return  updateDataSourceApiV1DataSourcesDataSourceIdPut(dataSourceId,data,requestOptions)
         }
 
         
@@ -338,49 +338,48 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdateDataSourceApiV1DatasourcesDataSourceIdPutMutationResult = NonNullable<Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>>
-    export type UpdateDataSourceApiV1DatasourcesDataSourceIdPutMutationBody = DataSourceUpdate
-    export type UpdateDataSourceApiV1DatasourcesDataSourceIdPutMutationError = HTTPValidationError
+    export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationResult = NonNullable<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>>
+    export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationBody = DataSourceUpdate
+    export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationError = HTTPValidationError
 
     /**
  * @summary Update Data Source
  */
-export const useUpdateDataSourceApiV1DatasourcesDataSourceIdPut = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useUpdateDataSourceApiV1DataSourcesDataSourceIdPut = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateDataSourceApiV1DatasourcesDataSourceIdPut>>,
+        Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>,
         TError,
         {dataSourceId: string;data: DataSourceUpdate},
         TContext
       > => {
 
-      const mutationOptions = getUpdateDataSourceApiV1DatasourcesDataSourceIdPutMutationOptions(options);
+      const mutationOptions = getUpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     /**
  * Delete a data source and all its associated schema mappings.
-The database cascade should handle the mappings, but we'll be explicit if needed.
  * @summary Delete Data Source
  */
-export const deleteDataSourceApiV1DatasourcesDataSourceIdDelete = (
+export const deleteDataSourceApiV1DataSourcesDataSourceIdDelete = (
     dataSourceId: string,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
       return customInstance<void>(
-      {url: `/api/v1/datasources/${dataSourceId}`, method: 'DELETE'
+      {url: `/api/v1/data-sources/${dataSourceId}`, method: 'DELETE'
     },
       options);
     }
   
 
 
-export const getDeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext> => {
+export const getDeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext> => {
 
-const mutationKey = ['deleteDataSourceApiV1DatasourcesDataSourceIdDelete'];
+const mutationKey = ['deleteDataSourceApiV1DataSourcesDataSourceIdDelete'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -390,10 +389,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>, {dataSourceId: string}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>, {dataSourceId: string}> = (props) => {
           const {dataSourceId} = props ?? {};
 
-          return  deleteDataSourceApiV1DatasourcesDataSourceIdDelete(dataSourceId,requestOptions)
+          return  deleteDataSourceApiV1DataSourcesDataSourceIdDelete(dataSourceId,requestOptions)
         }
 
         
@@ -401,38 +400,38 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>>
+    export type DeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>>
     
-    export type DeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMutationError = HTTPValidationError
+    export type DeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMutationError = HTTPValidationError
 
     /**
  * @summary Delete Data Source
  */
-export const useDeleteDataSourceApiV1DatasourcesDataSourceIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>, TError,{dataSourceId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteDataSourceApiV1DatasourcesDataSourceIdDelete>>,
+        Awaited<ReturnType<typeof deleteDataSourceApiV1DataSourcesDataSourceIdDelete>>,
         TError,
         {dataSourceId: string},
         TContext
       > => {
 
-      const mutationOptions = getDeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMutationOptions(options);
+      const mutationOptions = getDeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     /**
- * Get data source for a specific production line.
+ * Get data source by ID (line_id IS the DataSource.id after refactor).
  * @summary Get Data Source By Line
  */
-export const getDataSourceByLineApiV1DatasourcesLineLineIdGet = (
+export const getDataSourceByLineApiV1DataSourcesLineLineIdGet = (
     lineId: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<GetDataSourceByLineApiV1DatasourcesLineLineIdGet200>(
-      {url: `/api/v1/datasources/line/${lineId}`, method: 'GET', signal
+      return customInstance<GetDataSourceByLineApiV1DataSourcesLineLineIdGet200>(
+      {url: `/api/v1/data-sources/line/${lineId}`, method: 'GET', signal
     },
       options);
     }
@@ -440,69 +439,69 @@ export const getDataSourceByLineApiV1DatasourcesLineLineIdGet = (
 
 
 
-export const getGetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryKey = (lineId?: string,) => {
+export const getGetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryKey = (lineId?: string,) => {
     return [
-    `/api/v1/datasources/line/${lineId}`
+    `/api/v1/data-sources/line/${lineId}`
     ] as const;
     }
 
     
-export const getGetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError = HTTPValidationError>(lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError = HTTPValidationError>(lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryKey(lineId);
+  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryKey(lineId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>> = ({ signal }) => getDataSourceByLineApiV1DatasourcesLineLineIdGet(lineId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>> = ({ signal }) => getDataSourceByLineApiV1DataSourcesLineLineIdGet(lineId, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(lineId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(lineId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>>
-export type GetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryError = HTTPValidationError
+export type GetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>>
+export type GetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryError = HTTPValidationError
 
 
-export function useGetDataSourceByLineApiV1DatasourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceByLineApiV1DataSourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError = HTTPValidationError>(
+ lineId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>
+          Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDataSourceByLineApiV1DatasourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceByLineApiV1DataSourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError = HTTPValidationError>(
+ lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>
+          Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDataSourceByLineApiV1DatasourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceByLineApiV1DataSourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError = HTTPValidationError>(
+ lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Data Source By Line
  */
 
-export function useGetDataSourceByLineApiV1DatasourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DatasourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceByLineApiV1DataSourcesLineLineIdGet<TData = Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError = HTTPValidationError>(
+ lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceByLineApiV1DataSourcesLineLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDataSourceByLineApiV1DatasourcesLineLineIdGetQueryOptions(lineId,options)
+  const queryOptions = getGetDataSourceByLineApiV1DataSourcesLineLineIdGetQueryOptions(lineId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -516,17 +515,17 @@ export function useGetDataSourceByLineApiV1DatasourcesLineLineIdGet<TData = Awai
 /**
  * Fetch DataSource config for a specific line.
 Returns 200 with null if not found (graceful init).
-Alias/Explicit endpoint for validate-mapping flow.
+After refactor: production_line_id IS the DataSource.id directly.
  * @summary Get Datasource By Line Explicit
  */
-export const getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet = (
+export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet = (
     productionLineId: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200>(
-      {url: `/api/v1/datasources/by-line/${productionLineId}`, method: 'GET', signal
+      return customInstance<GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200>(
+      {url: `/api/v1/data-sources/by-line/${productionLineId}`, method: 'GET', signal
     },
       options);
     }
@@ -534,69 +533,69 @@ export const getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGe
 
 
 
-export const getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryKey = (productionLineId?: string,) => {
+export const getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryKey = (productionLineId?: string,) => {
     return [
-    `/api/v1/datasources/by-line/${productionLineId}`
+    `/api/v1/data-sources/by-line/${productionLineId}`
     ] as const;
     }
 
     
-export const getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryKey(productionLineId);
+  const queryKey =  queryOptions?.queryKey ?? getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryKey(productionLineId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>> = ({ signal }) => getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet(productionLineId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>> = ({ signal }) => getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet(productionLineId, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(productionLineId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(productionLineId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>>
-export type GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryError = HTTPValidationError
+export type GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>>
+export type GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryError = HTTPValidationError
 
 
-export function useGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
- productionLineId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData>> & Pick<
+export function useGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
+ productionLineId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>,
+          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>
+          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
- productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData>> & Pick<
+export function useGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
+ productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>,
+          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>
+          Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
- productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
+ productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Datasource By Line Explicit
  */
 
-export function useGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
- productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet<TData = Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError = HTTPValidationError>(
+ productionLineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetQueryOptions(productionLineId,options)
+  const queryOptions = getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetQueryOptions(productionLineId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -611,14 +610,14 @@ export function useGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLi
  * Create a new version of the schema mapping after user validation.
  * @summary Update Schema Mapping
  */
-export const updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut = (
+export const updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut = (
     dataSourceId: string,
     schemaMappingCreate: SchemaMappingCreate,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
       return customInstance<SchemaMappingResponse>(
-      {url: `/api/v1/datasources/${dataSourceId}/mapping`, method: 'PUT',
+      {url: `/api/v1/data-sources/${dataSourceId}/mapping`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: schemaMappingCreate
     },
@@ -627,11 +626,11 @@ export const updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut = (
   
 
 
-export const getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext> => {
+export const getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext> => {
 
-const mutationKey = ['updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut'];
+const mutationKey = ['updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -641,10 +640,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>, {dataSourceId: string;data: SchemaMappingCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>, {dataSourceId: string;data: SchemaMappingCreate}> = (props) => {
           const {dataSourceId,data} = props ?? {};
 
-          return  updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut(dataSourceId,data,requestOptions)
+          return  updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut(dataSourceId,data,requestOptions)
         }
 
         
@@ -652,23 +651,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMutationResult = NonNullable<Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>>
-    export type UpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMutationBody = SchemaMappingCreate
-    export type UpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMutationError = HTTPValidationError
+    export type UpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMutationResult = NonNullable<Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>>
+    export type UpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMutationBody = SchemaMappingCreate
+    export type UpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMutationError = HTTPValidationError
 
     /**
  * @summary Update Schema Mapping
  */
-export const useUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>, TError,{dataSourceId: string;data: SchemaMappingCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateSchemaMappingApiV1DatasourcesDataSourceIdMappingPut>>,
+        Awaited<ReturnType<typeof updateSchemaMappingApiV1DataSourcesDataSourceIdMappingPut>>,
         TError,
         {dataSourceId: string;data: SchemaMappingCreate},
         TContext
       > => {
 
-      const mutationOptions = getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMutationOptions(options);
+      const mutationOptions = getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

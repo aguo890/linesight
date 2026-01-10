@@ -830,7 +830,7 @@ export const getBundleReadiness = (bundleId: string, activeFields: string[]): Bu
 
     return {
         isReady: supportedCount === totalCount,
-        percentage: Math.round((supportedCount / totalCount) * 100),
+        percentage: totalCount > 0 ? Math.round((supportedCount / totalCount) * 100) : 0,
         supportedCount,
         totalCount,
         supportedWidgetIds

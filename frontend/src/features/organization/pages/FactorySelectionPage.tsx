@@ -9,7 +9,6 @@ import {
     Layers,
     Plus,
     MoreHorizontal,
-    Settings,
     ChevronRight,
     ArrowLeft,
     Pencil,
@@ -17,9 +16,8 @@ import {
 } from 'lucide-react';
 
 // API & Context
-import { AXIOS_INSTANCE } from '../../../api/axios-client';
+import { listFactories, listDataSources, deleteFactory, type Factory } from '../../../lib/factoryApi';
 import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
-import { deleteFactory } from '../../../lib/factoryApi';
 import { useOrganization } from '../../../contexts/OrganizationContext';
 
 // Components
@@ -28,18 +26,6 @@ import { FactoryEditModal } from '../components/FactoryEditModal';
 
 // Types
 type ViewMode = 'grid' | 'list';
-
-interface ProductionLine {
-    id: string;
-    name: string;
-}
-
-interface Factory {
-    id: string;
-    name: string;
-    code: string;
-    production_lines?: ProductionLine[];
-}
 
 export const FactorySelectionPage: React.FC = () => {
     const navigate = useNavigate();
@@ -69,23 +55,23 @@ export const FactorySelectionPage: React.FC = () => {
             setError(null);
 
             const [factoriesRes, membersRes] = await Promise.all([
-                AXIOS_INSTANCE.get('/api/v1/factories'),
+                listFactories(),
                 listOrgMembers(),
             ]);
 
-            // Enrich with lines
-            const factoriesWithLines: Factory[] = await Promise.all(
-                factoriesRes.data.map(async (factory: Factory) => {
+            // Enrich with data sources
+            const factoriesWithSources: Factory[] = await Promise.all(
+                factoriesRes.map(async (factory: Factory) => {
                     try {
-                        const linesRes = await AXIOS_INSTANCE.get(`/api/v1/factories/${factory.id}/lines`);
-                        return { ...factory, production_lines: linesRes.data || [] };
+                        const sources = await listDataSources(factory.id);
+                        return { ...factory, data_sources: sources || [] };
                     } catch {
-                        return { ...factory, production_lines: [] };
+                        return { ...factory, data_sources: [] };
                     }
                 })
             );
 
-            setFactories(factoriesWithLines);
+            setFactories(factoriesWithSources);
             setMembers(membersRes.data);
         } catch (err: any) {
             console.error('Failed to fetch data:', err);
@@ -108,12 +94,12 @@ export const FactorySelectionPage: React.FC = () => {
 
     // -- Helpers --
     const getManagerCount = (factory: Factory): number => {
-        const lineIds = factory.production_lines?.map((l) => l.id) || [];
-        // Managers assigned to any line in this factory
+        const sourceIds = factory.data_sources?.map((ds) => ds.id) || [];
+        // Managers assigned to any data source in this factory
         const assignedManagers = members.filter(
             (m) =>
                 m.role === 'manager' &&
-                m.scopes?.some((s) => lineIds.includes(s.production_line_id || ''))
+                (m.scopes || []).some((s) => sourceIds.includes(s.data_source_id || ''))
         );
         return assignedManagers.length;
     };
@@ -274,7 +260,7 @@ export const FactorySelectionPage: React.FC = () => {
 
                     {/* Factory Cards */}
                     {!isLoading && filteredFactories.map((factory) => {
-                        const lineCount = factory.production_lines?.length || 0;
+                        const sourceCount = factory.data_sources?.length || 0;
                         const managerCount = getManagerCount(factory);
                         const isMenuOpen = activeMenuId === factory.id;
 
@@ -346,9 +332,9 @@ export const FactorySelectionPage: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-3 mb-4">
                                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
                                         <div className="text-xs text-slate-500 flex items-center gap-1 mb-1">
-                                            <Layers className="w-3 h-3" /> Lines
+                                            <Layers className="w-3 h-3" /> Data Sources
                                         </div>
-                                        <div className="font-semibold text-slate-700">{lineCount}</div>
+                                        <div className="font-semibold text-slate-700">{sourceCount}</div>
                                     </div>
                                     <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
                                         <div className="text-xs text-slate-500 flex items-center gap-1 mb-1">
@@ -376,7 +362,7 @@ export const FactorySelectionPage: React.FC = () => {
                             <tr>
                                 <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Name</th>
                                 <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Code</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Lines</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Sources</th>
                                 <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase">Managers</th>
                                 <th className="py-3 px-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
                             </tr>
@@ -397,7 +383,7 @@ export const FactorySelectionPage: React.FC = () => {
                                             </div>
                                         </td>
                                         <td className="py-3 px-4 font-mono text-xs text-slate-500">{factory.code}</td>
-                                        <td className="py-3 px-4 text-slate-600">{factory.production_lines?.length || 0}</td>
+                                        <td className="py-3 px-4 text-slate-600">{factory.data_sources?.length || 0}</td>
                                         <td className="py-3 px-4 text-slate-600">{getManagerCount(factory)}</td>
                                         <td className="py-3 px-4 text-right relative">
                                             <button
