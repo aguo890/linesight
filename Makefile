@@ -1,4 +1,5 @@
 # LineSight Factory Excel Manager - Project Automation
+BACKEND_VENV_PYTHON = backend\venv\Scripts\python
 
 .PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick
 
@@ -147,9 +148,6 @@ push: clean
 
 # Quick push with default message
 push-quick: clean
-	@echo ""
-	@echo "🚀 Quick push to GitHub..."
-	@git add -A
-	@git commit -m "Quick update: %date:~-4%-%date:~4,2%-%date:~7,2%"
-	@git push
-	@echo "✅ Pushed!"
+	@echo "🚀 Smart push to GitHub..."
+	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
+

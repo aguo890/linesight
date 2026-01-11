@@ -124,4 +124,27 @@ Always verify the production build locally before deploying:
 2.  Run `npm run preview`
 3.  Open the localhost link.
 4.  **Check**: If you see text keys (e.g., `profile.title`) instead of "User Profile", open the Network tab.
-    *   If you see **404** errors for `.json` files, check the `loadPath` in `src/i18n.ts`. It may need to be adjusted for subdirectories (e.g., using `./locales/` instead of `/locales/`).
+    *   If you see **404** errors for `.json` files, check the `loadPath` in `src/i18n.ts`. It should use `import.meta.env.BASE_URL` to handle subdirectories dynamically.
+
+## 8. Maintenance & Scaling
+
+### Namespace Strategy
+Currently, we use a single `translation.json` (the default namespace).
+**Trigger for Change**: Once `translation.json` exceeds **~500 lines**, you MUST split it into multiple namespaces (e.g., `common.json`, `profile.json`, `auth.json`) to avoid performance degradation in the IDE (TypeScript language server) and to keep files manageable.
+
+### Key Extraction
+To prevent "missing key" drift, consider using tools like `i18next-parser` to automatically extract keys from your code into the JSON files.
+
+### Type Safety Optimization
+In `i18next.d.ts`, ensure you are importing the JSON strictly. If performance lags, ensure you are not doing wildcard imports that force TS to re-evaluate the entire JSON tree on every keystroke.
+
+## 9. Instructions for AI Agents
+When generating code or adding features, you **MUST** follow this protocol to ensure i18n stability or I will fail your output:
+
+> **"When adding UI text, first check `public/locales/en/translation.json`. If the key is missing, add it there first, then update the Spanish and Arabic mocks (marking them with `[MOCK]`), then use the `t('key')` function in the component."**
+
+### Mock Data Policy
+Any auto-generated translation added by an AI Agent MUST be tagged explicitly.
+*   **Format**: `"[MOCK] <Translated Text>"`
+*   **Example**: `"bio_placeholder": "[MOCK] This is a sample biography..."`
+
