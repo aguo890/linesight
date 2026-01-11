@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
 import { Logo } from '../../../components/common/Logo';
@@ -175,6 +175,17 @@ const LandingPage: React.FC = () => {
     const [isAnnual, setIsAnnual] = useState(true);
     const isDark = resolvedTheme === 'dark';
 
+    // Parallax Logic for "Industrial Widget Library"
+    const widgetSectionRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: widgetSectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const yLayer1 = useTransform(scrollYProgress, [0, 1], [0, -60]);  // TargetRealization
+    const yLayer2 = useTransform(scrollYProgress, [0, 1], [0, -120]); // SpeedQuality (Closer/Faster)
+    const yLayer3 = useTransform(scrollYProgress, [0, 1], [0, -30]);  // BlockerCloud (Farther/Slower)
+
     return (
         <div className="min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
 
@@ -198,26 +209,43 @@ const LandingPage: React.FC = () => {
                 </div>
             </nav>
 
-            {/* Hero Section */}
+            {/* Refined Hero Section */}
             <section className="relative pt-40 pb-24 px-6 overflow-hidden">
+                {/* Background Grid Pattern (Existing) */}
                 <GridPattern />
-                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center relative z-10">
                     <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6 ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
-                            <Zap size={14} fill="currentColor" /> Live Production Tracking
+
+                        {/* IMPROVEMENT 1: The Modern Badge */}
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-8 border border-blue-500/20 bg-blue-500/5 text-blue-600 dark:text-blue-400">
+                            <span className="relative flex h-2 w-2 mr-1">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                            </span>
+                            Live Production Tracking
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8">
+
+                        <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8 text-slate-900 dark:text-white">
                             ELIMINATE <br />
-                            <span className="text-blue-600">DOWNTIME.</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">DOWNTIME.</span>
                         </h1>
-                        <p className={`text-xl font-medium max-w-lg mb-10 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+
+                        <p className="text-xl font-medium max-w-lg mb-10 leading-relaxed text-slate-500 dark:text-slate-400">
                             Get real-time visibility into every bundle, operator, and sewing line—without the 6-month ERP setup.
                         </p>
+
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <motion.button className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-200 dark:shadow-blue-900/40">
+                            {/* IMPROVEMENT 2: Colored Shadow Button */}
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
+                            >
                                 Start Free Trial <ArrowRight size={20} />
                             </motion.button>
-                            <button className={`px-8 py-4 rounded-2xl text-lg font-bold transition-colors ${isDark ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}>
+
+                            <button className="px-8 py-4 rounded-2xl text-lg font-bold transition-colors bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
                                 Watch Demo
                             </button>
                         </div>
@@ -229,17 +257,20 @@ const LandingPage: React.FC = () => {
                         transition={{ ...springTransition, delay: 0.2 }}
                         className="relative group"
                     >
-                        <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500 to-cyan-400 rounded-[40px] opacity-20 blur-3xl group-hover:opacity-30 transition-opacity" />
-                        <div className="relative bg-slate-900 rounded-[32px] p-8 shadow-2xl border border-white/10 overflow-hidden">
+                        {/* IMPROVEMENT 3: Ambient Glow Behind Dashboard */}
+                        <div className="absolute -inset-4 bg-blue-500/30 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+
+                        <div className="relative bg-white dark:bg-slate-900 rounded-[32px] p-8 shadow-2xl ring-1 ring-slate-900/5 dark:ring-white/10 overflow-hidden">
                             <div className="flex items-center justify-between mb-8">
                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Real-time Efficiency</p>
-                                    <p className="text-3xl font-bold text-white tracking-tighter">94.2% <span className="text-xs text-green-400 font-medium">+2.1%</span></p>
+                                    <p className="text-[10px] font-bold text-blue-500 dark:text-blue-400 uppercase tracking-widest">Real-time Efficiency</p>
+                                    <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tighter">94.2% <span className="text-xs text-green-500 font-medium">+2.1%</span></p>
                                 </div>
-                                <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <div className="h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
                                     <BarChart3 size={20} />
                                 </div>
                             </div>
+                            {/* Graph bars */}
                             <div className="flex items-end h-40 gap-3">
                                 {[40, 70, 45, 90, 65, 80, 95].map((h, i) => (
                                     <motion.div
@@ -257,9 +288,9 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* --- NEW SECTION: The Brand Marquee (Trust) --- */}
-            <div className={`py-12 border-y overflow-hidden whitespace-nowrap ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+            <div className="py-12 border-y overflow-hidden whitespace-nowrap bg-slate-50 border-slate-200 dark:bg-slate-950 dark:border-slate-800">
                 <div className="text-center mb-6">
-                    <p className={`text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                    <p className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
                         Powering the manufacturing for
                     </p>
                 </div>
@@ -268,8 +299,8 @@ const LandingPage: React.FC = () => {
                 <div className="relative flex overflow-hidden mask-gradient-x py-6"> {/* Reduced py-10 to py-6 */}
 
                     {/* Fade Masks (Left & Right) */}
-                    <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r ${isDark ? 'from-slate-950 to-transparent' : 'from-slate-50 to-transparent'}`} />
-                    <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l ${isDark ? 'from-slate-950 to-transparent' : 'from-slate-50 to-transparent'}`} />
+                    <div className="absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-950" />
+                    <div className="absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l from-slate-50 to-transparent dark:from-slate-950" />
 
                     <motion.div
                         className="flex gap-12 items-center px-4"
@@ -295,7 +326,7 @@ const LandingPage: React.FC = () => {
                                             <img
                                                 src={logoUrl}
                                                 alt={`Partner logo ${i + 1}`}
-                                                className={`w-auto h-16 object-contain ${isDark ? 'invert' : ''}`}
+                                                className="w-auto h-16 object-contain dark:invert"
                                             />
                                         </div>
                                     </div>
@@ -441,7 +472,7 @@ const LandingPage: React.FC = () => {
                     <div className="grid md:grid-cols-12 gap-6">
 
                         {/* THE UPGRADED WIDGET LIBRARY CARD */}
-                        <div className={`md:col-span-8 p-10 md:p-12 rounded-[40px] border shadow-sm relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                        <div ref={widgetSectionRef} className={`md:col-span-8 p-10 md:p-12 rounded-[40px] border shadow-sm relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                             <div className="relative z-10 flex flex-col h-full">
                                 <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-200 dark:shadow-blue-900/50">
                                     <LayoutDashboard size={28} />
@@ -458,8 +489,7 @@ const LandingPage: React.FC = () => {
                                 <div className="mt-12 relative h-[320px] w-full">
                                     {/* Widget 1: Target Realization (Floating Left) */}
                                     <motion.div
-                                        animate={{ y: [0, -8, 0] }}
-                                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                                        style={{ y: yLayer1 }}
                                         className="absolute left-0 top-0 z-20 w-[280px] h-[200px]"
                                     >
                                         <div className={`w-full h-full rounded-2xl shadow-xl border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-blue-900/50' : 'bg-white border-blue-100'}`}>
@@ -469,8 +499,7 @@ const LandingPage: React.FC = () => {
 
                                     {/* Widget 2: Speed vs Quality (Center/Right) */}
                                     <motion.div
-                                        animate={{ y: [0, 10, 0] }}
-                                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                                        style={{ y: yLayer2 }}
                                         className="absolute left-[240px] top-[60px] z-30 w-[340px] h-[240px]"
                                     >
                                         <div className={`w-full h-full rounded-2xl shadow-2xl shadow-blue-900/10 border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
@@ -480,8 +509,7 @@ const LandingPage: React.FC = () => {
 
                                     {/* Widget 3: Blocker Cloud (Right Back) */}
                                     <motion.div
-                                        animate={{ y: [0, -5, 0] }}
-                                        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                                        style={{ y: yLayer3 }}
                                         className="absolute right-0 top-0 z-10 w-[240px] h-[180px] hidden xl:block"
                                     >
                                         <div className={`w-full h-full backdrop-blur-sm rounded-2xl shadow-lg border overflow-hidden ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white/80 border-slate-100'}`}>
