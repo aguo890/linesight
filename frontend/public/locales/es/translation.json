@@ -1,45 +1,45 @@
 {
     "profile": {
-        "title": "[MOCK] Perfil de Usuario",
-        "subtitle": "[MOCK] Gestiona la configuración y preferencias de tu cuenta",
-        "back": "[MOCK] Atrás",
-        "save_btn": "[MOCK] Guardar Cambios",
-        "success": "[MOCK] ¡Perfil actualizado con éxito!",
-        "error_required": "[MOCK] El nombre completo es obligatorio",
-        "error_fail": "[MOCK] Error al actualizar el perfil. Inténtalo de nuevo.",
-        "at": "[MOCK] en",
+        "title": "Perfil de Usuario",
+        "subtitle": "Gestiona la configuración y preferencias de tu cuenta",
+        "back": "Atrás",
+        "save_btn": "Guardar Cambios",
+        "success": "¡Perfil actualizado con éxito!",
+        "error_required": "El nombre completo es obligatorio",
+        "error_fail": "Error al actualizar el perfil. Inténtalo de nuevo.",
+        "at": "en",
         "roles": {
-            "admin": "[MOCK] Administrador",
-            "user": "[MOCK] Usuario",
-            "manager": "[MOCK] Gerente"
+            "admin": "Administrador",
+            "user": "Usuario",
+            "manager": "Gerente"
         },
         "sections": {
-            "factories": "[MOCK] Tus Fábricas",
-            "security": "[MOCK] Seguridad",
-            "personal_info": "[MOCK] Información Personal",
-            "localization": "[MOCK] Localización y Región",
-            "notifications": "[MOCK] Preferencias de Notificación (Próximamente)"
+            "factories": "Tus Fábricas",
+            "security": "Seguridad",
+            "personal_info": "Información Personal",
+            "localization": "Localización y Región",
+            "notifications": "Preferencias de Notificación (Próximamente)"
         },
         "security": {
-            "change_password": "[MOCK] Cambiar Contraseña",
-            "two_factor": "[MOCK] Autenticación de Dos Factores"
+            "change_password": "Cambiar Contraseña",
+            "two_factor": "Autenticación de Dos Factores"
         },
         "fields": {
-            "full_name": "[MOCK] Nombre Completo",
-            "email": "[MOCK] Dirección de Correo",
-            "email_hint": "[MOCK] El correo no se puede cambiar directamente.",
-            "language": "[MOCK] Idioma",
-            "theme": "[MOCK] Tema"
+            "full_name": "Nombre Completo",
+            "email": "Dirección de Correo",
+            "email_hint": "El correo no se puede cambiar directamente.",
+            "language": "Idioma",
+            "theme": "Tema"
         },
         "themes": {
-            "light": "[MOCK] Modo Claro",
-            "dark": "[MOCK] Modo Oscuro",
-            "system": "[MOCK] Predeterminado del Sistema"
+            "light": "Modo Claro",
+            "dark": "Modo Oscuro",
+            "system": "Predeterminado del Sistema"
         },
         "notifications": {
-            "email": "[MOCK] Alertas por Correo",
-            "push": "[MOCK] Notificaciones Push",
-            "weekly": "[MOCK] Resumen Semanal"
+            "email": "Alertas por Correo",
+            "push": "Notificaciones Push",
+            "weekly": "Resumen Semanal"
         }
     }
 }

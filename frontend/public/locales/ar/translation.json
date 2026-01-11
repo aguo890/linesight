@@ -1,45 +1,45 @@
 {
     "profile": {
-        "title": "[MOCK] ملف المستخدم",
-        "subtitle": "[MOCK] إدارة إعدادات حسابك وتفضيلاتك",
-        "back": "[MOCK] خلف",
-        "save_btn": "[MOCK] حفظ التغييرات",
-        "success": "[MOCK] تم تحديث الملف الشخصي بنجاح!",
-        "error_required": "[MOCK] الاسم الكامل مطلوب",
-        "error_fail": "[MOCK] فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
-        "at": "[MOCK] في",
+        "title": "ملف المستخدم",
+        "subtitle": "إدارة إعدادات حسابك وتفضيلاتك",
+        "back": "خلف",
+        "save_btn": "حفظ التغييرات",
+        "success": "تم تحديث الملف الشخصي بنجاح!",
+        "error_required": "الاسم الكامل مطلوب",
+        "error_fail": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
+        "at": "في",
         "roles": {
-            "admin": "[MOCK] مسؤول",
-            "user": "[MOCK] مستخدم",
-            "manager": "[MOCK] مدير"
+            "admin": "مسؤول",
+            "user": "مستخدم",
+            "manager": "مدير"
         },
         "sections": {
-            "factories": "[MOCK] مصانعك",
-            "security": "[MOCK] الأمان",
-            "personal_info": "[MOCK] المعلومات الشخصية",
-            "localization": "[MOCK] الترجمة والمنطقة",
-            "notifications": "[MOCK] تفضيلات الإشعارات (قريبًا)"
+            "factories": "مصانعك",
+            "security": "الأمان",
+            "personal_info": "المعلومات الشخصية",
+            "localization": "الترجمة والمنطقة",
+            "notifications": "تفضيلات الإشعارات (قريبًا)"
         },
         "security": {
-            "change_password": "[MOCK] تغيير كلمة المرور",
-            "two_factor": "[MOCK] المصادقة الثنائية"
+            "change_password": "تغيير كلمة المرور",
+            "two_factor": "المصادقة الثنائية"
         },
         "fields": {
-            "full_name": "[MOCK] الاسم الكامل",
-            "email": "[MOCK] عنوان البريد الإلكتروني",
-            "email_hint": "[MOCK] لا يمكن تغيير البريد الإلكتروني مباشرة.",
-            "language": "[MOCK] اللغة",
-            "theme": "[MOCK] الموضوع"
+            "full_name": "الاسم الكامل",
+            "email": "عنوان البريد الإلكتروني",
+            "email_hint": "لا يمكن تغيير البريد الإلكتروني مباشرة.",
+            "language": "اللغة",
+            "theme": "الموضوع"
         },
         "themes": {
-            "light": "[MOCK] وضع الضوء",
-            "dark": "[MOCK] الوضع الداكن",
-            "system": "[MOCK] النظام الافتراضي"
+            "light": "وضع الضوء",
+            "dark": "الوضع الداكن",
+            "system": "النظام الافتراضي"
         },
         "notifications": {
-            "email": "[MOCK] تنبيهات البريد الإلكتروني",
-            "push": "[MOCK] دفع الإخطارات",
-            "weekly": "[MOCK] الملخص الأسبوعي"
+            "email": "تنبيهات البريد الإلكتروني",
+            "push": "دفع الإخطارات",
+            "weekly": "الملخص الأسبوعي"
         }
     }
 }

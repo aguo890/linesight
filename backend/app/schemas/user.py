@@ -80,6 +80,7 @@ class UserCreate(UserBase):
     role: str = "viewer"
 
 
+
 class UserPreferences(BaseModel):
     """Schema for user preferences JSON structure."""
 
@@ -89,6 +90,15 @@ class UserPreferences(BaseModel):
     locale: str = "en-US"
 
 
+class UserPreferencesUpdate(BaseModel):
+    """Schema for updating user preferences (all fields optional for merging)."""
+
+    theme: str | None = None
+    country_code: str | None = None
+    notifications: bool | None = None
+    locale: str | None = None
+
+
 class UserUpdate(BaseModel):
     """Schema for updating a user."""
 
@@ -96,7 +106,7 @@ class UserUpdate(BaseModel):
     full_name: str | None = Field(None, max_length=255)
     role: str | None = None
     timezone: str | None = Field(None, max_length=50)
-    preferences: UserPreferences | None = None
+    preferences: UserPreferencesUpdate | dict | None = None
     is_active: bool | None = None
 
     @field_validator("timezone")

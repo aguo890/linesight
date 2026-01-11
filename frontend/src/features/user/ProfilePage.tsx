@@ -43,7 +43,8 @@ export default function ProfilePage() {
         full_name: '',
         timezone: '',
         country_code: '',
-        theme: 'system' as 'light' | 'dark' | 'system'
+        theme: 'system' as 'light' | 'dark' | 'system',
+        locale: ''
     });
 
     // Calculate if form is dirty (has changes)
@@ -51,7 +52,8 @@ export default function ProfilePage() {
         formData.full_name !== (user.full_name || '') ||
         formData.timezone !== (user.timezone || 'UTC') ||
         formData.country_code !== (getPrefs(user).country_code || '') ||
-        formData.theme !== (getPrefs(user).theme || 'system')
+        formData.theme !== (getPrefs(user).theme || 'system') ||
+        formData.locale !== (getPrefs(user).locale || 'en-US')
     ) : false;
 
     // Initialize form from user data
@@ -62,7 +64,8 @@ export default function ProfilePage() {
                 full_name: user.full_name || '',
                 timezone: user.timezone || 'UTC',
                 country_code: prefs.country_code || '',
-                theme: (prefs.theme as 'light' | 'dark' | 'system') || 'system'
+                theme: (prefs.theme as 'light' | 'dark' | 'system') || 'system',
+                locale: prefs.locale || 'en-US'
             });
         }
     }, [user]);
@@ -105,7 +108,8 @@ export default function ProfilePage() {
             const newPrefs: UserPreferences = {
                 ...currentPrefs,
                 country_code: formData.country_code,
-                theme: formData.theme as 'light' | 'dark' | 'system'
+                theme: formData.theme as 'light' | 'dark' | 'system',
+                locale: formData.locale
             };
 
             await updateUser({
@@ -299,7 +303,12 @@ export default function ProfilePage() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.language')}</label>
-                                    <LanguageSelector className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none" />
+                                    <LanguageSelector
+                                        className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                                        onPreferenceChange={(key, value) => {
+                                            setFormData(prev => ({ ...prev, [key]: value }));
+                                        }}
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.theme')}</label>

@@ -1,0 +1,45 @@
+{
+    "profile": {
+        "title": "用户资料",
+        "subtitle": "管理您的账户设置和首选项",
+        "back": "返回",
+        "save_btn": "保存更改",
+        "success": "个人资料更新成功！",
+        "error_required": "全名是必填项",
+        "error_fail": "更新个人资料失败。请重试。",
+        "at": "在",
+        "roles": {
+            "admin": "管理员",
+            "user": "用户",
+            "manager": "经理"
+        },
+        "sections": {
+            "factories": "您的工厂",
+            "security": "安全",
+            "personal_info": "个人信息",
+            "localization": "本地化和区域",
+            "notifications": "通知首选项 (即将推出)"
+        },
+        "security": {
+            "change_password": "更改密码",
+            "two_factor": "双重身份验证"
+        },
+        "fields": {
+            "full_name": "全名",
+            "email": "电子邮件地址",
+            "email_hint": "电子邮件无法直接更改。",
+            "language": "语言",
+            "theme": "主题"
+        },
+        "themes": {
+            "light": "浅色模式",
+            "dark": "深色模式",
+            "system": "系统默认"
+        },
+        "notifications": {
+            "email": "电子邮件提醒",
+            "push": "推送通知",
+            "weekly": "每周摘要"
+        }
+    }
+}

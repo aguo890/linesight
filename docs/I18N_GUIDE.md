@@ -26,7 +26,35 @@ project-root/
 │           └── LanguageSelector.tsx # Reusable switcher
 ```
 
-## 3. Workflow: Adding New Text
+```
+
+## 3. Locale Mapping Strategy
+The application uses two different formats for locale codes:
+*   **Frontend (Short Codes)**: `en`, `es`, `ar`, `zh`. Matches the folder names in `public/locales`.
+*   **Backend (Region Codes)**: `en-US`, `es-ES`, `ar-EG`, `zh-CN`. Matches standard database conventions.
+
+We use `src/utils/localeUtils.ts` to bridge this gap.
+*   **`toRegionLocale`**: Used when saving preferences to the database (UI -> DB).
+*   **`toShortLocale`**: Used when loading the user profile (DB -> UI).
+
+## 4. Persistence & Synchronization
+
+### Backend Merge Strategy
+To prevent race conditions (e.g., Tab A changes Theme, Tab B changes Language), we rely on a **Backend-Side Merge** strategy.
+*   **Frontend**: Sends ONLY the changed field.
+    *   Payload: `{ "preferences": { "locale": "zh-CN" } }`
+*   **Backend**: 
+    1.  Loads existing preferences.
+    2.  Merges the incoming partial object.
+    3.  Saves the result.
+    *   *Result:* User settings (Theme, Notifications) are preserved.
+
+### Initialization Priority
+1.  **Database Preference**: If the user is logged in and has a saved locale, this **wins**.
+2.  **Browser Detection**: If no DB setting exists, we fall back to `i18next-browser-languagedetector`.
+3.  **Fallback**: Defaults to `en`.
+
+## 5. Workflow: Adding New Text
 Follow this exact process to add new text to the application.
 
 ### Step 1: Add to English (Source of Truth)
@@ -75,13 +103,13 @@ const MyComponent = () => {
 }
 ```
 
-## 4. Strict Typing Explanation
+## 6. Strict Typing Explanation
 We use a **Type Declaration** file at `src/i18next.d.ts`.
 This file imports the English JSON directly and tells TypeScript: *"The resources for i18next match the shape of the English JSON file."*
 
 If you see a TypeScript error when using `t()`, it means you skipped Step 1 (adding the key to the JSON file).
 
-## 5. Verification & Testing
+## 7. Verification & Testing
 
 ### RTL (Right-to-Left) Support
 When testing Arabic (`ar`):
