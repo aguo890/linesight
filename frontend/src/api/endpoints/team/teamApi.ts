@@ -1,38 +1,7 @@
-/**
- * Team Management API client functions.
- * Provides endpoints for managing organization member assignments to production lines.
- */
-
 import { AXIOS_INSTANCE } from '../../axios-client';
+import type { MemberRead, ScopeRead, ScopeAssign } from '../../model';
 
-// =============================================================================
-// Types
-// =============================================================================
-
-export interface ScopeRead {
-    id: string;
-    scope_type: string;
-    organization_id: string | null;
-    factory_id: string | null;
-    production_line_id: string | null;
-    role: string;
-}
-
-export interface MemberRead {
-    id: string;
-    email: string;
-    full_name: string | null;
-    avatar_url: string | null;
-    role: string;
-    is_active: boolean;
-    last_login: string | null;
-    scopes: ScopeRead[];
-}
-
-export interface ScopeAssign {
-    production_line_id: string;
-    role?: string;
-}
+export type { MemberRead, ScopeRead };
 
 // =============================================================================
 // API Functions
@@ -46,10 +15,10 @@ export const listOrgMembers = () =>
     AXIOS_INSTANCE.get<MemberRead[]>('/api/v1/organizations/members');
 
 /**
- * Assign a user to a production line.
+ * Assign a user to a data source.
  * Only accessible by organization owners.
  */
-export const assignUserToLine = (userId: string, data: ScopeAssign) =>
+export const assignUserToDataSource = (userId: string, data: ScopeAssign) =>
     AXIOS_INSTANCE.post<ScopeRead>(`/api/v1/organizations/members/${userId}/scopes`, data);
 
 /**

@@ -31,6 +31,9 @@ class UserInfo(BaseModel):
     full_name: str
     role: str
     organization_id: str
+    timezone: str | None = None
+    preferences: dict | None = None
+    avatar_url: str | None = None
 
 
 class RegisterRequest(BaseModel):

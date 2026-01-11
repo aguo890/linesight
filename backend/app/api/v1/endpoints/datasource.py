@@ -13,7 +13,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.user import User
 
 router = APIRouter()
@@ -56,6 +57,13 @@ class DataSourceCreate(BaseModel):
 class DataSourceUpdate(BaseModel):
     """Schema for updating DataSource configuration."""
 
+    name: str | None = None
+    code: str | None = None
+    specialty: str | None = None
+    target_operators: int | None = None
+    target_efficiency_pct: int | None = None
+    is_active: bool | None = None
+    settings: dict | None = None
     time_column: str | None = None
     time_format: str | None = None
     description: str | None = None
@@ -64,8 +72,8 @@ class DataSourceUpdate(BaseModel):
 
 class DataSourceResponse(BaseModel):
     id: str
-    production_line_id: str
-    source_name: str
+    production_line_id: str | None = None  # Legacy field, nullable after refactor
+    source_name: str | None = None  # May be None for seeded lines
     description: str | None
     time_column: str | None = None
     time_format: str | None = None
@@ -77,7 +85,7 @@ class DataSourceResponse(BaseModel):
 
 
 @router.post(
-    "/datasources",
+    "/data-sources",
     response_model=DataSourceResponse,
     status_code=status.HTTP_201_CREATED,
 )
@@ -137,7 +145,7 @@ async def create_data_source(
     return data_source
 
 
-@router.get("/datasources/{data_source_id}", response_model=DataSourceResponse)
+@router.get("/data-sources/{data_source_id}", response_model=DataSourceResponse)
 async def get_data_source(
     data_source_id: str,
     db: AsyncSession = Depends(get_db),
@@ -159,7 +167,7 @@ async def get_data_source(
     return data_source
 
 
-@router.get("/datasources", response_model=list[DataSourceResponse])
+@router.get("/data-sources", response_model=list[DataSourceResponse])
 async def list_data_sources(
     skip: int = 0,
     limit: int = 100,
@@ -178,18 +186,19 @@ async def list_data_sources(
     return result.scalars().all()
 
 
-@router.get("/datasources/line/{line_id}", response_model=DataSourceResponse | None)
+@router.get("/data-sources/line/{line_id}", response_model=DataSourceResponse | None)
 async def get_data_source_by_line(
     line_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Get data source for a specific production line."""
+    """Get data source by ID (line_id IS the DataSource.id after refactor)."""
     from sqlalchemy.orm import selectinload
 
+    # After refactor: line_id IS the DataSource.id directly
     result = await db.execute(
         select(DataSource)
-        .where(DataSource.production_line_id == line_id)
+        .where(DataSource.id == line_id)
         .options(selectinload(DataSource.schema_mappings))
     )
     data_source = result.scalar_one_or_none()
@@ -198,7 +207,7 @@ async def get_data_source_by_line(
 
 
 @router.get(
-    "/datasources/by-line/{production_line_id}",
+    "/data-sources/by-line/{production_line_id}",
     response_model=DataSourceResponse | None,
 )
 async def get_datasource_by_line_explicit(
@@ -209,13 +218,14 @@ async def get_datasource_by_line_explicit(
     """
     Fetch DataSource config for a specific line.
     Returns 200 with null if not found (graceful init).
-    Alias/Explicit endpoint for validate-mapping flow.
+    After refactor: production_line_id IS the DataSource.id directly.
     """
     from sqlalchemy.orm import selectinload
 
+    # After refactor: production_line_id IS the DataSource.id
     result = await db.execute(
         select(DataSource)
-        .where(DataSource.production_line_id == production_line_id)
+        .where(DataSource.id == production_line_id)
         .options(selectinload(DataSource.schema_mappings))
     )
     datasource = result.scalar_one_or_none()
@@ -224,7 +234,7 @@ async def get_datasource_by_line_explicit(
 
 
 @router.put(
-    "/datasources/{data_source_id}/mapping", response_model=SchemaMappingResponse
+    "/data-sources/{data_source_id}/mapping", response_model=SchemaMappingResponse
 )
 async def update_schema_mapping(
     data_source_id: str,
@@ -270,7 +280,7 @@ async def update_schema_mapping(
     return new_mapping
 
 
-@router.put("/datasources/{data_source_id}", response_model=DataSourceResponse)
+@router.put("/data-sources/{data_source_id}", response_model=DataSourceResponse)
 async def update_data_source(
     data_source_id: str,
     datasource_in: DataSourceUpdate,
@@ -281,11 +291,11 @@ async def update_data_source(
     from sqlalchemy.orm import selectinload
 
     # Verify data source exists and check ownership
+    # After refactor: DataSource has factory_id directly, no need to join ProductionLine
     result = await db.execute(
         select(DataSource)
         .options(selectinload(DataSource.schema_mappings))
-        .join(ProductionLine)
-        .join(Factory)
+        .join(Factory, DataSource.factory_id == Factory.id)
         .where(DataSource.id == data_source_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
@@ -305,7 +315,7 @@ async def update_data_source(
     return datasource
 
 
-@router.delete("/datasources/{data_source_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/data-sources/{data_source_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_data_source(
     data_source_id: str,
     db: AsyncSession = Depends(get_db),
@@ -313,7 +323,6 @@ async def delete_data_source(
 ):
     """
     Delete a data source and all its associated schema mappings.
-    The database cascade should handle the mappings, but we'll be explicit if needed.
     """
     import logging
 
@@ -321,27 +330,23 @@ async def delete_data_source(
 
     from app.models.user import UserRole
 
-    if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
+    # RBAC: Only Owners and Managers can delete
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER]:
         raise HTTPException(
             status_code=403, detail="Not authorized to delete data sources"
         )
 
-    # Verify data source exists and check ownership
-    # We join to ensure it belongs to the user's organization
+    # Fetch Data Source directly
+    # We join Factory to ensure it belongs to the user's organization
     result = await db.execute(
         select(DataSource)
-        .join(ProductionLine)
-        .join(Factory)
+        .join(Factory, DataSource.factory_id == Factory.id)
         .where(DataSource.id == data_source_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
     data_source = result.scalar_one_or_none()
 
     if not data_source:
-        # Check if it exists but belongs to another org (to discern 403 vs 404)
-        # But for security, 404 is safer to avoid enumeration.
-        # Alternatively, if we want to be strict about "Forbidden", we check existence first then permission.
-        # Given the previous join failed, it's either not found or not owned.
         raise HTTPException(status_code=404, detail="Data source not found")
 
     await db.delete(data_source)

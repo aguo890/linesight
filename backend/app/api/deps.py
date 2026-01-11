@@ -127,7 +127,7 @@ async def require_manager_or_above(
     """Require manager, owner, or system admin role."""
     from app.enums import UserRole
 
-    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Manager access required",

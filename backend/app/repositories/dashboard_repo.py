@@ -10,7 +10,7 @@ from sqlalchemy.orm import selectinload
 
 from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
-from app.models.factory import ProductionLine
+from app.models import ProductionLine  # Alias for DataSource
 
 
 class DashboardRepository:

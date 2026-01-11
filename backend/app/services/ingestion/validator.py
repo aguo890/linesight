@@ -124,7 +124,7 @@ class RecordValidator:
         records: list[dict[str, Any]],
         style_map: dict[str, Style],
         order_map: dict[tuple[str, str], Order],
-        line_id: str,
+        data_source_id: str,
     ) -> dict[tuple[str, date, str], ProductionRun]:
         """
         Batch fetch existing ProductionRuns to enable differential updates.
@@ -160,7 +160,7 @@ class RecordValidator:
         order_ids = {c[0] for c in criteria}
 
         stmt = select(ProductionRun).where(
-            ProductionRun.line_id == line_id,
+            ProductionRun.data_source_id == data_source_id,
             ProductionRun.order_id.in_(order_ids),
             func.date(ProductionRun.production_date).in_(dates),
         )

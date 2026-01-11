@@ -25,14 +25,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AppSchemasDatasourceDataSourceCreate,
+  AppSchemasDatasourceDataSourceUpdate,
+  DataSourceRead,
   FactoryCreate,
   FactoryRead,
   FactoryUpdate,
-  FactoryWithLines,
-  HTTPValidationError,
-  ProductionLineCreate,
-  ProductionLineRead,
-  ProductionLineUpdate
+  FactoryWithDataSources,
+  HTTPValidationError
 } from '../../model';
 
 import { customInstance } from '../../axios-client';
@@ -44,6 +44,10 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 /**
  * Get all factories for the current user's organization.
+
+RBAC:
+- OWNER/ADMIN: See all active factories in organization.
+- MANAGER: Only see factories where they have assigned lines.
  * @summary List Factories
  */
 export const listFactoriesApiV1FactoriesGet = (
@@ -213,7 +217,7 @@ export const getFactoryApiV1FactoriesFactoryIdGet = (
 ) => {
       
       
-      return customInstance<FactoryWithLines>(
+      return customInstance<FactoryWithDataSources>(
       {url: `/api/v1/factories/${factoryId}`, method: 'GET', signal
     },
       options);
@@ -423,22 +427,22 @@ export const useDeleteFactoryApiV1FactoriesFactoryIdDelete = <TError = HTTPValid
       return useMutation(mutationOptions, queryClient);
     }
     /**
- * Get production lines for a factory.
+ * Get data sources for a factory.
 
 RBAC Filtering:
-- SYSTEM_ADMIN/OWNER: See all lines in the factory
-- MANAGER: Only see lines assigned via UserScope
-- ANALYST/VIEWER: See all lines (read-only)
- * @summary List Production Lines
+- SYSTEM_ADMIN/OWNER: See all data sources in the factory
+- MANAGER: Only see data sources assigned via UserScope
+- ANALYST/VIEWER: See all data sources (read-only)
+ * @summary List Data Sources
  */
-export const listProductionLinesApiV1FactoriesFactoryIdLinesGet = (
+export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet = (
     factoryId: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<ProductionLineRead[]>(
-      {url: `/api/v1/factories/${factoryId}/lines`, method: 'GET', signal
+      return customInstance<DataSourceRead[]>(
+      {url: `/api/v1/factories/${factoryId}/data-sources`, method: 'GET', signal
     },
       options);
     }
@@ -446,69 +450,69 @@ export const listProductionLinesApiV1FactoriesFactoryIdLinesGet = (
 
 
 
-export const getListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryKey = (factoryId?: string,) => {
+export const getListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryKey = (factoryId?: string,) => {
     return [
-    `/api/v1/factories/${factoryId}/lines`
+    `/api/v1/factories/${factoryId}/data-sources`
     ] as const;
     }
 
     
-export const getListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryOptions = <TData = Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError = HTTPValidationError>(factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryOptions = <TData = Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError = HTTPValidationError>(factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryKey(factoryId);
+  const queryKey =  queryOptions?.queryKey ?? getListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryKey(factoryId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>> = ({ signal }) => listProductionLinesApiV1FactoriesFactoryIdLinesGet(factoryId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>> = ({ signal }) => listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet(factoryId, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(factoryId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(factoryId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type ListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryResult = NonNullable<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>>
-export type ListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryError = HTTPValidationError
+export type ListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryResult = NonNullable<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>>
+export type ListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryError = HTTPValidationError
 
 
-export function useListProductionLinesApiV1FactoriesFactoryIdLinesGet<TData = Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError = HTTPValidationError>(
- factoryId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData>> & Pick<
+export function useListDataSourcesApiV1FactoriesFactoryIdDataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError = HTTPValidationError>(
+ factoryId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>,
+          Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>,
           TError,
-          Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>
+          Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListProductionLinesApiV1FactoriesFactoryIdLinesGet<TData = Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError = HTTPValidationError>(
- factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData>> & Pick<
+export function useListDataSourcesApiV1FactoriesFactoryIdDataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError = HTTPValidationError>(
+ factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>,
+          Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>,
           TError,
-          Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>
+          Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useListProductionLinesApiV1FactoriesFactoryIdLinesGet<TData = Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError = HTTPValidationError>(
- factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListDataSourcesApiV1FactoriesFactoryIdDataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError = HTTPValidationError>(
+ factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary List Production Lines
+ * @summary List Data Sources
  */
 
-export function useListProductionLinesApiV1FactoriesFactoryIdLinesGet<TData = Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError = HTTPValidationError>(
- factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listProductionLinesApiV1FactoriesFactoryIdLinesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListDataSourcesApiV1FactoriesFactoryIdDataSourcesGet<TData = Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError = HTTPValidationError>(
+ factoryId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listDataSourcesApiV1FactoriesFactoryIdDataSourcesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getListProductionLinesApiV1FactoriesFactoryIdLinesGetQueryOptions(factoryId,options)
+  const queryOptions = getListDataSourcesApiV1FactoriesFactoryIdDataSourcesGetQueryOptions(factoryId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -520,31 +524,31 @@ export function useListProductionLinesApiV1FactoriesFactoryIdLinesGet<TData = Aw
 
 
 /**
- * Create a new production line with quota enforcement.
- * @summary Create Production Line
+ * Create a new data source with quota enforcement.
+ * @summary Create Data Source
  */
-export const createProductionLineApiV1FactoriesFactoryIdLinesPost = (
+export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPost = (
     factoryId: string,
-    productionLineCreate: ProductionLineCreate,
+    appSchemasDatasourceDataSourceCreate: AppSchemasDatasourceDataSourceCreate,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<ProductionLineRead>(
-      {url: `/api/v1/factories/${factoryId}/lines`, method: 'POST',
+      return customInstance<DataSourceRead>(
+      {url: `/api/v1/factories/${factoryId}/data-sources`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: productionLineCreate, signal
+      data: appSchemasDatasourceDataSourceCreate, signal
     },
       options);
     }
   
 
 
-export const getCreateProductionLineApiV1FactoriesFactoryIdLinesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>, TError,{factoryId: string;data: ProductionLineCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>, TError,{factoryId: string;data: ProductionLineCreate}, TContext> => {
+export const getCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext> => {
 
-const mutationKey = ['createProductionLineApiV1FactoriesFactoryIdLinesPost'];
+const mutationKey = ['createDataSourceApiV1FactoriesFactoryIdDataSourcesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -554,10 +558,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>, {factoryId: string;data: ProductionLineCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, {factoryId: string;data: AppSchemasDatasourceDataSourceCreate}> = (props) => {
           const {factoryId,data} = props ?? {};
 
-          return  createProductionLineApiV1FactoriesFactoryIdLinesPost(factoryId,data,requestOptions)
+          return  createDataSourceApiV1FactoriesFactoryIdDataSourcesPost(factoryId,data,requestOptions)
         }
 
         
@@ -565,39 +569,39 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type CreateProductionLineApiV1FactoriesFactoryIdLinesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>>
-    export type CreateProductionLineApiV1FactoriesFactoryIdLinesPostMutationBody = ProductionLineCreate
-    export type CreateProductionLineApiV1FactoriesFactoryIdLinesPostMutationError = HTTPValidationError
+    export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>>
+    export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationBody = AppSchemasDatasourceDataSourceCreate
+    export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationError = HTTPValidationError
 
     /**
- * @summary Create Production Line
+ * @summary Create Data Source
  */
-export const useCreateProductionLineApiV1FactoriesFactoryIdLinesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>, TError,{factoryId: string;data: ProductionLineCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof createProductionLineApiV1FactoriesFactoryIdLinesPost>>,
+        Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>,
         TError,
-        {factoryId: string;data: ProductionLineCreate},
+        {factoryId: string;data: AppSchemasDatasourceDataSourceCreate},
         TContext
       > => {
 
-      const mutationOptions = getCreateProductionLineApiV1FactoriesFactoryIdLinesPostMutationOptions(options);
+      const mutationOptions = getCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     /**
- * Get a specific production line.
-Path: /factories/lines/{line_id}
- * @summary Get Production Line
+ * Get a specific data source.
+Path: /factories/data-sources/{ds_id}
+ * @summary Get Data Source
  */
-export const getProductionLineApiV1FactoriesLinesLineIdGet = (
-    lineId: string,
+export const getDataSourceApiV1FactoriesDataSourcesDsIdGet = (
+    dsId: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<ProductionLineRead>(
-      {url: `/api/v1/factories/lines/${lineId}`, method: 'GET', signal
+      return customInstance<DataSourceRead>(
+      {url: `/api/v1/factories/data-sources/${dsId}`, method: 'GET', signal
     },
       options);
     }
@@ -605,69 +609,69 @@ export const getProductionLineApiV1FactoriesLinesLineIdGet = (
 
 
 
-export const getGetProductionLineApiV1FactoriesLinesLineIdGetQueryKey = (lineId?: string,) => {
+export const getGetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryKey = (dsId?: string,) => {
     return [
-    `/api/v1/factories/lines/${lineId}`
+    `/api/v1/factories/data-sources/${dsId}`
     ] as const;
     }
 
     
-export const getGetProductionLineApiV1FactoriesLinesLineIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError = HTTPValidationError>(lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryOptions = <TData = Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError = HTTPValidationError>(dsId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetProductionLineApiV1FactoriesLinesLineIdGetQueryKey(lineId);
+  const queryKey =  queryOptions?.queryKey ?? getGetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryKey(dsId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>> = ({ signal }) => getProductionLineApiV1FactoriesLinesLineIdGet(lineId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>> = ({ signal }) => getDataSourceApiV1FactoriesDataSourcesDsIdGet(dsId, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(lineId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(dsId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetProductionLineApiV1FactoriesLinesLineIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>>
-export type GetProductionLineApiV1FactoriesLinesLineIdGetQueryError = HTTPValidationError
+export type GetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>>
+export type GetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryError = HTTPValidationError
 
 
-export function useGetProductionLineApiV1FactoriesLinesLineIdGet<TData = Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceApiV1FactoriesDataSourcesDsIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError = HTTPValidationError>(
+ dsId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>
+          Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProductionLineApiV1FactoriesLinesLineIdGet<TData = Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData>> & Pick<
+export function useGetDataSourceApiV1FactoriesDataSourcesDsIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError = HTTPValidationError>(
+ dsId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>,
+          Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>,
           TError,
-          Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>
+          Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetProductionLineApiV1FactoriesLinesLineIdGet<TData = Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceApiV1FactoriesDataSourcesDsIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError = HTTPValidationError>(
+ dsId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Get Production Line
+ * @summary Get Data Source
  */
 
-export function useGetProductionLineApiV1FactoriesLinesLineIdGet<TData = Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError = HTTPValidationError>(
- lineId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductionLineApiV1FactoriesLinesLineIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDataSourceApiV1FactoriesDataSourcesDsIdGet<TData = Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError = HTTPValidationError>(
+ dsId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDataSourceApiV1FactoriesDataSourcesDsIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetProductionLineApiV1FactoriesLinesLineIdGetQueryOptions(lineId,options)
+  const queryOptions = getGetDataSourceApiV1FactoriesDataSourcesDsIdGetQueryOptions(dsId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -679,31 +683,31 @@ export function useGetProductionLineApiV1FactoriesLinesLineIdGet<TData = Awaited
 
 
 /**
- * Update a production line.
-Path: /factories/lines/{line_id}
- * @summary Update Production Line
+ * Update a data source.
+Path: /factories/data-sources/{ds_id}
+ * @summary Update Data Source
  */
-export const updateProductionLineApiV1FactoriesLinesLineIdPatch = (
-    lineId: string,
-    productionLineUpdate: ProductionLineUpdate,
+export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatch = (
+    dsId: string,
+    appSchemasDatasourceDataSourceUpdate: AppSchemasDatasourceDataSourceUpdate,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
-      return customInstance<ProductionLineRead>(
-      {url: `/api/v1/factories/lines/${lineId}`, method: 'PATCH',
+      return customInstance<DataSourceRead>(
+      {url: `/api/v1/factories/data-sources/${dsId}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json', },
-      data: productionLineUpdate
+      data: appSchemasDatasourceDataSourceUpdate
     },
       options);
     }
   
 
 
-export const getUpdateProductionLineApiV1FactoriesLinesLineIdPatchMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>, TError,{lineId: string;data: ProductionLineUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>, TError,{lineId: string;data: ProductionLineUpdate}, TContext> => {
+export const getUpdateDataSourceApiV1FactoriesDataSourcesDsIdPatchMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>, TError,{dsId: string;data: AppSchemasDatasourceDataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>, TError,{dsId: string;data: AppSchemasDatasourceDataSourceUpdate}, TContext> => {
 
-const mutationKey = ['updateProductionLineApiV1FactoriesLinesLineIdPatch'];
+const mutationKey = ['updateDataSourceApiV1FactoriesDataSourcesDsIdPatch'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -713,10 +717,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>, {lineId: string;data: ProductionLineUpdate}> = (props) => {
-          const {lineId,data} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>, {dsId: string;data: AppSchemasDatasourceDataSourceUpdate}> = (props) => {
+          const {dsId,data} = props ?? {};
 
-          return  updateProductionLineApiV1FactoriesLinesLineIdPatch(lineId,data,requestOptions)
+          return  updateDataSourceApiV1FactoriesDataSourcesDsIdPatch(dsId,data,requestOptions)
         }
 
         
@@ -724,49 +728,49 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdateProductionLineApiV1FactoriesLinesLineIdPatchMutationResult = NonNullable<Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>>
-    export type UpdateProductionLineApiV1FactoriesLinesLineIdPatchMutationBody = ProductionLineUpdate
-    export type UpdateProductionLineApiV1FactoriesLinesLineIdPatchMutationError = HTTPValidationError
+    export type UpdateDataSourceApiV1FactoriesDataSourcesDsIdPatchMutationResult = NonNullable<Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>>
+    export type UpdateDataSourceApiV1FactoriesDataSourcesDsIdPatchMutationBody = AppSchemasDatasourceDataSourceUpdate
+    export type UpdateDataSourceApiV1FactoriesDataSourcesDsIdPatchMutationError = HTTPValidationError
 
     /**
- * @summary Update Production Line
+ * @summary Update Data Source
  */
-export const useUpdateProductionLineApiV1FactoriesLinesLineIdPatch = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>, TError,{lineId: string;data: ProductionLineUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useUpdateDataSourceApiV1FactoriesDataSourcesDsIdPatch = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>, TError,{dsId: string;data: AppSchemasDatasourceDataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof updateProductionLineApiV1FactoriesLinesLineIdPatch>>,
+        Awaited<ReturnType<typeof updateDataSourceApiV1FactoriesDataSourcesDsIdPatch>>,
         TError,
-        {lineId: string;data: ProductionLineUpdate},
+        {dsId: string;data: AppSchemasDatasourceDataSourceUpdate},
         TContext
       > => {
 
-      const mutationOptions = getUpdateProductionLineApiV1FactoriesLinesLineIdPatchMutationOptions(options);
+      const mutationOptions = getUpdateDataSourceApiV1FactoriesDataSourcesDsIdPatchMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
     /**
- * Soft-delete a production line.
-Path: /factories/lines/{line_id}
- * @summary Delete Production Line
+ * Soft-delete a data source.
+Path: /factories/data-sources/{ds_id}
+ * @summary Delete Data Source
  */
-export const deleteProductionLineApiV1FactoriesLinesLineIdDelete = (
-    lineId: string,
+export const deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete = (
+    dsId: string,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
       return customInstance<void>(
-      {url: `/api/v1/factories/lines/${lineId}`, method: 'DELETE'
+      {url: `/api/v1/factories/data-sources/${dsId}`, method: 'DELETE'
     },
       options);
     }
   
 
 
-export const getDeleteProductionLineApiV1FactoriesLinesLineIdDeleteMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>, TError,{lineId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>, TError,{lineId: string}, TContext> => {
+export const getDeleteDataSourceApiV1FactoriesDataSourcesDsIdDeleteMutationOptions = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>, TError,{dsId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>, TError,{dsId: string}, TContext> => {
 
-const mutationKey = ['deleteProductionLineApiV1FactoriesLinesLineIdDelete'];
+const mutationKey = ['deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -776,10 +780,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>, {lineId: string}> = (props) => {
-          const {lineId} = props ?? {};
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>, {dsId: string}> = (props) => {
+          const {dsId} = props ?? {};
 
-          return  deleteProductionLineApiV1FactoriesLinesLineIdDelete(lineId,requestOptions)
+          return  deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete(dsId,requestOptions)
         }
 
         
@@ -787,23 +791,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteProductionLineApiV1FactoriesLinesLineIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>>
+    export type DeleteDataSourceApiV1FactoriesDataSourcesDsIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>>
     
-    export type DeleteProductionLineApiV1FactoriesLinesLineIdDeleteMutationError = HTTPValidationError
+    export type DeleteDataSourceApiV1FactoriesDataSourcesDsIdDeleteMutationError = HTTPValidationError
 
     /**
- * @summary Delete Production Line
+ * @summary Delete Data Source
  */
-export const useDeleteProductionLineApiV1FactoriesLinesLineIdDelete = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>, TError,{lineId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useDeleteDataSourceApiV1FactoriesDataSourcesDsIdDelete = <TError = HTTPValidationError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>, TError,{dsId: string}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteProductionLineApiV1FactoriesLinesLineIdDelete>>,
+        Awaited<ReturnType<typeof deleteDataSourceApiV1FactoriesDataSourcesDsIdDelete>>,
         TError,
-        {lineId: string},
+        {dsId: string},
         TContext
       > => {
 
-      const mutationOptions = getDeleteProductionLineApiV1FactoriesLinesLineIdDeleteMutationOptions(options);
+      const mutationOptions = getDeleteDataSourceApiV1FactoriesDataSourcesDsIdDeleteMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }

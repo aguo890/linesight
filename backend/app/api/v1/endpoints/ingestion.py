@@ -17,14 +17,13 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
-from sqlalchemy import func, select, update
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
 from app.core.config import settings
 from app.models.alias_mapping import AliasMapping, AliasScope
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import ProductionLine
 from app.models.raw_import import RawImport, StagingRecord
 from app.models.user import User, UserRole
 
@@ -86,15 +85,15 @@ def get_sample_data_from_import(raw_import: RawImport) -> dict[str, list[Any]]:
 
 @router.get("/history")
 async def get_upload_history(
-    production_line_id: str | None = None,
+    data_source_id: str | None = None,
     limit: int = 10,
     db: AsyncSession = Depends(get_db),
 ):
-    """Fetch recent file uploads, optionally filtered by line."""
+    """Fetch recent file uploads, optionally filtered by data source."""
     query = select(RawImport).order_by(RawImport.created_at.desc()).limit(limit)
 
-    if production_line_id:
-        query = query.where(RawImport.production_line_id == production_line_id)
+    if data_source_id:
+        query = query.where(RawImport.data_source_id == data_source_id)
 
     result = await db.execute(query)
     return result.scalars().all()
@@ -104,8 +103,8 @@ async def get_upload_history(
 async def upload_file_for_ingestion(
     file: UploadFile = File(...),
     factory_id: str = Query(..., description="REQUIRED: Factory to upload data to"),
-    production_line_id: str | None = Query(
-        None, description="Optional: Production line to upload data to"
+    data_source_id: str | None = Query(
+        None, description="Optional: Data source to upload data to"
     ),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),  # Added authentication
@@ -114,27 +113,27 @@ async def upload_file_for_ingestion(
     Upload a file and create a RawImport record.
 
     This is step 1 of the HITL flow. The file is saved and parsed.
-    Storage structure: uploads/{factory_id}/{line_id}/{year}/{month}/{filename}
+    Storage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}
 
     REQUIRES: factory_id - Data must be uploaded to a specific factory.
-    OPTIONAL: production_line_id - If provided, upload is associated with a specific line.
+    OPTIONAL: data_source_id - If provided, upload is associated with a specific data source.
     """
 
     import chardet
     import pandas as pd  # type: ignore[import-untyped]
 
-    # If production_line_id provided, validate it belongs to the factory
-    if production_line_id:
-        line_result = await db.execute(
-            select(ProductionLine).where(ProductionLine.id == production_line_id)
+    # If data_source_id provided, validate it belongs to the factory
+    if data_source_id:
+        ds_result = await db.execute(
+            select(DataSource).where(DataSource.id == data_source_id)
         )
-        line = line_result.scalar_one_or_none()
-        if not line:
-            raise HTTPException(404, f"ProductionLine not found: {production_line_id}")
-        if line.factory_id != factory_id:
+        data_source = ds_result.scalar_one_or_none()
+        if not data_source:
+            raise HTTPException(404, f"DataSource not found: {data_source_id}")
+        if data_source.factory_id != factory_id:
             raise HTTPException(
                 400,
-                f"ProductionLine {production_line_id} does not belong to Factory {factory_id}",
+                f"DataSource {data_source_id} does not belong to Factory {factory_id}",
             )
 
     # Validate file type
@@ -165,7 +164,7 @@ async def upload_file_for_ingestion(
     existing_import_result = await db.execute(
         select(RawImport).where(
             RawImport.file_hash == file_hash,
-            RawImport.production_line_id == production_line_id,
+            RawImport.data_source_id == data_source_id,
         )
     )
     existing_import = existing_import_result.scalar_one_or_none()
@@ -187,11 +186,11 @@ async def upload_file_for_ingestion(
 
     # Use confirmed factory and line IDs
     f_id = factory_id
-    l_id = production_line_id if production_line_id else "unassigned"
+    ds_id = data_source_id if data_source_id else "unassigned"
     now = datetime.utcnow()
 
     # Build path
-    relative_path = Path(f_id) / l_id / str(now.year) / f"{now.month:02d}"
+    relative_path = Path(f_id) / ds_id / str(now.year) / f"{now.month:02d}"
     storage_dir = root_dir / relative_path
 
     # Create directories
@@ -226,7 +225,7 @@ async def upload_file_for_ingestion(
     # Create RawImport record
     raw_import = RawImport(
         factory_id=factory_id,
-        production_line_id=production_line_id,
+        data_source_id=data_source_id,
         original_filename=file.filename,
         file_path=str(file_path),
         file_size_bytes=file_size,
@@ -461,52 +460,29 @@ async def confirm_mapping(
     data_source_id = request.data_source_id
 
     if not data_source_id:
-        # If no data source ID, we expect production_line_id to find or create one
+        # If no data source ID, we expect production_line_id (which now IS a DataSource ID)
         if not request.production_line_id:
             raise HTTPException(
                 400,
                 "Must provide either data_source_id or production_line_id to confirm mapping",
             )
 
-        # Check for existing data source for this line
+        # After refactor: production_line_id IS the DataSource ID directly
         ds_result = await db.execute(
-            select(DataSource).where(
-                DataSource.production_line_id == request.production_line_id
-            )
+            select(DataSource).where(DataSource.id == request.production_line_id)
         )
         data_source = ds_result.scalar_one_or_none()
 
-        if data_source:
-            data_source_id = data_source.id
-            # Update time settings if changed
-            data_source.time_column = request.time_column
-            if request.time_format:
-                data_source.time_format = request.time_format
-        else:
-            # Create new Data Source for this line
-            # Fetch line to get name/code for Source Name
-            line_result = await db.execute(
-                select(ProductionLine).where(
-                    ProductionLine.id == request.production_line_id
-                )
+        if not data_source:
+            raise HTTPException(
+                404, f"Data source (Line) not found: {request.production_line_id}"
             )
-            line = line_result.scalar_one_or_none()
-            if not line:
-                raise HTTPException(
-                    404, f"ProductionLine not found: {request.production_line_id}"
-                )
 
-            new_ds = DataSource(
-                production_line_id=line.id,
-                source_name=f"{line.name} Data Source",
-                description=f"Auto-created from upload of {raw_import.original_filename}",
-                time_column=request.time_column,
-                time_format=request.time_format,
-                is_active=True,
-            )
-            db.add(new_ds)
-            await db.flush()  # Get ID
-            data_source_id = new_ds.id
+        data_source_id = data_source.id
+        # Update time settings if changed
+        data_source.time_column = request.time_column
+        if request.time_format:
+            data_source.time_format = request.time_format
 
     # Link RawImport to DataSource
     raw_import.data_source_id = data_source_id
@@ -658,7 +634,13 @@ async def list_uploads(
     query = select(RawImport)
 
     if production_line_id:
-        query = query.where(RawImport.production_line_id == production_line_id)
+        # Check both columns to support legacy and new behavior (where Line ID == DataSource ID)
+        query = query.where(
+            or_(
+                RawImport.production_line_id == production_line_id,
+                RawImport.data_source_id == production_line_id,
+            )
+        )
     elif factory_id:
         query = query.where(RawImport.factory_id == factory_id)
 
@@ -671,7 +653,10 @@ async def list_uploads(
     count_query = select(func.count()).select_from(RawImport)
     if production_line_id:
         count_query = count_query.where(
-            RawImport.production_line_id == production_line_id
+            or_(
+                RawImport.production_line_id == production_line_id,
+                RawImport.data_source_id == production_line_id,
+            )
         )
     elif factory_id:
         count_query = count_query.where(RawImport.factory_id == factory_id)
@@ -844,7 +829,7 @@ async def delete_uploads(
 
     logger = logging.getLogger("app.audit")
 
-    if current_user.role not in [UserRole.ADMIN, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SYSTEM_ADMIN, UserRole.OWNER, UserRole.FACTORY_MANAGER, UserRole.LINE_MANAGER]:
         raise HTTPException(status_code=403, detail="Not authorized to clear history")
 
     # Verify production line exists and belongs to user's organization

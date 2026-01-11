@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 50
 
     # CORS
-    CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]
 
     # Redis Cache
     REDIS_URL: str = "redis://localhost:6379/0"

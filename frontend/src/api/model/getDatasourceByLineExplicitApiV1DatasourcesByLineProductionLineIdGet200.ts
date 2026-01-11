@@ -7,4 +7,4 @@
  */
 import type { DataSourceResponse } from './dataSourceResponse';
 
-export type GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200 = DataSourceResponse | null;
+export type GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200 = DataSourceResponse | null;

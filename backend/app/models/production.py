@@ -30,8 +30,9 @@ from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.models.analytics import EfficiencyMetric
+    from app.models.datasource import DataSource
     from app.models.events import ProductionEvent
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
     from app.models.quality import QualityInspection
     from app.models.workforce import ProductionOutput
 
@@ -206,9 +207,10 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
         nullable=False,
         index=True,
     )
-    line_id: Mapped[str] = mapped_column(
+    # Data Source FK (renamed from line_id after migration)
+    data_source_id: Mapped[str] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="CASCADE"),
+        ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
@@ -295,8 +297,8 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
 
     # Relationships
     order: Mapped["Order"] = relationship("Order", back_populates="production_runs")
-    line: Mapped["ProductionLine"] = relationship(
-        "ProductionLine", back_populates="production_runs"
+    data_source: Mapped["DataSource"] = relationship(
+        "DataSource", back_populates="production_runs"
     )
     # ARCHIVED: cut_ticket relationship moved to models/drafts/cutting.py
     quality_inspections: Mapped[list["QualityInspection"]] = relationship(

@@ -1,9 +1,9 @@
 # 🏭 LineSight Project Board
 
-> **Last Updated**: 2026-01-05  
+> **Last Updated**: 2026-01-10  
 > **Status**: Active Development  
-> **Current Focus**: Technical Debt Cleanup & Dashboard Refinement
-> **Note**: Some tasks may be outdated. Check git history for most recent status.
+> **Current Focus**: PostgreSQL Migration & Data Reliability
+> **Note**: PostgreSQL migration is now the primary blocker for ingestion refinements.
 
 ---
 
@@ -11,9 +11,9 @@
 
 | Metric | Status | Notes |
 |--------|--------|-------|
-| **Overall Progress** | 🟢 ~70% | Architecture transition active, Backend mature, Frontend catching up |
-| **Backend API** | 🟢 ~85% | ELT, Matching, HITL, Prod Management APIs complete |
-| **Frontend UI** | 🟢 ~60% | Dashboard Wizard, Dynamic Dashboard |
+| **Overall Progress** | 🟢 ~75% | Architecture transition active, Backend mature, Frontend catching up |
+| **Backend API** | 🟢 ~92% | ELT, Matching, HITL, Prod Management APIs complete |
+| **Frontend UI** | 🟢 ~65% | Dashboard Wizard, Dynamic Dashboard, Store foundation |
 | **Core Services** | 🟢 ~90% | Hybrid Matching Engine, Excel Parser, LLM Agent |
 | **Testing** | 🟡 ~60% | Comprehensive unit tests for services/API, need E2E |
 | **Documentation** | 🟡 ~55% | README good, API docs good, Architecture specs detailed |
@@ -46,12 +46,17 @@
 
 
 ### 🔄 In Progress
+- [ ] **Phase 1: PostgreSQL Migration (P0 BLOCKER)**
+  - [🟡] Plan PostgreSQL Migration (In Progress)
+  - [🚫] Provision/Configure PostgreSQL instance (Blocked by Plan)
+  - [ ] Update connection strings in `config.py` / `database.py`
+  - [ ] Run migrations and verify schema parity
+  - [ ] Verify connection persistence
+- [ ] **Phase 2: Ingestion Reliability (Dependent on Phase 1)**
+  - [ ] Sub-Task 2a: Add `line_id` synonym to `ProductionRun` model
+  - [ ] Sub-Task 2b: Implement smart date inference logic
+  - [ ] Sub-Task 2c: Implement PO safety (UNKNOWN_PO_{hash})
 - [/] Frontend unit tests - 8/10 passing (2 minor timing issues in FilePreviewModal)
-- [ ] Frontend dashboard widget enhancements
-- [ ] Database seeding utilities for development
-- [ ] Implement Redis caching layer for dashboard stats
-- [ ] Refactor DashboardWizard into smaller components
-- [ ] Implement DashboardDataProvider to prevent waterfall fetching
 
 ### 📋 Up Next
 - [ ] Complete frontend widget tests (6 widgets remaining)
@@ -74,6 +79,8 @@
 | BUG-BE-02 | **Resolve Earned Minutes vs. SAM Discrepancy**<br>Align `dashboardApi` and `productionApi` logic | P0 | M | ⬜ Todo | `0` vs `65557` mismatch |
 | BUG-BE-03 | **Fix Style Progress Data Mismatch**<br>Return Daily Actual vs Daily Target (not Cumulative) | P0 | M | ⬜ Todo | `getStyleProgress` |
 | BUG-BE-04 | **Update Production Timeline Granularity**<br>Return objects with timestamps `{ time: "08:00", value: 10 }` | P1 | S | ⬜ Todo | `getHourlyProduction` |
+| BUG-BE-05 | **Reconcile DataSource Types (Frontend)**<br>Align `ingestionApi` and `factoryApi` types | P1 | S | ⬜ Todo | Type consistency |
+| BUG-BE-06 | **Dynamic PO Fallback**<br>Replace static UNKNOWN_PO with dynamic resolver | P1 | M | ⬜ Todo | Data integrity (Post-Migration) |
 
 ### 🛠️ Frontend Refinements
 | ID | Task | Priority | Effort | Status | Notes |
@@ -705,18 +712,18 @@
 | LIVE-005 | Add connection status UI (Live pill) | P1 | S | ⬜ Todo | Green/Yellow/Red indicator |
 | LIVE-006 | Add `visibilitychange` pause/resume | P1 | S | ⬜ Todo | Battery optimization |
 
-### �️ Zustand Store Structure (Central Nervous System)
+### ️ Zustand Store Structure (Central Nervous System)
 > **Location:** `frontend/src/store/machine/`
 
 | ID | Task | File | Priority | Effort | Status | Notes |
 |-------|------|------|----------|--------|--------|-------|
-| LIVE-ST-01 | Define shared interfaces | `types.ts` | P0 | M | ⬜ Todo | MachineState, Lock, Transaction, ParsedBatch |
+| LIVE-ST-01 | Define shared interfaces | `types.ts` | P0 | M | ✅ Done | MachineState, Lock, Transaction, ParsedBatch |
 | LIVE-ST-02 | Implement server slice | `serverSlice.ts` | P0 | M | ⬜ Todo | applySnapshot, applyDelta, seqTracking |
 | LIVE-ST-03 | Implement pending slice | `pendingSlice.ts` | P0 | L | ⬜ Todo | beginTx, applyOptimistic, confirmTx, failTx |
 | LIVE-ST-04 | Build merge selectors | `selectors.ts` | P0 | M | ⬜ Todo | useMachineView, useLineView |
-| LIVE-ST-05 | Create store barrel export | `index.ts` | P0 | S | ⬜ Todo | Combine slices, export hooks |
+| LIVE-ST-05 | Create store barrel export | `index.ts` | P0 | S | ✅ Done | Combine slices, export hooks |
 
-### �🔄 Optimistic UI Layer
+### 🔄 Optimistic UI Layer
 | ID | Task | Priority | Effort | Status | Notes |
 |----|------|----------|--------|--------|-------|
 | LIVE-007 | Create Zustand three-tier store | P0 | L | ⬜ Todo | $server/$pending/$view |
@@ -745,6 +752,30 @@
 | LIVE-015 | Test E-Stop bypass scenario | P0 | M | ⬜ Todo | Safety critical |
 | LIVE-016 | Test upload timeout scenario | P1 | M | ⬜ Todo | Edge case |
 | LIVE-017 | Test concurrent operator conflict | P1 | L | ⬜ Todo | Multi-user scenario |
+
+---
+
+## 📋 EPIC 11: Semantic Theme & Dark Mode
+> **Priority**: P1  
+> **Status**: 🟡 In Progress  
+> **Strategy**: Refactoring before extending (Semantic Abstraction)
+
+### 🏗️ Phase 1: Semantic Abstraction (Refactor)
+| ID | Task | Priority | Effort | Status | Notes |
+|----|------|----------|--------|--------|-------|
+| DARK-001 | Define RGB Channel variables in `index.css` | P0 | S | ✅ Done | With color-scheme for scrollbars |
+| DARK-002 | Map semantic aliases in `tailwind.config.js` | P0 | S | ✅ Done | background, surface, text-main, border |
+| DARK-003 | Component audit & class replacement | P1 | L | 🟡 In Progress | Shell migrated (TopNav, DashboardHeader, ProfilePage) |
+| DARK-004 | Verify visual parity (Light mode) | P0 | S | ⬜ Todo | Ensure no regressions |
+
+### 🌑 Phase 2: Dark Mode Implementation
+| ID | Task | Priority | Effort | Status | Notes |
+|----|------|----------|--------|--------|-------|
+| DARK-010 | Implement `.dark` mode overrides in `index.css` | P1 | M | ✅ Done | Full dark palette defined |
+| DARK-011 | Implement `ThemeContext` & Toggle UI | P1 | M | ✅ Done | 3-state: light/dark/system |
+| DARK-012 | Reactive chart colors (`useThemeColor` hook) | P2 | M | ✅ Done | SSR-safe, re-renders on toggle |
+| DARK-013 | FOUC Prevention (blocking script) | P1 | S | ✅ Done | Script in `index.html` head |
+| DARK-014 | Refine Glassmorphism for Dark Mode | P1 | S | ⬜ Todo | Test `bg-surface/70` in dark mode |
 
 ---
 

@@ -58,7 +58,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
 
     if (!manifest) {
         return (
-            <div className="p-4 bg-red-50 border border-red-200 rounded text-red-600">
+            <div className="p-4 bg-error/10 border border-error/30 rounded text-error">
                 Unknown Widget Type: {widget.widget}
             </div>
         );
@@ -67,7 +67,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     const Component = manifest.component;
     const title = widget.settings?.customTitle || manifest.meta.title;
     const IconComponent = manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined;
-    const iconElement = IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-slate-500"} /> : undefined;
+    const iconElement = IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined;
 
     // 6. Centralized Loading State (Initial Load Only)
     // Allows background refreshing for existing data
@@ -110,8 +110,8 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         <>
             {/* Edit Mode ID Badge */}
             {editMode && (
-                <div className="absolute top-3 left-3 flex items-center gap-2 z-20 bg-white/90 backdrop-blur p-1.5 rounded-lg border border-slate-200 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase px-1">
+                <div className="absolute top-3 left-3 flex items-center gap-2 z-20 bg-surface/90 backdrop-blur p-1.5 rounded-lg border border-border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] font-bold text-text-muted uppercase px-1">
                         Widget ID: {widget.i.split('-')[0]}
                     </span>
                 </div>

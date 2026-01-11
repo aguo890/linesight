@@ -1,0 +1,29 @@
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+C:\Users\19803\business\FactoryExcelManager\backend\alembic\env.py:89: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "data_sources, workers", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+  context.run_migrations()
+INFO  [alembic.autogenerate.compare] Detected removed index 'ix_production_lines_factory_id' on 'production_lines'
+INFO  [alembic.autogenerate.compare] Detected removed table 'production_lines'
+INFO  [alembic.autogenerate.compare] Detected added foreign key (user_id)(id) on table dashboards
+INFO  [alembic.autogenerate.compare] Detected added foreign key (data_source_id)(id) on table dashboards
+INFO  [alembic.autogenerate.compare] Detected NULL on column 'data_sources.source_name'
+INFO  [alembic.autogenerate.compare] Detected server default on column 'data_sources.is_segment'
+INFO  [alembic.autogenerate.compare] Detected added index 'ix_data_sources_production_line_id' on '('production_line_id',)'
+INFO  [alembic.autogenerate.compare] Detected added foreign key (organization_id)(id) on table factories
+INFO  [alembic.autogenerate.compare] Detected removed index 'ix_production_events_line_id' on 'production_events'
+INFO  [alembic.autogenerate.compare] Detected added index 'ix_production_events_data_source_id' on '('data_source_id',)'
+INFO  [alembic.autogenerate.compare] Detected removed foreign key (data_source_id)(id) on table production_events
+INFO  [alembic.autogenerate.compare] Detected added foreign key (data_source_id)(id) on table production_events
+INFO  [alembic.autogenerate.compare] Detected removed index 'ix_production_runs_line_id' on 'production_runs'
+INFO  [alembic.autogenerate.compare] Detected added index 'ix_production_runs_data_source_id' on '('data_source_id',)'
+INFO  [alembic.autogenerate.compare] Detected removed foreign key (data_source_id)(id) on table production_runs
+INFO  [alembic.autogenerate.compare] Detected added foreign key (data_source_id)(id) on table production_runs
+INFO  [alembic.autogenerate.compare] Detected removed foreign key (production_line_id)(id) on table raw_imports
+INFO  [alembic.autogenerate.compare] Detected added foreign key (production_line_id)(id) on table raw_imports
+INFO  [alembic.autogenerate.compare] Detected removed index 'production_line_id' on 'user_scopes'
+INFO  [alembic.autogenerate.compare] Detected removed foreign key (data_source_id)(id) on table user_scopes
+INFO  [alembic.autogenerate.compare] Detected added foreign key (data_source_id)(id) on table user_scopes
+INFO  [alembic.autogenerate.compare] Detected removed index 'line_id' on 'workers'
+INFO  [alembic.autogenerate.compare] Detected removed foreign key (data_source_id)(id) on table workers
+INFO  [alembic.autogenerate.compare] Detected added foreign key (data_source_id)(id) on table workers
+Generating C:\Users\19803\business\FactoryExcelManager\backend\alembic\versions\20260109_1806_b8b7113afcae_check_drift.py ...  done

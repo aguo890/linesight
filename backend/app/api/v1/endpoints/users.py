@@ -49,8 +49,21 @@ async def update_user_me(
     update_data = user_in.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         if field == "preferences" and value is not None:
-            # Serialize dictionary to JSON string for database storage
-            setattr(current_user, field, json.dumps(value))
+            # 1. Load existing preferences
+            current_prefs = {}
+            if current_user.preferences:
+                try:
+                    current_prefs = json.loads(current_user.preferences)
+                except Exception:
+                    pass
+
+            # 2. Merge new values (value is a dict because of exclude_unset=True)
+            # Pydantic's model_dump(exclude_unset=True) means 'value' only contains
+            # the fields explicitly sent by the client.
+            updated_prefs = {**current_prefs, **value}
+
+            # 3. Save back
+            setattr(current_user, field, json.dumps(updated_prefs))
         else:
             setattr(current_user, field, value)
 

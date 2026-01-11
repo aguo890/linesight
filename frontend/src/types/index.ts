@@ -83,7 +83,7 @@ export interface FactorySettings {
     [key: string]: any;
 }
 
-export interface ProductionLineSettings {
+export interface DataSourceSettings {
     is_custom_schedule: boolean;
     shift_pattern?: ShiftConfig[];
     non_working_days?: number[];
@@ -107,22 +107,28 @@ export interface Factory {
     updated_at: string;
 }
 
-export interface ProductionLine {
+export interface DataSource {
     id: string;
     factory_id: string;
     name: string;
     code: string | null;
-    specialization: string | null;
+    specialty: string | null;
     target_operators: number | null;
-    daily_capacity_minutes: number | null;
+    target_efficiency_pct: number | null;
+
+    // Data Source specific
+    source_name: string | null;
 
     // Settings
-    settings?: ProductionLineSettings;
+    settings?: DataSourceSettings;
 
     is_active: boolean;
     created_at: string;
     updated_at: string;
 }
+
+// Deprecated alias for compatibility during refactor
+export type ProductionLine = DataSource;
 
 // =============================================================================
 // Upload Types

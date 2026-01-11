@@ -30,23 +30,23 @@ export const Logo: React.FC<LogoProps> = ({
     // Define styles for each context
     const variants = {
         marketing: {
-            text: "text-xl font-semibold tracking-tight text-slate-900",
-            img: "h-7 w-auto mix-blend-multiply",
+            text: "text-xl font-semibold tracking-tight text-slate-900 dark:text-white transition-colors duration-300",
+            img: "h-7 w-auto mix-blend-multiply dark:mix-blend-normal",
             container: "gap-2"
         },
         app: {
             text: "text-base font-semibold tracking-tight text-[var(--color-text)]",
-            img: "h-6 w-auto mix-blend-multiply",
+            img: "h-6 w-auto mix-blend-multiply dark:mix-blend-normal dark:invert",
             container: "gap-2"
         },
         auth: {
-            text: "text-2xl font-semibold tracking-tight text-[var(--color-text)]",
-            img: "h-12 w-auto",
+            text: "text-2xl font-semibold tracking-tight text-text-main transition-colors duration-300",
+            img: "h-12 w-auto dark:brightness-125",
             container: "gap-3"
         },
         footer: {
-            text: "text-lg font-semibold tracking-tight text-slate-900",
-            img: "h-8 w-auto mix-blend-multiply",
+            text: "text-lg font-semibold tracking-tight text-slate-900 dark:text-white transition-colors duration-300",
+            img: "h-8 w-auto mix-blend-multiply dark:mix-blend-normal",
             container: "gap-2"
         }
     };
@@ -70,7 +70,7 @@ export const Logo: React.FC<LogoProps> = ({
             />
             {showText && (
                 <span className={cn(currentVariant.text, textClassName)}>
-                    Line<span className="text-indigo-600">Sight</span>
+                    Line<span className="text-brand">Sight</span>
                 </span>
             )}
         </div>

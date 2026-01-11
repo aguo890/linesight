@@ -3,6 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import type { SmartWidgetProps } from '../config';
 import { z } from 'zod';
 import { DhuQualityDataSchema } from '../registry';
+import { useThemeColors } from '@/hooks/useThemeColor';
 
 // Input type inferred from Zod Schema
 type DhuData = z.infer<typeof DhuQualityDataSchema>;
@@ -23,6 +24,12 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     // Extract settings with defaults
     const maxAcceptableDHU = settings?.maxAcceptableDHU ?? 2.5;
     const showThresholdLine = settings?.showThresholdLine ?? true;
+
+    // Theme Colors for Dark Mode Support
+    const themeColors = useThemeColors(['--text-muted', '--border', '--surface']);
+    const gridColor = themeColors['--border'];
+    const axisColor = themeColors['--text-muted'];
+    const tooltipBg = themeColors['--surface'];
 
     // Handle new API response shape: Array of { date, dhu } objects
     // (API returns array directly, not object with .history)
@@ -50,7 +57,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     // Handle empty data gracefully
     if (!data || (Array.isArray(data) && data.length === 0)) {
         return (
-            <div className="flex h-full items-center justify-center text-gray-400 text-sm">
+            <div className="flex h-full items-center justify-center text-text-muted text-sm">
                 No Quality Data
             </div>
         );
@@ -61,13 +68,13 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
             {/* Current DHU Summary */}
             <div className="flex justify-between items-end">
                 <div>
-                    <span className={`text-2xl font-bold ${isAboveThreshold ? 'text-red-600' : 'text-black-600'}`}>
+                    <span className={`text-2xl font-bold ${isAboveThreshold ? 'text-danger' : 'text-text-main'}`}>
                         {currentDhu.toFixed(2)}%
                     </span>
-                    <span className="text-xs text-slate-500 ml-2">Current DHU</span>
+                    <span className="text-xs text-text-muted ml-2">Current DHU</span>
                 </div>
                 {isAboveThreshold && (
-                    <span className="text-xs font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded animate-pulse">
+                    <span className="text-xs font-medium text-danger bg-danger/10 px-2 py-0.5 rounded animate-pulse">
                         Above Limit
                     </span>
                 )}
@@ -77,23 +84,30 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
             <div className="flex-1 min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                         <XAxis
                             dataKey="date"
-                            tick={{ fontSize: 10, fill: '#6b7280' }}
+                            tick={{ fontSize: 10, fill: axisColor }}
                             tickLine={false}
                             axisLine={false}
                         />
                         <YAxis
-                            tick={{ fontSize: 10, fill: '#6b7280' }}
+                            tick={{ fontSize: 10, fill: axisColor }}
                             tickLine={false}
                             axisLine={false}
                             unit="%"
                             domain={[0, 'auto']}
                         />
                         <Tooltip
-                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            cursor={{ stroke: '#94a3b8', strokeWidth: 1, strokeDasharray: '5 5' }}
+                            contentStyle={{
+                                borderRadius: '8px',
+                                border: '1px solid var(--color-border)',
+                                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                                backgroundColor: tooltipBg,
+                                color: 'var(--color-text-main)'
+                            }}
+                            labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
+                            cursor={{ stroke: gridColor, strokeWidth: 1, strokeDasharray: '5 5' }}
                         />
                         {showThresholdLine && (
                             <ReferenceLine

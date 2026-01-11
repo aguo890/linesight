@@ -72,6 +72,18 @@ class IngestionOrchestrator:
                 "records_processed": 0,
             }
 
+        # --- DEEP DEBUGGING START ---
+        print(f"\n{'='*50}")
+        print(f"🚀 DEBUG: promote_to_production CALLED")
+        print(f"🆔 raw_import_id: {raw_import_id}")
+        
+        # 1. Enable SQL Echo
+        # This forces SQLAlchemy to print every SQL statement to stdout/stderr
+        self.db.bind.echo = True
+        print(f"🔊 SQL Logging Enabled")
+        print(f"{'='*50}\n")
+        # --- DEEP DEBUGGING END ---
+
         logger.info(f"ORCHESTRATOR: promote_to_production for {raw_import_id}")
 
         # Fetch RawImport context
@@ -83,10 +95,18 @@ class IngestionOrchestrator:
                     DataSource.schema_mappings
                 )
             )
+            .execution_options(populate_existing=True)
         )
         raw_import = result.scalar_one_or_none()
         if not raw_import or not raw_import.data_source:
             raise ValueError(f"RawImport {raw_import_id} invalid or missing datasource")
+
+        logger.info(f"DEBUG: Checking mappings for DS {raw_import.data_source.id}")
+        if raw_import.data_source.schema_mappings:
+            for m in raw_import.data_source.schema_mappings:
+                logger.info(f"DEBUG: Mapping {m.id} | Ver: {m.version} | Active: {m.is_active}")
+        else:
+            logger.info("DEBUG: No schema mappings loaded!")
 
         # Find active mapping
         active_map = next(
@@ -97,7 +117,7 @@ class IngestionOrchestrator:
 
         column_map = active_map.column_map
         factory_id = raw_import.factory_id
-        production_line_id = raw_import.production_line_id
+        data_source_id = raw_import.data_source_id
         
         # Get date format from DataSource configuration
         date_format = raw_import.data_source.time_format
@@ -135,7 +155,7 @@ class IngestionOrchestrator:
         # =====================================================================
         logger.info("Resolving existing runs for differential calculation...")
         existing_run_map = await self.validator.resolve_existing_runs(
-            records, style_map, order_map, production_line_id
+            records, style_map, order_map, data_source_id
         )
         logger.info(f"Found {len(existing_run_map)} existing runs to update.")
 
@@ -151,7 +171,7 @@ class IngestionOrchestrator:
             order_map=order_map,
             existing_run_map=existing_run_map,
             factory_id=factory_id,
-            production_line_id=production_line_id,
+            data_source_id=data_source_id,
             raw_import_id=raw_import_id,
         )
 
@@ -172,9 +192,9 @@ class IngestionOrchestrator:
                         "type": "DATA_UPDATE",
                         "event": "BATCH_UPLOAD",
                         "count": write_result["events"],
-                        "line_id": production_line_id,
+                        "data_source_id": data_source_id,
                     },
-                    line_id=production_line_id,
+                    line_id=data_source_id,
                 )
             except Exception:
                 pass

@@ -345,11 +345,11 @@ const DashboardPageContent = () => {
             {isLoading ? (
                 <DashboardSkeleton />
             ) : (
-                <div className="min-h-screen bg-[#f8fafc] flex flex-col relative overflow-hidden">
+                <div className="min-h-screen bg-canvas flex flex-col relative overflow-hidden">
                     {/* Global Loading Pulse Bar */}
                     {fetchingCount > 0 && (
-                        <div className="fixed top-0 left-0 right-0 h-1 bg-sky-500/20 z-[100] overflow-hidden">
-                            <div className="h-full bg-sky-600 animate-pulse w-full"></div>
+                        <div className="fixed top-0 left-0 right-0 h-1 bg-brand/20 z-[100] overflow-hidden">
+                            <div className="h-full bg-brand animate-pulse w-full"></div>
                         </div>
                     )}
 
@@ -392,21 +392,21 @@ const DashboardPageContent = () => {
                         {/* Visual Blueprint Grid (Only in Edit Mode) */}
                         {editMode && (
                             <div className="absolute inset-0 opacity-[0.08] pointer-events-none"
-                                style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '25px 25px' }} />
+                                style={{ backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)', backgroundSize: '25px 25px' }} />
                         )}
 
                         {widgets.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed border-slate-200 rounded-3xl m-10">
-                                <div className="p-6 bg-slate-50 rounded-full">
-                                    <svg className="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="h-full flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed border-border rounded-3xl m-10">
+                                <div className="p-6 bg-surface-subtle rounded-full">
+                                    <svg className="w-12 h-12 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-bold text-slate-900">Your Dashboard is Empty</h3>
-                                    <p className="text-slate-500 max-w-xs">Start building your command center by adding widgets from the designer.</p>
+                                    <h3 className="text-lg font-bold text-text-main">Your Dashboard is Empty</h3>
+                                    <p className="text-text-muted max-w-xs">Start building your command center by adding widgets from the designer.</p>
                                 </div>
-                                <button onClick={() => setEditMode(true)} className="text-sky-600 font-bold hover:underline">Open Designer</button>
+                                <button onClick={() => setEditMode(true)} className="text-brand font-bold hover:underline">Open Designer</button>
                             </div>
                         ) : (
                             <DashboardGridLayout

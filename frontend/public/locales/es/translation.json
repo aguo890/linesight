@@ -1,0 +1,45 @@
+{
+    "profile": {
+        "title": "Perfil de Usuario",
+        "subtitle": "Gestiona la configuración y preferencias de tu cuenta",
+        "back": "Atrás",
+        "save_btn": "Guardar Cambios",
+        "success": "¡Perfil actualizado con éxito!",
+        "error_required": "El nombre completo es obligatorio",
+        "error_fail": "Error al actualizar el perfil. Inténtalo de nuevo.",
+        "at": "en",
+        "roles": {
+            "admin": "Administrador",
+            "user": "Usuario",
+            "manager": "Gerente"
+        },
+        "sections": {
+            "factories": "Tus Fábricas",
+            "security": "Seguridad",
+            "personal_info": "Información Personal",
+            "localization": "Localización y Región",
+            "notifications": "Preferencias de Notificación (Próximamente)"
+        },
+        "security": {
+            "change_password": "Cambiar Contraseña",
+            "two_factor": "Autenticación de Dos Factores"
+        },
+        "fields": {
+            "full_name": "Nombre Completo",
+            "email": "Dirección de Correo",
+            "email_hint": "El correo no se puede cambiar directamente.",
+            "language": "Idioma",
+            "theme": "Tema"
+        },
+        "themes": {
+            "light": "Modo Claro",
+            "dark": "Modo Oscuro",
+            "system": "Predeterminado del Sistema"
+        },
+        "notifications": {
+            "email": "Alertas por Correo",
+            "push": "Notificaciones Push",
+            "weekly": "Resumen Semanal"
+        }
+    }
+}

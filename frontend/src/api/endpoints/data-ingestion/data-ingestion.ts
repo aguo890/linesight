@@ -48,7 +48,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
- * Fetch recent file uploads, optionally filtered by line.
+ * Fetch recent file uploads, optionally filtered by data source.
  * @summary Get Upload History
  */
 export const getUploadHistoryApiV1IngestionHistoryGet = (
@@ -144,10 +144,10 @@ export function useGetUploadHistoryApiV1IngestionHistoryGet<TData = Awaited<Retu
  * Upload a file and create a RawImport record.
 
 This is step 1 of the HITL flow. The file is saved and parsed.
-Storage structure: uploads/{factory_id}/{line_id}/{year}/{month}/{filename}
+Storage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}
 
 REQUIRES: factory_id - Data must be uploaded to a specific factory.
-OPTIONAL: production_line_id - If provided, upload is associated with a specific line.
+OPTIONAL: data_source_id - If provided, upload is associated with a specific data source.
  * @summary Upload File For Ingestion
  */
 export const uploadFileForIngestionApiV1IngestionUploadPost = (

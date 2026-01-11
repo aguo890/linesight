@@ -78,21 +78,21 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 animal-fade-in">
+            <div className="bg-surface rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-border animal-fade-in">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-surface-subtle/50">
                     <div className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                        <div className="p-2 bg-brand/10 rounded-lg text-brand">
                             <Settings className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900">Data Source Configuration</h3>
-                            <p className="text-xs text-gray-500">Production Line: {lineId}</p>
+                            <h3 className="text-lg font-bold text-text-main">Data Source Configuration</h3>
+                            <p className="text-xs text-text-muted">Production Line: {lineId}</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                        className="p-2 text-text-muted hover:text-text-main hover:bg-surface-active rounded-full transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -102,8 +102,8 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                 <div className="p-6">
                     {loading ? (
                         <div className="py-12 flex flex-col items-center justify-center space-y-3">
-                            <Clock className="w-10 h-10 text-blue-500 animate-spin" />
-                            <p className="text-sm font-medium text-gray-500">Loading configuration...</p>
+                            <Clock className="w-10 h-10 text-brand animate-spin" />
+                            <p className="text-sm font-medium text-text-muted">Loading configuration...</p>
                         </div>
                     ) : !dataSource ? (
                         <div className="py-8 flex flex-col items-center justify-center text-center space-y-4">
@@ -141,9 +141,9 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5">
                                         Time Column
-                                        <span className="text-red-500">*</span>
+                                        <span className="text-error">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -151,38 +151,38 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                         onChange={(e) => setTimeColumn(e.target.value)}
                                         placeholder="e.g. Timestamp, Date, Time"
                                         required
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm"
+                                        className="w-full px-4 py-2.5 bg-surface-subtle border border-border rounded-lg text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm"
                                     />
-                                    <p className="mt-1.5 text-xs text-gray-500">
+                                    <p className="mt-1.5 text-xs text-text-muted">
                                         The name of the column in your Excel/CSV files used for time-series analysis.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center justify-between">
+                                    <label className="block text-sm font-semibold text-text-main mb-2 flex items-center justify-between">
                                         Active Schema Mapping
-                                        <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
+                                        <span className="text-[10px] bg-brand/10 text-brand px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
                                             Version {dataSource.schema_mappings.find(m => m.is_active)?.version || 1}
                                         </span>
                                     </label>
-                                    <div className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50/30">
+                                    <div className="border border-border rounded-lg overflow-hidden bg-surface-subtle/30">
                                         <div className="max-h-60 overflow-y-auto">
                                             <table className="w-full text-left border-collapse">
                                                 <thead>
-                                                    <tr className="bg-gray-100/80 border-b border-gray-200">
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-gray-600 uppercase tracking-tight">Source Column</th>
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-gray-600 uppercase tracking-tight">Target Field</th>
+                                                    <tr className="bg-surface-subtle border-b border-border">
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted uppercase tracking-tight">Source Column</th>
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted uppercase tracking-tight">Target Field</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody className="divide-y divide-gray-100">
+                                                <tbody className="divide-y divide-border">
                                                     {(() => {
                                                         const rawMap = dataSource.schema_mappings.find(m => m.is_active)?.column_map || {};
                                                         const columnMap = typeof rawMap === 'string' ? JSON.parse(rawMap) : rawMap;
                                                         return Object.entries(columnMap).map(([src, target]) => (
-                                                            <tr key={src} className="hover:bg-white transition-colors">
-                                                                <td className="px-4 py-2.5 text-sm font-medium text-gray-700 font-mono text-[13px]">{src}</td>
+                                                            <tr key={src} className="hover:bg-surface/50 transition-colors">
+                                                                <td className="px-4 py-2.5 text-sm font-medium text-text-main font-mono text-[13px]">{src}</td>
                                                                 <td className="px-4 py-2.5 text-sm">
-                                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100 font-medium text-[13px]">
+                                                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-brand/10 text-brand border border-brand/20 font-medium text-[13px]">
                                                                         {String(target)}
                                                                     </span>
                                                                 </td>
@@ -193,13 +193,13 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                             </table>
                                         </div>
                                     </div>
-                                    <p className="mt-2 text-xs text-gray-400 italic">
+                                    <p className="mt-2 text-xs text-text-muted italic">
                                         Note: Schema mappings are learned automatically. To change mappings, upload a new version of the file.
                                     </p>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    <label className="block text-sm font-semibold text-text-main mb-1.5">
                                         Description
                                     </label>
                                     <textarea
@@ -207,23 +207,23 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                         onChange={(e) => setDescription(e.target.value)}
                                         placeholder="Briefly describe this data source..."
                                         rows={2}
-                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm resize-none"
+                                        className="w-full px-4 py-2.5 bg-surface-subtle border border-border rounded-lg text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm resize-none"
                                     />
                                 </div>
                             </div>
 
-                            <div className="pt-4 flex items-center justify-end gap-3 border-t border-gray-100">
+                            <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="px-5 py-2.5 text-sm font-semibold text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                                    className="px-5 py-2.5 text-sm font-semibold text-text-muted hover:text-text-main hover:bg-surface-active rounded-lg transition-colors"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20 transition-all"
+                                    className="flex items-center gap-2 px-6 py-2.5 bg-brand text-white text-sm font-bold rounded-lg hover:bg-brand-dark disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand/20 transition-all"
                                 >
                                     {saving ? (
                                         <>

@@ -207,23 +207,23 @@ export const DashboardFilterBar: React.FC = () => {
 
 
     return (
-        <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 px-6 py-3">
+        <div className="bg-surface/80 backdrop-blur-sm border-b border-border px-6 py-3">
             <div className="max-w-[1600px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                 {/* Left Side: Label + Quick Actions + Refresh */}
                 <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-slate-400">
+                    <div className="flex items-center gap-2 text-text-muted">
                         <Filter className="w-4 h-4" />
                         <span className="text-xs font-semibold uppercase tracking-wider">Filters</span>
                     </div>
 
                     {/* Quick Actions Pill Group */}
-                    <div className="flex bg-slate-100 rounded-lg p-1 gap-1 flex-wrap sm:flex-nowrap">
+                    <div className="flex bg-surface-subtle rounded-lg p-1 gap-1 flex-wrap sm:flex-nowrap">
                         <button
                             onClick={setToday}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isToday()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             Today
@@ -231,8 +231,8 @@ export const DashboardFilterBar: React.FC = () => {
                         <button
                             onClick={setYesterday}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isYesterday()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             Yesterday
@@ -240,8 +240,8 @@ export const DashboardFilterBar: React.FC = () => {
                         <button
                             onClick={setLast7Days}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isLast7Days()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             7 Days
@@ -249,8 +249,8 @@ export const DashboardFilterBar: React.FC = () => {
                         <button
                             onClick={setLast30Days}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isLast30Days()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             30 Days
@@ -258,8 +258,8 @@ export const DashboardFilterBar: React.FC = () => {
                         <button
                             onClick={setThisMonth}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isThisMonth()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             This Month
@@ -267,19 +267,19 @@ export const DashboardFilterBar: React.FC = () => {
                         <button
                             onClick={setLastMonth}
                             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all focus:outline-none ${isLastMonth()
-                                ? 'bg-white text-sky-600 shadow-sm ring-1 ring-sky-200'
-                                : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                                ? 'bg-surface text-brand shadow-sm ring-1 ring-brand/20'
+                                : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
                             Last Month
                         </button>
                     </div>
 
-                    <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
+                    <div className="h-6 w-[1px] bg-border mx-1 hidden sm:block"></div>
 
                     <button
                         onClick={handleRefresh}
-                        className={`p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-full transition-all active:scale-90 ${isRefreshing ? 'animate-pulse text-sky-600 bg-sky-50' : ''}`}
+                        className={`p-2 text-text-muted hover:text-brand hover:bg-brand/10 rounded-full transition-all active:scale-90 ${isRefreshing ? 'animate-pulse text-brand bg-brand/10' : ''}`}
                         title={`Last updated: ${formatDate(new Date(lastRefreshAt), 'pp')}`}
                     >
                         <svg className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +301,7 @@ export const DashboardFilterBar: React.FC = () => {
 
                     {/* Shift Selector */}
                     <select
-                        className="px-3 py-1.5 text-sm border border-slate-200 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-slate-700"
+                        className="px-3 py-1.5 text-sm border border-border bg-surface rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand text-text-main"
                         value={shift}
                         onChange={(e) => updateShift(e.target.value)}
                     >

@@ -1,0 +1,45 @@
+{
+    "profile": {
+        "title": "User Profile",
+        "subtitle": "Manage your account settings and preferences",
+        "back": "Back",
+        "save_btn": "Save Changes",
+        "success": "Profile updated successfully!",
+        "error_required": "Full name is required",
+        "error_fail": "Failed to update profile. Please try again.",
+        "at": "at",
+        "roles": {
+            "admin": "Admin",
+            "user": "User",
+            "manager": "Manager"
+        },
+        "sections": {
+            "factories": "Your Factories",
+            "security": "Security",
+            "personal_info": "Personal Information",
+            "localization": "Localization & Region",
+            "notifications": "Notification Preferences (Coming Soon)"
+        },
+        "security": {
+            "change_password": "Change Password",
+            "two_factor": "Two-Factor Auth"
+        },
+        "fields": {
+            "full_name": "Full Name",
+            "email": "Email Address",
+            "email_hint": "Email cannot be changed directly.",
+            "language": "Language",
+            "theme": "Theme"
+        },
+        "themes": {
+            "light": "Light Mode",
+            "dark": "Dark Mode",
+            "system": "System Default"
+        },
+        "notifications": {
+            "email": "Email Alerts",
+            "push": "Push Notifications",
+            "weekly": "Weekly Digest"
+        }
+    }
+}

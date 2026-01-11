@@ -10,7 +10,7 @@ from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, Tex
 from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.enums import RoleScope, SubscriptionTier, UserRole
+from app.enums import RoleScope, SubscriptionTier, UserRole, resolve_enum_values
 from app.models.base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
@@ -32,7 +32,7 @@ class Organization(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     # Subscription
     subscription_tier: Mapped[SubscriptionTier] = mapped_column(
-        Enum(SubscriptionTier),
+        Enum(SubscriptionTier, values_callable=resolve_enum_values),
         default=SubscriptionTier.STARTER,
         nullable=False,
     )
@@ -102,7 +102,7 @@ class User(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     # Authorization
     role: Mapped[UserRole] = mapped_column(
-        Enum(UserRole),
+        Enum(UserRole, values_callable=resolve_enum_values),
         default=UserRole.VIEWER,
         nullable=False,
     )
@@ -154,7 +154,7 @@ class UserScope(Base, UUIDMixin, TimestampMixin):
     )
 
     scope_type: Mapped[RoleScope] = mapped_column(
-        Enum(RoleScope),
+        Enum(RoleScope, values_callable=resolve_enum_values),
         nullable=False,
     )
 
@@ -169,15 +169,16 @@ class UserScope(Base, UUIDMixin, TimestampMixin):
         ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=True,
     )
-    production_line_id: Mapped[str | None] = mapped_column(
+    # Renamed from production_line_id to data_source_id in migration
+    data_source_id: Mapped[str | None] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="CASCADE"),
+        ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=True,
     )
 
     # Specific role within this scope
     role: Mapped[UserRole] = mapped_column(
-        Enum(UserRole),
+        Enum(UserRole, values_callable=resolve_enum_values),
         default=UserRole.VIEWER,
         nullable=False,
     )

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
+import { useTheme } from '../../../context/ThemeContext';
 import { Logo } from '../../../components/common/Logo';
 import {
     ArrowRight,
@@ -46,7 +47,7 @@ const DEMO_BLOCKERS = [
     { reason: 'Unplanned Maint', count: 5 },
 ];
 
-const DEMO_EFFICIENCY = { efficiency: 94.2, target: 85 };
+const DEMO_EFFICIENCY = { currentEfficiency: 94.2, target: 85 };
 const DEMO_EARNED_MINUTES = {
     earned_minutes: 42150,
     total_available_minutes: 45000,
@@ -63,13 +64,13 @@ const DEMO_EARNED_MINUTES = {
     ]
 };
 const DEMO_PRODUCTION_CHART = [
-    { date: '2026-01-01', actual: 1200, target: 1100 },
-    { date: '2026-01-02', actual: 1350, target: 1200 },
-    { date: '2026-01-03', actual: 1100, target: 1250 },
-    { date: '2026-01-04', actual: 1400, target: 1300 },
-    { date: '2026-01-05', actual: 1550, target: 1400 },
-    { date: '2026-01-06', actual: 1300, target: 1350 },
-    { date: '2026-01-07', actual: 1600, target: 1500 },
+    { day: '2026-01-01', actual: 1200, target: 1100 },
+    { day: '2026-01-02', actual: 1350, target: 1200 },
+    { day: '2026-01-03', actual: 1100, target: 1250 },
+    { day: '2026-01-04', actual: 1400, target: 1300 },
+    { day: '2026-01-05', actual: 1550, target: 1400 },
+    { day: '2026-01-06', actual: 1300, target: 1350 },
+    { day: '2026-01-07', actual: 1600, target: 1500 },
 ];
 
 const GridPattern = () => (
@@ -86,7 +87,7 @@ const GridPattern = () => (
 );
 
 
-const PricingPlan: React.FC<{ plan: any; isAnnual: boolean }> = ({ plan, isAnnual }) => {
+const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> = ({ plan, isAnnual, isDark }) => {
     const isPro = plan.id === 'pro';
 
     const displayPrice = () => {
@@ -103,8 +104,12 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean }> = ({ plan, isAnnua
             variants={fadeInVariant}
             whileHover={{ y: -10 }}
             className={`relative p-8 rounded-[32px] transition-all duration-500 flex flex-col h-full ${isPro
-                ? 'bg-white text-slate-900 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.3)] z-10 scale-105 border-2 border-blue-500'
-                : 'bg-slate-900/50 backdrop-blur-md text-white border border-white/10'
+                ? isDark
+                    ? 'bg-slate-900 text-white shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] z-10 scale-105 border-2 border-blue-500'
+                    : 'bg-white text-slate-900 shadow-[0_40px_80px_-15px_rgba(0,0,0,0.3)] z-10 scale-105 border-2 border-blue-500'
+                : isDark
+                    ? 'bg-slate-900/40 backdrop-blur-md text-white border border-white/5'
+                    : 'bg-slate-900/50 backdrop-blur-md text-white border border-white/10'
                 }`}
         >
             {isPro && (
@@ -134,10 +139,14 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean }> = ({ plan, isAnnua
             <div className="flex-1 space-y-4 mb-10">
                 {plan.features.map((feature: string, i: number) => (
                     <div key={i} className="flex items-start gap-3">
-                        <div className={`mt-1 p-0.5 rounded-full ${isPro ? 'bg-blue-100 text-blue-600' : 'bg-blue-500/20 text-blue-400'}`}>
+                        <div className={`mt-1 p-0.5 rounded-full ${isPro
+                            ? isDark ? 'bg-blue-900/50 text-blue-400' : 'bg-blue-100 text-blue-600'
+                            : 'bg-blue-500/20 text-blue-400'}`}>
                             <Check size={12} strokeWidth={3} />
                         </div>
-                        <span className={`text-sm font-medium ${isPro ? 'text-slate-700' : 'text-slate-300'}`}>{feature}</span>
+                        <span className={`text-sm font-medium ${isPro
+                            ? isDark ? 'text-slate-300' : 'text-slate-700'
+                            : 'text-slate-300'}`}>{feature}</span>
                     </div>
                 ))}
             </div>
@@ -154,23 +163,25 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean }> = ({ plan, isAnnua
 
 const LandingPage: React.FC = () => {
     const { isAuthenticated } = useAuth();
+    const { resolvedTheme } = useTheme();
     const [isAnnual, setIsAnnual] = useState(true);
+    const isDark = resolvedTheme === 'dark';
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-500/30 overflow-x-hidden">
+        <div className={`min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950 text-white' : 'bg-white text-slate-900'}`}>
 
             {/* Navigation */}
-            <nav className="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-xl border-b border-slate-100">
+            <nav className={`fixed top-0 w-full z-[100] backdrop-blur-xl border-b transition-colors duration-300 ${isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white/80 border-slate-100'}`}>
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Logo variant="marketing" />
                     <div className="flex items-center gap-8">
-                        <a href="#features" className="hidden md:block text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Platform</a>
-                        <a href="#pricing" className="hidden md:block text-sm font-semibold text-slate-500 hover:text-blue-600 transition-colors">Pricing</a>
+                        <a href="#features" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Platform</a>
+                        <a href="#pricing" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Pricing</a>
                         <Link to={isAuthenticated ? "/dashboard" : "/login"}>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="px-5 py-2 rounded-full bg-slate-900 text-white text-sm font-bold shadow-lg shadow-slate-200"
+                                className={`px-5 py-2 rounded-full text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
                             >
                                 {isAuthenticated ? "Dashboard" : "Sign In"}
                             </motion.button>
@@ -184,21 +195,21 @@ const LandingPage: React.FC = () => {
                 <GridPattern />
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
                     <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[11px] font-bold uppercase tracking-widest mb-6">
+                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6 ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
                             <Zap size={14} fill="currentColor" /> Now with AI Explainability
                         </div>
                         <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8 italic">
                             ELIMINATE <br />
                             <span className="text-blue-600 not-italic">DOWNTIME.</span>
                         </h1>
-                        <p className="text-xl font-medium text-slate-500 max-w-lg mb-10 leading-relaxed">
+                        <p className={`text-xl font-medium max-w-lg mb-10 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                             The industrial intelligence engine that transforms fragmented floor data into actionable predictive insights.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <motion.button className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold shadow-xl shadow-blue-200 flex items-center justify-center gap-2">
+                            <motion.button className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-200 dark:shadow-blue-900/40">
                                 Start Free Trial <ArrowRight size={20} />
                             </motion.button>
-                            <button className="px-8 py-4 rounded-2xl bg-slate-100 text-slate-900 text-lg font-bold hover:bg-slate-200 transition-colors">
+                            <button className={`px-8 py-4 rounded-2xl text-lg font-bold transition-colors ${isDark ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}>
                                 Watch Demo
                             </button>
                         </div>
@@ -238,7 +249,7 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* Application Simulation / "Live" Demo */}
-            <section className="py-24 px-6 bg-slate-50 border-b border-slate-200 overflow-hidden">
+            <section className={`py-24 px-6 border-b overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <motion.h2
@@ -246,11 +257,11 @@ const LandingPage: React.FC = () => {
                             whileInView="visible"
                             viewport={{ once: true }}
                             variants={fadeInVariant}
-                            className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6"
+                            className={`text-4xl md:text-5xl font-bold tracking-tight mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}
                         >
                             Your Factory, <span className="text-blue-600">Digitized.</span>
                         </motion.h2>
-                        <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
+                        <p className={`text-xl max-w-2xl mx-auto font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                             Experience the interface that's replacing spreadsheets in 40+ facilities.
                             Real-time monitoring, auto-generated reports, and zero latency.
                         </p>
@@ -264,11 +275,12 @@ const LandingPage: React.FC = () => {
                         className="relative w-full aspect-[16/9] md:aspect-[16/10] bg-slate-900 rounded-[32px] shadow-2xl shadow-blue-900/20 ring-1 ring-slate-900/5 p-2 md:p-4 overflow-hidden"
                     >
                         {/* Container for MiniDashboard - Scaled to fit */}
-                        <div className="w-full h-full bg-white rounded-[24px] overflow-hidden relative">
+                        <div className={`w-full h-full rounded-[24px] overflow-hidden relative ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
                             {/* Abs positioning & Scaling to fit the fixed 1280x800 dashboard into variable container */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-slate-100">
+                            <div className={`absolute inset-0 flex items-center justify-center ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
                                 <div className="transform scale-[0.5] sm:scale-[0.65] md:scale-[0.8] lg:scale-[0.9] xl:scale-100 origin-center transition-transform duration-500">
                                     <MiniDashboard
+                                        isDark={isDark}
                                         demoEfficiencyData={DEMO_EFFICIENCY}
                                         demoEarnedMinutesData={DEMO_EARNED_MINUTES}
                                         demoProductionData={DEMO_PRODUCTION_CHART}
@@ -277,7 +289,7 @@ const LandingPage: React.FC = () => {
                             </div>
 
                             {/* Interactive overlay - Click to "Login" or similar */}
-                            <div className="absolute inset-0 z-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-slate-900/10 backdrop-blur-[2px]">
+                            <div className={`absolute inset-0 z-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ${isDark ? 'bg-slate-950/50 backdrop-blur-[2px]' : 'bg-slate-900/10 backdrop-blur-[2px]'}`}>
                                 <Link to="/login">
                                     <button className="px-8 py-4 bg-white text-slate-900 text-lg font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-transform">
                                         Try Live Demo
@@ -290,21 +302,21 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* Features (Bento Grid) - Light & Clean */}
-            <section id="features" className="py-24 px-6 bg-white">
+            <section id="features" className={`py-24 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
                 <div className="max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-12 gap-6">
 
                         {/* THE UPGRADED WIDGET LIBRARY CARD */}
-                        <div className="md:col-span-8 bg-white p-10 md:p-12 rounded-[40px] border border-slate-200 shadow-sm relative overflow-hidden group">
+                        <div className={`md:col-span-8 p-10 md:p-12 rounded-[40px] border shadow-sm relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                             <div className="relative z-10 flex flex-col h-full">
-                                <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-200">
+                                <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-200 dark:shadow-blue-900/50">
                                     <LayoutDashboard size={28} />
                                 </div>
                                 <div className="max-w-sm">
                                     <h3 className="text-4xl font-bold tracking-tight mb-4">Industrial Widget Library</h3>
-                                    <p className="text-slate-500 text-lg font-medium leading-relaxed">
+                                    <p className={`text-lg font-medium leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
                                         A massive suite of specialized components for downtime, SAM variances, and shift-over-shift analysis.
-                                        Built for <span className="text-slate-900 underline decoration-blue-500/30">high-density</span> monitoring.
+                                        Built for <span className={`underline decoration-blue-500/30 ${isDark ? 'text-white' : 'text-slate-900'}`}>high-density</span> monitoring.
                                     </p>
                                 </div>
 
@@ -316,8 +328,8 @@ const LandingPage: React.FC = () => {
                                         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                                         className="absolute left-0 top-0 z-20 w-[280px] h-[200px]"
                                     >
-                                        <div className="w-full h-full bg-white rounded-2xl shadow-xl border border-blue-100 overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                                            <MockTargetRealizationWidget w={3} h={3} data={DEMO_TARGET} />
+                                        <div className={`w-full h-full rounded-2xl shadow-xl border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-blue-900/50' : 'bg-white border-blue-100'}`}>
+                                            <MockTargetRealizationWidget w={3} h={3} data={DEMO_TARGET} isDark={isDark} />
                                         </div>
                                     </motion.div>
 
@@ -327,8 +339,8 @@ const LandingPage: React.FC = () => {
                                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
                                         className="absolute left-[240px] top-[60px] z-30 w-[340px] h-[240px]"
                                     >
-                                        <div className="w-full h-full bg-white rounded-2xl shadow-2xl shadow-blue-900/10 border border-slate-200 overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                                            <MockSpeedQualityWidget w={3} h={3} data={DEMO_SPEED_QUALITY} />
+                                        <div className={`w-full h-full rounded-2xl shadow-2xl shadow-blue-900/10 border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
+                                            <MockSpeedQualityWidget w={3} h={3} data={DEMO_SPEED_QUALITY} isDark={isDark} />
                                         </div>
                                     </motion.div>
 
@@ -338,28 +350,28 @@ const LandingPage: React.FC = () => {
                                         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
                                         className="absolute right-0 top-0 z-10 w-[240px] h-[180px] hidden xl:block"
                                     >
-                                        <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
-                                            <MockBlockerCloudWidget w={3} h={2} data={DEMO_BLOCKERS} />
+                                        <div className={`w-full h-full backdrop-blur-sm rounded-2xl shadow-lg border overflow-hidden ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white/80 border-slate-100'}`}>
+                                            <MockBlockerCloudWidget w={3} h={2} data={DEMO_BLOCKERS} isDark={isDark} />
                                         </div>
                                     </motion.div>
                                 </div>
                             </div>
 
                             {/* Technical Grid Background Overlay */}
-                            <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] [mask-image:linear-gradient(to_left,white,transparent)]" />
+                            <div className={`absolute top-0 right-0 w-1/2 h-full [background-size:20px_20px] [mask-image:linear-gradient(to_left,white,transparent)] ${isDark ? 'bg-[radial-gradient(#334155_1px,transparent_1px)]' : 'bg-[radial-gradient(#e2e8f0_1px,transparent_1px)]'}`} />
                         </div>
 
                         {/* AI CARD (Keep as is, but maybe add a subtle glow) */}
-                        <div className="md:col-span-4 bg-slate-900 p-10 rounded-[40px] text-white flex flex-col justify-between relative overflow-hidden group">
-                            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <div className={`md:col-span-4 p-10 rounded-[40px] flex flex-col justify-between relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 text-white' : 'bg-slate-900 text-white'}`}>
+                            <div className={`absolute top-0 right-0 p-8 transition-opacity ${isDark ? 'opacity-10 group-hover:opacity-20' : 'opacity-10 group-hover:opacity-20'}`}>
                                 <Zap size={120} />
                             </div>
                             <div className="space-y-4 relative z-10">
-                                <div className="inline-flex px-3 py-1 bg-blue-500/20 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-400 border border-blue-500/30">Intelligence</div>
+                                <div className={`inline-flex px-3 py-1 bg-blue-500/20 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-400 border border-blue-500/30 ${isDark ? '' : ''}`}>Intelligence</div>
                                 <h3 className="text-2xl font-bold tracking-tight">AI Transparency</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">No black boxes. Our Logic Engine exports the exact decision tree used for every predictive alert.</p>
+                                <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>No black boxes. Our Logic Engine exports the exact decision tree used for every predictive alert.</p>
                             </div>
-                            <div className="mt-8 p-4 bg-black/40 backdrop-blur-sm rounded-2xl border border-white/10 font-mono text-[10px] text-blue-300 relative z-10">
+                            <div className={`mt-8 p-4 bg-black/40 backdrop-blur-sm rounded-2xl border border-white/10 font-mono text-[10px] relative z-10 ${isDark ? 'text-blue-300' : 'text-blue-300'}`}>
                                 <div className="flex gap-2 mb-2">
                                     <div className="w-2 h-2 rounded-full bg-red-500/50" />
                                     <div className="w-2 h-2 rounded-full bg-amber-500/50" />
@@ -375,10 +387,10 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* PRICING SECTION: THE "LEVEL UP" DESIGN */}
-            <section id="pricing" className="relative py-32 px-6 bg-[#0B0F1A] overflow-hidden">
+            <section id="pricing" className={`relative py-32 px-6 overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-[#0B0F1A]'}`}>
                 {/* Visual Interest Backgrounds */}
-                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px]" />
+                <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/20'}`} />
+                <div className={`absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-indigo-600/5' : 'bg-indigo-600/10'}`} />
                 <GridPattern />
 
                 <div className="max-w-7xl mx-auto relative z-10">
@@ -403,7 +415,7 @@ const LandingPage: React.FC = () => {
                                 />
                             </button>
                             <span className={`text-sm font-bold ${isAnnual ? 'text-white' : 'text-slate-500'}`}>
-                                Annual <span className="text-blue-400 ml-1">(-34%)</span>
+                                Annual <span className="text-blue-400 ml-1">(-20%)</span>
                             </span>
                         </div>
                     </div>
@@ -416,21 +428,21 @@ const LandingPage: React.FC = () => {
                         className="grid lg:grid-cols-3 gap-8 items-center"
                     >
                         {PRICING_PLANS.map((plan) => (
-                            <PricingPlan key={plan.id} plan={plan} isAnnual={isAnnual} />
+                            <PricingPlan key={plan.id} plan={plan} isAnnual={isAnnual} isDark={isDark} />
                         ))}
                     </motion.div>
                 </div>
             </section>
 
             {/* CTA / Final Section */}
-            <section className="py-32 px-6">
-                <div className="max-w-5xl mx-auto bg-blue-600 rounded-[48px] p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-blue-200">
+            <section className={`py-32 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
+                <div className="max-w-5xl mx-auto rounded-[48px] p-16 text-center text-white relative overflow-hidden shadow-2xl bg-blue-600 shadow-blue-200 dark:bg-blue-700 dark:shadow-blue-900/40">
                     <div className="relative z-10">
                         <h2 className="text-5xl font-black tracking-tighter mb-8">Ready to digitize your floor?</h2>
-                        <p className="text-xl text-blue-100 mb-10 max-w-xl mx-auto font-medium">
+                        <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-blue-100/80' : 'text-blue-100'}`}>
                             Join 40+ factories reducing downtime by an average of 18% in the first 90 days.
                         </p>
-                        <button className="px-10 py-5 bg-white text-blue-600 rounded-2xl text-xl font-bold hover:scale-105 transition-transform shadow-xl">
+                        <button className="px-10 py-5 bg-white text-blue-600 rounded-2xl text-xl font-bold hover:scale-105 transition-transform shadow-xl dark:hover:bg-blue-50">
                             Get Started Now
                         </button>
                     </div>
@@ -440,15 +452,15 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            <footer className="py-20 px-6 border-t border-slate-100 bg-white">
+            <footer className={`py-20 px-6 border-t transition-colors duration-300 ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-100'}`}>
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <Logo variant="footer" />
-                    <div className="flex gap-8 text-sm font-bold text-slate-400 uppercase tracking-widest">
+                    <div className={`flex gap-8 text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
                         <a href="#" className="hover:text-blue-600">Privacy</a>
                         <a href="#" className="hover:text-blue-600">Terms</a>
                         <a href="#" className="hover:text-blue-600">API</a>
                     </div>
-                    <p className="text-sm text-slate-400 font-medium italic">© 2026 Industrial Prime Logic Systems.</p>
+                    <p className={`text-sm font-medium italic ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Industrial Prime Logic Systems.</p>
                 </div>
             </footer>
         </div>
@@ -459,25 +471,48 @@ const PRICING_PLANS = [
     {
         id: 'starter',
         name: 'Starter',
-        price: 0,
-        description: 'For line managers digitizing their first floor.',
-        features: ['1 Factory Limit', 'Manual CSV Uploads', 'Basic Line Efficiency', '7-Day Data Retention'],
-        cta: 'Start for Free'
+        // Strategy: Cheap enough to expense, enough lines to run a real shop.
+        price: { monthly: 49, annual: 39 },
+        description: 'For the hands-on factory owner digitizing their floor.',
+        features: [
+            '1 Factory',
+            'Up to 10 Production Lines', // High enough to capture the whole shop
+            'Unlimited Dashboards', // Let them build as much as they want (Stickiness)
+            '1 Admin User', // The Restriction: Single Player Mode
+            '30-Day Data Retention'
+        ],
+        cta: 'Start Free Trial'
     },
     {
         id: 'pro',
         name: 'Professional',
-        price: { monthly: 150, annual: 99 },
-        description: 'For factory owners scaling compliance and output.',
-        features: ['Up to 3 Factories', 'Automated ETL Pipelines', 'SAM & DHU Analysis', '90-Day Retention', 'Priority Email Support'],
-        cta: 'Upgrade to Pro'
+        // Strategy: The upsell for teams. 
+        price: { monthly: 199, annual: 159 },
+        description: 'For organizations managing teams and hierarchies.',
+        features: [
+            '3 Factories',
+            '25 Production Lines',
+            'Role-Based Access (RBAC)', // The Killer Feature: Multi Player Mode
+            'Line Manager & Analyst Accounts',
+            'Unlimited Data History',
+            'Export to Excel/CSV'
+        ],
+        cta: 'Upgrade to Team'
     },
     {
         id: 'enterprise',
         name: 'Enterprise',
         price: 'Custom',
-        description: 'Global federation and UFLPA auditing.',
-        features: ['Unlimited Factories', 'UFLPA Compliance Logs', 'SSO (SAML)', 'Dedicated Success Manager', 'On-Premise Option'],
+        description: 'For global operations requiring compliance & auditing.',
+        features: [
+            'Unlimited Factories',
+            'Unlimited Lines',
+            'Custom Integrations & Features',
+            'Dedicated Success Manager',
+            'SSO (SAML) & Audit Logs',
+            'UFLPA Compliance Reporting',
+            'On-Premise / Private Cloud'
+        ],
         cta: 'Contact Sales'
     }
 ];

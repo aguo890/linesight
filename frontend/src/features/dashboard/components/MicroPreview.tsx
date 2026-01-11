@@ -16,7 +16,7 @@ interface MicroPreviewProps {
 const SignatureWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="relative w-full h-full flex flex-col justify-center overflow-hidden group">
         {children}
-        <div className="absolute top-0 right-0 opacity-20 group-hover:opacity-40 transition-opacity text-[6px] font-black uppercase tracking-tighter text-slate-500 pointer-events-none pr-1 pt-0.5">
+        <div className="absolute top-0 right-0 opacity-20 group-hover:opacity-40 transition-opacity text-[6px] font-black uppercase tracking-tighter text-text-muted pointer-events-none pr-1 pt-0.5">
             Simulated
         </div>
     </div>
@@ -41,27 +41,27 @@ const SignatureProduction: React.FC<{ actual: number[]; target: number[] }> = ({
 
     return (
         <SignatureWrapper>
-            <div className="flex justify-between text-[6px] text-gray-400 mb-1 px-1 font-bold tracking-tighter">
-                <span className="flex items-center gap-0.5"><div className="w-1 h-1 bg-slate-400" /> PLANNED</span>
-                <span className="flex items-center gap-0.5"><div className="w-1 h-1 bg-blue-500" /> ACTUAL</span>
+            <div className="flex justify-between text-[6px] text-text-muted mb-1 px-1 font-bold tracking-tighter">
+                <span className="flex items-center gap-0.5"><div className="w-1 h-1 bg-text-muted" /> PLANNED</span>
+                <span className="flex items-center gap-0.5"><div className="w-1 h-1 bg-brand" /> ACTUAL</span>
             </div>
             <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-16 overflow-visible" preserveAspectRatio="none">
                 <defs>
                     <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
-                        <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                        <stop offset="0%" className="text-brand" stopColor="currentColor" stopOpacity="0.2" />
+                        <stop offset="100%" className="text-brand" stopColor="currentColor" stopOpacity="0" />
                     </linearGradient>
                     <linearGradient id="slateGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.1" />
-                        <stop offset="100%" stopColor="#94a3b8" stopOpacity="0" />
+                        <stop offset="0%" className="text-text-muted" stopColor="currentColor" stopOpacity="0.1" />
+                        <stop offset="100%" className="text-text-muted" stopColor="currentColor" stopOpacity="0" />
                     </linearGradient>
                 </defs>
                 {/* Target Area */}
                 <polyline points={targetArea} fill="url(#slateGrad)" stroke="none" />
-                <polyline points={targetPoints} fill="none" stroke="#94a3b8" strokeWidth="1" strokeDasharray="3 2" />
+                <polyline points={targetPoints} fill="none" className="text-text-muted" stroke="currentColor" strokeWidth="1" strokeDasharray="3 2" />
                 {/* Actual Area */}
                 <polyline points={actualArea} fill="url(#blueGrad)" stroke="none" />
-                <polyline points={actualPoints} fill="none" stroke="#3b82f6" strokeWidth="1.5" className="animate-draw" pathLength="100" />
+                <polyline points={actualPoints} fill="none" className="text-brand" stroke="currentColor" strokeWidth="1.5" pathLength="100" />
             </svg>
         </SignatureWrapper>
     );
@@ -79,7 +79,7 @@ const SignatureSAM: React.FC<{ actual: number[]; standard: number[] }> = ({ actu
                 {/* Standard Line */}
                 <polyline
                     points={standard.map((v, i) => `${(i / (standard.length - 1)) * width},${height - (v / max) * height}`).join(' ')}
-                    fill="none" stroke="#fb923c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                    fill="none" className="text-warning" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                 />
                 {/* Actual Bars */}
                 {actual.map((v, i) => {
@@ -89,14 +89,14 @@ const SignatureSAM: React.FC<{ actual: number[]; standard: number[] }> = ({ actu
                     return (
                         <rect
                             key={i} x={x} y={height - barHeight} width={barWidth} height={barHeight}
-                            fill="#8b5cf6" rx="1"
+                            className="text-brand-secondary" fill="currentColor" rx="1"
                         />
                     );
                 })}
             </svg>
             <div className="mt-1 flex justify-center gap-2">
-                <span className="text-[5px] text-purple-600 font-bold uppercase tracking-tighter">Actual (Bar)</span>
-                <span className="text-[5px] text-orange-500 font-bold uppercase tracking-tighter">Target (Line)</span>
+                <span className="text-[5px] text-brand-secondary font-bold uppercase tracking-tighter">Actual (Bar)</span>
+                <span className="text-[5px] text-warning font-bold uppercase tracking-tighter">Target (Line)</span>
             </div>
         </SignatureWrapper>
     );
@@ -106,17 +106,17 @@ const SignatureSAM: React.FC<{ actual: number[]; standard: number[] }> = ({ actu
 const SignatureEarnedMinutes: React.FC = () => (
     <SignatureWrapper>
         <div className="grid grid-cols-2 gap-2 px-1">
-            <div className="col-span-2 bg-blue-50/50 rounded-sm p-1.5 border border-blue-100/50 flex justify-between items-center">
-                <span className="text-[6px] font-bold text-gray-500 uppercase">Efficiency</span>
-                <span className="text-[10px] font-black text-blue-600">84.2%</span>
+            <div className="col-span-2 bg-brand/5 rounded-sm p-1.5 border border-brand/10 flex justify-between items-center">
+                <span className="text-[6px] font-bold text-text-muted uppercase">Efficiency</span>
+                <span className="text-[10px] font-black text-brand">84.2%</span>
             </div>
-            <div className="bg-amber-50/50 rounded-sm p-1 border border-amber-100/50 flex flex-col items-center">
-                <span className="text-[5px] font-bold text-amber-600 uppercase mb-0.5">Earned</span>
-                <span className="text-[8px] font-black text-amber-700">1.2k</span>
+            <div className="bg-warning/5 rounded-sm p-1 border border-warning/10 flex flex-col items-center">
+                <span className="text-[5px] font-bold text-warning uppercase mb-0.5">Earned</span>
+                <span className="text-[8px] font-black text-warning">1.2k</span>
             </div>
-            <div className="bg-slate-50/50 rounded-sm p-1 border border-slate-100/50 flex flex-col items-center">
-                <span className="text-[5px] font-bold text-slate-500 uppercase mb-0.5">Avail</span>
-                <span className="text-[8px] font-black text-slate-700">1.4k</span>
+            <div className="bg-surface-subtle/50 rounded-sm p-1 border border-border flex flex-col items-center">
+                <span className="text-[5px] font-bold text-text-muted uppercase mb-0.5">Avail</span>
+                <span className="text-[8px] font-black text-text-main">1.4k</span>
             </div>
         </div>
     </SignatureWrapper>
@@ -133,28 +133,28 @@ const SignatureEfficiency: React.FC<{ value: number }> = ({ value }) => {
             <div className="flex items-center gap-4 w-full h-full px-2">
                 <div className="relative w-14 h-14">
                     <svg className="w-full h-full -rotate-90" viewBox="0 0 40 40">
-                        <circle cx="20" cy="20" r={radius} fill="none" stroke="#f1f5f9" strokeWidth="3" />
+                        <circle cx="20" cy="20" r={radius} fill="none" className="text-border" stroke="currentColor" strokeWidth="3" />
                         <circle
                             cx="20" cy="20" r={radius} fill="none"
-                            stroke={value >= 85 ? "#3b82f6" : "#f59e0b"}
+                            className={value >= 85 ? "text-success" : "text-warning"}
+                            stroke="currentColor"
                             strokeWidth="3"
                             strokeDasharray={circ}
                             strokeDashoffset={offset}
                             strokeLinecap="round"
-                            className="animate-draw"
                             pathLength="100"
                         />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-[8px] font-black text-blue-600">{Math.round(value)}</span>
+                        <span className="text-[8px] font-black text-brand">{Math.round(value)}</span>
                     </div>
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-[10px] font-black leading-none text-gray-800">{value}%</span>
-                    <span className="text-[7px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Efficiency</span>
+                    <span className="text-[10px] font-black leading-none text-text-main">{value}%</span>
+                    <span className="text-[7px] text-text-muted font-bold uppercase tracking-widest mt-0.5">Efficiency</span>
                     <div className="flex items-center gap-0.5 mt-1">
-                        <div className={`w-1 h-1 rounded-full ${value >= 85 ? 'bg-green-500' : 'bg-amber-500'} animate-pulse`} />
-                        <span className="text-[6px] font-bold text-gray-500">{value >= 85 ? 'ON TARGET' : 'NEAR MISS'}</span>
+                        <div className={`w-1 h-1 rounded-full ${value >= 85 ? 'bg-success' : 'bg-warning'} animate-pulse`} />
+                        <span className="text-[6px] font-bold text-text-muted">{value >= 85 ? 'ON TARGET' : 'NEAR MISS'}</span>
                     </div>
                 </div>
             </div>
@@ -195,18 +195,18 @@ const SignatureQuality: React.FC<{ data: number[] }> = ({ data }) => {
     return (
         <SignatureWrapper>
             <div className="flex justify-between items-center mb-1 px-1">
-                <span className={`text-[10px] font-black ${lastVal > threshold ? 'text-red-600' : 'text-slate-700'}`}>{lastVal.toFixed(1)}%</span>
+                <span className={`text-[10px] font-black ${lastVal > threshold ? 'text-error' : 'text-text-main'}`}>{lastVal.toFixed(1)}%</span>
                 {lastVal > threshold && (
-                    <span className="text-[5px] bg-red-100 text-red-600 px-1 py-0.2 rounded font-black animate-pulse uppercase">Critical</span>
+                    <span className="text-[5px] bg-error/10 text-error px-1 py-0.2 rounded font-black animate-pulse uppercase border border-error/20">Critical</span>
                 )}
             </div>
             <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-16 overflow-visible" preserveAspectRatio="none">
-                {/* Red threshold fill */}
-                <polyline points={redArea} fill="#fee2e2" stroke="none" />
+                {/* Error threshold fill */}
+                <polyline points={redArea} className="text-error" fill="currentColor" fillOpacity="0.1" stroke="none" />
                 {/* Threshold Line */}
-                <line x1="0" y1={threshY} x2={width} y2={threshY} stroke="#f97316" strokeWidth="1" strokeDasharray="2 1" />
+                <line x1="0" y1={threshY} x2={width} y2={threshY} className="text-warning" stroke="currentColor" strokeWidth="1" strokeDasharray="2 1" />
                 {/* DHU Line */}
-                <polyline points={points} fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinejoin="round" />
+                <polyline points={points} fill="none" className="text-error" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
         </SignatureWrapper>
     );
@@ -242,14 +242,14 @@ const SignatureSpeedQuality: React.FC<{ efficiency: number[]; dhu: number[] }> =
                 {/* DHU Bars (Bottom Spikes) */}
                 {dhu.map((v, i) => {
                     const r = getDhuRect(v, i);
-                    return <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} fill="#ef4444" opacity="0.4" rx="0.5" />;
+                    return <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} className="text-error" fill="currentColor" opacity="0.4" rx="0.5" />;
                 })}
                 {/* Efficiency Line (Top Trend) */}
-                <polyline points={effPoints} fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <polyline points={effPoints} fill="none" className="text-brand" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <div className="flex justify-between px-1 mt-1">
-                <span className="text-[5px] text-blue-600 font-bold uppercase tracking-tighter">Efficiency %</span>
-                <span className="text-[5px] text-red-500 font-bold uppercase tracking-tighter">Quality DHU</span>
+                <span className="text-[5px] text-brand font-bold uppercase tracking-tighter">Efficiency %</span>
+                <span className="text-[5px] text-error font-bold uppercase tracking-tighter">Quality DHU</span>
             </div>
         </SignatureWrapper>
     );
@@ -268,11 +268,11 @@ const SignatureStyleProgress: React.FC = () => {
             <div className="w-full flex flex-col gap-1.5 py-1 px-1">
                 {samples.map((s, i) => (
                     <div key={i} className="flex flex-col gap-0.5">
-                        <div className="flex justify-between text-[6px] font-bold text-gray-500 tracking-tighter">
+                        <div className="flex justify-between text-[6px] font-bold text-text-muted tracking-tighter">
                             <span>{s.code}</span>
                             <span>{s.p}%</span>
                         </div>
-                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-surface-subtle rounded-full overflow-hidden border border-border/50">
                             <div
                                 className={`h-full ${s.color} transition-all duration-1000 ease-out`}
                                 style={{ width: `${s.p}%`, animation: `grow-up 0.8s ease-out ${i * 0.1}s forwards`, transformOrigin: 'left', transform: 'scaleX(0)' }}
@@ -290,18 +290,18 @@ const SignatureWorkforce: React.FC = () => (
     <SignatureWrapper>
         <div className="flex flex-col gap-2 w-full px-1">
             <div className="flex gap-1.5">
-                <div className="flex-1 bg-teal-50 border border-teal-100 p-2 rounded flex flex-col items-center">
-                    <span className="text-[16px] font-black text-teal-600 leading-none">42</span>
-                    <span className="text-[6px] text-teal-500 font-bold uppercase tracking-tighter mt-1">Ops</span>
+                <div className="flex-1 bg-success/5 border border-success/10 p-2 rounded flex flex-col items-center">
+                    <span className="text-[16px] font-black text-success leading-none">42</span>
+                    <span className="text-[6px] text-success/70 font-bold uppercase tracking-tighter mt-1">Ops</span>
                 </div>
-                <div className="flex-1 bg-blue-50 border border-blue-100 p-2 rounded flex flex-col items-center">
-                    <span className="text-[16px] font-black text-blue-600 leading-none">12</span>
-                    <span className="text-[6px] text-blue-500 font-bold uppercase tracking-tighter mt-1">Helps</span>
+                <div className="flex-1 bg-brand/5 border border-brand/10 p-2 rounded flex flex-col items-center">
+                    <span className="text-[16px] font-black text-brand leading-none">12</span>
+                    <span className="text-[6px] text-brand/70 font-bold uppercase tracking-tighter mt-1">Helps</span>
                 </div>
             </div>
             <div className="flex items-center justify-center gap-1">
-                <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-[7px] font-bold text-gray-400 uppercase tracking-widest leading-none">Active</span>
+                <div className="w-1 h-1 bg-success rounded-full animate-pulse" />
+                <span className="text-[7px] font-bold text-text-muted uppercase tracking-widest leading-none">Active</span>
             </div>
         </div>
     </SignatureWrapper>
@@ -312,13 +312,13 @@ const SignatureKpiSummary: React.FC = () => (
     <SignatureWrapper>
         <div className="flex gap-2 w-full h-full py-1 px-1 text-center">
             {[
-                { label: 'OEE', val: '76%', color: 'text-blue-600' },
-                { label: 'QTY', val: '1.2k', color: 'text-emerald-600' },
-                { label: 'DHU', val: '1.8%', color: 'text-red-600' }
+                { label: 'OEE', val: '76%', color: 'text-brand' },
+                { label: 'QTY', val: '1.2k', color: 'text-success' },
+                { label: 'DHU', val: '1.8%', color: 'text-error' }
             ].map((kpi, i) => (
-                <div key={i} className="flex-1 bg-gray-50/50 rounded py-2 px-0.5 flex flex-col justify-center border border-gray-100/50">
+                <div key={i} className="flex-1 bg-surface-subtle/30 rounded py-2 px-0.5 flex flex-col justify-center border border-border/50">
                     <span className={`text-[12px] font-black ${kpi.color}`}>{kpi.val}</span>
-                    <span className="text-[5px] text-gray-400 font-bold uppercase">{kpi.label}</span>
+                    <span className="text-[5px] text-text-muted font-bold uppercase">{kpi.label}</span>
                 </div>
             ))}
         </div>
@@ -329,9 +329,9 @@ const SignatureKpiSummary: React.FC = () => (
 const SignatureBlockers: React.FC = () => (
     <SignatureWrapper>
         <div className="flex flex-wrap gap-1 items-center justify-center h-full px-1">
-            <span className="text-[7px] bg-red-100 text-red-600 px-1 py-0.5 rounded font-black border border-red-200">NEEDLE</span>
-            <span className="text-[7px] bg-amber-100 text-amber-600 px-1 py-0.5 rounded font-black border border-amber-200">THREAD</span>
-            <span className="text-[7px] bg-orange-100 text-orange-600 px-1 py-0.5 rounded font-black border border-orange-200">MOTOR</span>
+            <span className="text-[7px] bg-error/10 text-error px-1 py-0.5 rounded font-black border border-error/20">NEEDLE</span>
+            <span className="text-[7px] bg-warning/10 text-warning px-1 py-0.5 rounded font-black border border-warning/20">THREAD</span>
+            <span className="text-[7px] bg-amber-500/10 text-amber-500 px-1 py-0.5 rounded font-black border border-amber-500/20">MOTOR</span>
         </div>
     </SignatureWrapper>
 );

@@ -305,8 +305,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['essential', 'real-time'],
             priority: 100,
             icon: 'BarChart3',
-            iconColor: 'text-blue-500',
-            bgColor: 'bg-blue-50'
+            iconColor: 'text-brand',
+            bgColor: 'bg-brand/10'
         },
         layout: { w: 6, h: 10, minW: 4, minH: 6 },
         component: ProductionChart,
@@ -334,8 +334,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['essential', 'kpi'],
             priority: 95,
             icon: 'Gauge',
-            iconColor: 'text-blue-500',
-            bgColor: 'bg-blue-50'
+            iconColor: 'text-brand',
+            bgColor: 'bg-brand/10'
         },
         layout: { w: 3, h: 6, minW: 2, minH: 4 },
         component: LineEfficiencyGauge,
@@ -356,8 +356,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['essential', 'real-time'],
             priority: 85,
             icon: 'TrendingUp',
-            iconColor: 'text-purple-500',
-            bgColor: 'bg-purple-50'
+            iconColor: 'text-brand-secondary',
+            bgColor: 'bg-brand-secondary/10'
         },
         layout: { w: 6, h: 6, minW: 4, minH: 4 },
         component: TargetRealizationWidget,
@@ -379,8 +379,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['kpi'],
             priority: 75,
             icon: 'Zap',
-            iconColor: 'text-amber-500',
-            bgColor: 'bg-amber-50'
+            iconColor: 'text-warning',
+            bgColor: 'bg-warning/10'
         },
         layout: { w: 3, h: 6, minW: 2, minH: 6 },
         component: EarnedMinutesWidget,
@@ -401,8 +401,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['tracking'],
             priority: 50,
             icon: 'Clock',
-            iconColor: 'text-indigo-500',
-            bgColor: 'bg-indigo-50'
+            iconColor: 'text-indigo-600 dark:text-indigo-400',
+            bgColor: 'bg-indigo-50 dark:bg-indigo-500/10'
         },
         layout: { w: 6, h: 6, minW: 4, minH: 4 },
         component: ProductionTimeline,
@@ -423,8 +423,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['kpi'],
             priority: 45,
             icon: 'Activity',
-            iconColor: 'text-purple-500',
-            bgColor: 'bg-purple-50'
+            iconColor: 'text-brand-secondary',
+            bgColor: 'bg-brand-secondary/10'
         },
         layout: { w: 3, h: 6, minW: 2, minH: 4 },
         component: SamPerformanceMetric,
@@ -447,8 +447,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['essential', 'kpi'],
             priority: 90,
             icon: 'ShieldCheck',
-            iconColor: 'text-red-500',
-            bgColor: 'bg-red-50'
+            iconColor: 'text-danger',
+            bgColor: 'bg-danger/10'
         },
         layout: { w: 6, h: 10, minW: 4, minH: 6 },
         component: DhuQualityChart,
@@ -469,8 +469,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['advanced', 'kpi'],
             priority: 80,
             icon: 'Scale',
-            iconColor: 'text-red-500',
-            bgColor: 'bg-blue-50'
+            iconColor: 'text-danger',
+            bgColor: 'bg-brand/10'
         },
         layout: { w: 6, h: 10, minW: 4, minH: 6 },
         component: SpeedQualityWidget,
@@ -491,8 +491,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['advanced'],
             priority: 55,
             icon: 'Box',
-            iconColor: 'text-orange-500',
-            bgColor: 'bg-orange-50'
+            iconColor: 'text-warning',
+            bgColor: 'bg-warning/10'
         },
         layout: { w: 6, h: 10, minW: 4, minH: 6 },
         component: ComplexityImpactWidget,
@@ -514,8 +514,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['insight'],
             priority: 70,
             icon: 'AlertOctagon',
-            iconColor: 'text-red-500',
-            bgColor: 'bg-red-50'
+            iconColor: 'text-danger',
+            bgColor: 'bg-danger/10'
         },
         layout: { w: 6, h: 6, minW: 4, minH: 4 },
         component: BlockerCloudWidget,
@@ -536,8 +536,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['tracking'],
             priority: 60,
             icon: 'PieChart',
-            iconColor: 'text-purple-500',
-            bgColor: 'bg-purple-50'
+            iconColor: 'text-brand-secondary',
+            bgColor: 'bg-brand-secondary/10'
         },
         layout: { w: 6, h: 10, minW: 6, minH: 6 },
         component: StyleProgressWidget,
@@ -561,8 +561,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['essential'],
             priority: 65,
             icon: 'Users',
-            iconColor: 'text-teal-500',
-            bgColor: 'bg-teal-50'
+            iconColor: 'text-teal-600 dark:text-teal-400',
+            bgColor: 'bg-teal-50 dark:bg-teal-500/10'
         },
         layout: { w: 3, h: 6, minW: 2, minH: 4 },
         component: WorkforceAttendance,
@@ -583,8 +583,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             tags: ['kpi', 'essential'],
             priority: 110,
             icon: 'CheckCircle2',
-            iconColor: 'text-slate-500',
-            bgColor: 'bg-slate-50'
+            iconColor: 'text-text-muted',
+            bgColor: 'bg-surface-subtle'
         },
         layout: { w: 12, h: 4, minW: 6, minH: 3 },
         component: KpiSummaryWidget,
@@ -830,7 +830,7 @@ export const getBundleReadiness = (bundleId: string, activeFields: string[]): Bu
 
     return {
         isReady: supportedCount === totalCount,
-        percentage: Math.round((supportedCount / totalCount) * 100),
+        percentage: totalCount > 0 ? Math.round((supportedCount / totalCount) * 100) : 0,
         supportedCount,
         totalCount,
         supportedWidgetIds

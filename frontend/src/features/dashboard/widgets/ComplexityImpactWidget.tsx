@@ -61,8 +61,8 @@ const ComplexityImpactWidget: React.FC<WidgetProps> = ({
     return (
         <WidgetWrapper
             title={title}
-            icon={<TrendingUp className="w-full h-full text-blue-500" />}
-            iconBgColor="bg-blue-50"
+            icon={<TrendingUp className="w-full h-full text-brand" />}
+            iconBgColor="bg-brand/10"
             density={density}
             isMock={isMock || !!demoData}
         >

@@ -12,6 +12,7 @@ import {
 import { type SmartWidgetProps } from '../config';
 import { TargetRealizationDataSchema } from '../registry';
 import { z } from 'zod';
+import { useThemeColors } from '@/hooks/useThemeColor';
 
 // Infer types
 type TargetRealizationData = z.infer<typeof TargetRealizationDataSchema>;
@@ -27,6 +28,11 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
 }) => {
     // Extract settings with defaults
     const showVariance = settings?.showVariance ?? true;
+
+    // Theme Colors for Dark Mode Support
+    const themeColors = useThemeColors(['--text-main', '--text-muted', '--surface']);
+    const tooltipBg = themeColors['--surface'];
+    const textMuted = themeColors['--text-muted'];
 
     // Data handling (Schema should guarantee array or we handle it)
     const rawData = data;
@@ -54,7 +60,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
             {/* Status Badge (Moved from Header Action to Content Overlay) */}
             {showVariance && (
                 <div className="absolute top-0 right-0 z-10">
-                    <div className={`px-2 py-1 rounded text-xs font-bold ${displayPercentage >= 100 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}`}>
+                    <div className={`px-2 py-1 rounded text-xs font-bold ${displayPercentage >= 100 ? 'bg-success/10 text-success' : 'bg-surface-subtle text-text-muted'}`}>
                         {displayPercentage}%
                     </div>
                 </div>
@@ -70,24 +76,30 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                             <YAxis type="category" dataKey="name" hide />
                             <Tooltip
                                 cursor={{ fill: 'transparent' }}
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                contentStyle={{
+                                    borderRadius: '8px',
+                                    border: 'none',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    backgroundColor: tooltipBg,
+                                    color: textMuted
+                                }}
                             />
                             <Bar dataKey="actual" barSize={24} radius={[0, 4, 4, 0]}>
                                 <Cell fill={displayPercentage >= 100 ? '#10b981' : (isBehind ? '#f59e0b' : '#3b82f6')} />
                             </Bar>
-                            <ReferenceLine x={target} stroke="black" strokeWidth={2} label={{ position: 'top', value: 'Goal', fontSize: 10, fill: '#64748b' }} strokeDasharray="3 3" />
+                            <ReferenceLine x={target} stroke="currentColor" strokeWidth={2} label={{ position: 'top', value: 'Goal', fontSize: 10, fill: textMuted }} strokeDasharray="3 3" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
 
-                <div className="flex justify-between mt-2 text-xs text-slate-600 px-1">
+                <div className="flex justify-between mt-2 text-xs text-text-muted px-1">
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-400">Actual</span>
-                        <div className="text-3xl font-bold text-slate-900">{actual ? actual.toLocaleString() : '0'}</div>
+                        <span className="text-[10px] text-text-subtle">Actual</span>
+                        <div className="text-3xl font-bold text-text-main">{actual ? actual.toLocaleString() : '0'}</div>
                     </div>
                     <div className="flex flex-col text-right">
-                        <span className="text-[10px] text-slate-400">Target</span>
-                        <div className="text-sm font-medium text-slate-500">Target: {target ? target.toLocaleString() : '0'}</div>
+                        <span className="text-[10px] text-text-subtle">Target</span>
+                        <div className="text-sm font-medium text-text-muted">Target: {target ? target.toLocaleString() : '0'}</div>
                     </div>
                 </div>
 

@@ -117,7 +117,7 @@ export const Sidebar: React.FC = () => {
                     {/* Overview */}
                     {/*
                     <button
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => navigate('/dashboard/factories')}
                         title={!isSidebarOpen ? "Overview" : undefined}
                         className={cn(
                             "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
@@ -174,7 +174,7 @@ export const Sidebar: React.FC = () => {
                             </button>
 
                             {/* Right: Toggle Dropdown Button */}
-                            <button
+                            {/* <button
                                 onClick={() => setIsDashboardsExpanded(!isDashboardsExpanded)}
                                 className={cn(
                                     "px-3 py-2.5 transition-colors hover:bg-[var(--color-border)]/30",
@@ -188,7 +188,7 @@ export const Sidebar: React.FC = () => {
                                 <ChevronDown
                                     className={`w-4 h-4 transition-transform ${isDashboardsExpanded ? 'rotate-180' : ''}`}
                                 />
-                            </button>
+                            </button> */}
                         </div>
 
                         {/* Subsections - Individual Dashboards */}

@@ -22,7 +22,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from app.models.factory import ProductionLine
+    from app.models.datasource import DataSource
     from app.models.production import Order, ProductionRun, Style
     from app.models.raw_import import RawImport
 
@@ -53,10 +53,10 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
     # Quantity Change (Positive for production, negative for corrections)
     quantity: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
-    # Context FKs
-    line_id: Mapped[str] = mapped_column(
+    # Data Source FK (renamed from line_id after migration)
+    data_source_id: Mapped[str] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="CASCADE"),
+        ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
@@ -93,7 +93,7 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
     raw_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     # Relationships
-    line: Mapped["ProductionLine"] = relationship("ProductionLine")
+    data_source: Mapped["DataSource"] = relationship("DataSource")
     order: Mapped["Order"] = relationship("Order")
     style: Mapped["Style"] = relationship("Style")
     production_run: Mapped["ProductionRun"] = relationship(

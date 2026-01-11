@@ -14,7 +14,7 @@ from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.models.datasource import DataSource
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
     from app.models.user import User
 
 
@@ -44,9 +44,11 @@ class RawImport(Base, UUIDMixin, TimestampMixin):
         nullable=True,
         index=True,
     )
+    # Legacy production_line_id - now use data_source_id
+    # Kept for backward compatibility but points to data_sources
     production_line_id: Mapped[str | None] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="SET NULL"),
+        ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
@@ -111,8 +113,9 @@ class RawImport(Base, UUIDMixin, TimestampMixin):
         "Factory",
         foreign_keys=[factory_id],
     )
-    production_line: Mapped[Optional["ProductionLine"]] = relationship(
-        "ProductionLine",
+    # production_line relationship now also points to DataSource
+    production_line: Mapped[Optional["DataSource"]] = relationship(
+        "DataSource",
         foreign_keys=[production_line_id],
     )
     data_source: Mapped[Optional["DataSource"]] = relationship(

@@ -20,77 +20,77 @@ import type {
 
 import type {
   DataSourceResponse,
-  GetDataSourceByLineApiV1DatasourcesLineLineIdGet200,
-  GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200,
+  GetDataSourceByLineApiV1DataSourcesLineLineIdGet200,
+  GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200,
   SchemaMappingResponse
 } from '../../model';
 
 
-export const getCreateDataSourceApiV1DatasourcesPostResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+export const getCreateDataSourceApiV1DataSourcesPostResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
 
-export const getListDataSourcesApiV1DatasourcesGetResponseMock = (): DataSourceResponse[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})))
+export const getListDataSourcesApiV1DataSourcesGetResponseMock = (): DataSourceResponse[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})))
 
-export const getGetDataSourceApiV1DatasourcesDataSourceIdGetResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+export const getGetDataSourceApiV1DataSourcesDataSourceIdGetResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
 
-export const getUpdateDataSourceApiV1DatasourcesDataSourceIdPutResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+export const getUpdateDataSourceApiV1DataSourcesDataSourceIdPutResponseMock = (overrideResponse: Partial< DataSourceResponse > = {}): DataSourceResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
 
-export const getGetDataSourceByLineApiV1DatasourcesLineLineIdGetResponseMock = (): GetDataSourceByLineApiV1DatasourcesLineLineIdGet200 => (faker.helpers.arrayElement([{id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`},null,]))
+export const getGetDataSourceByLineApiV1DataSourcesLineLineIdGetResponseMock = (): GetDataSourceByLineApiV1DataSourcesLineLineIdGet200 => (faker.helpers.arrayElement([{id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`},null,]))
 
-export const getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetResponseMock = (): GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200 => (faker.helpers.arrayElement([{id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.string.alpha({length: {min: 10, max: 20}}), source_name: faker.string.alpha({length: {min: 10, max: 20}}), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`},null,]))
+export const getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponseMock = (): GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200 => (faker.helpers.arrayElement([{id: faker.string.alpha({length: {min: 10, max: 20}}), production_line_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), source_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), time_column: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), time_format: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), is_active: faker.datatype.boolean(), schema_mappings: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`})), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`},null,]))
 
-export const getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutResponseMock = (overrideResponse: Partial< SchemaMappingResponse > = {}): SchemaMappingResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+export const getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutResponseMock = (overrideResponse: Partial< SchemaMappingResponse > = {}): SchemaMappingResponse => ({id: faker.string.alpha({length: {min: 10, max: 20}}), version: faker.number.int({min: undefined, max: undefined}), is_active: faker.datatype.boolean(), column_map: {}, extraction_rules: faker.helpers.arrayElement([null,]), reviewed_by_user: faker.datatype.boolean(), user_notes: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
 
 
-export const getCreateDataSourceApiV1DatasourcesPostMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
-  return http.post('*/api/v1/datasources', async (info) => {await delay(1000);
+export const getCreateDataSourceApiV1DataSourcesPostMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
+  return http.post('*/api/v1/data-sources', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getCreateDataSourceApiV1DatasourcesPostResponseMock()),
+    : getCreateDataSourceApiV1DataSourcesPostResponseMock()),
       { status: 201,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getListDataSourcesApiV1DatasourcesGetMockHandler = (overrideResponse?: DataSourceResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DataSourceResponse[]> | DataSourceResponse[]), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/datasources', async (info) => {await delay(1000);
+export const getListDataSourcesApiV1DataSourcesGetMockHandler = (overrideResponse?: DataSourceResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DataSourceResponse[]> | DataSourceResponse[]), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/data-sources', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getListDataSourcesApiV1DatasourcesGetResponseMock()),
+    : getListDataSourcesApiV1DataSourcesGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getGetDataSourceApiV1DatasourcesDataSourceIdGetMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/datasources/:dataSourceId', async (info) => {await delay(1000);
+export const getGetDataSourceApiV1DataSourcesDataSourceIdGetMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/data-sources/:dataSourceId', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetDataSourceApiV1DatasourcesDataSourceIdGetResponseMock()),
+    : getGetDataSourceApiV1DataSourcesDataSourceIdGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getUpdateDataSourceApiV1DatasourcesDataSourceIdPutMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
-  return http.put('*/api/v1/datasources/:dataSourceId', async (info) => {await delay(1000);
+export const getUpdateDataSourceApiV1DataSourcesDataSourceIdPutMockHandler = (overrideResponse?: DataSourceResponse | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<DataSourceResponse> | DataSourceResponse), options?: RequestHandlerOptions) => {
+  return http.put('*/api/v1/data-sources/:dataSourceId', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateDataSourceApiV1DatasourcesDataSourceIdPutResponseMock()),
+    : getUpdateDataSourceApiV1DataSourcesDataSourceIdPutResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getDeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
-  return http.delete('*/api/v1/datasources/:dataSourceId', async (info) => {await delay(1000);
+export const getDeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.delete('*/api/v1/data-sources/:dataSourceId', async (info) => {await delay(1000);
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
     return new HttpResponse(null,
       { status: 204,
@@ -99,48 +99,48 @@ export const getDeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMockHandler = 
   }, options)
 }
 
-export const getGetDataSourceByLineApiV1DatasourcesLineLineIdGetMockHandler = (overrideResponse?: GetDataSourceByLineApiV1DatasourcesLineLineIdGet200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetDataSourceByLineApiV1DatasourcesLineLineIdGet200> | GetDataSourceByLineApiV1DatasourcesLineLineIdGet200), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/datasources/line/:lineId', async (info) => {await delay(1000);
+export const getGetDataSourceByLineApiV1DataSourcesLineLineIdGetMockHandler = (overrideResponse?: GetDataSourceByLineApiV1DataSourcesLineLineIdGet200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetDataSourceByLineApiV1DataSourcesLineLineIdGet200> | GetDataSourceByLineApiV1DataSourcesLineLineIdGet200), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/data-sources/line/:lineId', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetDataSourceByLineApiV1DatasourcesLineLineIdGetResponseMock()),
+    : getGetDataSourceByLineApiV1DataSourcesLineLineIdGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetMockHandler = (overrideResponse?: GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200> | GetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGet200), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/datasources/by-line/:productionLineId', async (info) => {await delay(1000);
+export const getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetMockHandler = (overrideResponse?: GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200> | GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/data-sources/by-line/:productionLineId', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetResponseMock()),
+    : getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMockHandler = (overrideResponse?: SchemaMappingResponse | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<SchemaMappingResponse> | SchemaMappingResponse), options?: RequestHandlerOptions) => {
-  return http.put('*/api/v1/datasources/:dataSourceId/mapping', async (info) => {await delay(1000);
+export const getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMockHandler = (overrideResponse?: SchemaMappingResponse | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<SchemaMappingResponse> | SchemaMappingResponse), options?: RequestHandlerOptions) => {
+  return http.put('*/api/v1/data-sources/:dataSourceId/mapping', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutResponseMock()),
+    : getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 export const getDataSourcesMock = () => [
-  getCreateDataSourceApiV1DatasourcesPostMockHandler(),
-  getListDataSourcesApiV1DatasourcesGetMockHandler(),
-  getGetDataSourceApiV1DatasourcesDataSourceIdGetMockHandler(),
-  getUpdateDataSourceApiV1DatasourcesDataSourceIdPutMockHandler(),
-  getDeleteDataSourceApiV1DatasourcesDataSourceIdDeleteMockHandler(),
-  getGetDataSourceByLineApiV1DatasourcesLineLineIdGetMockHandler(),
-  getGetDatasourceByLineExplicitApiV1DatasourcesByLineProductionLineIdGetMockHandler(),
-  getUpdateSchemaMappingApiV1DatasourcesDataSourceIdMappingPutMockHandler()
+  getCreateDataSourceApiV1DataSourcesPostMockHandler(),
+  getListDataSourcesApiV1DataSourcesGetMockHandler(),
+  getGetDataSourceApiV1DataSourcesDataSourceIdGetMockHandler(),
+  getUpdateDataSourceApiV1DataSourcesDataSourceIdPutMockHandler(),
+  getDeleteDataSourceApiV1DataSourcesDataSourceIdDeleteMockHandler(),
+  getGetDataSourceByLineApiV1DataSourcesLineLineIdGetMockHandler(),
+  getGetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetMockHandler(),
+  getUpdateSchemaMappingApiV1DataSourcesDataSourceIdMappingPutMockHandler()
 ]

@@ -15,7 +15,8 @@ from app.api.deps import get_db
 from app.core.config import settings
 from app.db.seed import seed_data
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.raw_import import RawImport
 from app.models.user import Organization, SubscriptionTier, User
 
@@ -40,9 +41,14 @@ async def trigger_seed(
         await seed_data(db)
         return {"status": "success", "message": "Database seeded successfully."}
     except Exception as e:
+        import traceback
+
+        tb = traceback.format_exc()
+        # Still print to console for server logs
+        print(tb)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Seeding failed: {str(e)}",
+            detail=f"Seeding failed: {str(e)}\nTraceback:\n{tb}",
         ) from e
 
 

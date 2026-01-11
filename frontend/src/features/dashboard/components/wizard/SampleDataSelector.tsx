@@ -59,14 +59,14 @@ export const SampleDataSelector: React.FC<SampleDataSelectorProps> = ({ onFileSe
     if (loading) {
         return (
             <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                <Loader2 className="w-6 h-6 animate-spin text-brand" />
             </div>
         );
     }
 
     if (sampleFiles.length === 0) {
         return (
-            <div className="text-center py-8 text-gray-500 text-sm">
+            <div className="text-center py-8 text-text-muted text-sm">
                 No sample files available
             </div>
         );
@@ -74,27 +74,27 @@ export const SampleDataSelector: React.FC<SampleDataSelectorProps> = ({ onFileSe
 
     return (
         <div className="space-y-3">
-            <p className="text-sm font-medium text-gray-700">Or try a sample file:</p>
+            <p className="text-sm font-medium text-text-main">Or try a sample file:</p>
             <div className="space-y-2">
                 {sampleFiles.map((file) => (
                     <button
                         key={file.filename}
                         onClick={() => handleDownloadAndSelect(file.filename)}
                         disabled={downloading !== null}
-                        className="w-full flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                        className="w-full flex items-start space-x-3 p-3 border border-border rounded-lg hover:border-brand hover:bg-brand/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-left"
                     >
-                        <FileSpreadsheet className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                        <FileSpreadsheet className="w-5 h-5 text-brand flex-shrink-0 mt-0.5" />
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900">{file.filename}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">{file.description}</p>
-                            <p className="text-xs text-gray-400 mt-1">
+                            <p className="text-sm font-medium text-text-main">{file.filename}</p>
+                            <p className="text-xs text-text-muted mt-0.5">{file.description}</p>
+                            <p className="text-xs text-text-muted/70 mt-1">
                                 {(file.size / 1024).toFixed(1)} KB
                             </p>
                         </div>
                         {downloading === file.filename ? (
-                            <Loader2 className="w-4 h-4 animate-spin text-blue-600 flex-shrink-0" />
+                            <Loader2 className="w-4 h-4 animate-spin text-brand flex-shrink-0" />
                         ) : (
-                            <Download className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                            <Download className="w-4 h-4 text-text-muted flex-shrink-0" />
                         )}
                     </button>
                 ))}

@@ -26,28 +26,28 @@ export const RightSidebarShell: React.FC<RightSidebarShellProps> = ({
 }) => {
     return (
         <div className={cn(
-            "fixed inset-y-0 right-0 bg-white shadow-[-10px_0_30px_rgba(0,0,0,0.05)] border-l border-slate-200 flex flex-col transform transition-transform duration-300 ease-in-out",
+            "fixed inset-y-0 right-0 bg-surface shadow-xl border-l border-border flex flex-col transform transition-transform duration-300 ease-in-out",
             width,
             zIndex,
             isOpen ? "translate-x-0" : "translate-x-full"
         )}>
             {/* Header */}
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <div className="p-6 border-b border-border flex justify-between items-center bg-surface-subtle">
                 <div className="min-w-0">
-                    <h2 className="text-lg font-black tracking-tight text-slate-800 uppercase truncate">
+                    <h2 className="text-lg font-black tracking-tight text-text-main uppercase truncate">
                         {title}
                     </h2>
                     {subtitle && (
-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider truncate">
+                        <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider truncate">
                             {subtitle}
                         </p>
                     )}
                 </div>
                 <button
                     onClick={onClose}
-                    className="p-2 hover:bg-slate-200/50 rounded-full transition-colors shrink-0"
+                    className="p-2 hover:bg-surface-active rounded-full transition-colors shrink-0"
                 >
-                    <X size={20} className="text-slate-500" />
+                    <X size={20} className="text-text-muted" />
                 </button>
             </div>
 
@@ -58,7 +58,7 @@ export const RightSidebarShell: React.FC<RightSidebarShellProps> = ({
 
             {/* Footer */}
             {footer && (
-                <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+                <div className="p-6 border-t border-border bg-surface-subtle">
                     {footer}
                 </div>
             )}

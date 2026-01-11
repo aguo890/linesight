@@ -2,19 +2,13 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '../../../api/endpoints/factories/factories';
-import type { FactoryRead } from '../../../api/model';
-import type { FactorySettings, ShiftConfig } from '../../../lib/factoryApi';
+import type { Factory, FactorySettings, ShiftConfig } from '../../../lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
-
-// Extend existing FactoryRead to include settings
-interface FactoryReadWithSettings extends FactoryRead {
-    settings?: FactorySettings | Record<string, any> | null;
-}
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    factory: FactoryRead;
+    factory: Factory;
 }
 
 const WEEKDAYS = [
@@ -75,8 +69,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
     // Initialize state from factory props
     useEffect(() => {
         if (isOpen && factory) {
-            const factoryWithSettings = factory as FactoryReadWithSettings;
-            const settings = factoryWithSettings.settings;
+            const settings = factory.settings;
 
             // Handle new field names with fallback to old ones if data exists
             setShifts((settings?.default_shift_pattern) || (settings?.operating_shifts) || []);
@@ -86,9 +79,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
             setCurrency(settings?.default_currency || 'USD'); // kept as is
 
             // Factory Level Fields (fallback to settings if not at root)
-            // @ts-ignore - The type definition might be missing country/timezone at root in frontend types yet
             setCountry(factory.country || settings?.country || '');
-            // @ts-ignore
             const tz = factory.timezone || settings?.timezone || 'UTC';
             setTimezone(tz);
             setOriginalTimezone(tz);
@@ -200,26 +191,26 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
             {/* Warning Modal Overlay */}
             {showTimezoneWarning && (
                 <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/20 backdrop-blur-[1px] p-4">
-                    <div className="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full border border-amber-200">
+                    <div className="bg-surface rounded-lg shadow-xl p-6 max-w-sm w-full border border-warning/20">
                         <div className="flex items-start gap-3">
-                            <div className="p-2 bg-amber-50 rounded-full text-amber-600">
+                            <div className="p-2 bg-warning/10 rounded-full text-warning">
                                 <AlertTriangle className="w-6 h-6" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-bold text-slate-900">Change Timezone?</h4>
-                                <p className="text-sm text-slate-600 mt-2">
+                                <h4 className="text-lg font-bold text-text-main">Change Timezone?</h4>
+                                <p className="text-sm text-text-muted mt-2">
                                     Changing the timezone to <strong>{timezone}</strong> may affect historical data reporting and active shift schedules.
                                 </p>
                                 <div className="mt-6 flex gap-3 justify-end">
                                     <button
                                         onClick={() => setShowTimezoneWarning(false)}
-                                        className="px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium"
+                                        className="px-3 py-2 text-text-muted hover:bg-surface-subtle rounded-md text-sm font-medium"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         onClick={executeSave}
-                                        className="px-3 py-2 bg-amber-600 text-white hover:bg-amber-700 rounded-md text-sm font-medium"
+                                        className="px-3 py-2 bg-warning text-white hover:bg-warning/90 rounded-md text-sm font-medium"
                                     >
                                         Yes, Update Timezone
                                     </button>
@@ -230,20 +221,20 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col">
+            <div className="bg-surface rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col">
 
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-slate-100 sticky top-0 bg-white z-10">
+                <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-surface z-10">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+                        <div className="p-2 bg-brand/10 rounded-lg text-brand">
                             <Save className="w-5 h-5" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-slate-900">Factory Standards & Defaults</h2>
-                            <p className="text-sm text-slate-500">Configure global defaults for {factory.name}</p>
+                            <h2 className="text-xl font-bold text-text-main">Factory Standards & Defaults</h2>
+                            <p className="text-sm text-text-muted">Configure global defaults for {factory.name}</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full transition-colors">
+                    <button onClick={onClose} className="p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-full transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -253,13 +244,13 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
 
                     {/* Localization Section */}
                     <section>
-                        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-4">
-                            <Clock className="w-4 h-4 text-slate-500" />
+                        <h3 className="text-sm font-semibold text-text-main flex items-center gap-2 mb-4">
+                            <Clock className="w-4 h-4 text-text-muted" />
                             Localization & Formats
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="col-span-1 md:col-span-2">
-                                <Suspense fallback={<div className="h-20 bg-slate-50 animate-pulse rounded-lg" />}>
+                                <Suspense fallback={<div className="h-20 bg-surface-subtle animate-pulse rounded-lg" />}>
                                     <LocationSelector
                                         countryCode={country}
                                         timezone={timezone}
@@ -271,18 +262,18 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 </Suspense>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-slate-500 mb-1 block">Date Format</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">Date Format</label>
                                 <select
                                     value={dateFormat}
                                     onChange={(e) => setDateFormat(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                    className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                 >
                                     {DATE_FORMATS.map(f => (
                                         <option key={f.value} value={f.value}>{f.label}</option>
                                     ))}
                                 </select>
-                                <p className="text-xs text-slate-500 mt-1">
-                                    Preview: <span className="font-medium text-slate-700">
+                                <p className="text-xs text-text-muted mt-1">
+                                    Preview: <span className="font-medium text-text-main">
                                         {(() => {
                                             try {
                                                 const safeFormat = dateFormat.replace('DD', 'dd').replace('YYYY', 'yyyy');
@@ -293,28 +284,28 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 </p>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-slate-500 mb-1 block">Currency</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">Currency</label>
                                 <select
                                     value={currency}
                                     onChange={(e) => setCurrency(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                    className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                 >
                                     {CURRENCIES.map(c => (
                                         <option key={c.value} value={c.value}>{c.label}</option>
                                     ))}
                                 </select>
-                                <p className="text-xs text-slate-500 mt-1">
-                                    Preview: <span className="font-medium text-slate-700">
+                                <p className="text-xs text-text-muted mt-1">
+                                    Preview: <span className="font-medium text-text-main">
                                         {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(1234.56)}
                                     </span>
                                 </p>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-slate-500 mb-1 block">Measurement System</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">Measurement System</label>
                                 <select
                                     value={measurementSystem}
                                     onChange={(e) => setMeasurementSystem(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                    className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                 >
                                     {MEASUREMENT_SYSTEMS.map(m => (
                                         <option key={m.value} value={m.value}>{m.label}</option>
@@ -324,63 +315,63 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                         </div>
                     </section>
 
-                    <hr className="border-slate-100" />
+                    <hr className="border-border" />
 
                     {/* Operating Shifts Section */}
                     <section>
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-slate-500" />
+                                <h3 className="text-sm font-semibold text-text-main flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-text-muted" />
                                     Default Shift Pattern
                                 </h3>
-                                <p className="text-xs text-slate-500 mt-1">
+                                <p className="text-xs text-text-muted mt-1">
                                     New production lines will inherit these shifts.
                                 </p>
                             </div>
-                            <button onClick={addShift} className="text-sm text-indigo-600 font-medium hover:text-indigo-700 flex items-center gap-1">
+                            <button onClick={addShift} className="text-sm text-brand font-medium hover:text-brand-dark flex items-center gap-1">
                                 <Plus className="w-4 h-4" />
                                 Add Shift
                             </button>
                         </div>
                         <div className="space-y-3">
                             {shifts.length === 0 && (
-                                <div className="p-4 bg-slate-50 rounded-lg border border-dashed border-slate-200 text-center text-sm text-slate-500">
+                                <div className="p-4 bg-surface-subtle rounded-lg border border-dashed border-border text-center text-sm text-text-muted">
                                     No shifts configured. Add a shift to set the default daily schedule.
                                 </div>
                             )}
                             {shifts.map((shift, idx) => (
-                                <div key={idx} className="flex flex-col sm:flex-row gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <div key={idx} className="flex flex-col sm:flex-row gap-3 p-3 bg-surface-subtle rounded-lg border border-border">
                                     <div className="flex-1">
-                                        <label className="text-xs font-medium text-slate-500 mb-1 block">Shift Name</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">Shift Name</label>
                                         <input
                                             type="text"
                                             value={shift.name}
                                             onChange={(e) => updateShift(idx, 'name', e.target.value)}
-                                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                            className="w-full px-3 py-1.5 bg-surface border border-border rounded text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                             placeholder="e.g. Morning"
                                         />
                                     </div>
                                     <div className="w-32">
-                                        <label className="text-xs font-medium text-slate-500 mb-1 block">Start Time</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">Start Time</label>
                                         <input
                                             type="time"
                                             value={shift.start_time}
                                             onChange={(e) => updateShift(idx, 'start_time', e.target.value)}
-                                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                            className="w-full px-3 py-1.5 bg-surface border border-border rounded text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                         />
                                     </div>
                                     <div className="w-32">
-                                        <label className="text-xs font-medium text-slate-500 mb-1 block">End Time</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">End Time</label>
                                         <input
                                             type="time"
                                             value={shift.end_time}
                                             onChange={(e) => updateShift(idx, 'end_time', e.target.value)}
-                                            className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                                            className="w-full px-3 py-1.5 bg-surface border border-border rounded text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                         />
                                     </div>
                                     <div className="flex items-end pb-0.5">
-                                        <button onClick={() => removeShift(idx)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                                        <button onClick={() => removeShift(idx)} className="p-2 text-error/60 hover:text-error hover:bg-error/10 rounded transition-colors">
                                             <Trash2 className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -389,13 +380,13 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                         </div>
                     </section>
 
-                    <hr className="border-slate-100" />
+                    <hr className="border-border" />
 
                     {/* Weekend Settings */}
                     <section>
                         <div>
-                            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 mb-4">
-                                <Calendar className="w-4 h-4 text-slate-500" />
+                            <h3 className="text-sm font-semibold text-text-main flex items-center gap-2 mb-4">
+                                <Calendar className="w-4 h-4 text-text-muted" />
                                 Standard Non-Working Days
                             </h3>
                             <div className="flex flex-wrap gap-2">
@@ -406,8 +397,8 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                             key={day.value}
                                             onClick={() => toggleWeekendDay(day.value)}
                                             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${isSelected
-                                                ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-600 ring-offset-1'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                ? 'bg-brand text-white shadow-sm ring-2 ring-brand ring-offset-1'
+                                                : 'bg-surface-subtle text-text-muted hover:bg-border'
                                                 }`}
                                         >
                                             {day.label}
@@ -415,7 +406,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                     );
                                 })}
                             </div>
-                            <p className="text-xs text-slate-500 mt-2">
+                            <p className="text-xs text-text-muted mt-2">
                                 These days will be marked as non-working by default. Individual lines can override this.
                             </p>
                         </div>
@@ -423,10 +414,10 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-slate-100 bg-slate-50/50 rounded-b-xl flex justify-end gap-3">
+                <div className="p-6 border-t border-border bg-surface-subtle/50 rounded-b-xl flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-100 rounded-lg transition-colors"
+                        className="px-4 py-2 text-text-muted font-medium hover:bg-surface-subtle rounded-lg transition-colors"
                         disabled={isSubmitting}
                     >
                         Cancel
@@ -434,7 +425,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                     <button
                         onClick={handleSaveRequest}
                         disabled={isSubmitting}
-                        className="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-4 py-2 bg-brand text-white font-medium rounded-lg hover:bg-brand-dark transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         {isSubmitting ? (
                             <>

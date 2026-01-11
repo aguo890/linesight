@@ -11,11 +11,18 @@ from app.schemas.dashboard import (
     WidgetConfig,
     WidgetSuggestionsResponse,
 )
+from app.schemas.datasource import (
+    DataSourceCreate,
+    DataSourceRead,
+    DataSourceUpdate,
+    DataSourceSettings,
+)
 from app.schemas.factory import (
     FactoryCreate,
     FactoryRead,
     FactoryUpdate,
-    FactoryWithLines,
+    FactoryWithDataSources,
+    FactoryWithLines,  # Backward compatibility alias
     ProductionLineCreate,
     ProductionLineRead,
     ProductionLineUpdate,

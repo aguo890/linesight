@@ -2,39 +2,34 @@ import React from 'react';
 import {
     ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ZAxis, Cell
 } from 'recharts';
-import { Gauge } from 'lucide-react';
+import { Activity } from 'lucide-react';
 
 interface MockSpeedQualityProps {
     w?: number;
     h?: number;
     data: any[];
+    isDark?: boolean;
 }
 
-const getDensity = (w: number, h: number) => {
-    if (w <= 2 || h <= 2) return 'compact';
-    return 'normal';
-};
+
 
 export const MockSpeedQualityWidget: React.FC<MockSpeedQualityProps> = ({
-    w = 3, h = 3, data
+    data, isDark = false
 }) => {
-    const density = getDensity(w, h);
     const showQuadrants = true;
-    const qualityThreshold = 95;
-    const speedThreshold = 85;
 
     // Use passed data
     const chartData = data || [];
 
     return (
-        <div className="flex flex-col h-full w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div className={`flex flex-col h-full w-full p-4 rounded-xl shadow-sm border transition-colors duration-300 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-md bg-indigo-50`}>
-                        <Gauge className="w-4 h-4 text-indigo-500" />
+                    <div className={`p-1.5 rounded-md ${isDark ? 'bg-indigo-900/40' : 'bg-indigo-50'}`}>
+                        <Activity className="w-4 h-4 text-indigo-500" />
                     </div>
-                    <h3 className="text-sm font-semibold text-slate-700">Speed vs Quality</h3>
+                    <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Speed vs Quality</h3>
                 </div>
             </div>
 

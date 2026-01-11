@@ -32,10 +32,10 @@ const SamPerformanceMetric: React.FC<SmartWidgetProps<SamData, SamSettings>> = (
         <div className="flex flex-col h-full">
             {/* Metric Header */}
             <div className="flex items-baseline gap-2 mb-2 px-1">
-                <span className={isCompact ? "text-2xl font-bold text-gray-900" : "text-3xl font-bold text-gray-900"}>
+                <span className={isCompact ? "text-2xl font-bold text-text-main" : "text-3xl font-bold text-text-main"}>
                     {efficiency}%
                 </span>
-                <span className={`text-xs font-medium ${isPositive ? "text-green-500" : "text-red-500"}`}>
+                <span className={`text-xs font-medium ${isPositive ? "text-success" : "text-danger"}`}>
                     {isPositive ? "↑" : "↓"} {change}%
                 </span>
             </div>
@@ -44,22 +44,28 @@ const SamPerformanceMetric: React.FC<SmartWidgetProps<SamData, SamSettings>> = (
             <div className="flex-1 w-full min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={rawData?.breakdown || []} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
                         <XAxis
                             dataKey="name"
-                            tick={{ fontSize: 10, fill: '#64748b' }}
+                            tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
                             axisLine={false}
                             tickLine={false}
                             interval={0}
                         />
                         <YAxis
-                            tick={{ fontSize: 10, fill: '#64748b' }}
+                            tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
                             axisLine={false}
                             tickLine={false}
                         />
                         <Tooltip
-                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            cursor={{ fill: '#f8fafc' }}
+                            contentStyle={{
+                                borderRadius: '8px',
+                                border: 'none',
+                                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                                backgroundColor: 'var(--color-surface)',
+                                color: 'var(--color-text-main)'
+                            }}
+                            cursor={{ fill: 'var(--color-surface-subtle)' }}
                         />
                         <Legend wrapperStyle={{ fontSize: '10px' }} />
                         <Bar

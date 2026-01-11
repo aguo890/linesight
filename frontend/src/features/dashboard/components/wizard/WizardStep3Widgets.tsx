@@ -125,12 +125,12 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
     return (
         <div className="flex flex-col h-full -mx-6 -my-6">
             {/* Scrollable Widget Selection Area */}
-            <div className="flex-1 overflow-y-auto bg-gray-50/50 px-6 py-6">
+            <div className="flex-1 overflow-y-auto bg-surface-subtle px-6 py-6">
                 {/* Main Content (Marketplace) */}
                 <div className="max-w-5xl mx-auto">
                     {/* Blueprint Bundles Section */}
                     <div className="mb-8">
-                        <h3 className="text-sm font-medium text-gray-700 mb-3">
+                        <h3 className="text-sm font-medium text-text-main mb-3">
                             Quick Start Blueprints
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -147,17 +147,17 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
 
                     {/* Divider */}
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="flex-1 h-px bg-gray-200" />
-                        <span className="text-xs text-gray-400 font-medium">or customize individually</span>
-                        <div className="flex-1 h-px bg-gray-200" />
+                        <div className="flex-1 h-px bg-border" />
+                        <span className="text-xs text-text-muted font-medium uppercase tracking-wider">or customize individually</span>
+                        <div className="flex-1 h-px bg-border" />
                     </div>
 
                     {/* Widget Marketplace */}
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-medium text-gray-700">
+                        <h3 className="text-sm font-medium text-text-main">
                             Widget Library
                         </h3>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand/10 text-brand border border-brand/20">
                             {selectionCount} selected
                         </span>
                     </div>
@@ -174,12 +174,12 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
             </div>
 
             {/* Fixed Footer */}
-            <div className="bg-white border-t border-gray-200 pt-4 px-6 md:px-8 mt-auto">
+            <div className="bg-surface border-t border-border pt-4 px-6 md:px-8 mt-auto">
                 <div className="flex justify-between items-center max-w-5xl mx-auto pb-4">
                     <button
                         onClick={onBack}
                         disabled={isCreating}
-                        className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-all disabled:opacity-50"
+                        className="flex items-center px-4 py-2 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all disabled:opacity-50"
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back
@@ -190,10 +190,10 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                         disabled={isCreating || selectionCount === 0}
                         className={`
                             flex items-center px-6 py-2 text-sm font-medium text-white rounded-lg shadow-sm
-                            transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                            transition-all focus:outline-none focus:ring-2 focus:ring-brand/50
                             ${isCreating || selectionCount === 0
-                                ? 'bg-gray-300 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md'
+                                ? 'bg-surface-disabled text-text-muted cursor-not-allowed border border-border'
+                                : 'bg-brand hover:bg-brand-dark hover:shadow-md'
                             }
                         `}
                     >

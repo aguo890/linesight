@@ -19,20 +19,20 @@ export const Input: React.FC<InputProps> = ({
     return (
         <div className="w-full">
             {label && (
-                <label htmlFor={inputId} className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor={inputId} className="block text-sm font-medium text-text-main mb-2">
                     {label}
                 </label>
             )}
             <input
                 id={inputId}
-                className={`w-full px-4 py-2.5 bg-slate-800 border rounded-lg text-white placeholder-slate-500 
-                   focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
-                   ${error ? 'border-red-500' : 'border-slate-600'}
+                className={`w-full px-4 py-2.5 bg-surface border rounded-lg text-text-main placeholder-text-muted 
+                   focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent
+                   ${error ? 'border-error' : 'border-border'}
                    ${className}`}
                 {...props}
             />
-            {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
-            {helperText && !error && <p className="mt-1 text-sm text-slate-500">{helperText}</p>}
+            {error && <p className="mt-1 text-sm text-error">{error}</p>}
+            {helperText && !error && <p className="mt-1 text-sm text-text-muted">{helperText}</p>}
         </div>
     );
 };

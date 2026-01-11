@@ -1,40 +1,31 @@
-# LineSight Backend - Common Development Commands
+# LineSight Backend - Robust Development Commands
 # Activate venv before running Python commands
 
 # Windows venv activation prefix
 VENV = venv\Scripts\activate &&
 
 .PHONY: default dev dev-preflight dev-quick test test-cov test-file test-x migrate migration migrate-history migrate-down
-.PHONY: lint lint-fix format format-check check fix typecheck seed reset-db openapi clean
+.PHONY: lint lint-fix format format-check check fix typecheck seed reset-db openapi clean kill-zombies
 
 # Default command - show available recipes
 default:
 	@echo "Available commands:"
-	@echo "  make dev             - Run development server with hot reload"
+	@echo "  make dev             - Run server (Auto-kills old processes first)"
+	@echo "  make seed            - Seed DB directly (No server needed)"
+	@echo "  make reset-db        - Drop, Migrate, and Seed (The Nuclear Option)"
 	@echo "  make test            - Run all tests"
-	@echo "  make test-cov        - Run tests with coverage"
-	@echo "  make test-file FILE= - Run a specific test file"
-	@echo "  make test-x          - Run tests and stop on first failure"
-	@echo "  make migrate         - Apply database migrations"
-	@echo "  make migration MSG=  - Create a new migration"
-	@echo "  make migrate-history - Show migration history"
-	@echo "  make migrate-down    - Rollback last migration"
-	@echo "  make lint            - Lint code with Ruff"
-	@echo "  make lint-fix        - Lint and auto-fix issues"
-	@echo "  make format          - Format code with Ruff"
-	@echo "  make format-check    - Check formatting without changes"
-	@echo "  make check           - Run both lint and format checks"
-	@echo "  make fix             - Fix all lint and format issues"
-	@echo "  make typecheck       - Type check with mypy"
-	@echo "  make seed            - Seed the database with test data"
-	@echo "  make openapi         - Generate OpenAPI schema"
-	@echo "  make clean           - Clean up cached files"
+	@echo "  make lint            - Check code style"
+	@echo "  make clean           - Remove cache files"
 
-# Run development server with pre-flight checks
-dev: dev-preflight
+# -------------------------------------------------------------------------
+# DEVELOPMENT SERVER
+# -------------------------------------------------------------------------
+
+# Run development server (Auto-kills zombies first)
+dev: kill-zombies dev-preflight
 	$(VENV) uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Pre-flight checks before starting dev server
+# Pre-flight checks
 dev-preflight:
 	@echo "🔍 Running pre-flight checks..."
 	@if not exist venv\Scripts\activate (echo ❌ venv not found. Run: python -m venv venv && exit /b 1)
@@ -43,91 +34,86 @@ dev-preflight:
 	-$(VENV) alembic upgrade head
 	@echo "✅ Pre-flight complete!"
 
-# Quick dev - skip checks for faster startup
+# Quick dev - skip checks/kills
 dev-quick:
 	$(VENV) uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Run all tests
-test:
-	$(VENV) pytest
+# Force kill any process on port 8000 (The Zombie Killer)
+kill-zombies:
+	@echo "🔫 Hunting zombies on port 8000..."
+	@-for /f "tokens=5" %%a in ('netstat -aon ^| find ":8000" ^| find "LISTENING" 2^>nul ^|^| echo.') do if not "%%a"=="" taskkill /f /pid %%a >nul 2>&1
+	@echo "✅ Port 8000 is clean."
 
-# Run tests with coverage
-test-cov:
-	$(VENV) pytest --cov=app --cov-report=html
+# -------------------------------------------------------------------------
+# DATABASE OPERATIONS (Robust Mode)
+# -------------------------------------------------------------------------
 
-# Run a specific test file (usage: make test-file FILE=path/to/test.py)
-test-file:
-	$(VENV) pytest $(FILE) -v
-
-# Run tests and stop on first failure
-test-x:
-	$(VENV) pytest -x
-
-# Apply database migrations
+# Apply migrations
 migrate:
 	$(VENV) alembic upgrade head
 
-# Create a new migration (usage: make migration MSG="your message")
+# Create migration
 migration:
 	$(VENV) alembic revision --autogenerate -m "$(MSG)"
 
-# Show migration history
-migrate-history:
-	$(VENV) alembic history
-
-# Rollback last migration
-migrate-down:
-	$(VENV) alembic downgrade -1
-
-# Lint code with Ruff
-lint:
-	$(VENV) ruff check .
-
-# Lint and auto-fix issues
-lint-fix:
-	$(VENV) ruff check . --fix
-
-# Format code with Ruff
-format:
-	$(VENV) ruff format .
-
-# Check formatting without changes
-format-check:
-	$(VENV) ruff format . --check
-
-# Run both lint and format checks
-check:
-	$(VENV) ruff check . && ruff format . --check
-
-# Fix all lint and format issues
-fix:
-	$(VENV) ruff check . --fix && ruff format .
-
-# Type check with mypy
-typecheck:
-	$(VENV) mypy app
-
-# Seed the database with test data (calls dev API)
+# Seed the database DIRECTLY (Bypasses HTTP/Server)
 seed:
-	curl -X POST http://127.0.0.1:8000/api/v1/dev/seed
+	@echo "🌱 Seeding database via CLI..."
+	$(VENV) python seed_cli.py
 
-# Reset database: drop all tables, migrate, and seed (avoids FK constraint issues)
+# Reset database: Drop -> Migrate -> Seed (Safe & Fast)
 reset-db:
 	@echo "🔄 Resetting database..."
 	@echo "Dropping all tables..."
-	mysql -u root -proot -P 3307 -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS linesight; CREATE DATABASE linesight; SET FOREIGN_KEY_CHECKS = 1;"
+	mysql -u root -proot -P 3306 -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS linesight; CREATE DATABASE linesight; SET FOREIGN_KEY_CHECKS = 1;"
 	@echo "Running migrations..."
 	$(VENV) alembic upgrade head
 	@echo "Seeding data..."
-	curl -X POST http://127.0.0.1:8000/api/v1/dev/seed
+	$(VENV) python seed_cli.py
 	@echo ""
 	@echo "✅ Database reset complete!"
 
-# Generate OpenAPI schema
+# -------------------------------------------------------------------------
+# TESTING & QUALITY
+# -------------------------------------------------------------------------
+
+test:
+	$(VENV) pytest
+
+test-cov:
+	$(VENV) pytest --cov=app --cov-report=html
+
+test-file:
+	$(VENV) pytest $(FILE) -v
+
+test-x:
+	$(VENV) pytest -x
+
+lint:
+	$(VENV) ruff check .
+
+lint-fix:
+	$(VENV) ruff check . --fix
+
+format:
+	$(VENV) ruff format .
+
+check:
+	$(VENV) ruff check . && ruff format . --check
+
+fix:
+	$(VENV) ruff check . --fix && ruff format .
+
+typecheck:
+	$(VENV) mypy app
+
+# -------------------------------------------------------------------------
+# UTILS
+# -------------------------------------------------------------------------
+
 openapi:
 	$(VENV) python scripts/extract_openapi.py
 
-# Clean up cached files (Windows compatible)
 clean:
 	@if exist __pycache__ rd /s /q __pycache__
 	@if exist .pytest_cache rd /s /q .pytest_cache

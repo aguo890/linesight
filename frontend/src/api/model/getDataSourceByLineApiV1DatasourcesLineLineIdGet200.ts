@@ -7,4 +7,4 @@
  */
 import type { DataSourceResponse } from './dataSourceResponse';
 
-export type GetDataSourceByLineApiV1DatasourcesLineLineIdGet200 = DataSourceResponse | null;
+export type GetDataSourceByLineApiV1DataSourcesLineLineIdGet200 = DataSourceResponse | null;

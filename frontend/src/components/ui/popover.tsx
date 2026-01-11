@@ -64,24 +64,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttribu
         const popoverRef = useRef<HTMLDivElement>(null);
 
         // Handle click outside
-        useEffect(() => {
-            const handleClickOutside = (event: MouseEvent) => {
-                if (context.isOpen && popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-                    // Ensure we didn't click the trigger (handled by structure usually, but safe to check)
-                    // Simplified: relying on event bubbling check or basic contains
-                    // For now, close if click is strictly outside content. 
-                    // Trigger click toggles, so if we click trigger, this might fire first or after. 
-                    // With inline, trigger is sibling. 
-                    // Let's rely on a simpler 'click outside' on the document specifically checking the entire popover root if we could, 
-                    // but here we only have ref to content. 
-                    // We will defer 'close on outside click' to the parent Popover container or similar if needed.
-                    // Actually, for this simple implementation, 'close on click outside' is tricky without a global listener.
-                    // I'll add a global listener here.
-                }
-            };
-            // document.addEventListener('mousedown', handleClickOutside);
-            // return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, [context.isOpen]);
+
 
         // Simpler close on outside click:
         useEffect(() => {
@@ -106,7 +89,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttribu
             <div
                 ref={popoverRef}
                 className={cn(
-                    "absolute z-50 mt-2 rounded-md border bg-white shadow-md outline-none animate-in fade-in-0 zoom-in-95",
+                    "absolute z-50 mt-2 rounded-md border border-border bg-surface shadow-md outline-none animate-in fade-in-0 zoom-in-95",
                     side === 'top' && "bottom-full mb-2 mt-0",
                     side === 'bottom' && "top-full",
                     side === 'right' && "left-full top-0 ml-2 mt-0",

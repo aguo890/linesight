@@ -18,6 +18,7 @@ from app.core.config import settings
 
 # Import all models to register them with Base.metadata
 from app.models.base import Base
+import app.models  # noqa: F401
 
 # Alembic Config object
 config = context.config
@@ -78,6 +79,9 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
+        from sqlalchemy import text
+        connection.execute(text("SET FOREIGN_KEY_CHECKS=0"))
+        
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
@@ -87,6 +91,9 @@ def run_migrations_online() -> None:
 
         with context.begin_transaction():
             context.run_migrations()
+        
+        # Explicitly commit to ensure alembic_version is saved
+        connection.commit()
 
 
 if context.is_offline_mode():

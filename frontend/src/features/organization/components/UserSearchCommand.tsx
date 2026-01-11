@@ -69,17 +69,17 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
         <div
             ref={containerRef}
             className={cn(
-                "flex flex-col bg-white rounded-lg overflow-hidden",
-                !inline && "w-72 shadow-xl border border-slate-200 animate-in fade-in zoom-in-95 duration-100",
-                inline && "w-full border-0 shadow-none"
+                "flex flex-col bg-white dark:bg-slate-800 rounded-lg overflow-hidden",
+                !inline && "w-72 shadow-xl border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-100",
+                inline && "w-full border-0 shadow-none bg-transparent dark:bg-transparent"
             )}
             style={style}
         >
-            <div className="flex items-center px-3 py-2 border-b border-slate-100">
-                <Search className="w-4 h-4 text-slate-400 mr-2" />
+            <div className="flex items-center px-3 py-2 border-b border-slate-100 dark:border-slate-700">
+                <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 mr-2" />
                 <input
                     ref={inputRef}
-                    className="flex-1 outline-none text-sm placeholder:text-slate-400"
+                    className="flex-1 outline-none text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 bg-transparent text-slate-900 dark:text-slate-100"
                     placeholder="Search managers..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -88,7 +88,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
 
             <div className="overflow-y-auto max-h-[240px] py-1">
                 {filteredUsers.length === 0 ? (
-                    <div className="px-4 py-3 text-xs text-slate-500 text-center italic">
+                    <div className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 text-center italic">
                         {query ? 'No matching managers found' : 'No available managers'}
                     </div>
                 ) : (
@@ -96,18 +96,18 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                         <button
                             key={user.id}
                             onClick={() => onSelect(user.id)}
-                            className="w-full flex items-center gap-3 px-3 py-2 hover:bg-indigo-50 transition-colors text-left group"
+                            className="w-full flex items-center gap-3 px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-colors text-left group"
                         >
-                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 group-hover:bg-white group-hover:border-indigo-200">
-                                <span className="text-xs font-medium text-slate-600 group-hover:text-indigo-600">
+                            <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center border border-slate-200 dark:border-slate-600 group-hover:bg-white dark:group-hover:bg-slate-600 group-hover:border-indigo-200 dark:group-hover:border-indigo-500">
+                                <span className="text-xs font-medium text-slate-600 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                                     {(user.full_name || user.email).charAt(0).toUpperCase()}
                                 </span>
                             </div>
                             <div className="flex flex-col min-w-0">
-                                <span className="text-sm font-medium text-slate-700 truncate group-hover:text-indigo-900">
+                                <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate group-hover:text-indigo-900 dark:group-hover:text-indigo-100">
                                     {user.full_name || 'Unknown'}
                                 </span>
-                                <span className="text-xs text-slate-400 truncate group-hover:text-indigo-500">
+                                <span className="text-xs text-slate-400 dark:text-slate-500 truncate group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
                                     {user.email}
                                 </span>
                             </div>
@@ -116,7 +116,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                 )}
             </div>
 
-            <div className="bg-slate-50 px-3 py-2 border-t border-slate-100 text-[10px] text-slate-400 text-right">
+            <div className="bg-slate-50 dark:bg-slate-800/50 px-3 py-2 border-t border-slate-100 dark:border-slate-700 text-[10px] text-slate-400 dark:text-slate-500 text-right">
                 {filteredUsers.length} available
             </div>
         </div>

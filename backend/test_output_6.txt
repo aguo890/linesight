@@ -1,0 +1,224 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\19803\business\FactoryExcelManager\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\business\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.1.0, langsmith-0.6.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_sequential_ingestion.py::test_jan_feb_march_continuity --- Created Test Data Source: 2605ba6f-3d71-4631-9ff8-06081020b30b ---
+--- Uploading Jan.xlsx ---
+{"timestamp": "2026-01-09T20:15:06.427512Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:06.689532Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:06.689885Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)"}
+{"timestamp": "2026-01-09T20:15:06.689955Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:06.703292Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/process/134364bd-a4bb-4e7f-a090-8bed489449df?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:06.704783Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:06.704856Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:06.704891Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: 134364bd-a4bb-4e7f-a090-8bed489449df"}
+{"timestamp": "2026-01-09T20:15:06.704927Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:06.704955Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:06.704982Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:06.705011Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 2"}
+{"timestamp": "2026-01-09T20:15:06.705037Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:06.713492Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:06.717006Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:06.717079Z", "level": "INFO", "logger": "ingestion.promote", "message": "PROMOTE ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:06.717118Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import_id: 134364bd-a4bb-4e7f-a090-8bed489449df"}
+{"timestamp": "2026-01-09T20:15:06.717153Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:06.723034Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.status: confirmed"}
+{"timestamp": "2026-01-09T20:15:06.723105Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:06.723145Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:06.723178Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:06.723210Z", "level": "INFO", "logger": "ingestion.promote", "message": "Creating FileProcessingService..."}
+{"timestamp": "2026-01-09T20:15:06.723295Z", "level": "INFO", "logger": "ingestion.promote", "message": "Calling promote_to_production..."}
+{"timestamp": "2026-01-09T20:15:06.723384Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "ORCHESTRATOR: promote_to_production for 134364bd-a4bb-4e7f-a090-8bed489449df"}
+{"timestamp": "2026-01-09T20:15:06.732249Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:06.732361Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: True"}
+{"timestamp": "2026-01-09T20:15:06.741358Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Resolving existing runs for differential calculation..."}
+{"timestamp": "2026-01-09T20:15:06.741449Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Found 0 existing runs to update."}
+{"timestamp": "2026-01-09T20:15:07.801321Z", "level": "WARNING", "logger": "app.core.cache", "message": "Redis unavailable: Timeout connecting to server. Cache will be bypassed."}
+{"timestamp": "2026-01-09T20:15:07.801435Z", "level": "INFO", "logger": "ingestion.promote", "message": "Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 31}"}
+{"timestamp": "2026-01-09T20:15:07.801697Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/promote/134364bd-a4bb-4e7f-a090-8bed489449df \"HTTP/1.1 200 OK\""}
+--- Uploading Feb.xlsx ---
+{"timestamp": "2026-01-09T20:15:07.828217Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:08.048162Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:08.048622Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)"}
+{"timestamp": "2026-01-09T20:15:08.048775Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:08.059640Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/process/bf403290-dc58-459c-9de6-e51552670f19?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:08.060227Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:08.060304Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:08.060342Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: bf403290-dc58-459c-9de6-e51552670f19"}
+{"timestamp": "2026-01-09T20:15:08.060379Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:08.060416Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:08.060447Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:08.060478Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 2"}
+{"timestamp": "2026-01-09T20:15:08.060509Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:08.066384Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:08.069348Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:08.069416Z", "level": "INFO", "logger": "ingestion.promote", "message": "PROMOTE ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:08.069454Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import_id: bf403290-dc58-459c-9de6-e51552670f19"}
+{"timestamp": "2026-01-09T20:15:08.069489Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:08.070036Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.status: confirmed"}
+{"timestamp": "2026-01-09T20:15:08.070090Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:08.070128Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:08.070165Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:08.070201Z", "level": "INFO", "logger": "ingestion.promote", "message": "Creating FileProcessingService..."}
+{"timestamp": "2026-01-09T20:15:08.070287Z", "level": "INFO", "logger": "ingestion.promote", "message": "Calling promote_to_production..."}
+{"timestamp": "2026-01-09T20:15:08.070370Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "ORCHESTRATOR: promote_to_production for bf403290-dc58-459c-9de6-e51552670f19"}
+{"timestamp": "2026-01-09T20:15:08.074604Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:08.074685Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: False"}
+{"timestamp": "2026-01-09T20:15:08.074727Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 080e2527-aade-49aa-8ad0-11e32b8daa27 | Ver: 2 | Active: True"}
+{"timestamp": "2026-01-09T20:15:08.081656Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Resolving existing runs for differential calculation..."}
+{"timestamp": "2026-01-09T20:15:08.081748Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Found 0 existing runs to update."}
+{"timestamp": "2026-01-09T20:15:09.092056Z", "level": "WARNING", "logger": "app.core.cache", "message": "Redis unavailable: Timeout connecting to server. Cache will be bypassed."}
+{"timestamp": "2026-01-09T20:15:09.092170Z", "level": "INFO", "logger": "ingestion.promote", "message": "Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 29}"}
+{"timestamp": "2026-01-09T20:15:09.092468Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/promote/bf403290-dc58-459c-9de6-e51552670f19 \"HTTP/1.1 200 OK\""}
+--- Uploading Mar.xlsx ---
+{"timestamp": "2026-01-09T20:15:09.119946Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:09.334104Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:09.334402Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)"}
+{"timestamp": "2026-01-09T20:15:09.334470Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)"}
+{"timestamp": "2026-01-09T20:15:09.345287Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/process/631565b9-11b7-4040-a76d-60f3a186aa93?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:09.345931Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:09.345990Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:09.346025Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: 631565b9-11b7-4040-a76d-60f3a186aa93"}
+{"timestamp": "2026-01-09T20:15:09.346057Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:09.346089Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:09.346118Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:09.346148Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 2"}
+{"timestamp": "2026-01-09T20:15:09.346177Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:09.350149Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-01-09T20:15:09.352295Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:09.352347Z", "level": "INFO", "logger": "ingestion.promote", "message": "PROMOTE ENDPOINT CALLED"}
+{"timestamp": "2026-01-09T20:15:09.352380Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import_id: 631565b9-11b7-4040-a76d-60f3a186aa93"}
+{"timestamp": "2026-01-09T20:15:09.352411Z", "level": "INFO", "logger": "ingestion.promote", "message": "============================================================"}
+{"timestamp": "2026-01-09T20:15:09.352868Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.status: confirmed"}
+{"timestamp": "2026-01-09T20:15:09.352912Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e"}
+{"timestamp": "2026-01-09T20:15:09.352946Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.production_line_id: None"}
+{"timestamp": "2026-01-09T20:15:09.352976Z", "level": "INFO", "logger": "ingestion.promote", "message": "  raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:09.353005Z", "level": "INFO", "logger": "ingestion.promote", "message": "Creating FileProcessingService..."}
+{"timestamp": "2026-01-09T20:15:09.353066Z", "level": "INFO", "logger": "ingestion.promote", "message": "Calling promote_to_production..."}
+{"timestamp": "2026-01-09T20:15:09.353133Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "ORCHESTRATOR: promote_to_production for 631565b9-11b7-4040-a76d-60f3a186aa93"}
+{"timestamp": "2026-01-09T20:15:09.358395Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b"}
+{"timestamp": "2026-01-09T20:15:09.358478Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: False"}
+{"timestamp": "2026-01-09T20:15:09.358516Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 080e2527-aade-49aa-8ad0-11e32b8daa27 | Ver: 2 | Active: False"}
+{"timestamp": "2026-01-09T20:15:09.358545Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 3c566509-8683-483a-96a6-b1ad7914fb14 | Ver: 3 | Active: True"}
+{"timestamp": "2026-01-09T20:15:09.364433Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Resolving existing runs for differential calculation..."}
+{"timestamp": "2026-01-09T20:15:09.364513Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Found 0 existing runs to update."}
+{"timestamp": "2026-01-09T20:15:10.366461Z", "level": "WARNING", "logger": "app.core.cache", "message": "Redis unavailable: Timeout connecting to server. Cache will be bypassed."}
+{"timestamp": "2026-01-09T20:15:10.366765Z", "level": "INFO", "logger": "ingestion.promote", "message": "Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 31}"}
+{"timestamp": "2026-01-09T20:15:10.367821Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/promote/631565b9-11b7-4040-a76d-60f3a186aa93 \"HTTP/1.1 200 OK\""}
+Total Rows: 0 (Expected: 91)
+FAILED
+
+================================== FAILURES ===================================
+________________________ test_jan_feb_march_continuity ________________________
+tests\test_sequential_ingestion.py:130: in test_jan_feb_march_continuity
+    assert len(runs) == total_expected_rows
+E   assert 0 == 91
+E    +  where 0 = len([])
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b "HTTP/1.1 200 OK"
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:171 MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/process/134364bd-a4bb-4e7f-a090-8bed489449df?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:417 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:418 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:419   raw_import_id: 134364bd-a4bb-4e7f-a090-8bed489449df
+INFO     ingestion.confirm_mapping:ingestion.py:420   production_line_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:421   factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.confirm_mapping:ingestion.py:422   data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.confirm_mapping:ingestion.py:423   mappings count: 2
+INFO     ingestion.confirm_mapping:ingestion.py:424 ============================================================
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     ingestion.promote:ingestion.py:916 ============================================================
+INFO     ingestion.promote:ingestion.py:917 PROMOTE ENDPOINT CALLED
+INFO     ingestion.promote:ingestion.py:918   raw_import_id: 134364bd-a4bb-4e7f-a090-8bed489449df
+INFO     ingestion.promote:ingestion.py:919 ============================================================
+INFO     ingestion.promote:ingestion.py:931   raw_import.status: confirmed
+INFO     ingestion.promote:ingestion.py:932   raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.promote:ingestion.py:933   raw_import.production_line_id: None
+INFO     ingestion.promote:ingestion.py:934   raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.promote:ingestion.py:944 Creating FileProcessingService...
+INFO     ingestion.promote:ingestion.py:946 Calling promote_to_production...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:75 ORCHESTRATOR: promote_to_production for 134364bd-a4bb-4e7f-a090-8bed489449df
+INFO     app.services.ingestion.orchestrator:orchestrator.py:92 DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: True
+INFO     app.services.ingestion.orchestrator:orchestrator.py:144 Resolving existing runs for differential calculation...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:148 Found 0 existing runs to update.
+WARNING  app.core.cache:cache.py:50 Redis unavailable: Timeout connecting to server. Cache will be bypassed.
+INFO     ingestion.promote:ingestion.py:948 Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 31}
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/promote/134364bd-a4bb-4e7f-a090-8bed489449df "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b "HTTP/1.1 200 OK"
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:171 MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/process/bf403290-dc58-459c-9de6-e51552670f19?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:417 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:418 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:419   raw_import_id: bf403290-dc58-459c-9de6-e51552670f19
+INFO     ingestion.confirm_mapping:ingestion.py:420   production_line_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:421   factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.confirm_mapping:ingestion.py:422   data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.confirm_mapping:ingestion.py:423   mappings count: 2
+INFO     ingestion.confirm_mapping:ingestion.py:424 ============================================================
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     ingestion.promote:ingestion.py:916 ============================================================
+INFO     ingestion.promote:ingestion.py:917 PROMOTE ENDPOINT CALLED
+INFO     ingestion.promote:ingestion.py:918   raw_import_id: bf403290-dc58-459c-9de6-e51552670f19
+INFO     ingestion.promote:ingestion.py:919 ============================================================
+INFO     ingestion.promote:ingestion.py:931   raw_import.status: confirmed
+INFO     ingestion.promote:ingestion.py:932   raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.promote:ingestion.py:933   raw_import.production_line_id: None
+INFO     ingestion.promote:ingestion.py:934   raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.promote:ingestion.py:944 Creating FileProcessingService...
+INFO     ingestion.promote:ingestion.py:946 Calling promote_to_production...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:75 ORCHESTRATOR: promote_to_production for bf403290-dc58-459c-9de6-e51552670f19
+INFO     app.services.ingestion.orchestrator:orchestrator.py:92 DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: False
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 080e2527-aade-49aa-8ad0-11e32b8daa27 | Ver: 2 | Active: True
+INFO     app.services.ingestion.orchestrator:orchestrator.py:144 Resolving existing runs for differential calculation...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:148 Found 0 existing runs to update.
+WARNING  app.core.cache:cache.py:50 Redis unavailable: Timeout connecting to server. Cache will be bypassed.
+INFO     ingestion.promote:ingestion.py:948 Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 29}
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/promote/bf403290-dc58-459c-9de6-e51552670f19 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e&data_source_id=2605ba6f-3d71-4631-9ff8-06081020b30b "HTTP/1.1 200 OK"
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:171 MATCH [Fuzzy]: 'Units Produced' -> 'actual_qty' (Score: 90)
+INFO     app.services.matching.engine:engine.py:163 MATCH [Hash]: 'Efficiency' -> 'line_efficiency' (Conf: 1.0)
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/process/631565b9-11b7-4040-a76d-60f3a186aa93?factory_id=ccc15d3d-0022-4b6c-8d41-1d8728943a9e "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:417 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:418 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:419   raw_import_id: 631565b9-11b7-4040-a76d-60f3a186aa93
+INFO     ingestion.confirm_mapping:ingestion.py:420   production_line_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:421   factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.confirm_mapping:ingestion.py:422   data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.confirm_mapping:ingestion.py:423   mappings count: 2
+INFO     ingestion.confirm_mapping:ingestion.py:424 ============================================================
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     ingestion.promote:ingestion.py:916 ============================================================
+INFO     ingestion.promote:ingestion.py:917 PROMOTE ENDPOINT CALLED
+INFO     ingestion.promote:ingestion.py:918   raw_import_id: 631565b9-11b7-4040-a76d-60f3a186aa93
+INFO     ingestion.promote:ingestion.py:919 ============================================================
+INFO     ingestion.promote:ingestion.py:931   raw_import.status: confirmed
+INFO     ingestion.promote:ingestion.py:932   raw_import.factory_id: ccc15d3d-0022-4b6c-8d41-1d8728943a9e
+INFO     ingestion.promote:ingestion.py:933   raw_import.production_line_id: None
+INFO     ingestion.promote:ingestion.py:934   raw_import.data_source_id: 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     ingestion.promote:ingestion.py:944 Creating FileProcessingService...
+INFO     ingestion.promote:ingestion.py:946 Calling promote_to_production...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:75 ORCHESTRATOR: promote_to_production for 631565b9-11b7-4040-a76d-60f3a186aa93
+INFO     app.services.ingestion.orchestrator:orchestrator.py:92 DEBUG: Checking mappings for DS 2605ba6f-3d71-4631-9ff8-06081020b30b
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 772da67f-99c3-4635-ac1f-e73e40ab460e | Ver: 1 | Active: False
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 080e2527-aade-49aa-8ad0-11e32b8daa27 | Ver: 2 | Active: False
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Mapping 3c566509-8683-483a-96a6-b1ad7914fb14 | Ver: 3 | Active: True
+INFO     app.services.ingestion.orchestrator:orchestrator.py:144 Resolving existing runs for differential calculation...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:148 Found 0 existing runs to update.
+WARNING  app.core.cache:cache.py:50 Redis unavailable: Timeout connecting to server. Cache will be bypassed.
+INFO     ingestion.promote:ingestion.py:948 Promotion SUCCESS: {'status': 'promoted', 'inserted': 0, 'updated': 0, 'events': 0, 'errors': 31}
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/promote/631565b9-11b7-4040-a76d-60f3a186aa93 "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED tests/test_sequential_ingestion.py::test_jan_feb_march_continuity - as...
+============================== 1 failed in 6.18s ==============================

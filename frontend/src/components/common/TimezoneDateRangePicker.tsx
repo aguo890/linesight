@@ -88,15 +88,15 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
     };
 
     return (
-        <div className={`flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 ${className}`}>
-            <Calendar className="w-4 h-4 text-slate-400" />
+        <div className={`flex items-center gap-2 bg-surface-subtle border border-border rounded-lg px-3 py-1.5 ${className}`}>
+            <Calendar className="w-4 h-4 text-text-muted" />
 
             <div className="relative group min-w-[90px] text-center">
                 <div className="flex items-center justify-center gap-1.5 px-1">
-                    <span className="text-sm text-slate-700 font-medium whitespace-nowrap">
-                        {startDate ? formatDate(startDate) : <span className="text-slate-400">Start Date</span>}
+                    <span className="text-sm text-text-main font-medium whitespace-nowrap">
+                        {startDate ? formatDate(startDate) : <span className="text-text-muted">Start Date</span>}
                     </span>
-                    <Calendar className="w-3 h-3 text-slate-400" />
+                    <Calendar className="w-3 h-3 text-text-muted" />
                 </div>
                 <input
                     type="date"
@@ -107,14 +107,14 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
                 />
             </div>
 
-            <span className="text-slate-300">→</span>
+            <span className="text-border">→</span>
 
             <div className="relative group min-w-[90px] text-center">
                 <div className="flex items-center justify-center gap-1.5 px-1">
-                    <span className="text-sm text-slate-700 font-medium whitespace-nowrap">
-                        {endDate ? formatDate(endDate) : <span className="text-slate-400">End Date</span>}
+                    <span className="text-sm text-text-main font-medium whitespace-nowrap">
+                        {endDate ? formatDate(endDate) : <span className="text-text-muted">End Date</span>}
                     </span>
-                    <Calendar className="w-3 h-3 text-slate-400" />
+                    <Calendar className="w-3 h-3 text-text-muted" />
                 </div>
                 <input
                     type="date"

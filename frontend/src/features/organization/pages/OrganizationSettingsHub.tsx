@@ -32,24 +32,24 @@ const settingsCards: SettingsCard[] = [
         description: 'Organization profile, logo, and identifiers.',
         to: 'general',
         icon: Building2,
-        color: 'bg-blue-50',
-        iconColor: 'text-blue-600',
+        color: 'bg-blue-50 dark:bg-blue-900/20',
+        iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
         title: 'Members',
         description: 'Manage team access, roles, and invites.',
         to: 'members',
         icon: Users,
-        color: 'bg-emerald-50',
-        iconColor: 'text-emerald-600',
+        color: 'bg-emerald-50 dark:bg-emerald-900/20',
+        iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
     {
         title: 'Infrastructure',
         description: 'Configure factories, lines, and zones.',
         to: 'factories',
         icon: Factory,
-        color: 'bg-amber-50',
-        iconColor: 'text-amber-600',
+        color: 'bg-amber-50 dark:bg-amber-900/20',
+        iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
         title: 'Security',
@@ -97,7 +97,7 @@ const OrganizationSettingsHub: React.FC = () => {
                 relative rounded-xl border p-6 transition-all duration-200 h-full
                 ${card.disabled
                                     ? 'border-[var(--color-border)] bg-[var(--color-surface)] cursor-not-allowed opacity-60'
-                                    : 'border-[var(--color-border)] bg-[var(--color-surface-elevated)] hover:border-[var(--color-primary)]/40 hover:shadow-md cursor-pointer group'
+                                    : 'border-[var(--color-border)] bg-[var(--color-surface-elevated)] hover:border-[var(--color-primary)]/40 hover:shadow-md dark:hover:shadow-none cursor-pointer group'
                                 }
               `}
                         >

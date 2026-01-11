@@ -7,7 +7,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useGetDataSourceApiV1DatasourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
+import { useGetDataSourceApiV1DataSourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
 import { Skeleton } from '../../../components/ui/Skeleton';
 import type { Dashboard } from '../types';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
@@ -26,7 +26,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, onDelet
     const lastModified = dashboard.updated_at ? formatDate(dashboard.updated_at) : 'Never';
 
     // Fetch Data Source Name if ID exists
-    const { data: dataSource, isLoading: isDataSourceLoading, isError } = useGetDataSourceApiV1DatasourcesDataSourceIdGet(
+    const { data: dataSource, isLoading: isDataSourceLoading, isError } = useGetDataSourceApiV1DataSourcesDataSourceIdGet(
         dashboard.data_source_id!,
         {
             query: {
@@ -43,44 +43,44 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, onDelet
     return (
         <div
             onClick={() => onClick(dashboard.id)}
-            className="group relative bg-white rounded-xl border border-slate-200 p-5 hover:shadow-lg hover:border-indigo-300 transition-all cursor-pointer overflow-hidden"
+            className="group relative bg-surface rounded-xl border border-border p-5 hover:shadow-lg hover:border-brand/40 transition-all cursor-pointer overflow-hidden"
         >
             <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-indigo-50 border border-indigo-100 rounded-lg group-hover:bg-indigo-100 transition-colors">
-                    <LayoutGrid className="w-5 h-5 text-indigo-600" />
+                <div className="p-2 bg-brand/10 border border-brand/20 rounded-lg group-hover:bg-brand/20 transition-colors">
+                    <LayoutGrid className="w-5 h-5 text-brand" />
                 </div>
                 <button
                     onClick={(e) => { e.stopPropagation(); onDelete(dashboard.id); }}
-                    className="p-1.5 text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                    className="p-1.5 text-text-muted/50 hover:text-error hover:bg-error/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
                 >
                     <Trash2 className="w-4 h-4" />
                 </button>
             </div>
 
-            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+            <h3 className="font-semibold text-text-main mb-1 group-hover:text-brand transition-colors">
                 {dashboard.name}
             </h3>
 
             <div className="space-y-2 mt-4">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <Grid3x3 className="w-3.5 h-3.5 text-slate-400" />
+                <div className="flex items-center gap-2 text-xs text-text-muted">
+                    <Grid3x3 className="w-3.5 h-3.5 text-text-muted" />
                     <span>{widgetCount} Widgets</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                <div className="flex items-center gap-2 text-xs text-text-muted">
+                    <Calendar className="w-3.5 h-3.5 text-text-muted" />
                     <span>{lastModified}</span>
                 </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t border-border flex items-center justify-between">
                 {isDataSourceLoading ? (
                     <Skeleton className="h-4 w-24" />
                 ) : (
-                    <span className="text-xs font-medium text-slate-400 truncate max-w-[150px]" title={dataSourceName}>
+                    <span className="text-xs font-medium text-text-muted truncate max-w-[150px]" title={dataSourceName}>
                         {dataSourceName}
                     </span>
                 )}
-                <ChevronRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-text-muted/50 group-hover:translate-x-1 transition-transform" />
             </div>
         </div>
     );

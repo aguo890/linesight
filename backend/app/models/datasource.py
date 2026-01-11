@@ -1,11 +1,15 @@
 """
 Data source and schema mapping models.
 Enables flexible data ingestion from diverse Excel formats.
+
+After refactor: DataSource is the primary entity that represents both
+the physical production line AND its data configuration.
 """
 
-from typing import TYPE_CHECKING
+from datetime import date
+from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import JSON, Boolean, ForeignKey, String, Text
+from sqlalchemy import JSON, Boolean, Date, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -14,28 +18,71 @@ from app.models.base import Base, TimestampMixin, UUIDMixin
 if TYPE_CHECKING:
     from app.models.ai_decision import AIDecision
     from app.models.dashboard import Dashboard
-    from app.models.factory import ProductionLine
+    from app.models.factory import Factory
+    from app.models.production import ProductionRun
+    from app.models.workforce import Worker
 
 
 class DataSource(Base, UUIDMixin, TimestampMixin):
     """
-    Represents a production line's specific data source configuration.
-    Each line can have its own Excel file structure.
+    Unified entity representing a production line and its data configuration.
+    
+    This model combines what was previously split between ProductionLine and DataSource:
+    - Physical line attributes (name, code, target_operators, specialty)
+    - Data configuration (time_column, time_format, schema_mappings)
+    - Hierarchy support for appending non-overlapping data segments
     """
 
     __tablename__ = "data_sources"
 
-    # Production Line FK
-    production_line_id: Mapped[str] = mapped_column(
+    # ==========================================================================
+    # Factory FK (merged from ProductionLine)
+    # ==========================================================================
+    factory_id: Mapped[str] = mapped_column(
         CHAR(36),
-        ForeignKey("production_lines.id", ondelete="CASCADE"),
+        ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
-        unique=True,  # One data source per line
     )
 
+    # ==========================================================================
+    # Physical Line Attributes (merged from ProductionLine)
+    # ==========================================================================
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    code: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    
+    # Capacity
+    target_operators: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_efficiency_pct: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    
+    # Configuration
+    settings: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    
+    # Specialization
+    specialty: Mapped[str | None] = mapped_column(
+        String(100), nullable=True
+    )  # e.g., 'Knits', 'Wovens'
+    
+    # Supervisor
+    supervisor_id: Mapped[str | None] = mapped_column(
+        CHAR(36),
+        ForeignKey("workers.id", ondelete="SET NULL"),
+        nullable=True,
+    )
+
+    # ==========================================================================
+    # Data Source Configuration (original DataSource fields)
+    # ==========================================================================
+    
+    # Legacy reference to old production_lines table (nullable, for migration)
+    production_line_id: Mapped[str | None] = mapped_column(
+        CHAR(36),
+        nullable=True,
+        index=True,
+    )
+    
     # Source Metadata
-    source_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    source_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Time Configuration
@@ -50,13 +97,39 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
         doc="Date/time format string (e.g., 'YYYY-MM-DD', 'MM/DD/YYYY')",
     )
 
-    # Active Status
+    # ==========================================================================
+    # Hierarchy Support (for append feature)
+    # ==========================================================================
+    parent_data_source_id: Mapped[str | None] = mapped_column(
+        CHAR(36),
+        ForeignKey("data_sources.id", ondelete="CASCADE"),
+        nullable=True,
+    )
+    is_segment: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    date_range_start: Mapped[date | None] = mapped_column(Date, nullable=True)
+    date_range_end: Mapped[date | None] = mapped_column(Date, nullable=True)
+
+    # ==========================================================================
+    # Status
+    # ==========================================================================
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
+    # ==========================================================================
     # Relationships
-    production_line: Mapped["ProductionLine"] = relationship(
-        "ProductionLine",
+    # ==========================================================================
+    factory: Mapped["Factory"] = relationship(
+        "Factory",
+        back_populates="data_sources",
+    )
+    supervisor: Mapped[Optional["Worker"]] = relationship(
+        "Worker",
+        foreign_keys=[supervisor_id],
+        lazy="selectin",
+    )
+    production_runs: Mapped[list["ProductionRun"]] = relationship(
+        "ProductionRun",
         back_populates="data_source",
+        lazy="selectin",
     )
     schema_mappings: Mapped[list["SchemaMapping"]] = relationship(
         "SchemaMapping",
@@ -74,9 +147,23 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
         back_populates="data_source",
         lazy="selectin",
     )
+    
+    # Self-referential hierarchy
+    parent: Mapped[Optional["DataSource"]] = relationship(
+        "DataSource",
+        remote_side="DataSource.id",
+        back_populates="segments",
+        foreign_keys=[parent_data_source_id],
+    )
+    segments: Mapped[list["DataSource"]] = relationship(
+        "DataSource",
+        back_populates="parent",
+        foreign_keys=[parent_data_source_id],
+        lazy="selectin",
+    )
 
     def __repr__(self) -> str:
-        return f"<DataSource(id={self.id}, line_id={self.production_line_id})>"
+        return f"<DataSource(id={self.id}, name={self.name}, factory_id={self.factory_id})>"
 
 
 class SchemaMapping(Base, UUIDMixin, TimestampMixin):

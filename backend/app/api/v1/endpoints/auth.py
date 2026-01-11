@@ -62,6 +62,14 @@ async def login(
     # Create access token
     access_token = create_access_token(subject=user.id)
 
+    # Parse preferences if it's a string
+    prefs = user.preferences
+    if isinstance(prefs, str):
+        try:
+            prefs = json.loads(prefs)
+        except Exception:
+            prefs = {}
+
     return LoginResponse(
         access_token=access_token,
         token_type="bearer",
@@ -71,6 +79,9 @@ async def login(
             full_name=user.full_name or "",
             role=user.role.value,
             organization_id=user.organization_id,
+            timezone=user.timezone,
+            preferences=prefs,
+            avatar_url=user.avatar_url,
         ),
     )
 
@@ -125,7 +136,7 @@ async def register(
         email=request.email,
         hashed_password=hash_password(request.password),
         full_name=request.full_name,
-        role=UserRole.ADMIN,
+        role=UserRole.OWNER,
         is_active=True,
         is_verified=True,  # Auto-verify for MVP
     )

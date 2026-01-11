@@ -1,5 +1,4 @@
 import React from 'react';
-import ProductionChart from '../widgets/ProductionChart';
 
 import {
     useGetOverviewStatsApiV1AnalyticsOverviewGet,
@@ -102,7 +101,10 @@ const DashboardPage: React.FC = () => {
                             </select>
                         </div>
                         <div className="h-64 flex items-center justify-center bg-[var(--color-background)]/50 rounded border border-transparent">
-                            <ProductionChart w={2} h={1} />
+                            {/* ProductionChart is a Smart Widget - use Dashboard view for real charts */}
+                            <div className="text-center text-[var(--color-text-muted)]">
+                                <p className="text-sm">Chart visualization available in Dashboard view</p>
+                            </div>
                         </div>
                     </div>
 
