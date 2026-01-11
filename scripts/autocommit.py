@@ -75,10 +75,15 @@ def main():
         commit_msg = "wip: quick push (missing api key)"
     else:
         # Truncate diff to prevent token limits/costs
-        diff_context = diff[:4000] 
-        
+        # We explicitly exclude lock files from the text prompt to avoid noise
+        if "lock" in files:
+            diff_context = "Large lock file changes detected (excluded from context)."
+            diff_context += "\n" + diff[:3000] # reduced limit to save room
+        else:
+            diff_context = diff[:4000]
+
         # Add file list to context for better awareness
-        prompt_content = f"Files changed:\n{files}\n\nDiff:\n{diff_context}"
+        prompt_content = f"Files changed:\n{files}\n\nDiff Summary:\n{diff_context}"
 
         client = OpenAI(
             api_key=api_key,
@@ -91,7 +96,17 @@ def main():
             response = client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
-                    {"role": "system", "content": "You are a git commit assistant. Generate a concise, one-line commit message based on the following changes. Start with a verb (e.g., 'Fix', 'Add', 'Update'). Mention specific file names or components if relevant. Do not use markdown or quotes."},
+                    {"role": "system", "content": (
+                        "You are a senior developer. Generate a commit message using Conventional Commits standard."
+                        "\nFormat: <type>: <description>"
+                        "\nTypes: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
+                        "\nRules:"
+                        "\n1. Use lowercase for the description."
+                        "\n2. No period at the end."
+                        "\n3. Keep it under 72 characters."
+                        "\n4. Focus on the intent (WHY) rather than the mechanism (HOW)."
+                        "\n5. Do not use markdown or quotes."
+                    )},
                     {"role": "user", "content": prompt_content}
                 ],
                 temperature=0.5,
