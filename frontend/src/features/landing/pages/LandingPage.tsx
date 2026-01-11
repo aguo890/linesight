@@ -458,26 +458,28 @@ const LandingPage: React.FC = () => {
 
             {/* --- NEW SECTION: Social Proof (Bridge to Demo) --- */}
             <section className={`py-20 px-6 border-t ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+                // ... inside the Social Proof Section ...
                 <div className="max-w-4xl mx-auto text-center">
                     <Quote size={48} className="mx-auto mb-8 text-blue-500 opacity-50" />
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8 leading-tight">
-                        "We replaced
+
+                    <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-8 leading-relaxed text-slate-700 dark:text-slate-200">
+                        "We’ve run on spreadsheets for over 15 years, and honestly, a six-figure ERP felt like overkill for a team that just wanted better visibility.
                         <motion.span
                             variants={colorVariant}
                             initial="initial"
                             animate={isSnakeFinished ? "animate" : "initial"}
-                            className="inline-block mx-2 text-blue-600 origin-center"
+                            className="block mt-6 text-3xl md:text-4xl font-bold text-blue-600"
                         >
-                            1,000 spreadsheets
+                            This was the perfect upgrade—it gave us the 'live' data we were missing without forcing us to change how we run our business."
                         </motion.span>
-                        with one live dashboard."
                     </h2>
-                    <div className="flex items-center justify-center gap-4">
+
+                    <div className="flex items-center justify-center gap-4 mt-10">
                         <div className="h-12 w-12 rounded-full bg-white overflow-hidden border border-slate-200 flex items-center justify-center">
                             <img src={tsfLogo} alt="Three Stars Fashion Logo" className="w-full h-full object-contain p-1" />
                         </div>
                         <div className="text-left">
-                            <div className="font-bold">CEO</div>
+                            <div className="font-bold">Operations Director</div>
                             <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Three Stars Fashion</div>
                         </div>
                     </div>
