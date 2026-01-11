@@ -458,7 +458,6 @@ const LandingPage: React.FC = () => {
 
             {/* --- NEW SECTION: Social Proof (Bridge to Demo) --- */}
             <section className={`py-20 px-6 border-t ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
-                // ... inside the Social Proof Section ...
                 <div className="max-w-4xl mx-auto text-center">
                     <Quote size={48} className="mx-auto mb-8 text-blue-500 opacity-50" />
 
