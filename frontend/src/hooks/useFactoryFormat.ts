@@ -36,7 +36,7 @@ export const useFactoryFormat = () => {
         // User stored: DD/MM/YYYY -> date-fns: dd/MM/yyyy
         // User stored: YYYY-MM-DD -> date-fns: yyyy-MM-dd
 
-        let safeFormat = fmt
+        const safeFormat = fmt
             .replace('DD', 'dd')
             .replace('YYYY', 'yyyy');
 

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
@@ -19,6 +20,7 @@ const ProductionTimeline: React.FC<SmartWidgetProps<TimelineData, ProductionTime
     data,
     settings
 }) => {
+    const { t } = useTranslation();
     const showHourlyTarget = settings?.showHourlyTarget ?? true;
     const manualTarget = settings?.hourlyTarget && settings.hourlyTarget > 0 ? settings.hourlyTarget : null;
     const { formatDate } = useFactoryFormat();
@@ -51,13 +53,13 @@ const ProductionTimeline: React.FC<SmartWidgetProps<TimelineData, ProductionTime
                     <Tooltip labelFormatter={(value) => formatDate(value)} />
                     <Legend iconSize={10} wrapperStyle={{ fontSize: '10px' }} />
 
-                    <Bar dataKey="actual" name="Output" fill="#3b82f6" barSize={20} radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="actual" name={t('widgets.production_timeline.output')} fill="#3b82f6" barSize={20} radius={[4, 4, 0, 0]} />
 
                     {showHourlyTarget && (
                         manualTarget ? (
-                            <ReferenceLine y={manualTarget} stroke="#ef4444" strokeDasharray="3 3" label="Target" />
+                            <ReferenceLine y={manualTarget} stroke="#ef4444" strokeDasharray="3 3" label={t('widgets.common.target')} />
                         ) : (
-                            <Line type="step" dataKey="target" name="Target" stroke="#ef4444" strokeDasharray="3 3" dot={false} />
+                            <Line type="step" dataKey="target" name={t('widgets.common.target')} stroke="#ef4444" strokeDasharray="3 3" dot={false} />
                         )
                     )}
                 </ComposedChart>

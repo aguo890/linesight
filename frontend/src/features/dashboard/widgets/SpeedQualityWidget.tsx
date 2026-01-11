@@ -2,6 +2,7 @@ import React from 'react';
 import {
     ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import type { SmartWidgetProps } from '../config';
 import { SpeedQualityDataSchema } from '../registry';
 import { z } from 'zod';
@@ -20,6 +21,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
     data,
     settings
 }) => {
+    const { t } = useTranslation();
     const showLegend = settings?.showLegend ?? true;
     const rawData = data;
     const { formatDate } = useFactoryFormat();
@@ -89,7 +91,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                         yAxisId="left"
                         type="monotone"
                         dataKey="efficiency"
-                        name="Efficiency"
+                        name={t('widgets.common.efficiency')}
                         stroke="#3b82f6"
                         strokeWidth={2}
                         dot={{ r: 2 }}
@@ -100,7 +102,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     <Bar
                         yAxisId="right"
                         dataKey="dhu"
-                        name="Defect Rate (DHU)"
+                        name={t('widgets.speed_quality.defect_rate')}
                         fill="#ef4444"
                         opacity={0.6}
                         barSize={20}

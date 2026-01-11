@@ -5,9 +5,9 @@
  * Includes time range specification for the dataset.
  */
 import React, { useState, useRef } from 'react';
-import { X, Upload, Calendar, FileSpreadsheet, AlertCircle, CheckCircle, Database } from 'lucide-react';
-import api from '../../../lib/api';
+import { X, Upload, Calendar, FileSpreadsheet, AlertCircle, CheckCircle } from 'lucide-react';
 import { isAxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 import { getDryRunPreview, uploadFileForIngestion } from '../../../lib/ingestionApi';
 import type { DryRunResponse } from '../../../lib/ingestionApi';
 import { ImportPreviewTable } from '../../../components/ui/ImportPreviewTable';
@@ -30,6 +30,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
     dataSourceName,
     factoryId
 }) => {
+    const { t } = useTranslation();
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
         const ext = selectedFile.name.toLowerCase().slice(selectedFile.name.lastIndexOf('.'));
 
         if (!validExtensions.includes(ext)) {
-            setError('Please select an Excel (.xlsx, .xls) or CSV file');
+            setError(t('modals.upload.errors.invalid_extension'));
             return;
         }
 
@@ -79,7 +80,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
 
             // Change A: Handle duplicate files - if file already exists, show error and return early
             if (response.already_exists) {
-                setError('This file has already been uploaded. Please select a different file or delete the existing upload first.');
+                setError(t('modals.upload.errors.duplicate_file'));
                 return;
             }
 
@@ -101,6 +102,10 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                         : JSON.stringify(previewErr.response.data.detail);
                 } else if (previewErr instanceof Error) {
                     previewErrorMessage = previewErr.message;
+                }
+
+                if (previewErrorMessage === 'Failed to generate data preview.') {
+                    previewErrorMessage = t('modals.upload.errors.preview_failed');
                 }
 
                 // Special case: "No active schema mapping" means this is a NEW data source
@@ -128,6 +133,9 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                     : JSON.stringify(err.response.data.detail);
             } else if (err instanceof Error) {
                 message = err.message;
+            }
+            if (message === 'Upload failed') {
+                message = t('modals.upload.errors.upload_failed');
             }
             setError(message);
         } finally {
@@ -179,12 +187,12 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h2 className="text-xl font-bold text-text-main">
-                                {showPreview ? 'Preview Data' : 'Upload Data'}
+                                {showPreview ? t('modals.upload.title_preview') : t('modals.upload.title_upload')}
                             </h2>
                             <p className="text-sm text-text-muted mt-1">
                                 {showPreview
-                                    ? 'Review how your data will be imported'
-                                    : `Upload data to ${dataSourceName}`}
+                                    ? t('modals.upload.subtitle_preview')
+                                    : t('modals.upload.subtitle_upload', { dataSourceName })}
                             </p>
                         </div>
                         <button
@@ -243,17 +251,17 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                                             onClick={(e) => { e.stopPropagation(); setFile(null); }}
                                             className="mt-3 text-sm text-error hover:text-error/80"
                                         >
-                                            Remove
+                                            {t('common.remove')}
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
                                         <Upload className="w-12 h-12 text-text-muted mb-3" />
                                         <p className="font-medium text-text-main">
-                                            Drop your file here or click to browse
+                                            {t('modals.upload.drop_text')}
                                         </p>
                                         <p className="text-sm text-text-muted mt-1">
-                                            Supports Excel (.xlsx, .xls) and CSV files
+                                            {t('modals.upload.supports_text')}
                                         </p>
                                     </div>
                                 )}
@@ -271,7 +279,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                             {success && (
                                 <div className="mt-4 p-3 bg-success/10 border border-success/20 rounded-lg flex items-center gap-2">
                                     <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-                                    <p className="text-sm text-success">Upload successful! Redirecting to mapping...</p>
+                                    <p className="text-sm text-success">{t('modals.upload.success_redirect')}</p>
                                 </div>
                             )}
 
@@ -279,7 +287,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                             <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-lg">
                                 <p className="text-sm text-info">
                                     <Calendar className="w-4 h-4 inline-block mr-1" />
-                                    After upload, you'll review a preview before mapping columns.
+                                    {t('modals.upload.info_preview')}
                                 </p>
                             </div>
 
@@ -289,7 +297,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                                     onClick={handleClose}
                                     className="px-4 py-2 text-text-muted border border-border rounded-lg hover:bg-surface-subtle"
                                 >
-                                    Cancel
+                                    {t('common.cancel')}
                                 </button>
                                 <button
                                     onClick={handleUpload}
@@ -299,12 +307,12 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                                     {uploading ? (
                                         <>
                                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                            Uploading...
+                                            {t('modals.upload.btn_uploading' as any)}
                                         </>
                                     ) : (
                                         <>
                                             <Upload className="w-4 h-4" />
-                                            Upload & Preview
+                                            {t('modals.upload.btn_upload_preview' as any)}
                                         </>
                                     )}
                                 </button>

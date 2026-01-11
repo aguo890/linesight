@@ -1,6 +1,5 @@
-
-import React from 'react';
 import { Lock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WidgetWrapper } from '../components/WidgetWrapper';
 import { getDensity } from '../components/WidgetWrapper';
 import type { WidgetProps } from '../config';
@@ -13,9 +12,10 @@ interface ComingSoonWidgetProps extends WidgetProps {
 export const ComingSoonWidget: React.FC<ComingSoonWidgetProps> = ({
     w, h, settings, demoData, title: propTitle, description: propDescription
 }) => {
+    const { t } = useTranslation();
     const density = getDensity(w, h);
-    const title = propTitle || settings?.customTitle || 'Coming Soon';
-    const description = propDescription || 'This widget relies on live production data which is currently being implemented.';
+    const title = propTitle || settings?.customTitle || t('widgets.coming_soon.title');
+    const description = propDescription || t('widgets.coming_soon.description');
 
     return (
         <WidgetWrapper
@@ -29,13 +29,13 @@ export const ComingSoonWidget: React.FC<ComingSoonWidgetProps> = ({
                 <div className="bg-surface-subtle p-3 rounded-full mb-3">
                     <Lock className="w-6 h-6 text-text-muted" />
                 </div>
-                <h3 className="font-semibold text-text-main mb-1">Coming Soon</h3>
+                <h3 className="font-semibold text-text-main mb-1">{t('widgets.coming_soon.title')}</h3>
                 <p className="text-xs text-text-muted max-w-[200px]">
-                    {description}
+                    {t(description as any) || description}
                 </p>
                 {demoData && (
                     <div className="mt-2 text-[10px] text-text-subtle uppercase tracking-wider">
-                        Locked
+                        {t('widgets.coming_soon.locked')}
                     </div>
                 )}
             </div>

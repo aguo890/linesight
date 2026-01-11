@@ -9,6 +9,7 @@ import {
     ReferenceLine,
     Cell
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import { type SmartWidgetProps } from '../config';
 import { TargetRealizationDataSchema } from '../registry';
 import { z } from 'zod';
@@ -26,6 +27,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
     data,
     settings
 }) => {
+    const { t } = useTranslation();
     // Extract settings with defaults
     const showVariance = settings?.showVariance ?? true;
 
@@ -87,19 +89,19 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                             <Bar dataKey="actual" barSize={24} radius={[0, 4, 4, 0]}>
                                 <Cell fill={displayPercentage >= 100 ? '#10b981' : (isBehind ? '#f59e0b' : '#3b82f6')} />
                             </Bar>
-                            <ReferenceLine x={target} stroke="currentColor" strokeWidth={2} label={{ position: 'top', value: 'Goal', fontSize: 10, fill: textMuted }} strokeDasharray="3 3" />
+                            <ReferenceLine x={target} stroke="currentColor" strokeWidth={2} label={{ position: 'top', value: t('widgets.common.goal'), fontSize: 10, fill: textMuted }} strokeDasharray="3 3" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
 
                 <div className="flex justify-between mt-2 text-xs text-text-muted px-1">
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-text-subtle">Actual</span>
+                        <span className="text-[10px] text-text-subtle">{t('widgets.common.actual')}</span>
                         <div className="text-3xl font-bold text-text-main">{actual ? actual.toLocaleString() : '0'}</div>
                     </div>
                     <div className="flex flex-col text-right">
-                        <span className="text-[10px] text-text-subtle">Target</span>
-                        <div className="text-sm font-medium text-text-muted">Target: {target ? target.toLocaleString() : '0'}</div>
+                        <span className="text-[10px] text-text-subtle">{t('widgets.common.target')}</span>
+                        <div className="text-sm font-medium text-text-muted">{t('widgets.common.target')}: {target ? target.toLocaleString() : '0'}</div>
                     </div>
                 </div>
 

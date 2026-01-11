@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Wand2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus, WIDGET_BUNDLES, getBundleReadiness } from '../../registry';
 import type { DashboardWidgetConfig } from '../../config';
 import type { ColumnMapping } from '../../../../lib/ingestionApi';
@@ -26,6 +27,7 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
     onComplete,
     onBack,
 }) => {
+    const { t } = useTranslation();
     const [isCreating, setIsCreating] = useState(false);
 
     // 1. Identify all available columns from the mapping step
@@ -131,7 +133,7 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                     {/* Blueprint Bundles Section */}
                     <div className="mb-8">
                         <h3 className="text-sm font-medium text-text-main mb-3">
-                            Quick Start Blueprints
+                            {t('wizard.step3.blueprints_title')}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             {WIDGET_BUNDLES.map(bundle => (
@@ -148,17 +150,17 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                     {/* Divider */}
                     <div className="flex items-center gap-3 mb-6">
                         <div className="flex-1 h-px bg-border" />
-                        <span className="text-xs text-text-muted font-medium uppercase tracking-wider">or customize individually</span>
+                        <span className="text-xs text-text-muted font-medium uppercase tracking-wider">{t('wizard.step3.divider')}</span>
                         <div className="flex-1 h-px bg-border" />
                     </div>
 
                     {/* Widget Marketplace */}
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-sm font-medium text-text-main">
-                            Widget Library
+                            {t('wizard.step3.library_title')}
                         </h3>
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand/10 text-brand border border-brand/20">
-                            {selectionCount} selected
+                            {t('wizard.step3.selected_count', { count: selectionCount })}
                         </span>
                     </div>
 
@@ -182,7 +184,7 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                         className="flex items-center px-4 py-2 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all disabled:opacity-50"
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
+                        {t('common.back')}
                     </button>
 
                     <button
@@ -200,12 +202,12 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                         {isCreating ? (
                             <>
                                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                                Configuring...
+                                {t('wizard.step3.btn_configuring')}
                             </>
                         ) : (
                             <>
                                 <Wand2 className="w-4 h-4 mr-2" />
-                                Create Dashboard
+                                {t('wizard.step3.btn_create')}
                             </>
                         )}
                     </button>

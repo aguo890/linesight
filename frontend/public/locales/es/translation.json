@@ -1,45 +1,363 @@
 {
-    "profile": {
-        "title": "Perfil de Usuario",
-        "subtitle": "Gestiona la configuración y preferencias de tu cuenta",
-        "back": "Atrás",
-        "save_btn": "Guardar Cambios",
-        "success": "¡Perfil actualizado con éxito!",
-        "error_required": "El nombre completo es obligatorio",
-        "error_fail": "Error al actualizar el perfil. Inténtalo de nuevo.",
-        "at": "en",
-        "roles": {
-            "admin": "Administrador",
-            "user": "Usuario",
-            "manager": "Gerente"
+    "navigation": {
+        "dashboard": "Tablero",
+        "my_dashboards": "Mis Tableros",
+        "organization": "Organización",
+        "show_more": "Ver Más",
+        "show_less": "Ver Menos"
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Inicio",
+            "list": "Mis Tableros",
+            "production_sites": "Sitios de Producción",
+            "sites": "Sitios",
+            "not_found": "No Encontrado"
         },
         "sections": {
-            "factories": "Tus Fábricas",
-            "security": "Seguridad",
-            "personal_info": "Información Personal",
-            "localization": "Localización y Región",
-            "notifications": "Preferencias de Notificación (Próximamente)"
+            "overview": "Resumen",
+            "performance": "Rendimiento",
+            "settings": "Configuración",
+            "dashboards": "Tableros",
+            "data_sources": "Fuentes de Datos"
         },
-        "security": {
-            "change_password": "Cambiar Contraseña",
-            "two_factor": "Autenticación de Dos Factores"
+        "actions": {
+            "edit": "Editar Configuración",
+            "delete": "Eliminar Sitio",
+            "save": "Guardar Cambios",
+            "settings": "Configuración",
+            "new_dashboard": "Nuevo Tablero",
+            "create_dashboard": "Crear Tablero",
+            "add_data_source": "Añadir Fuente de Datos",
+            "new_source": "Nueva Fuente",
+            "upload_data": "Subir datos",
+            "no_write_access": "Sin acceso de escritura"
         },
-        "fields": {
-            "full_name": "Nombre Completo",
-            "email": "Dirección de Correo",
-            "email_hint": "El correo no se puede cambiar directamente.",
-            "language": "Idioma",
-            "theme": "Tema"
+        "alerts": {
+            "confirm_delete": "¿Estás seguro de que quieres eliminar esta fábrica? Esta acción no se puede deshacer.",
+            "edit_soon": "Funcionalidad de edición próximamente",
+            "delete_soon": "Funcionalidad de eliminación próximamente",
+            "delete_fail": "Error al eliminar el tablero."
         },
-        "themes": {
-            "light": "Modo Claro",
-            "dark": "Modo Oscuro",
-            "system": "Predeterminado del Sistema"
+        "stats": {
+            "dashboards": "Tableros",
+            "active_widgets": "Widgets Activos",
+            "active_sources": "Fuentes Activas",
+            "used_info": "{{current}} / {{max}} Usados"
         },
-        "notifications": {
-            "email": "Alertas por Correo",
-            "push": "Notificaciones Push",
-            "weekly": "Resumen Semanal"
+        "not_found": "Fábrica no encontrada",
+        "search": {
+            "dashboards_placeholder": "Filtrar tableros...",
+            "sources_placeholder": "Buscar fuentes...",
+            "no_sources_found": "No se encontraron fuentes."
+        },
+        "quota": {
+            "limit_reached": "Límite de cuota alcanzado"
+        },
+        "table": {
+            "headers": {
+                "name": "Nombre",
+                "status": "Estado",
+                "actions": "Acciones"
+            }
+        },
+        "status": {
+            "active": "Activo",
+            "inactive": "Inactivo"
+        },
+        "confirm": {
+            "delete_source": "¿Estás seguro de que quieres eliminar esta fuente de datos?",
+            "delete_dashboard": "¿Estás seguro de que quieres eliminar este tablero?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Hoy",
+            "yesterday": "Ayer",
+            "last_7_days": "7 Días",
+            "last_30_days": "30 Días",
+            "this_month": "Este Mes",
+            "last_month": "Mes Pasado"
+        },
+        "shifts": {
+            "all": "Todos los Turnos",
+            "shift_a": "Turno A (Mañana)",
+            "shift_b": "Turno B (Tarde)",
+            "shift_c": "Turno C (Noche)"
+        },
+        "date_range": "Rango de Fechas",
+        "to": "a"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Espacio de Trabajo",
+            "factory": "Fábrica",
+            "line": "Línea",
+            "dashboard": "Tablero"
+        },
+        "actions": {
+            "refresh": "Actualizar",
+            "reset_layout": "Restablecer",
+            "reset_confirm": "¿Estás seguro de que quieres restablecer el diseño?",
+            "design_layout": "Diseñar",
+            "save_layout": "Guardar",
+            "add_widget": "Añadir Widget",
+            "cancel": "Cancelar"
+        },
+        "status": {
+            "updated": "Actualizado {{time}}",
+            "loading": "Cargando...",
+            "saving": "Guardando...",
+            "live": "En Vivo"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Librería de Widgets",
+            "subtitle": "Arrastra y suelta widgets para personalizar tu tablero.",
+            "categories": {
+                "all": "Todos",
+                "production": "Producción",
+                "quality": "Calidad",
+                "efficiency": "Eficiencia"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simulado",
+            "ready_to_use": "Listo para usar",
+            "recommended": "Recomendado",
+            "future_capability": "Capacidad Futura",
+            "coming_soon": "Próximamente",
+            "near_match": "Coincidencia Cercana"
+        },
+        "common": {
+            "planned": "PLANEADO",
+            "actual": "REAL",
+            "target": "OBJETIVO",
+            "efficiency": "Eficiencia",
+            "minutes": "min",
+            "limit": "Límite",
+            "status": "Estado",
+            "on_target": "EN OBJETIVO",
+            "below_target": "BAJO OBJETIVO",
+            "defect_rate": "Tasa de Defectos"
+        },
+        "titles": {
+            "production_chart": "Producción",
+            "line_efficiency": "Eficiencia de Línea",
+            "earned_minutes": "Minutos Ganados",
+            "sam_performance": "Rendimiento SAM",
+            "dhu_quality": "Calidad DHU",
+            "speed_quality": "Velocidad vs Calidad",
+            "top_blockers": "Principales Bloqueos",
+            "style_progress": "Progreso de Estilo",
+            "daily_target": "Objetivo Diario",
+            "production_timeline": "Línea de Tiempo",
+            "complexity_impact": "Impacto de Complejidad",
+            "workforce_attendance": "Asistencia",
+            "kpi_summary": "Resumen KPI"
+        },
+        "descriptions": {
+            "production_chart": "Compara la producción planificada vs real",
+            "line_efficiency": "Eficiencia en tiempo real contra el objetivo",
+            "earned_minutes": "Minutos estándar (SAM) ganados vs disponibles",
+            "sam_performance": "Métrica de rendimiento basada en minutos estándar",
+            "dhu_quality": "Análisis de defectos por cada cien unidades",
+            "speed_quality": "Correlación entre velocidad y calidad",
+            "top_blockers": "Problemas más frecuentes que detienen la producción",
+            "style_progress": "Seguimiento del % de finalización de estilos",
+            "daily_target": "Progreso hacia el objetivo diario",
+            "production_timeline": "Vista Gantt del cronograma de producción",
+            "complexity_impact": "Análisis de la complejidad del estilo en la salida",
+            "workforce_attendance": "Asistencia de operadores y balanceo de línea",
+            "kpi_summary": "Resumen de alto nivel de métricas clave"
+        },
+        "production_chart": {
+            "planned": "PLANEADO",
+            "actual_output": "SALIDA REAL"
+        },
+        "speed_quality": {
+            "efficiency": "Eficiencia",
+            "defect_rate": "Tasa de Defectos"
+        },
+        "earned_minutes": {
+            "earned": "GANADO",
+            "available": "DISPONIBLE"
+        },
+        "dhu_quality": {
+            "no_data": "No hay datos de DHU disponibles",
+            "current_dhu": "DHU Actual",
+            "above_limit": "SOBRE EL LÍMITE"
+        },
+        "blocker_cloud": {
+            "occurrences": "ocurrencias",
+            "view_all_logs": "Ver todos los registros"
+        }
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Mis Tableros",
+            "search_placeholder": "Buscar sitios...",
+            "status": {
+                "loading": "Cargando tus sitios...",
+                "none": "No hay sitios de producción activos",
+                "available_one": "{{count}} sitio disponible",
+                "available_other": "{{count}} sitios disponibles"
+            },
+            "table": {
+                "header_name": "Nombre del Sitio",
+                "header_location": "Ubicación",
+                "header_status": "Estado",
+                "header_lines": "Líneas",
+                "header_actions": "Acciones",
+                "action_view": "Ver"
+            },
+            "actions": {
+                "new_dashboard": "Nuevo Tablero",
+                "configure_sites": "Configurar Sitios",
+                "clear_search": "Limpiar búsqueda"
+            },
+            "search": {
+                "results_info": "Mostrando {{count}} de {{total}} fábricas",
+                "no_results": "No se encontraron fábricas",
+                "no_results_detail": "No hay fábricas que coincidan con \"{{query}}\". Prueba con otro término."
+            },
+            "factory_status": {
+                "at_limit": "Al Límite",
+                "near_limit": "Cerca del Límite",
+                "active": "Activo"
+            },
+            "empty_state": {
+                "title": "No hay sitios activos",
+                "description": "Tu tablero está vacío porque no se han configurado fábricas aún.",
+                "admin_hint": "Dirígete a la Configuración de la Organización para configurar tu infraestructura.",
+                "user_hint": "Por favor, contacta a tu administrador para configurar la infraestructura.",
+                "cta": "Ir a Configuración de la Organización"
+            },
+            "view": {
+                "grid": "Vista de cuadrícula",
+                "list": "Vista de lista"
+            }
+        }
+    },
+    "common": {
+        "back": "[MOCK] Atrás",
+        "cancel": "[MOCK] Cancelar",
+        "error": "[MOCK] Error",
+        "success": "[MOCK] Éxito",
+        "uploading": "[MOCK] Subiendo...",
+        "processing": "[MOCK] Procesando...",
+        "remove": "[MOCK] Eliminar",
+        "ready": "[MOCK] Listo",
+        "needs_setup": "[MOCK] Requiere Config",
+        "actions": "[MOCK] Acción",
+        "date": "[MOCK] Fecha"
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "[MOCK] Nombre del Tablero",
+            "dashboard_name_placeholder": "[MOCK] ej. Línea 4 Resumen",
+            "name_error_tooltip": "[MOCK] Por favor ingrese un nombre primero.",
+            "name_error_text": "[MOCK] Por favor ingrese un nombre para continuar.",
+            "selection_title": "[MOCK] Selección de Fuente de Datos",
+            "selection_desc": "[MOCK] Seleccione un archivo cargado previamente.",
+            "columns": {
+                "file_name": "[MOCK] Nombre Archivo",
+                "status": "[MOCK] Estado",
+                "uploaded": "[MOCK] Subido",
+                "action": "[MOCK] Acción"
+            },
+            "btn_configure": "[MOCK] Configurar",
+            "btn_complete_setup": "[MOCK] Completar",
+            "note": "[MOCK] Nota: Su tablero incluirá datos de TODOS los archivos.",
+            "empty_title": "[MOCK] Sin Fuentes de Datos",
+            "empty_desc": "[MOCK] Cargue archivos desde la página de Línea de Producción.",
+            "error_load_failed": "[MOCK] Falló al cargar configuración."
+        },
+        "step2": {
+            "title": "[MOCK] Validar Mapeo",
+            "subtitle": "[MOCK] Revise cómo coinciden sus columnas.",
+            "stats": {
+                "auto": "[MOCK] Auto-mapeado",
+                "review": "[MOCK] Revisar",
+                "attention": "[MOCK] Atención",
+                "ignored": "[MOCK] Ignorado"
+            },
+            "filter": {
+                "all": "[MOCK] Todos",
+                "unmapped": "[MOCK] Sin mapear",
+                "conflicts": "[MOCK] Conflictos"
+            },
+            "showing_count": "[MOCK] Mostrando {{filtered}} de {{total}} columnas",
+            "table": {
+                "source": "[MOCK] Columna Origen",
+                "target": "[MOCK] Campo Destino",
+                "status": "[MOCK] Estado",
+                "no_match": "[MOCK] Ninguna columna coincide",
+                "try_different": "[MOCK] Intente otra vista"
+            },
+            "status_labels": {
+                "exact": "[MOCK] Exacto",
+                "exact_tooltip": "[MOCK] Coincidencia exacta",
+                "fuzzy": "[MOCK] Aproximado",
+                "fuzzy_tooltip": "[MOCK] Nombre similar",
+                "ai": "[MOCK] IA",
+                "ai_tooltip": "[MOCK] Sugerido por IA",
+                "manual": "[MOCK] Manual",
+                "manual_tooltip": "[MOCK] Asignado manualmente",
+                "unset": "[MOCK] Sin establecer",
+                "unset_tooltip": "[MOCK] Necesita mapeo",
+                "duplicate": "[MOCK] Duplicado"
+            },
+            "field_selector": {
+                "select_placeholder": "[MOCK] Seleccionar campo...",
+                "search_placeholder": "[MOCK] Buscar campos...",
+                "suggested": "[MOCK] Sugerido",
+                "all_fields": "[MOCK] Todos los Campos",
+                "no_results": "[MOCK] No hay resultados para \"{{term}}\"",
+                "ignore_action": "[MOCK] Ignorar esta columna",
+                "restore_action": "[MOCK] Ignorado — clic para restaurar",
+                "in_use": "[MOCK] en uso"
+            },
+            "alerts": {
+                "conflict_count_one": "[MOCK] 1 campo tiene duplicados",
+                "conflict_count_other": "[MOCK] {{count}} campos tienen duplicados",
+                "remaining_needed": "[MOCK] Campos restantes necesarios"
+            },
+            "btn_confirm": "[MOCK] Confirmar Mapeo",
+            "processing": {
+                "title": "[MOCK] Procesando Datos",
+                "subtitle": "[MOCK] Validando e importando...",
+                "logs": {
+                    "init": "[MOCK] Iniciando motor...",
+                    "schema": "[MOCK] Verificando esquema...",
+                    "mapping": "[MOCK] Mapeando columna '{{column}}'...",
+                    "req": "[MOCK] Procesando solicitud...",
+                    "sending": "[MOCK] Enviando datos...",
+                    "success": "[MOCK] Ingesta exitosa."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "[MOCK] Plantillas Rápidas",
+            "divider": "[MOCK] o personalizar individualmente",
+            "library_title": "[MOCK] Biblioteca de Widgets",
+            "selected_count": "[MOCK] {{count}} seleccionados",
+            "btn_create": "[MOCK] Crear Tablero",
+            "btn_configuring": "[MOCK] Configurando..."
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "[MOCK] Subir Datos",
+            "title_preview": "[MOCK] Previsualizar Datos",
+            "subtitle_upload": "[MOCK] Subir datos a {{dataSourceName}}",
+            "subtitle_preview": "[MOCK] Revise cómo se importarán sus datos",
+            "drop_text": "[MOCK] Arrastre su archivo aquí o haga clic",
+            "supports_text": "[MOCK] Soporta Excel (.xlsx, .xls) y CSV",
+            "success_redirect": "[MOCK] ¡Subida exitosa! Redirigiendo...",
+            "info_preview": "[MOCK] Después de subir, revisará una vista previa.",
+            "btn_upload_preview": "[MOCK] Subir y Previsualizar"
         }
     }
 }

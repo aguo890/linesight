@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Filter } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useDashboard } from '../context/DashboardContext';
-import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { useTimezoneDate } from '@/hooks/useTimezoneDate';
 import { useFactoryContext } from '@/contexts/FactoryContext';
 import { TimezoneDateRangePicker } from '@/components/common/TimezoneDateRangePicker';
 
 export const DashboardFilterBar: React.FC = () => {
     // Consume Global Context
-    const { globalFilters, updateDateRange, updateShift, triggerRefresh, lastRefreshAt } = useDashboard();
+    const { t } = useTranslation();
+    const { globalFilters, updateDateRange, updateShift, triggerRefresh } = useDashboard();
     const { activeFactory } = useFactoryContext();
     const { shift } = globalFilters;
-    const { formatDate } = useFactoryFormat();
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     // Resolve Timezone: Priority to Active Factory, fallback to UTC
@@ -214,7 +214,7 @@ export const DashboardFilterBar: React.FC = () => {
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-text-muted">
                         <Filter className="w-4 h-4" />
-                        <span className="text-xs font-semibold uppercase tracking-wider">Filters</span>
+                        <span className="text-xs font-semibold uppercase tracking-wider">{t('filters.title', 'Filters')}</span>
                     </div>
 
                     {/* Quick Actions Pill Group */}
@@ -226,7 +226,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            Today
+                            {t('filters.time.today')}
                         </button>
                         <button
                             onClick={setYesterday}
@@ -235,7 +235,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            Yesterday
+                            {t('filters.time.yesterday')}
                         </button>
                         <button
                             onClick={setLast7Days}
@@ -244,7 +244,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            7 Days
+                            {t('filters.time.last_7_days')}
                         </button>
                         <button
                             onClick={setLast30Days}
@@ -253,7 +253,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            30 Days
+                            {t('filters.time.last_30_days')}
                         </button>
                         <button
                             onClick={setThisMonth}
@@ -262,7 +262,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            This Month
+                            {t('filters.time.this_month')}
                         </button>
                         <button
                             onClick={setLastMonth}
@@ -271,7 +271,7 @@ export const DashboardFilterBar: React.FC = () => {
                                 : 'text-text-muted hover:bg-surface hover:text-text-main hover:shadow-sm'
                                 }`}
                         >
-                            Last Month
+                            {t('filters.time.last_month')}
                         </button>
                     </div>
 
@@ -280,7 +280,7 @@ export const DashboardFilterBar: React.FC = () => {
                     <button
                         onClick={handleRefresh}
                         className={`p-2 text-text-muted hover:text-brand hover:bg-brand/10 rounded-full transition-all active:scale-90 ${isRefreshing ? 'animate-pulse text-brand bg-brand/10' : ''}`}
-                        title={`Last updated: ${formatDate(new Date(lastRefreshAt), 'pp')}`}
+                        title={t('dashboard_header.actions.refresh')}
                     >
                         <svg className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -305,10 +305,10 @@ export const DashboardFilterBar: React.FC = () => {
                         value={shift}
                         onChange={(e) => updateShift(e.target.value)}
                     >
-                        <option value="ALL">All Shifts</option>
-                        <option value="Shift A">Shift A (Morning)</option>
-                        <option value="Shift B">Shift B (Evening)</option>
-                        <option value="Shift C">Shift C (Night)</option>
+                        <option value="ALL">{t('filters.shifts.all')}</option>
+                        <option value="Shift A">{t('filters.shifts.shift_a')}</option>
+                        <option value="Shift B">{t('filters.shifts.shift_b')}</option>
+                        <option value="Shift C">{t('filters.shifts.shift_c')}</option>
                     </select>
 
                 </div>

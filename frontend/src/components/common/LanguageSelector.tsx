@@ -35,9 +35,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ className })
             className={className || "w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"}
         >
             <option value="en">English (US)</option>
-            <option value="es">Spanish</option>
-            <option value="ar">Arabic</option>
-            <option value="zh">中文 (Mandarin)</option>
+            <option value="es">Español</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="zh">中文 (Chinese)</option>
         </select>
     );
 };

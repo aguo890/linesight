@@ -17,6 +17,7 @@ import {
     Pencil,
     Filter
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // ============================================================================
 // Types
@@ -61,8 +62,8 @@ const STATUS_CONFIG: Record<TierType, {
     bgColor: string;
     borderColor: string;
     accentColor: string;
-    label: string;
-    tooltip: string;
+    labelKey: string;
+    tooltipKey: string;
 }> = {
     hash: {
         icon: Zap,
@@ -70,8 +71,8 @@ const STATUS_CONFIG: Record<TierType, {
         bgColor: 'bg-purple-50 dark:bg-purple-900/20',
         borderColor: 'border-purple-200 dark:border-purple-800',
         accentColor: 'border-l-purple-500',
-        label: 'Exact',
-        tooltip: 'Exact column name match'
+        labelKey: 'wizard.step2.status_labels.exact',
+        tooltipKey: 'wizard.step2.status_labels.exact_tooltip'
     },
     fuzzy: {
         icon: Search,
@@ -79,8 +80,8 @@ const STATUS_CONFIG: Record<TierType, {
         bgColor: 'bg-blue-50 dark:bg-blue-900/20',
         borderColor: 'border-blue-200 dark:border-blue-800',
         accentColor: 'border-l-blue-500',
-        label: 'Fuzzy',
-        tooltip: 'Similar name matched'
+        labelKey: 'wizard.step2.status_labels.fuzzy',
+        tooltipKey: 'wizard.step2.status_labels.fuzzy_tooltip'
     },
     llm: {
         icon: Sparkles,
@@ -88,8 +89,8 @@ const STATUS_CONFIG: Record<TierType, {
         bgColor: 'bg-indigo-50 dark:bg-indigo-900/20',
         borderColor: 'border-indigo-200 dark:border-indigo-800',
         accentColor: 'border-l-indigo-500',
-        label: 'AI',
-        tooltip: 'AI-suggested mapping'
+        labelKey: 'wizard.step2.status_labels.ai',
+        tooltipKey: 'wizard.step2.status_labels.ai_tooltip'
     },
     manual: {
         icon: Pencil,
@@ -97,8 +98,8 @@ const STATUS_CONFIG: Record<TierType, {
         bgColor: 'bg-surface-subtle',
         borderColor: 'border-border',
         accentColor: 'border-l-border',
-        label: 'Manual',
-        tooltip: 'Manually assigned'
+        labelKey: 'wizard.step2.status_labels.manual',
+        tooltipKey: 'wizard.step2.status_labels.manual_tooltip'
     },
     unmatched: {
         icon: HelpCircle,
@@ -106,8 +107,8 @@ const STATUS_CONFIG: Record<TierType, {
         bgColor: 'bg-amber-50 dark:bg-amber-900/20',
         borderColor: 'border-amber-200 dark:border-amber-800',
         accentColor: 'border-l-transparent',
-        label: 'Unset',
-        tooltip: 'Needs mapping'
+        labelKey: 'wizard.step2.status_labels.unset',
+        tooltipKey: 'wizard.step2.status_labels.unset_tooltip'
     }
 };
 
@@ -127,6 +128,7 @@ const AIProcessingView: React.FC<{
     onAnimationComplete?: () => void;
 }> = ({ mappings, processAction, onAnimationComplete }) => {
     const [logs, setLogs] = useState<string[]>([]);
+    const { t } = useTranslation();
     const [progress, setProgress] = useState(0);
     const scrollRef = useRef<HTMLDivElement>(null);
     const hasStartedRef = useRef(false);
@@ -154,12 +156,12 @@ const AIProcessingView: React.FC<{
         };
 
         const runSimulation = async () => {
-            addLog("Initializing transformation engine...");
+            addLog(t('wizard.step2.processing.logs.init'));
             setProgress(5);
             await new Promise(r => setTimeout(r, 400));
             if (!isMounted) return;
 
-            addLog("Verifying schema compatibility...");
+            addLog(t('wizard.step2.processing.logs.schema'));
             setProgress(15);
 
             const maxDetailedLogs = 3;
@@ -168,17 +170,17 @@ const AIProcessingView: React.FC<{
             for (let i = 0; i < columnsToLog.length; i++) {
                 if (!isMounted) return;
                 const m = columnsToLog[i];
-                addLog(`Mapping column '${m.source_column}'...`);
+                addLog(t('wizard.step2.processing.logs.mapping', { column: m.source_column }));
                 setProgress(prev => Math.min(prev + 10, 50));
                 await new Promise(r => setTimeout(r, 150));
             }
             if (!isMounted) return;
 
-            addLog("Processing ingestion request...");
+            addLog(t('wizard.step2.processing.logs.req'));
             setProgress(60);
 
             try {
-                addLog("Sending data to LineSight Core...");
+                addLog(t('wizard.step2.processing.logs.sending'));
                 const startTime = Date.now();
 
                 await processActionRef.current();
@@ -189,7 +191,7 @@ const AIProcessingView: React.FC<{
                 if (elapsed < 1000) await new Promise(r => setTimeout(r, 1000 - elapsed));
 
                 setProgress(100);
-                addLog("Ingestion successful. Finalizing...");
+                addLog(t('wizard.step2.processing.logs.success'));
                 await new Promise(r => setTimeout(r, 600));
 
                 if (isMounted && onCompleteRef.current) {
@@ -227,8 +229,8 @@ const AIProcessingView: React.FC<{
                 </div>
 
                 <div className="text-center space-y-2">
-                    <h3 className="text-lg font-semibold text-text-main">Processing Data</h3>
-                    <p className="text-sm text-text-muted">Validating and importing to production line...</p>
+                    <h3 className="text-lg font-semibold text-text-main">{t('wizard.step2.processing.title')}</h3>
+                    <p className="text-sm text-text-muted">{t('wizard.step2.processing.subtitle')}</p>
                 </div>
 
                 <div className="w-full h-2 bg-surface-subtle rounded-full overflow-hidden">
@@ -265,11 +267,12 @@ const StatusIndicator: React.FC<{
     confidence: number;
     reasoning?: string;
 }> = ({ tier, confidence, reasoning }) => {
+    const { t } = useTranslation();
     const config = STATUS_CONFIG[tier];
     const Icon = config.icon;
     const [showTooltip, setShowTooltip] = useState(false);
 
-    const tooltipText = reasoning || `${config.tooltip} (${Math.round((confidence ?? 0) * 100)}% confidence)`;
+    const tooltipText = reasoning || `${t(config.tooltipKey as any)} (${Math.round((confidence ?? 0) * 100)}% confidence)`;
 
     return (
         <div
@@ -288,7 +291,7 @@ const StatusIndicator: React.FC<{
             {showTooltip && (
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50">
                     <div className="bg-gray-900 dark:bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg max-w-xs whitespace-normal">
-                        <div className="font-medium mb-0.5">{config.label} Match</div>
+                        <div className="font-medium mb-0.5">{t(config.labelKey as any)} Match</div>
                         <div className="text-gray-300">{tooltipText}</div>
                     </div>
                     <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
@@ -355,6 +358,7 @@ const FieldSelector: React.FC<{
     usedFields: Map<string, string>;
     suggestedFields?: AvailableField[];
 }> = ({ value, tier, options, onChange, onIgnore, isIgnored, usedFields, suggestedFields = [] }) => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
@@ -419,7 +423,7 @@ const FieldSelector: React.FC<{
                 className="flex items-center gap-2 text-sm text-text-muted italic hover:text-text-main transition-colors h-14 px-3 w-full rounded-lg border border-dashed border-border hover:border-border hover:bg-surface-subtle"
             >
                 <EyeOff className="w-4 h-4" />
-                <span>Ignored — click to restore</span>
+                <span>{t('wizard.step2.field_selector.restore_action')}</span>
             </button>
         );
     }
@@ -457,7 +461,7 @@ const FieldSelector: React.FC<{
                     </>
                 ) : (
                     <div className="flex items-center justify-between w-full">
-                        <span className="text-text-muted">Select target field...</span>
+                        <span className="text-text-muted">{t('wizard.step2.field_selector.select_placeholder')}</span>
                         <ChevronDown className={`w-4 h-4 text-text-muted transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
                     </div>
                 )}
@@ -473,7 +477,7 @@ const FieldSelector: React.FC<{
                                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                                 <input
                                     type="text"
-                                    placeholder="Search fields..."
+                                    placeholder={t('wizard.step2.field_selector.search_placeholder')}
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     className="w-full pl-8 pr-3 py-2 text-sm border border-border rounded-lg bg-surface text-text-main focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
@@ -489,7 +493,7 @@ const FieldSelector: React.FC<{
                                     <div className="px-3 py-2 bg-brand/5 border-b border-brand/10">
                                         <span className="text-xs font-medium text-brand flex items-center gap-1.5">
                                             <Sparkles className="w-3 h-3" />
-                                            Suggested
+                                            {t('wizard.step2.field_selector.suggested')}
                                         </span>
                                     </div>
                                     {suggested.map((opt) => {
@@ -517,7 +521,7 @@ const FieldSelector: React.FC<{
                             {allFields.length > 0 && (
                                 <>
                                     <div className="px-3 py-2 bg-surface-subtle border-b border-border">
-                                        <span className="text-xs font-medium text-text-muted">All Fields</span>
+                                        <span className="text-xs font-medium text-text-muted">{t('wizard.step2.field_selector.all_fields')}</span>
                                     </div>
                                     {allFields.map((opt) => {
                                         const usedByColumn = usedFields.get(opt.field);
@@ -542,7 +546,7 @@ const FieldSelector: React.FC<{
 
                             {filteredOptions.length === 0 && (
                                 <div className="px-3 py-6 text-sm text-text-muted text-center">
-                                    No fields match "{search}"
+                                    {t('wizard.step2.field_selector.no_results', { term: search })}
                                 </div>
                             )}
                         </div>
@@ -554,7 +558,7 @@ const FieldSelector: React.FC<{
                                 className="w-full px-3 py-2 text-sm text-text-muted hover:bg-surface rounded-lg flex items-center gap-2 transition-colors"
                             >
                                 <EyeOff className="w-4 h-4" />
-                                Ignore this column
+                                {t('wizard.step2.field_selector.ignore_action')}
                             </button>
                         </div>
                     </div>
@@ -572,6 +576,7 @@ const FieldOption: React.FC<{
     searchTerm: string;
     onClick: () => void;
 }> = ({ field, isSelected, isUsed, searchTerm, onClick }) => {
+    const { t } = useTranslation();
     return (
         <button
             onClick={onClick}
@@ -589,7 +594,7 @@ const FieldOption: React.FC<{
                 <div className="flex items-center gap-2">
                     {isUsed && (
                         <span className="text-[10px] bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded font-medium">
-                            in use
+                            {t('wizard.step2.field_selector.in_use')}
                         </span>
                     )}
                     {isSelected && <Check className="w-4 h-4 text-brand" />}
@@ -610,10 +615,11 @@ const FilterPills: React.FC<{
     onFilterChange: (filter: FilterType) => void;
     counts: { all: number; unmapped: number; conflicts: number };
 }> = ({ activeFilter, onFilterChange, counts }) => {
+    const { t } = useTranslation();
     const pills: { key: FilterType; label: string; count: number; color: string }[] = [
-        { key: 'all', label: 'All', count: counts.all, color: 'gray' },
-        { key: 'unmapped', label: 'Unmapped', count: counts.unmapped, color: 'amber' },
-        { key: 'conflicts', label: 'Conflicts', count: counts.conflicts, color: 'red' },
+        { key: 'all', label: t('wizard.step2.filter.all'), count: counts.all, color: 'gray' },
+        { key: 'unmapped', label: t('wizard.step2.filter.unmapped'), count: counts.unmapped, color: 'amber' },
+        { key: 'conflicts', label: t('wizard.step2.filter.conflicts'), count: counts.conflicts, color: 'red' },
     ];
 
     return (
@@ -663,6 +669,7 @@ const MappingRow: React.FC<{
     conflictingColumns?: string[];
     suggestedFields?: AvailableField[];
 }> = ({ mapping, availableFields, onUpdate, index, usedFields, isConflicted, conflictingColumns, suggestedFields }) => {
+    const { t } = useTranslation();
     const handleFieldChange = (field: string) => {
         onUpdate({
             target_field: field,
@@ -724,7 +731,7 @@ const MappingRow: React.FC<{
                 {isConflicted && !mapping.ignored && (
                     <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-amber-700">
                         <AlertTriangle className="w-3.5 h-3.5" />
-                        <span>Duplicate</span>
+                        <span>{t('wizard.step2.status_labels.duplicate')}</span>
                     </div>
                 )}
                 {!mapping.ignored && !isConflicted && mapping.target_field && (
@@ -737,7 +744,7 @@ const MappingRow: React.FC<{
                 {!mapping.ignored && !mapping.target_field && (
                     <div className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
                         <AlertCircle className="w-3.5 h-3.5" />
-                        <span>Unset</span>
+                        <span>{t('wizard.step2.status_labels.unset')}</span>
                     </div>
                 )}
             </div>
@@ -757,6 +764,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
     filename,
     onAnimationComplete
 }) => {
+    const { t } = useTranslation();
     const [mappings, setMappings] = useState<ColumnMapping[]>(initialMappings || []);
     const [isProcessing, setIsProcessing] = useState(false);
     const [activeFilter, setActiveFilter] = useState<FilterType>('all');
@@ -875,8 +883,8 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                 {/* Header */}
                 <div className="flex justify-between items-end mb-6">
                     <div>
-                        <h3 className="text-xl font-semibold text-text-main">Validate Mapping</h3>
-                        <p className="text-sm text-text-muted mt-1">Review how your columns match the database.</p>
+                        <h3 className="text-xl font-semibold text-text-main">{t('wizard.step2.title')}</h3>
+                        <p className="text-sm text-text-muted mt-1">{t('wizard.step2.subtitle')}</p>
                     </div>
                     {filename && <span className="text-xs px-2 py-1 bg-surface-subtle rounded text-text-muted font-mono">{filename}</span>}
                 </div>
@@ -884,10 +892,10 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                 {/* Stats Grid */}
                 <div className="grid grid-cols-4 gap-4 mb-6">
                     {[
-                        { label: 'Auto-mapped', count: stats.autoMapped, color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle },
-                        { label: 'Need Review', count: stats.needsReview, color: 'text-yellow-600', bg: 'bg-yellow-50', icon: AlertTriangle },
-                        { label: 'Attention', count: stats.needsAttention, color: 'text-red-600', bg: 'bg-red-50', icon: AlertCircle },
-                        { label: 'Ignored', count: stats.ignored, color: 'text-gray-600', bg: 'bg-gray-100', icon: EyeOff },
+                        { label: t('wizard.step2.stats.auto'), count: stats.autoMapped, color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle },
+                        { label: t('wizard.step2.stats.review'), count: stats.needsReview, color: 'text-yellow-600', bg: 'bg-yellow-50', icon: AlertTriangle },
+                        { label: t('wizard.step2.stats.attention'), count: stats.needsAttention, color: 'text-red-600', bg: 'bg-red-50', icon: AlertCircle },
+                        { label: t('wizard.step2.stats.ignored'), count: stats.ignored, color: 'text-gray-600', bg: 'bg-gray-100', icon: EyeOff },
                     ].map((stat) => {
                         const Icon = stat.icon;
                         return (
@@ -910,7 +918,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         counts={updatedFilterCounts}
                     />
                     <div className="text-sm text-text-muted">
-                        Showing {filteredMappings.length} of {mappings.length} columns
+                        {t('wizard.step2.showing_count', { filtered: filteredMappings.length, total: mappings.length })}
                     </div>
                 </div>
 
@@ -919,14 +927,14 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                     {/* Table Header */}
                     <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-subtle/80 border-b border-border">
                         <div className="col-span-4 text-xs font-semibold text-text-muted uppercase tracking-wide">
-                            Source Column
+                            {t('wizard.step2.table.source')}
                         </div>
                         <div className="col-span-1"></div>
                         <div className="col-span-4 text-xs font-semibold text-text-muted uppercase tracking-wide">
-                            Target Field
+                            {t('wizard.step2.table.target')}
                         </div>
                         <div className="col-span-3 text-xs font-semibold text-text-muted uppercase tracking-wide text-right">
-                            Status
+                            {t('wizard.step2.table.status')}
                         </div>
                     </div>
 
@@ -935,8 +943,8 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         {filteredMappings.length === 0 ? (
                             <div className="px-4 py-12 text-center text-text-muted">
                                 <Filter className="w-8 h-8 mx-auto mb-2 text-border" />
-                                <p className="font-medium">No columns match this filter</p>
-                                <p className="text-sm mt-1">Try selecting a different view</p>
+                                <p className="font-medium">{t('wizard.step2.table.no_match')}</p>
+                                <p className="text-sm mt-1">{t('wizard.step2.table.try_different')}</p>
                             </div>
                         ) : (
                             filteredMappings.map((mapping, index) => {
@@ -977,7 +985,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         className="flex items-center px-4 py-2.5 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand/20 transition-all"
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
+                        {t('common.back')}
                     </button>
 
                     {/* Right: Actions & Alerts */}
@@ -985,13 +993,13 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         {hasConflicts && (
                             <span className="text-sm text-amber-600 flex items-center gap-1.5">
                                 <AlertTriangle className="w-4 h-4" />
-                                {conflictsMap.size} field{conflictsMap.size > 1 ? 's have' : ' has'} duplicate mappings
+                                {t('wizard.step2.alerts.conflict_count', { count: conflictsMap.size })}
                             </span>
                         )}
                         {hasUnmappedRequired && !hasConflicts && (
                             <span className="text-sm text-red-600 flex items-center gap-1.5 animate-pulse">
                                 <AlertCircle className="w-4 h-4" />
-                                Remaining fields needed
+                                {t('wizard.step2.alerts.remaining_needed')}
                             </span>
                         )}
 
@@ -1007,7 +1015,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                                 }
                             `}
                         >
-                            Confirm Mapping
+                            {t('wizard.step2.btn_confirm')}
                             <ArrowRight className="w-4 h-4 ml-2" />
                         </button>
                     </div>

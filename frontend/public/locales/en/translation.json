@@ -41,5 +41,373 @@
             "push": "Push Notifications",
             "weekly": "Weekly Digest"
         }
+    },
+    "navigation": {
+        "dashboard": "Dashboard",
+        "my_dashboards": "My Dashboards",
+        "organization": "Organization",
+        "show_more": "Show More",
+        "show_less": "Show Less"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "My Dashboards",
+            "search_placeholder": "Search sites...",
+            "status": {
+                "loading": "Loading your sites...",
+                "none": "No active production sites",
+                "available_one": "{{count}} site available",
+                "available_other": "{{count}} sites available"
+            },
+            "table": {
+                "header_name": "Site Name",
+                "header_location": "Location",
+                "header_status": "Status",
+                "header_lines": "Lines",
+                "header_actions": "Actions",
+                "action_view": "View"
+            },
+            "actions": {
+                "new_dashboard": "New Dashboard",
+                "configure_sites": "Configure Sites",
+                "clear_search": "Clear search"
+            },
+            "search": {
+                "results_info": "Showing {{count}} of {{total}} factories",
+                "no_results": "No factories found",
+                "no_results_detail": "No factories match \"{{query}}\". Try a different search term."
+            },
+            "factory_status": {
+                "at_limit": "At Limit",
+                "near_limit": "Near Limit",
+                "active": "Active"
+            },
+            "empty_state": {
+                "title": "No active sites",
+                "description": "Your dashboard is empty because no factories have been configured yet.",
+                "admin_hint": "Head over to Organization Settings to set up your infrastructure.",
+                "user_hint": "Please contact your administrator to set up the infrastructure.",
+                "cta": "Go to Organization Settings"
+            },
+            "view": {
+                "grid": "Grid view",
+                "list": "List view"
+            }
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Home",
+            "list": "My Dashboards",
+            "production_sites": "Production Sites",
+            "sites": "Sites",
+            "not_found": "Not Found"
+        },
+        "sections": {
+            "overview": "Overview",
+            "performance": "Performance",
+            "settings": "Settings",
+            "dashboards": "Dashboards",
+            "data_sources": "Data Sources"
+        },
+        "actions": {
+            "edit": "Edit Configuration",
+            "delete": "Delete Site",
+            "save": "Save Changes",
+            "settings": "Settings",
+            "new_dashboard": "New Dashboard",
+            "create_dashboard": "Create Dashboard",
+            "add_data_source": "Add Data Source",
+            "new_source": "New Source",
+            "upload_data": "Upload data",
+            "no_write_access": "No write access to this source"
+        },
+        "alerts": {
+            "confirm_delete": "Are you sure you want to delete this factory? This action cannot be undone.",
+            "edit_soon": "Edit functionality coming soon",
+            "delete_soon": "Delete functionality coming soon",
+            "delete_fail": "Failed to delete dashboard."
+        },
+        "stats": {
+            "dashboards": "Dashboards",
+            "active_widgets": "Active Widgets",
+            "active_sources": "Active Sources",
+            "used_info": "{{current}} / {{max}} Used"
+        },
+        "not_found": "Factory not found",
+        "search": {
+            "dashboards_placeholder": "Filter dashboards...",
+            "sources_placeholder": "Search sources...",
+            "no_sources_found": "No sources found matching your search."
+        },
+        "quota": {
+            "limit_reached": "Quota limit reached"
+        },
+        "table": {
+            "headers": {
+                "name": "Name",
+                "status": "Status",
+                "actions": "Actions"
+            }
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "confirm": {
+            "delete_source": "Are you sure you want to delete this data source?",
+            "delete_dashboard": "Are you sure you want to delete this dashboard?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Today",
+            "yesterday": "Yesterday",
+            "last_7_days": "7 Days",
+            "last_30_days": "30 Days",
+            "this_month": "This Month",
+            "last_month": "Last Month"
+        },
+        "shifts": {
+            "all": "All Shifts",
+            "shift_a": "Shift A (Morning)",
+            "shift_b": "Shift B (Evening)",
+            "shift_c": "Shift C (Night)"
+        },
+        "date_range": "Date Range",
+        "to": "to"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Factory",
+            "line": "Line",
+            "dashboard": "Dashboard"
+        },
+        "status": {
+            "updated": "Updated {{time}}",
+            "live": "Live",
+            "loading": "Loading...",
+            "saving": "Saving..."
+        },
+        "actions": {
+            "refresh": "Refresh",
+            "reset_layout": "Reset Layout",
+            "reset_confirm": "Are you sure you want to reset the layout to default?",
+            "design_layout": "Design Layout",
+            "save_layout": "Save Layout",
+            "add_widget": "Add Widget",
+            "cancel": "Cancel"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Widget Library",
+            "subtitle": "Drag and drop widgets to customize your dashboard layout.",
+            "categories": {
+                "all": "All",
+                "production": "Production",
+                "quality": "Quality",
+                "efficiency": "Efficiency"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simulated",
+            "ready_to_use": "Ready to use",
+            "recommended": "Recommended",
+            "future_capability": "Future Capability",
+            "coming_soon": "Coming Soon",
+            "near_match": "Near Match"
+        },
+        "common": {
+            "planned": "PLANNED",
+            "actual": "ACTUAL",
+            "target": "TARGET",
+            "efficiency": "Efficiency",
+            "minutes": "min",
+            "limit": "Limit",
+            "status": "Status",
+            "on_target": "ON TARGET",
+            "below_target": "BELOW TARGET",
+            "defect_rate": "Defect Rate"
+        },
+        "titles": {
+            "production_chart": "Production Output",
+            "line_efficiency": "Line Efficiency",
+            "earned_minutes": "Earned Minutes",
+            "sam_performance": "SAM Performance",
+            "dhu_quality": "DHU Quality",
+            "speed_quality": "Speed vs Quality",
+            "top_blockers": "Top Blockers",
+            "style_progress": "Style Progress",
+            "daily_target": "Daily Target",
+            "production_timeline": "Production Timeline",
+            "complexity_impact": "Complexity Impact",
+            "workforce_attendance": "Workforce Attendance",
+            "kpi_summary": "KPI Summary"
+        },
+        "descriptions": {
+            "production_chart": "Compare planned vs actual production over time",
+            "line_efficiency": "Real-time line efficiency against target",
+            "earned_minutes": "Standard Allowed Minutes (SAM) earned vs available",
+            "sam_performance": "Performance metric based on standard minutes",
+            "dhu_quality": "Defects per Hundred Units trend analysis",
+            "speed_quality": "Correlation between production speed and quality",
+            "top_blockers": "Most frequent issues stopping production",
+            "style_progress": "Tracking completion % of current styles",
+            "daily_target": "Progress towards daily production goal",
+            "production_timeline": "Gantt view of production schedule",
+            "complexity_impact": "Analysis of style complexity on output",
+            "workforce_attendance": "Operator attendance and line balancing",
+            "kpi_summary": "High-level overview of key metrics"
+        },
+        "production_chart": {
+            "planned": "PLANNED",
+            "actual_output": "ACTUAL OUTPUT"
+        },
+        "speed_quality": {
+            "efficiency": "Efficiency",
+            "defect_rate": "Defect Rate"
+        },
+        "earned_minutes": {
+            "earned": "EARNED",
+            "available": "AVAILABLE"
+        },
+        "dhu_quality": {
+            "no_data": "No DHU data available",
+            "current_dhu": "Current DHU",
+            "above_limit": "ABOVE LIMIT"
+        },
+        "blocker_cloud": {
+            "occurrences": "occurrences",
+            "view_all_logs": "View all logs"
+        }
+    },
+    "common": {
+        "back": "Back",
+        "cancel": "Cancel",
+        "error": "Error",
+        "success": "Success",
+        "uploading": "Uploading...",
+        "processing": "Processing...",
+        "remove": "Remove",
+        "ready": "Ready",
+        "needs_setup": "Needs Setup",
+        "actions": "Action",
+        "date": "Date"
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Dashboard Name",
+            "dashboard_name_placeholder": "e.g. Line 4 Production Overview",
+            "name_error_tooltip": "Please enter a Dashboard Name first.",
+            "name_error_text": "Please enter a name for your dashboard to continue.",
+            "selection_title": "Data Source Selection",
+            "selection_desc": "Select a previously uploaded file to configure your dashboard widgets.",
+            "columns": {
+                "file_name": "File Name",
+                "status": "Status",
+                "uploaded": "Uploaded",
+                "action": "Action"
+            },
+            "btn_configure": "Configure",
+            "btn_complete_setup": "Complete Setup",
+            "note": "Note: Your dashboard will include data from ALL files in this list. Select any file to define the widget columns.",
+            "empty_title": "No Data Sources Yet",
+            "empty_desc": "Upload files from the Production Line page first, then return here to create a dashboard.",
+            "error_load_failed": "Failed to load existing data source configuration."
+        },
+        "step2": {
+            "title": "Validate Mapping",
+            "subtitle": "Review how your columns match the database.",
+            "stats": {
+                "auto": "Auto-mapped",
+                "review": "Need Review",
+                "attention": "Attention",
+                "ignored": "Ignored"
+            },
+            "filter": {
+                "all": "All",
+                "unmapped": "Unmapped",
+                "conflicts": "Conflicts"
+            },
+            "showing_count": "Showing {{filtered}} of {{total}} columns",
+            "table": {
+                "source": "Source Column",
+                "target": "Target Field",
+                "status": "Status",
+                "no_match": "No columns match this filter",
+                "try_different": "Try selecting a different view"
+            },
+            "status_labels": {
+                "exact": "Exact",
+                "exact_tooltip": "Exact column name match",
+                "fuzzy": "Fuzzy",
+                "fuzzy_tooltip": "Similar name matched",
+                "ai": "AI",
+                "ai_tooltip": "AI-suggested mapping",
+                "manual": "Manual",
+                "manual_tooltip": "Manually assigned",
+                "unset": "Unset",
+                "unset_tooltip": "Needs mapping",
+                "duplicate": "Duplicate"
+            },
+            "field_selector": {
+                "select_placeholder": "Select target field...",
+                "search_placeholder": "Search fields...",
+                "suggested": "Suggested",
+                "all_fields": "All Fields",
+                "no_results": "No fields match \"{{term}}\"",
+                "ignore_action": "Ignore this column",
+                "restore_action": "Ignored — click to restore",
+                "in_use": "in use"
+            },
+            "alerts": {
+                "conflict_count_one": "1 field has duplicate mappings",
+                "conflict_count_other": "{{count}} fields have duplicate mappings",
+                "remaining_needed": "Remaining fields needed"
+            },
+            "btn_confirm": "Confirm Mapping",
+            "processing": {
+                "title": "Processing Data",
+                "subtitle": "Validating and importing to production line...",
+                "logs": {
+                    "init": "Initializing transformation engine...",
+                    "schema": "Verifying schema compatibility...",
+                    "mapping": "Mapping column '{{column}}'...",
+                    "req": "Processing ingestion request...",
+                    "sending": "Sending data to LineSight Core...",
+                    "success": "Ingestion successful. Finalizing..."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Quick Start Blueprints",
+            "divider": "or customize individually",
+            "library_title": "Widget Library",
+            "selected_count": "{{count}} selected",
+            "btn_create": "Create Dashboard",
+            "btn_configuring": "Configuring..."
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Upload Data",
+            "title_preview": "Preview Data",
+            "subtitle_upload": "Upload data to {{dataSourceName}}",
+            "subtitle_preview": "Review how your data will be imported",
+            "drop_text": "Drop your file here or click to browse",
+            "supports_text": "Supports Excel (.xlsx, .xls) and CSV files",
+            "success_redirect": "Upload successful! Redirecting to mapping...",
+            "info_preview": "After upload, you'll review a preview before mapping columns.",
+            "btn_upload_preview": "Upload & Preview",
+            "btn_uploading": "Uploading...",
+            "errors": {
+                "invalid_extension": "Please select an Excel (.xlsx, .xls) or CSV file",
+                "duplicate_file": "This file has already been uploaded. Please select a different file or delete the existing upload first.",
+                "preview_failed": "Failed to generate data preview.",
+                "upload_failed": "Upload failed"
+            }
+        }
     }
 }
