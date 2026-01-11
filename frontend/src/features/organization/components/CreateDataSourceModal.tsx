@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, AlertCircle, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '../../../api/endpoints/factories/factories';
 import type { QuotaStatus } from '../../../lib/quotaApi';
 
@@ -101,8 +102,8 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-surface rounded-lg shadow-2xl max-w-md w-full">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-surface rounded-lg shadow-2xl max-w-md w-full border border-border">
                 <div className="flex items-center justify-between p-6 border-b border-border">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-brand/10 rounded-lg">
@@ -115,25 +116,25 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                             </p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-full">
-                        <X className="w-5 h-5 text-text-muted" />
-                    </button>
+                    <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full text-text-muted hover:text-text-main">
+                        <X className="w-5 h-5" />
+                    </Button>
                 </div>
 
                 {/* Quota Status */}
                 {factoryQuota && (
                     <div className={`mx-6 mt-4 p-3 rounded-lg border ${canCreate
                         ? 'bg-brand/10 border-brand/20'
-                        : 'bg-warning/10 border-warning/20'
+                        : 'bg-danger/10 border-danger/20'
                         }`}>
                         <div className="flex items-center justify-between">
                             <span className="text-sm font-medium text-text-main">Source Usage</span>
-                            <span className={`text-sm font-bold ${canCreate ? 'text-brand' : 'text-warning'}`}>
+                            <span className={`text-sm font-bold ${canCreate ? 'text-brand' : 'text-danger'}`}>
                                 {factoryQuota.current} / {quotaStatus?.lines_per_factory.max}
                             </span>
                         </div>
                         {!canCreate && (
-                            <p className="text-xs text-warning mt-1">
+                            <p className="text-xs text-danger mt-1">
                                 Maximum sources reached for this factory.
                             </p>
                         )}
@@ -147,7 +148,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all"
                             placeholder="e.g. Line 3 / Cutting Table A"
                             disabled={!canCreate || isSubmitting}
                         />
@@ -160,7 +161,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                                 type="text"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
-                                className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand font-mono"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all font-mono"
                                 placeholder="L-03"
                                 disabled={!canCreate || isSubmitting}
                             />
@@ -171,7 +172,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                                 type="text"
                                 value={specialty}
                                 onChange={(e) => setSpecialty(e.target.value)}
-                                className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
+                                className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all"
                                 placeholder="e.g. Assembly"
                                 disabled={!canCreate || isSubmitting}
                             />
@@ -183,7 +184,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
+                            className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none"
                             placeholder="Briefly describe this data source..."
                             rows={2}
                             disabled={!canCreate || isSubmitting}
@@ -191,14 +192,14 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                     </div>
 
                     {/* Schedule Configuration */}
-                    <div className="bg-surface-subtle p-4 rounded-md border border-border">
+                    <div className="bg-surface-subtle p-4 rounded-lg border border-border/50">
                         <div className="flex items-center justify-between mb-2">
-                            <label className="flex items-center gap-2 cursor-pointer">
+                            <label className="flex items-center gap-2 cursor-pointer select-none">
                                 <input
                                     type="checkbox"
                                     checked={useDefaults}
                                     onChange={(e) => setUseDefaults(e.target.checked)}
-                                    className="w-4 h-4 text-brand rounded focus:ring-brand"
+                                    className="w-4 h-4 text-brand rounded border-border focus:ring-brand bg-surface"
                                     disabled={!canCreate || isSubmitting}
                                 />
                                 <span className="text-sm font-medium text-text-main">Use Factory Defaults</span>
@@ -223,25 +224,24 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                     </div>
 
                     {error && (
-                        <div className="p-3 bg-error/10 text-error text-sm rounded-md flex items-center gap-2">
+                        <div className="p-3 bg-danger/10 text-danger border border-danger/20 text-sm rounded-lg flex items-center gap-2">
                             <AlertCircle className="w-4 h-4" />
                             {error}
                         </div>
                     )}
 
-                    <div className="flex justify-end gap-3 pt-4">
-                        <button
-                            type="button"
+                    <div className="flex justify-end gap-3 pt-2">
+                        <Button
+                            variant="ghost"
                             onClick={onClose}
-                            className="px-4 py-2 text-text-muted hover:bg-surface-subtle rounded-md"
                             disabled={isSubmitting}
                         >
                             Cancel
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             type="submit"
-                            className="flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-md hover:bg-brand-dark disabled:opacity-50"
                             disabled={isSubmitting || !canCreate}
+                            className="bg-brand hover:bg-brand-dark text-white gap-2"
                         >
                             {isSubmitting ? 'Creating...' : (
                                 <>
@@ -249,7 +249,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                                     <span>Add Source</span>
                                 </>
                             )}
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

@@ -117,40 +117,40 @@ const OrgGeneralPage: React.FC = () => {
                     icon={Users}
                     label="Total Managers"
                     value={stats?.totalManagers || 0}
-                    color="bg-blue-100 text-blue-600"
+                    color="bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                 />
                 <StatCard
                     icon={Users}
                     label="Assigned"
                     value={stats?.assignedManagers || 0}
-                    color="bg-emerald-100 text-emerald-600"
+                    color="bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400"
                 />
                 <StatCard
                     icon={Factory}
                     label="Factories"
                     value={stats?.totalFactories || 0}
-                    color="bg-purple-100 text-purple-600"
+                    color="bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
                 />
                 <StatCard
                     icon={Factory}
                     label="Production Lines"
                     value={stats?.totalLines || 0}
-                    color="bg-amber-100 text-amber-600"
+                    color="bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400"
                 />
             </div>
 
             {/* Danger Zone */}
-            <div className="border border-red-200 rounded-xl p-6 bg-red-50/50">
+            <div className="border border-red-200 dark:border-red-900/30 rounded-xl p-6 bg-red-50/50 dark:bg-red-900/10">
                 <div className="flex items-center gap-3 mb-4">
-                    <AlertTriangle className="w-5 h-5 text-red-500" />
-                    <h3 className="text-lg font-semibold text-red-700">Danger Zone</h3>
+                    <AlertTriangle className="w-5 h-5 text-red-500 dark:text-red-400" />
+                    <h3 className="text-lg font-semibold text-red-700 dark:text-red-200">Danger Zone</h3>
                 </div>
-                <p className="text-sm text-red-600 mb-4">
+                <p className="text-sm text-red-600 dark:text-red-300 mb-4">
                     Deleting an organization will permanently remove all factories, production lines, and data.
                 </p>
                 <button
                     disabled
-                    className="px-4 py-2 bg-red-100 text-red-400 rounded-lg text-sm font-medium cursor-not-allowed"
+                    className="px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-400 dark:text-red-300 rounded-lg text-sm font-medium cursor-not-allowed"
                 >
                     Delete Organization (Coming Soon)
                 </button>

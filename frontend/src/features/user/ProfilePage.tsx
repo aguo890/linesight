@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Globe, Save, Loader2, Bell, Shield, Smartphone, ArrowLeft, Building2, Factory } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../context/ThemeContext';
 import { type UserPreferences } from '../../lib/authApi';
@@ -23,6 +24,7 @@ interface FactoryInfo {
 }
 
 export default function ProfilePage() {
+    const { t, i18n } = useTranslation();
     const { user, updateUser } = useAuth();
     const { setTheme } = useTheme();
     const navigate = useNavigate();
@@ -87,7 +89,7 @@ export default function ProfilePage() {
     const handleSave = async () => {
         if (!user) return;
         if (!formData.full_name.trim()) {
-            setErrorMessage('Full name is required');
+            setErrorMessage(t('profile.error_required'));
             return;
         }
 
@@ -113,11 +115,11 @@ export default function ProfilePage() {
             // IMMEDIATE UI UPDATE: Sync theme to context
             setTheme(formData.theme as 'light' | 'dark' | 'system');
 
-            setSuccessMessage('Profile updated successfully!');
+            setSuccessMessage(t('profile.success'));
             setTimeout(() => setSuccessMessage(''), 3000);
         } catch (error) {
             console.error("Failed to update profile", error);
-            setErrorMessage('Failed to update profile. Please try again.');
+            setErrorMessage(t('profile.error_fail'));
         } finally {
             setIsLoading(false);
         }
@@ -134,14 +136,14 @@ export default function ProfilePage() {
                 className="flex items-center gap-2 text-sm text-text-muted hover:text-text-main transition-colors group"
             >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                Back
+                {t('profile.back')}
             </button>
 
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-text-main">User Profile</h1>
-                    <p className="text-text-muted">Manage your account settings and preferences</p>
+                    <h1 className="text-2xl font-bold text-text-main">{t('profile.title')}</h1>
+                    <p className="text-text-muted">{t('profile.subtitle')}</p>
                 </div>
                 <button
                     onClick={handleSave}
@@ -149,7 +151,7 @@ export default function ProfilePage() {
                     className="flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                    Save Changes
+                    {t('profile.save_btn')}
                 </button>
             </div>
 
@@ -184,7 +186,7 @@ export default function ProfilePage() {
                                 <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-gradient-to-r from-brand/10 to-purple-500/10 text-brand border border-brand/20">
                                     <Building2 className="w-3.5 h-3.5" />
                                     <span className="capitalize">{user.role}</span>
-                                    <span className="text-brand/60">at</span>
+                                    <span className="text-brand/60">{t('profile.at')}</span>
                                     <span className="font-semibold">{organization.name}</span>
                                 </div>
                             </div>
@@ -203,7 +205,7 @@ export default function ProfilePage() {
                             <div className="p-4 border-b border-border-subtle bg-surface-subtle">
                                 <h3 className="text-sm font-medium text-text-main flex items-center gap-2">
                                     <Factory className="w-4 h-4 text-brand" />
-                                    Your Factories
+                                    {t('profile.sections.factories')}
                                 </h3>
                             </div>
                             <div className="p-3 space-y-1">
@@ -222,16 +224,16 @@ export default function ProfilePage() {
 
                     <div className="bg-surface rounded-xl border border-border shadow-sm overflow-hidden">
                         <div className="p-4 border-b border-border-subtle bg-surface-subtle">
-                            <h3 className="text-sm font-medium text-text-main">Security</h3>
+                            <h3 className="text-sm font-medium text-text-main">{t('profile.sections.security')}</h3>
                         </div>
                         <div className="p-2">
                             <button className="w-full text-left px-4 py-3 text-sm text-text-main hover:bg-surface-subtle flex items-center gap-3 transition-colors rounded-lg">
                                 <Shield className="w-4 h-4 text-text-muted" />
-                                <span>Change Password</span>
+                                <span>{t('profile.security.change_password')}</span>
                             </button>
                             <button className="w-full text-left px-4 py-3 text-sm text-text-main hover:bg-surface-subtle flex items-center gap-3 transition-colors rounded-lg">
                                 <Smartphone className="w-4 h-4 text-text-muted" />
-                                <span>Two-Factor Auth</span>
+                                <span>{t('profile.security.two_factor')}</span>
                             </button>
                         </div>
                     </div>
@@ -244,11 +246,11 @@ export default function ProfilePage() {
                     <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-6 text-text-main font-medium pb-4 border-b border-border-subtle">
                             <User className="w-4 h-4 text-brand" />
-                            Personal Information
+                            {t('profile.sections.personal_info')}
                         </div>
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-text-main mb-1">Full Name</label>
+                                <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.full_name')}</label>
                                 <input
                                     type="text"
                                     value={formData.full_name}
@@ -257,7 +259,7 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-main mb-1">Email Address</label>
+                                <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.email')}</label>
                                 <div className="relative">
                                     <input
                                         type="email"
@@ -267,7 +269,7 @@ export default function ProfilePage() {
                                     />
                                     <Mail className="w-4 h-4 text-text-muted absolute left-3 top-2.5" />
                                 </div>
-                                <p className="mt-1 text-xs text-text-subtle">Email cannot be changed directly.</p>
+                                <p className="mt-1 text-xs text-text-subtle">{t('profile.fields.email_hint')}</p>
                             </div>
                         </div>
                     </div>
@@ -276,7 +278,7 @@ export default function ProfilePage() {
                     <div className="bg-surface rounded-xl border border-border shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-6 text-text-main font-medium pb-4 border-b border-border-subtle">
                             <Globe className="w-4 h-4 text-brand" />
-                            Localization & Region
+                            {t('profile.sections.localization')}
                         </div>
 
                         <div className="space-y-6">
@@ -294,23 +296,27 @@ export default function ProfilePage() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-text-main mb-1">Language</label>
-                                    <select className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none">
-                                        <option value="en-US">English (US)</option>
+                                    <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.language')}</label>
+                                    <select
+                                        value={i18n.language}
+                                        onChange={(e) => i18n.changeLanguage(e.target.value)}
+                                        className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
+                                    >
+                                        <option value="en">English (US)</option>
                                         <option value="es">Spanish</option>
                                         <option value="ar">Arabic</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-text-main mb-1">Theme</label>
+                                    <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.theme')}</label>
                                     <select
                                         value={formData.theme}
                                         onChange={(e) => setFormData({ ...formData, theme: e.target.value as 'light' | 'dark' | 'system' })}
                                         className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                     >
-                                        <option value="light">Light Mode</option>
-                                        <option value="dark">Dark Mode</option>
-                                        <option value="system">System Default</option>
+                                        <option value="light">{t('profile.themes.light')}</option>
+                                        <option value="dark">{t('profile.themes.dark')}</option>
+                                        <option value="system">{t('profile.themes.system')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -321,7 +327,7 @@ export default function ProfilePage() {
                     <div className="bg-surface rounded-xl border border-border shadow-sm p-6 opacity-60">
                         <div className="flex items-center gap-2 mb-6 text-text-main font-medium pb-4 border-b border-border-subtle">
                             <Bell className="w-4 h-4 text-brand" />
-                            Notification Preferences (Coming Soon)
+                            {t('profile.sections.notifications')}
                         </div>
                         <div className="space-y-3">
                             {['Email Alerts', 'Push Notifications', 'Weekly Digest'].map(item => (

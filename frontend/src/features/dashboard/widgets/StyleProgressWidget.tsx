@@ -38,37 +38,45 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
                     data={chartData}
                     margin={{ top: 5, right: 30, bottom: 0, left: 10 }}
                 >
-                    {/* Light Gray Grid for contrast with black text */}
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e7eb" />
+                    {/* Grid for contrast */}
+                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--color-border)" />
 
-                    {/* Black Text for X Axis */}
-                    <XAxis type="number" tick={{ fontSize: 10, fill: '#000000' }} stroke="#000000" />
+                    {/* X Axis */}
+                    <XAxis
+                        type="number"
+                        tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
+                        stroke="var(--color-border)"
+                    />
 
-                    {/* Black Text for Y Axis Labels */}
+                    {/* Y Axis Labels */}
                     <YAxis
                         dataKey="style_code"
                         type="category"
                         width={70}
-                        tick={{ fontSize: 10, fontWeight: 500, fill: '#000000' }}
-                        stroke="#000000"
+                        tick={{ fontSize: 10, fontWeight: 500, fill: 'var(--color-text)' }}
+                        stroke="var(--color-border)"
                     />
 
                     <Tooltip
-                        cursor={{ fill: 'rgba(139, 92, 246, 0.1)' }} // Light purple hover tint
-                        contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb', color: '#000000' }}
-                        itemStyle={{ color: '#000000' }}
+                        cursor={{ fill: 'var(--color-brand-faint)' }} // Light semantic hover tint
+                        contentStyle={{
+                            backgroundColor: 'var(--color-surface)',
+                            borderColor: 'var(--color-border)',
+                            color: 'var(--color-text)'
+                        }}
+                        itemStyle={{ color: 'var(--color-text)' }}
                     />
 
-                    {/* Target Bar -> Blue */}
+                    {/* Target Bar -> Blue/Brand */}
                     <Bar dataKey="target" stackId="a" fill="#3b82f6" barSize={15} radius={[0, 4, 4, 0]} />
 
-                    {/* Actual Bar -> Purple */}
+                    {/* Actual Bar -> Purple/Brand Secondary */}
                     <Bar dataKey="actual" stackId="b" fill="#8b5cf6" barSize={15} radius={[0, 4, 4, 0]}>
                         {showPercentage && (
                             <LabelList
                                 dataKey="actual"
                                 position="right"
-                                style={{ fontSize: 10, fill: '#000000' }} // Black text labels
+                                style={{ fontSize: 10, fill: 'var(--color-text)' }}
                                 formatter={(val: any) => val}
                             />
                         )}

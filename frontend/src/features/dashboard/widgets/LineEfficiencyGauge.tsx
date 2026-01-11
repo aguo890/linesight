@@ -42,7 +42,7 @@ const LineEfficiencyGauge: React.FC<SmartWidgetProps<EfficiencyData, LineEfficie
     return (
         <div className="flex-1 flex flex-col justify-center items-center h-full w-full p-4">
             {/* Main Efficiency Display */}
-            <div className={isCompact ? "text-3xl font-bold text-brand" : "text-5xl font-bold text-brand"}>
+            <div className={isCompact ? "text-3xl font-bold text-brand dark:text-white" : "text-5xl font-bold text-brand dark:text-white"}>
                 {efficiency.toFixed(1)}%
             </div>
 

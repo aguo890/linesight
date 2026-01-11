@@ -70,7 +70,7 @@ export const DataSourceRow = ({
             onClick={onClickName}
             className={`
                 group flex items-center justify-between p-4 transition-colors first:rounded-t-xl last:rounded-b-xl cursor-pointer
-                ${isSelected ? 'bg-blue-50' : 'bg-white hover:bg-gray-50'}
+                ${isSelected ? 'bg-brand/10' : 'bg-surface hover:bg-surface-subtle'}
             `}
         >
             {/* LEFT: Checkbox + Name */}
@@ -78,8 +78,11 @@ export const DataSourceRow = ({
                 {/* Checkbox only appears in Assignment Mode */}
                 {!isEditMode && (
                     <div
-                        className="w-5 h-5 flex items-center justify-center"
-                        onClick={(e) => e.stopPropagation()}
+                        className="w-10 h-10 -ml-2.5 flex items-center justify-center cursor-pointer rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleSelection(!isSelected);
+                        }}
                     >
                         <Checkbox
                             checked={isSelected}
@@ -92,14 +95,14 @@ export const DataSourceRow = ({
                     <h4
                         className={`
                             font-medium text-sm truncate transition-all cursor-pointer underline-offset-2
-                            ${(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? 'text-gray-400 italic' : 'text-gray-900 group-hover/name:text-blue-600 group-hover/name:underline'}
+                            ${(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? 'text-text-muted italic' : 'text-text-main group-hover/name:text-brand group-hover/name:underline'}
                         `}
                         title="Click to view details & rename"
                     >
                         {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? "Untitled Source" : dataSource.name}
                     </h4>
                     <span
-                        className="text-[10px] text-gray-400 font-mono mt-0.5 group-hover/name:text-blue-500 transition-colors"
+                        className="text-[10px] text-text-muted font-mono mt-0.5 group-hover/name:text-brand transition-colors"
                     >
                         ID: {dataSource.id.split('-').pop()}
                         {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) && <span className="ml-1 text-orange-400">• Rename Required</span>}
@@ -113,10 +116,10 @@ export const DataSourceRow = ({
                 {/* MODE A: Structure Editing */}
                 {isEditMode ? (
                     <div className="flex items-center gap-2">
-                        <button onClick={handleRename} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                        <button onClick={handleRename} className="p-2 text-text-muted hover:text-brand hover:bg-brand/10 rounded-lg">
                             <Pencil className="w-4 h-4" />
                         </button>
-                        <button onClick={handleDelete} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                        <button onClick={handleDelete} className="p-2 text-text-muted hover:text-danger hover:bg-danger/10 rounded-lg">
                             <Trash2 className="w-4 h-4" />
                         </button>
                     </div>
@@ -129,7 +132,7 @@ export const DataSourceRow = ({
                                 <Avatar key={u.id} className="w-8 h-8 border-2 border-white ring-1 ring-gray-100" title={u.full_name}>
                                     {/* src is likely undefined, checking types tells us MemberRead has no avatar_url. Avatar component handles missing src safely now. */}
                                     <AvatarImage src={(u as any).avatar_url} />
-                                    <AvatarFallback className="bg-blue-100 text-blue-700 text-xs">
+                                    <AvatarFallback className="bg-brand/10 text-brand text-xs">
                                         {(u.full_name || u.email || '?').substring(0, 2).toUpperCase()}
                                     </AvatarFallback>
                                 </Avatar>
@@ -142,7 +145,7 @@ export const DataSourceRow = ({
                             if (open && allUsers.length === 0) loadUsers();
                         }}>
                             <PopoverTrigger asChild>
-                                <button className="h-8 w-8 rounded-full border border-dashed border-gray-300 flex items-center justify-center text-gray-400 hover:border-gray-500 hover:text-gray-600">
+                                <button className="h-8 w-8 rounded-full border border-dashed border-border flex items-center justify-center text-text-muted hover:border-text-muted hover:text-text-main">
                                     <Plus className="w-4 h-4" />
                                 </button>
                             </PopoverTrigger>

@@ -210,7 +210,7 @@ const ZodFieldRenderer: React.FC<{
                 </div>
                 {/* Special Logic: Mock Data Warning */}
                 {name === 'useMockData' && value === true && (
-                    <div className="flex items-center gap-2 p-2 bg-amber-50 text-amber-800 text-xs rounded border border-amber-200 mt-2">
+                    <div className="flex items-center gap-2 p-2 bg-warning/10 text-warning text-xs rounded border border-warning/20 mt-2">
                         <Database className="w-3 h-3" />
                         <span className="font-medium">MOCK DATA MODE: Data will not be live.</span>
                     </div>

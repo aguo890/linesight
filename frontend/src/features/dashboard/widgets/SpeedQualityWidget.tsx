@@ -73,12 +73,13 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     <Tooltip
                         contentStyle={{
                             borderRadius: '8px',
-                            border: 'none',
+                            border: '1px solid var(--color-border)',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             backgroundColor: tooltipBg,
-                            color: axisColor
+                            color: 'var(--color-text-main)'
                         }}
-                        labelStyle={{ color: axisColor, fontSize: '12px', marginBottom: '4px' }}
+                        itemStyle={{ color: 'var(--color-text-main)' }}
+                        labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
                         labelFormatter={(label) => formatDate(label)}
                     />
                     {showLegend && <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '5px' }} />}

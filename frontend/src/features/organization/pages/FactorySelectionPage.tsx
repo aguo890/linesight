@@ -191,7 +191,7 @@ export const FactorySelectionPage: React.FC = () => {
                         id="org-factory-search"
                         type="text"
                         placeholder="Search factories..."
-                        className="w-full pl-10 pr-16 py-2 bg-surface border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
+                        className="w-full pl-10 pr-16 py-2 bg-surface text-text-main placeholder:text-text-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -239,7 +239,7 @@ export const FactorySelectionPage: React.FC = () => {
                             <Plus className="w-6 h-6 text-text-muted group-hover:text-brand" />
                         </div>
                         <div className="text-center">
-                            <p className="font-medium text-text-main group-hover:text-brand-dark">New Factory</p>
+                            <p className="font-medium text-text-main group-hover:text-brand-dark dark:group-hover:text-brand-light">New Factory</p>
                             <p className="text-xs text-text-muted mt-1">Add a new production site</p>
                         </div>
                     </button>

@@ -156,8 +156,8 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
             <div className="flex items-center justify-between gap-2 px-6 pt-6 pb-2 shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                     {icon && (
-                        <div className={cn("p-2 rounded-lg shrink-0", iconBgColor)}>
-                            <div className="w-5 h-5">
+                        <div className={cn("p-2 rounded-lg shrink-0 flex items-center justify-center", iconBgColor)}>
+                            <div className="w-5 h-5 flex items-center justify-center">
                                 {icon}
                             </div>
                         </div>

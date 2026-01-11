@@ -104,17 +104,17 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
             />
 
             {/* Slide-over Panel */}
-            <div className={`fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`fixed inset-y-0 right-0 w-full max-w-md bg-surface shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border-l border-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                     <div className="flex-1 mr-4">
                         {isEditingName ? (
                             <div className="flex items-center gap-2">
                                 <Input
                                     value={nameInput}
                                     onChange={(e) => setNameInput(e.target.value)}
-                                    className="h-9 font-bold text-lg"
+                                    className="h-9 font-bold text-lg bg-surface-subtle border-border text-text-main"
                                     autoFocus
                                     onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
                                 />
@@ -122,21 +122,21 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                             </div>
                         ) : (
                             <div className="group flex items-center gap-2">
-                                <h2 className={`text-lg font-bold truncate ${isUUID ? 'text-gray-400 italic' : 'text-gray-900'}`}>
+                                <h2 className={`text-lg font-bold truncate ${isUUID ? 'text-text-muted italic' : 'text-text-main'}`}>
                                     {isUUID ? `Source ${dataSource.id.split('-').pop()}` : dataSource.name}
                                 </h2>
                                 <button
                                     onClick={() => { setNameInput(dataSource.name); setIsEditingName(true); }}
-                                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-100 rounded text-gray-400 transition-opacity"
+                                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-subtle rounded text-text-muted transition-opacity"
                                     title="Rename Source"
                                 >
                                     <Pencil className="w-4 h-4" />
                                 </button>
                             </div>
                         )}
-                        <p className="text-xs text-gray-500 font-mono mt-1">ID: {dataSource.id}</p>
+                        <p className="text-xs text-text-muted font-mono mt-1">ID: {dataSource.id}</p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
+                    <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-full text-text-muted">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -146,26 +146,26 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
 
                     {/* Stats */}
                     <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                            <span className="block text-2xl font-bold text-blue-700">{assignedMembers.length}</span>
-                            <span className="text-xs text-blue-600 font-medium uppercase tracking-wide">Managers</span>
+                        <div className="bg-brand/10 p-4 rounded-lg border border-brand/20">
+                            <span className="block text-2xl font-bold text-brand">{assignedMembers.length}</span>
+                            <span className="text-xs text-brand/80 font-medium uppercase tracking-wide">Managers</span>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 opacity-60">
-                            <span className="block text-2xl font-bold text-gray-700">--</span>
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">Efficiency</span>
+                        <div className="bg-surface-subtle p-4 rounded-lg border border-border opacity-60">
+                            <span className="block text-2xl font-bold text-text-muted">--</span>
+                            <span className="text-xs text-text-muted font-medium uppercase tracking-wide">Efficiency</span>
                         </div>
                     </div>
 
                     {/* Roster Section */}
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                            <h3 className="text-sm font-bold text-text-main flex items-center gap-2">
                                 <Users className="w-4 h-4" /> Assigned Team
                             </h3>
                         </div>
 
                         {assignedMembers.length === 0 ? (
-                            <div className="text-center py-8 border-2 border-dashed rounded-lg bg-gray-50 text-gray-500 text-sm">
+                            <div className="text-center py-8 border-2 border-dashed border-border rounded-lg bg-surface-subtle text-text-muted text-sm">
                                 No managers assigned to this source.
                             </div>
                         ) : (
@@ -175,21 +175,21 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                                     return (
                                         <div
                                             key={member.id}
-                                            className="flex items-center justify-between p-3 border rounded-lg bg-white hover:border-blue-200 transition-colors group cursor-pointer"
+                                            className="flex items-center justify-between p-3 border border-border rounded-lg bg-surface hover:border-brand/50 transition-colors group cursor-pointer"
                                             onClick={() => onMemberClick(member)}
                                         >
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
                                                     <AvatarImage src={member.avatar_url || undefined} />
-                                                    <AvatarFallback className="text-xs bg-blue-100 text-blue-700">
+                                                    <AvatarFallback className="text-xs bg-brand/10 text-brand">
                                                         {(member.full_name || member.email).slice(0, 2).toUpperCase()}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div className="overflow-hidden">
-                                                    <p className="text-sm font-medium text-gray-900 truncate w-32">
+                                                    <p className="text-sm font-medium text-text-main truncate w-32">
                                                         {member.full_name || "Unknown"}
                                                     </p>
-                                                    <p className="text-xs text-gray-500 truncate w-32">
+                                                    <p className="text-xs text-text-muted truncate w-32">
                                                         {member.email}
                                                     </p>
                                                 </div>
@@ -198,7 +198,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                className="text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                className="text-text-muted hover:text-red-600 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"
                                                 onClick={(e) => scope && handleRemoveUser(e, member.id, scope.id)}
                                                 disabled={isLoading}
                                             >
@@ -213,8 +213,8 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                 </div>
 
                 {/* Footer: Danger Zone */}
-                <div className="p-6 border-t bg-gray-50">
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <div className="p-6 border-t border-border bg-surface-subtle">
+                    <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
                         <ShieldAlert className="w-3 h-3" /> Danger Zone
                     </h4>
                     <Button

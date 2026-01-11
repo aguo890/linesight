@@ -27,14 +27,14 @@ export const MockEarnedMinutesWidget: React.FC<MockWidgetProps> = ({
     const data = Array.isArray(rawData) ? { breakdown: rawData } : (rawData || { breakdown: [] });
 
     return (
-        <div className={`flex flex-col h-full w-full p-4 transition-colors duration-300 ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
+        <div className={`flex flex-col h-full w-full p-4 transition-colors duration-300 ${isDark ? 'bg-[#1e1e1e] text-slate-100' : 'bg-white text-slate-900'}`}>
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-md ${isDark ? 'bg-violet-900/40' : 'bg-violet-50'}`}>
-                        <Activity className="w-4 h-4 text-violet-500" />
+                    <div className={`p-1.5 rounded-md ${isDark ? 'bg-indigo-500/20' : 'bg-indigo-50'}`}>
+                        <Activity className={`w-4 h-4 ${isDark ? 'text-indigo-400' : 'text-indigo-600'}`} />
                     </div>
-                    <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Earned Minutes</h3>
+                    <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>Earned Minutes</h3>
                 </div>
             </div>
 

@@ -36,7 +36,7 @@ export const Logo: React.FC<LogoProps> = ({
         },
         app: {
             text: "text-base font-semibold tracking-tight text-[var(--color-text)]",
-            img: "h-6 w-auto mix-blend-multiply dark:mix-blend-normal",
+            img: "h-6 w-auto mix-blend-multiply dark:mix-blend-normal dark:invert",
             container: "gap-2"
         },
         auth: {

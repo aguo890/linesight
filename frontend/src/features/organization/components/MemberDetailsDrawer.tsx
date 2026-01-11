@@ -31,8 +31,8 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
 
     // Styles for the panel (Shape & Animation)
     const panelClasses = isModal
-        ? `bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col transform transition-all duration-200 scale-100`
-        : `w-full bg-white shadow-2xl h-full flex flex-col transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`;
+        ? `bg-surface rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col transform transition-all duration-200 scale-100 border border-border`
+        : `w-full bg-surface shadow-2xl h-full flex flex-col transform transition-transform duration-300 ease-in-out border-l border-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`;
 
     // Visibility wrapper
     const visibilityClass = isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none';
@@ -51,9 +51,9 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
                 <div className={`${panelClasses} overflow-hidden`}>
 
                     {/* Header */}
-                    <div className="flex items-center justify-between px-6 py-4 border-b bg-gray-50/50">
-                        <h2 className="text-lg font-semibold">Member Details</h2>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full text-gray-500 transition-colors">
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface-subtle">
+                        <h2 className="text-lg font-semibold text-text-main">Member Details</h2>
+                        <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-full text-text-muted transition-colors">
                             <X className="w-5 h-5" />
                         </button>
                     </div>
@@ -63,22 +63,22 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
 
                         {/* Identity */}
                         <div className="flex flex-col items-center text-center">
-                            <Avatar className="h-20 w-20 mb-4 border-4 border-gray-50">
+                            <Avatar className="h-20 w-20 mb-4 border-4 border-surface-subtle">
                                 <AvatarImage src={member.avatar_url || undefined} />
-                                <AvatarFallback className="text-xl bg-blue-100 text-blue-700">
-                                    {(member.full_name || member.email).slice(0, 2).toUpperCase()}
+                                <AvatarFallback className="text-xl bg-brand/10 text-brand">
+                                    {(member.full_name || member.email || '').slice(0, 2).toUpperCase()}
                                 </AvatarFallback>
                             </Avatar>
-                            <h3 className="text-xl font-bold text-gray-900">{member.full_name || 'Unknown User'}</h3>
-                            <p className="text-gray-500">{member.email}</p>
+                            <h3 className="text-xl font-bold text-text-main">{member.full_name || 'Unknown User'}</h3>
+                            <p className="text-text-muted">{member.email}</p>
                         </div>
 
                         {/* Section 1: Role */}
                         <div className="space-y-3">
-                            <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Role</h4>
-                            <div className="flex items-center gap-3 p-3 border rounded-lg bg-gray-50">
-                                <Shield className="w-5 h-5 text-blue-600" />
-                                <span className="capitalize font-medium text-gray-900">
+                            <h4 className="text-sm font-medium text-text-muted uppercase tracking-wider">Role</h4>
+                            <div className="flex items-center gap-3 p-3 border border-border rounded-lg bg-surface-subtle">
+                                <Shield className="w-5 h-5 text-brand" />
+                                <span className="capitalize font-medium text-text-main">
                                     {member.role.replace(/_/g, ' ')}
                                 </span>
                             </div>
@@ -87,31 +87,32 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
                         {/* Section 2: Scopes */}
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                                <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Active Assignments</h4>
-                                <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600">
-                                    {member.scopes.length}
+                                <h4 className="text-sm font-medium text-text-muted uppercase tracking-wider">Active Assignments</h4>
+                                <span className="text-xs bg-surface-subtle px-2 py-0.5 rounded-full text-text-muted border border-border">
+                                    {(member.scopes || []).length}
                                 </span>
                             </div>
-                            {member.scopes.length === 0 ? (
-                                <p className="text-sm text-gray-400 italic">No assignments.</p>
+                            {(member.scopes || []).length === 0 ? (
+                                <p className="text-sm text-text-muted italic">No assignments.</p>
                             ) : (
-                                <div className="border rounded-lg divide-y">
-                                    {member.scopes.map((scope: any) => {
+                                <div className="border border-border rounded-lg divide-y divide-border">
+                                    {(member.scopes || []).map((scope: any) => {
                                         // [NEW] LOOKUP LOGIC
                                         const knownLine = contextLines.find(l => l.id === scope.production_line_id);
-                                        const displayName = knownLine ? knownLine.name : `External Line (${scope.production_line_id.slice(-4)})`;
+                                        const productionLineId = scope.production_line_id || '';
+                                        const displayName = knownLine ? knownLine.name : `External Line (${productionLineId.slice(-4)})`;
                                         const isContextual = !!knownLine;
 
                                         return (
-                                            <div key={scope.id} className="p-3 flex items-center justify-between bg-white">
+                                            <div key={scope.id} className="p-3 flex items-center justify-between bg-surface">
                                                 <div className="flex items-center gap-3">
-                                                    <Factory className={`w-4 h-4 ${isContextual ? 'text-blue-500' : 'text-gray-400'}`} />
+                                                    <Factory className={`w-4 h-4 ${isContextual ? 'text-brand' : 'text-text-muted'}`} />
                                                     <div className="flex flex-col">
-                                                        <span className={`text-sm font-medium ${isContextual ? 'text-gray-900' : 'text-gray-500'}`}>
+                                                        <span className={`text-sm font-medium ${isContextual ? 'text-text-main' : 'text-text-muted'}`}>
                                                             {displayName}
                                                         </span>
                                                         {isContextual && (
-                                                            <span className="text-[10px] text-gray-400 font-mono">
+                                                            <span className="text-[10px] text-text-muted font-mono">
                                                                 {knownLine.code}
                                                             </span>
                                                         )}
@@ -119,7 +120,7 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
                                                 </div>
 
                                                 {isContextual && (
-                                                    <Badge variant="outline" className="text-[10px] font-normal">
+                                                    <Badge variant="outline" className="text-[10px] font-normal border-border text-text-muted">
                                                         Current Factory
                                                     </Badge>
                                                 )}
@@ -131,8 +132,8 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
                         </div>
 
                         {/* Section 3: Danger Zone */}
-                        <div className="space-y-3 pt-6 border-t">
-                            <h4 className="text-sm font-medium text-red-600 uppercase tracking-wider flex items-center gap-2">
+                        <div className="space-y-3 pt-6 border-t border-border">
+                            <h4 className="text-sm font-medium text-danger uppercase tracking-wider flex items-center gap-2">
                                 <AlertTriangle className="w-4 h-4" /> Danger Zone
                             </h4>
                             <Button variant="danger" className="w-full">Suspend User</Button>

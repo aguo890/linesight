@@ -101,11 +101,12 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                         <Tooltip
                             contentStyle={{
                                 borderRadius: '8px',
-                                border: 'none',
+                                border: '1px solid var(--color-border)',
                                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                                 backgroundColor: tooltipBg,
-                                color: axisColor
+                                color: 'var(--color-text-main)'
                             }}
+                            labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
                             cursor={{ stroke: gridColor, strokeWidth: 1, strokeDasharray: '5 5' }}
                         />
                         {showThresholdLine && (

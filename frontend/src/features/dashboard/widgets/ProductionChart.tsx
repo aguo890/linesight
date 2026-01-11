@@ -92,12 +92,13 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                 <Tooltip
                     contentStyle={{
                         borderRadius: '8px',
-                        border: 'none',
+                        border: '1px solid var(--color-border)',
                         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                         backgroundColor: tooltipBg,
-                        color: axisColor
+                        color: 'var(--color-text-main)'
                     }}
-                    labelStyle={{ color: axisColor, fontSize: '12px' }}
+                    itemStyle={{ color: 'var(--color-text-main)' }}
+                    labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', fontWeight: 600 }}
                     labelFormatter={(label) => formatDate(label)}
                 />
                 {showLegend && (

@@ -24,15 +24,15 @@ const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
     const efficiencyPct = data?.efficiency_pct_aggregate ?? 0;
 
     // Determine efficiency status color
-    let effColor = 'text-blue-600';
-    let effBg = 'bg-blue-50';
+    let effColor = 'text-brand';
+    let effBg = 'bg-brand/10';
     if (efficiencyPct < 85) {
-        effColor = 'text-amber-600';
-        effBg = 'bg-amber-50';
+        effColor = 'text-warning';
+        effBg = 'bg-warning/10';
     }
     if (efficiencyPct < 70) {
-        effColor = 'text-red-600';
-        effBg = 'bg-red-50';
+        effColor = 'text-danger';
+        effBg = 'bg-danger/10';
     }
 
     return (
@@ -41,7 +41,7 @@ const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
             <div className={`flex items-center justify-between p-3 rounded-lg ${effBg}`}>
                 <div className="flex items-center gap-2">
                     <TrendingUp className={`w-5 h-5 ${effColor}`} />
-                    <span className="text-sm font-medium text-gray-700">Efficiency</span>
+                    <span className="text-sm font-medium text-text-main">Efficiency</span>
                 </div>
                 <span className={`text-2xl font-bold ${effColor}`}>
                     {efficiencyPct.toFixed(1)}%
@@ -51,27 +51,27 @@ const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
             {/* Secondary KPIs */}
             <div className="grid grid-cols-2 gap-3">
                 {/* Earned Minutes */}
-                <div className="flex flex-col items-center p-3 bg-amber-50 rounded-lg">
-                    <div className="flex items-center gap-1.5 text-amber-600 mb-1">
+                <div className="flex flex-col items-center p-3 bg-warning/5 rounded-lg border border-warning/10">
+                    <div className="flex items-center gap-1.5 text-warning mb-1">
                         <Zap className="w-4 h-4" />
                         <span className="text-xs font-medium">Earned</span>
                     </div>
-                    <span className="text-lg font-bold text-amber-700">
+                    <span className="text-lg font-bold text-text-main">
                         {formatNumber(earnedMins)}
                     </span>
-                    <span className="text-[10px] text-gray-500">minutes</span>
+                    <span className="text-[10px] text-text-muted">minutes</span>
                 </div>
 
                 {/* Available Minutes */}
-                <div className="flex flex-col items-center p-3 bg-slate-50 rounded-lg">
-                    <div className="flex items-center gap-1.5 text-slate-600 mb-1">
+                <div className="flex flex-col items-center p-3 bg-surface-subtle rounded-lg border border-border">
+                    <div className="flex items-center gap-1.5 text-text-muted mb-1">
                         <Clock className="w-4 h-4" />
                         <span className="text-xs font-medium">Available</span>
                     </div>
-                    <span className="text-lg font-bold text-slate-700">
+                    <span className="text-lg font-bold text-text-main">
                         {formatNumber(availableMins)}
                     </span>
-                    <span className="text-[10px] text-gray-500">minutes</span>
+                    <span className="text-[10px] text-text-muted">minutes</span>
                 </div>
             </div>
         </div>

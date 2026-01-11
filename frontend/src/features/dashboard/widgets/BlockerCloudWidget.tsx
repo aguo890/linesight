@@ -58,14 +58,14 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
                 {displayReasons.map((item, idx) => (
                     <div key={idx} className="group">
                         <div className="flex justify-between items-center text-xs mb-1">
-                            <span className="font-medium text-slate-700">{item.reason}</span>
+                            <span className="font-medium text-text-main">{item.reason}</span>
                             {showCounts && (
-                                <span className="text-slate-400">{item.count} occurrences</span>
+                                <span className="text-text-muted">{item.count} occurrences</span>
                             )}
                         </div>
-                        <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-surface-subtle rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-red-400 rounded-full group-hover:bg-red-500 transition-all duration-500"
+                                className="h-full bg-danger/70 rounded-full group-hover:bg-danger transition-all duration-500"
                                 style={{ width: `${(item.count / maxCount) * 100}%` }}
                             />
                         </div>
@@ -73,8 +73,8 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
                 ))}
             </div>
 
-            <div className="mt-2 pt-2 border-t border-slate-50">
-                <button className="text-[10px] text-sky-600 font-medium flex items-center hover:underline">
+            <div className="mt-2 pt-2 border-t border-border">
+                <button className="text-[10px] text-brand font-medium flex items-center hover:underline">
                     View all logs <ArrowRight className="w-3 h-3 ml-1" />
                 </button>
             </div>

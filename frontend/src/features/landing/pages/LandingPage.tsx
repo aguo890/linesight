@@ -415,7 +415,7 @@ const LandingPage: React.FC = () => {
                                 />
                             </button>
                             <span className={`text-sm font-bold ${isAnnual ? 'text-white' : 'text-slate-500'}`}>
-                                Annual <span className="text-blue-400 ml-1">(-34%)</span>
+                                Annual <span className="text-blue-400 ml-1">(-20%)</span>
                             </span>
                         </div>
                     </div>
@@ -471,25 +471,48 @@ const PRICING_PLANS = [
     {
         id: 'starter',
         name: 'Starter',
-        price: 0,
-        description: 'For line managers digitizing their first floor.',
-        features: ['1 Factory Limit', 'Manual CSV Uploads', 'Basic Line Efficiency', '7-Day Data Retention'],
-        cta: 'Start for Free'
+        // Strategy: Cheap enough to expense, enough lines to run a real shop.
+        price: { monthly: 49, annual: 39 },
+        description: 'For the hands-on factory owner digitizing their floor.',
+        features: [
+            '1 Factory',
+            'Up to 10 Production Lines', // High enough to capture the whole shop
+            'Unlimited Dashboards', // Let them build as much as they want (Stickiness)
+            '1 Admin User', // The Restriction: Single Player Mode
+            '30-Day Data Retention'
+        ],
+        cta: 'Start Free Trial'
     },
     {
         id: 'pro',
         name: 'Professional',
-        price: { monthly: 150, annual: 99 },
-        description: 'For factory owners scaling compliance and output.',
-        features: ['Up to 3 Factories', 'Automated ETL Pipelines', 'SAM & DHU Analysis', '90-Day Retention', 'Priority Email Support'],
-        cta: 'Upgrade to Pro'
+        // Strategy: The upsell for teams. 
+        price: { monthly: 199, annual: 159 },
+        description: 'For organizations managing teams and hierarchies.',
+        features: [
+            '3 Factories',
+            '25 Production Lines',
+            'Role-Based Access (RBAC)', // The Killer Feature: Multi Player Mode
+            'Line Manager & Analyst Accounts',
+            'Unlimited Data History',
+            'Export to Excel/CSV'
+        ],
+        cta: 'Upgrade to Team'
     },
     {
         id: 'enterprise',
         name: 'Enterprise',
         price: 'Custom',
-        description: 'Global federation and UFLPA auditing.',
-        features: ['Unlimited Factories', 'UFLPA Compliance Logs', 'SSO (SAML)', 'Dedicated Success Manager', 'On-Premise Option'],
+        description: 'For global operations requiring compliance & auditing.',
+        features: [
+            'Unlimited Factories',
+            'Unlimited Lines',
+            'Custom Integrations & Features',
+            'Dedicated Success Manager',
+            'SSO (SAML) & Audit Logs',
+            'UFLPA Compliance Reporting',
+            'On-Premise / Private Cloud'
+        ],
         cta: 'Contact Sales'
     }
 ];

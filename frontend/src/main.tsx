@@ -1,7 +1,8 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
+import './i18n'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { ThemeProvider } from './context/ThemeContext.tsx'
 import App from './App.tsx'
@@ -34,7 +35,9 @@ enableMocking().then(() => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
-            <App />
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+              <App />
+            </Suspense>
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

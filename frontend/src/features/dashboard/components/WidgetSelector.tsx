@@ -412,9 +412,9 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                 ) : (
                     /* Ghost Wireframe Fallback */
                     <div className="w-full h-full flex flex-col items-center justify-center opacity-40 select-none pointer-events-none">
-                        <div className="w-24 h-1 bg-gray-200 rounded-full mb-1.5 animate-pulse" />
-                        <div className="w-16 h-1 bg-gray-100 rounded-full mb-2 animate-pulse" style={{ animationDelay: '0.2s' }} />
-                        <span className="text-[8px] text-gray-400 font-bold uppercase tracking-widest leading-none">
+                        <div className="w-24 h-1 bg-border rounded-full mb-1.5 animate-pulse" />
+                        <div className="w-16 h-1 bg-surface-subtle rounded-full mb-2 animate-pulse" style={{ animationDelay: '0.2s' }} />
+                        <span className="text-[8px] text-text-muted font-bold uppercase tracking-widest leading-none">
                             {widget.locked ? 'Coming Soon' : 'Data Req.'}
                         </span>
                     </div>

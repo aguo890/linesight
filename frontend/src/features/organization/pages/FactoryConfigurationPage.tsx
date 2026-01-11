@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Settings, LayoutGrid, Users, X, Plus } from 'lucide-react';
+import { Settings, LayoutGrid, Users, X, Plus, Info } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
@@ -86,9 +86,9 @@ export const FactoryConfigurationPage: React.FC = () => {
     const dataSources = factory.data_sources || [];
 
     return (
-        <div className="h-full flex flex-col bg-gray-50 relative">
+        <div className="h-full flex flex-col bg-gray-50 dark:bg-canvas relative">
             {/* Header */}
-            <div className="bg-white border-b px-8 py-5 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+            <div className="bg-white dark:bg-surface border-b border-border px-8 py-5 flex items-center justify-between sticky top-0 z-10 shadow-sm">
                 <div className="flex flex-col gap-2">
                     {/* Breadcrumbs */}
                     <Breadcrumb
@@ -99,11 +99,29 @@ export const FactoryConfigurationPage: React.FC = () => {
                         ]}
                     />
 
-                    <h1 className="text-xl font-bold flex items-center gap-2 mt-1">
+                    <h1 className="text-xl font-bold flex items-center gap-2 mt-1 text-text-main">
                         {factory.name}
-                        <span className="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-0.5 rounded border">
+                        <span className="text-xs font-normal text-text-muted bg-surface-subtle px-2 py-0.5 rounded border border-border">
                             {factory.code}
                         </span>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <button className="ml-2 text-slate-400 hover:text-brand dark:text-slate-400 dark:hover:text-blue-400 transition-colors">
+                                    <Info className="w-5 h-5" />
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-80 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl">
+                                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Factory Configuration</h3>
+                                <div className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
+                                    <p>
+                                        <strong className="text-slate-700 dark:text-slate-200">Assignment Mode:</strong> Default view. Click faces to view details or the <span className="inline-block border border-dashed border-slate-300 dark:border-slate-600 w-4 h-4 text-center leading-3 rounded-full">+</span> button to assign managers to data sources.
+                                    </p>
+                                    <p>
+                                        <strong className="text-slate-700 dark:text-slate-200">Structure Mode:</strong> Click "Customize Layout" to rename, delete, or add new data sources to this factory.
+                                    </p>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                     </h1>
                 </div>
 
@@ -125,27 +143,29 @@ export const FactoryConfigurationPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Main Content Area - No Sidebar! */}
-            <div className="flex-1 overflow-y-auto p-8 pb-32">
+            {/* Main Content Area - Full Width Optimization */}
+            {/* Removed p-8 and pb-32 as requested to ensure flush layout */}
+            <div className="flex-1 overflow-y-auto">
                 <div className="w-full">
 
-                    {/* Add Data Source Button (Only in Edit Mode) */}
+                    {/* Add Data Source Button (Flush Row Style in Edit Mode) */}
                     {isEditMode && (
                         <button
                             onClick={() => setIsCreateModalOpen(true)}
-                            className="w-full mb-6 border-2 border-dashed border-gray-300 rounded-xl p-6 flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                            className="w-full border-b border-dashed border-border bg-brand/5 dark:bg-brand/10 p-6 flex items-center justify-center text-brand hover:bg-brand/10 hover:text-brand-dark hover:border-brand transition-all group"
                         >
                             <span className="font-bold flex items-center gap-2">
-                                <Plus className="w-5 h-5" />
+                                <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" />
                                 Add Data Source
                             </span>
                         </button>
                     )}
 
-                    {/* The List of Rows */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y">
+                    {/* The List of Rows - Flush Style */}
+                    {/* Removed rounded-xl, shadow-sm, and outer border. Added border-b to close the list. */}
+                    <div className="bg-white dark:bg-surface border-b border-border divide-y divide-border">
                         {dataSources.length === 0 ? (
-                            <div className="p-12 text-center text-gray-500">No data sources configured. Switch to Edit Mode to add one.</div>
+                            <div className="p-12 text-center text-text-muted">No data sources configured. Switch to Edit Mode to add one.</div>
                         ) : (
                             dataSources.map((ds) => {
                                 // Calculate assigned users for this source
@@ -172,6 +192,8 @@ export const FactoryConfigurationPage: React.FC = () => {
                         )}
                     </div>
                 </div>
+                {/* Spacer to prevent content from hiding behind the floating bar if many items exist */}
+                {/* <div className="h-24" /> */}
             </div>
 
             {/* FLOATING ACTION BAR (Bulk Actions) */}
