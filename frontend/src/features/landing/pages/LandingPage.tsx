@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
@@ -22,6 +22,8 @@ import { MockBlockerCloudWidget } from '../components/simulation/MockBlockerClou
 import { MiniDashboard } from '../components/simulation/MiniDashboard';
 import { PARTNER_LOGOS } from '../components/PartnerLogos';
 import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
+import { useSnakeScroll } from '../../../hooks/useSnakeScroll';
+import { SnakeLane } from '../components/SnakeLane';
 
 const springTransition = { type: "spring", stiffness: 100, damping: 20 } as const;
 
@@ -29,6 +31,16 @@ const fadeInVariant = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 } as const;
+
+const colorVariant = {
+    initial: {
+        color: "#2563eb", // blue-600
+    },
+    animate: {
+        color: ["#2563eb", "#2dd4bf", "#2563eb"], // Cycle: Blue -> Teal (Snake Color) -> Blue
+        transition: { duration: 0.8, ease: "easeInOut" } as const
+    }
+};
 
 // --- Sub-components & Data ---
 
@@ -169,6 +181,8 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> =
     );
 };
 
+// BackgroundTrendline removed in favor of SnakeLane
+
 const LandingPage: React.FC = () => {
     const { isAuthenticated } = useAuth();
     const { resolvedTheme } = useTheme();
@@ -185,6 +199,23 @@ const LandingPage: React.FC = () => {
     const yLayer1 = useTransform(scrollYProgress, [0, 1], [0, -60]);  // TargetRealization
     const yLayer2 = useTransform(scrollYProgress, [0, 1], [0, -120]); // SpeedQuality (Closer/Faster)
     const yLayer3 = useTransform(scrollYProgress, [0, 1], [0, -30]);  // BlockerCloud (Farther/Slower)
+
+    // Snake Scroll Logic
+    const snakeContainerRef = useRef<HTMLDivElement>(null);
+    const snakeProgress = useSnakeScroll(snakeContainerRef);
+
+    const [isSnakeFinished, setIsSnakeFinished] = useState(false);
+
+    useEffect(() => {
+        // Subscribe to MotionValue changes without triggering re-renders on every pixel
+        return snakeProgress.on("change", (latest) => {
+            if (latest > 0.99) {
+                setIsSnakeFinished(true);
+            } else if (latest < 0.90) {
+                setIsSnakeFinished(false);
+            }
+        });
+    }, [snakeProgress]);
 
     return (
         <div className="min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
@@ -337,15 +368,23 @@ const LandingPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* --- NEW SECTION: The Problem/Solution Trio (Core Value) --- */}
-            <section className={`py-24 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {/* Card 1: Spreadsheets (The Pain) */}
-                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
-                            ? 'bg-slate-900 border-slate-800 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-900/20'
-                            : 'bg-white border-slate-200 hover:border-red-200 hover:shadow-xl hover:shadow-red-100'
-                            }`}>
+            {/* --- NEW SECTION: The Problem/Solution Snake Layout --- */}
+            <div ref={snakeContainerRef} className={`relative w-full pt-57 pb-15 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
+
+                {/* The Responsive Grid Architecture */}
+                <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_120px_1fr] gap-4">
+
+                    {/* COLUMN 1: Left Content */}
+                    <div className="flex flex-col gap-96 py-20 px-6 text-right">
+                        {/* Card 1: Spreadsheets */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className={`group relative p-8 rounded-[32px] border text-left transition-all duration-300 hover:-translate-y-1 ${isDark
+                                ? 'bg-slate-900 border-slate-800 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-900/20'
+                                : 'bg-white border-slate-200 hover:border-red-200 hover:shadow-xl hover:shadow-red-100'
+                                }`}>
                             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-slate-800 text-red-400' : 'bg-red-50 text-red-600'
                                 }`}>
                                 <FileSpreadsheet size={28} strokeWidth={1.5} />
@@ -354,13 +393,50 @@ const LandingPage: React.FC = () => {
                             <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
                                 Stop running your floor on yesterday's data. Eliminate paper tickets and the morning scramble for numbers.
                             </p>
-                        </div>
+                        </motion.div>
 
-                        {/* Card 2: ERP (The Hero - Highlighted) */}
-                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
-                            ? 'bg-gradient-to-b from-slate-800 to-slate-900 border-blue-500/30 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20'
-                            : 'bg-white border-blue-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-100'
-                            }`}>
+                        {/* Card 3: Accountability */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className={`group relative p-8 rounded-[32px] border text-left transition-all duration-300 hover:-translate-y-1 ${isDark
+                                ? 'bg-slate-900 border-slate-800 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-900/20'
+                                : 'bg-white border-slate-200 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100'
+                                }`}>
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-slate-800 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
+                                }`}>
+                                <Users size={28} strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Operator Accountability</h3>
+                            <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
+                                Track piece-rates, efficiency, and bottlenecks down to the individual operator level.
+                            </p>
+                        </motion.div>
+                    </div>
+
+                    {/* COLUMN 2: The Snake Lane */}
+                    {/* COLUMN 2: The Snake Lane */}
+                    <div className="relative h-full hidden md:block w-full" aria-hidden="true">
+                        {/* Absolute positioning ensures it overlays the grid column perfectly without affecting flow */}
+                        <div className="absolute inset-0 w-full h-full">
+                            <SnakeLane progress={snakeProgress} isDark={isDark} />
+                        </div>
+                    </div>
+
+                    {/* COLUMN 3: Right Content */}
+                    <div className="flex flex-col gap-96 py-20 px-6 text-left mt-64">
+                        {/* mt-64 offsets the right side to create a stagger effect */}
+
+                        {/* Card 2: ERP */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className={`group relative p-8 rounded-[32px] border text-left transition-all duration-300 hover:-translate-y-1 ${isDark
+                                ? 'bg-gradient-to-b from-slate-800 to-slate-900 border-blue-500/30 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20'
+                                : 'bg-white border-blue-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-100'
+                                }`}>
                             {/* "Recommended" Badge for visual break */}
                             <div className="absolute top-6 right-6">
                                 <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-blue-500'}`} />
@@ -374,32 +450,27 @@ const LandingPage: React.FC = () => {
                             <p className={`${isDark ? 'text-slate-300' : 'text-slate-600'} leading-relaxed font-medium`}>
                                 Skip the $100k SAP implementation. LineSight works with the tablets you already own, deploying in <span className="text-blue-500 font-bold">days, not months</span>.
                             </p>
-                        </div>
-
-                        {/* Card 3: Accountability (The Benefit) */}
-                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
-                            ? 'bg-slate-900 border-slate-800 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-900/20'
-                            : 'bg-white border-slate-200 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100'
-                            }`}>
-                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-slate-800 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
-                                }`}>
-                                <Users size={28} strokeWidth={1.5} />
-                            </div>
-                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Operator Accountability</h3>
-                            <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
-                                Track piece-rates, efficiency, and bottlenecks down to the individual operator level.
-                            </p>
-                        </div>
+                        </motion.div>
                     </div>
+
                 </div>
-            </section>
+            </div>
 
             {/* --- NEW SECTION: Social Proof (Bridge to Demo) --- */}
             <section className={`py-20 px-6 border-t ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
                 <div className="max-w-4xl mx-auto text-center">
                     <Quote size={48} className="mx-auto mb-8 text-blue-500 opacity-50" />
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8 leading-tight">
-                        "We replaced <span className="text-blue-600">1,000 spreadsheets</span> with one live dashboard."
+                        "We replaced
+                        <motion.span
+                            variants={colorVariant}
+                            initial="initial"
+                            animate={isSnakeFinished ? "animate" : "initial"}
+                            className="inline-block mx-2 text-blue-600 origin-center"
+                        >
+                            1,000 spreadsheets
+                        </motion.span>
+                        with one live dashboard."
                     </h2>
                     <div className="flex items-center justify-center gap-4">
                         <div className="h-12 w-12 rounded-full bg-white overflow-hidden border border-slate-200 flex items-center justify-center">
