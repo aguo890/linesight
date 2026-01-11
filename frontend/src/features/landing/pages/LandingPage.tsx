@@ -6,15 +6,22 @@ import { useTheme } from '../../../context/ThemeContext';
 import { Logo } from '../../../components/common/Logo';
 import {
     ArrowRight,
-    LayoutDashboard,
-    BarChart3,
     Check,
-    Zap
+    Zap,
+    FileSpreadsheet, // For "Kill Spreadsheets"
+    Tablet,          // For "ERP Alternative"
+    Users,           // For "Operator Accountability"
+    Quote,           // For Social Proof
+
+    LayoutDashboard, // Needed for Bento Grid
+    BarChart3        // Needed for Hero/Widgets
 } from 'lucide-react';
 import { MockSpeedQualityWidget } from '../components/simulation/MockSpeedQualityWidget';
 import { MockTargetRealizationWidget } from '../components/simulation/MockTargetRealizationWidget';
 import { MockBlockerCloudWidget } from '../components/simulation/MockBlockerCloudWidget';
 import { MiniDashboard } from '../components/simulation/MiniDashboard';
+import { PARTNER_LOGOS } from '../components/PartnerLogos';
+import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
 
 const springTransition = { type: "spring", stiffness: 100, damping: 20 } as const;
 
@@ -23,7 +30,7 @@ const fadeInVariant = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 } as const;
 
-// --- Sub-components for "Next Level" Polish ---
+// --- Sub-components & Data ---
 
 const DEMO_SPEED_QUALITY = [
     { date: 'Mon', efficiency_pct: 82, defects_per_hundred: 2.1 },
@@ -73,6 +80,7 @@ const DEMO_PRODUCTION_CHART = [
     { day: '2026-01-07', actual: 1600, target: 1500 },
 ];
 
+
 const GridPattern = () => (
     <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none overflow-hidden">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +94,6 @@ const GridPattern = () => (
     </div>
 );
 
-
 const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> = ({ plan, isAnnual, isDark }) => {
     const isPro = plan.id === 'pro';
 
@@ -95,7 +102,6 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> =
         if (typeof plan.price === 'object') {
             return `$${isAnnual ? plan.price.annual : plan.price.monthly}`;
         }
-        // Fallback for simple number (though we'll update data to use objects or keep simple 0)
         return plan.price === 0 ? 'Free' : `$${plan.price}`;
     };
 
@@ -151,12 +157,14 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> =
                 ))}
             </div>
 
-            <button className={`w-full py-4 rounded-2xl font-bold transition-all active:scale-95 ${isPro
-                ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30'
-                : 'bg-white/10 text-white hover:bg-white/20'
-                }`}>
-                {plan.cta}
-            </button>
+            <Link to={plan.id === 'enterprise' ? "/contact" : `/register?plan=${plan.id}&billing=${isAnnual ? 'annual' : 'monthly'}`} className="w-full">
+                <button className={`w-full py-4 rounded-2xl font-bold transition-all active:scale-95 ${isPro
+                    ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}>
+                    {plan.cta}
+                </button>
+            </Link>
         </motion.div>
     );
 };
@@ -168,10 +176,10 @@ const LandingPage: React.FC = () => {
     const isDark = resolvedTheme === 'dark';
 
     return (
-        <div className={`min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950 text-white' : 'bg-white text-slate-900'}`}>
+        <div className="min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
 
             {/* Navigation */}
-            <nav className={`fixed top-0 w-full z-[100] backdrop-blur-xl border-b transition-colors duration-300 ${isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-white/80 border-slate-100'}`}>
+            <nav className="fixed top-0 w-full z-[100] backdrop-blur-xl border-b transition-colors duration-300 bg-white/80 border-slate-100 dark:bg-slate-950/80 dark:border-slate-800">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Logo variant="marketing" />
                     <div className="flex items-center gap-8">
@@ -196,14 +204,14 @@ const LandingPage: React.FC = () => {
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
                     <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
                         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest mb-6 ${isDark ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
-                            <Zap size={14} fill="currentColor" /> Now with AI Explainability
+                            <Zap size={14} fill="currentColor" /> Live Production Tracking
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8 italic">
+                        <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8">
                             ELIMINATE <br />
-                            <span className="text-blue-600 not-italic">DOWNTIME.</span>
+                            <span className="text-blue-600">DOWNTIME.</span>
                         </h1>
                         <p className={`text-xl font-medium max-w-lg mb-10 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            The industrial intelligence engine that transforms fragmented floor data into actionable predictive insights.
+                            Get real-time visibility into every bundle, operator, and sewing line—without the 6-month ERP setup.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <motion.button className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-200 dark:shadow-blue-900/40">
@@ -248,6 +256,132 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
+            {/* --- NEW SECTION: The Brand Marquee (Trust) --- */}
+            <div className={`py-12 border-y overflow-hidden whitespace-nowrap ${isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="text-center mb-6">
+                    <p className={`text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                        Powering the manufacturing for
+                    </p>
+                </div>
+
+                {/* Infinite Scroll Marquee */}
+                <div className="relative flex overflow-hidden mask-gradient-x py-6"> {/* Reduced py-10 to py-6 */}
+
+                    {/* Fade Masks (Left & Right) */}
+                    <div className={`absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r ${isDark ? 'from-slate-950 to-transparent' : 'from-slate-50 to-transparent'}`} />
+                    <div className={`absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l ${isDark ? 'from-slate-950 to-transparent' : 'from-slate-50 to-transparent'}`} />
+
+                    <motion.div
+                        className="flex gap-12 items-center px-4"
+                        // We calculate the X movement based on percentage. 
+                        // Since we duplicate the list once, moving -50% creates a seamless loop.
+                        animate={{ x: ["0%", "-50%"] }}
+                        transition={{
+                            repeat: Infinity,
+                            ease: "linear",
+                            duration: 20 // Adjust speed: Lower = Faster
+                        }}
+                        style={{ width: "max-content" }} // Ensures container fits all items
+                    >
+                        {/* Render the set TWICE to ensure seamless loop */}
+                        {[...Array(2)].map((_, setIndex) => (
+                            <div key={setIndex} className="flex gap-16 items-center shrink-0">
+                                {PARTNER_LOGOS.map((logoUrl, i) => (
+                                    <div
+                                        key={i}
+                                        className="group flex flex-col items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <div className={`transition-all duration-500 opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110`}>
+                                            <img
+                                                src={logoUrl}
+                                                alt={`Partner logo ${i + 1}`}
+                                                className={`w-auto h-16 object-contain ${isDark ? 'invert' : ''}`}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* --- NEW SECTION: The Problem/Solution Trio (Core Value) --- */}
+            <section className={`py-24 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {/* Card 1: Spreadsheets (The Pain) */}
+                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
+                            ? 'bg-slate-900 border-slate-800 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-900/20'
+                            : 'bg-white border-slate-200 hover:border-red-200 hover:shadow-xl hover:shadow-red-100'
+                            }`}>
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-slate-800 text-red-400' : 'bg-red-50 text-red-600'
+                                }`}>
+                                <FileSpreadsheet size={28} strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Kill Spreadsheets</h3>
+                            <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
+                                Stop running your floor on yesterday's data. Eliminate paper tickets and the morning scramble for numbers.
+                            </p>
+                        </div>
+
+                        {/* Card 2: ERP (The Hero - Highlighted) */}
+                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
+                            ? 'bg-gradient-to-b from-slate-800 to-slate-900 border-blue-500/30 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20'
+                            : 'bg-white border-blue-200 hover:border-blue-400 hover:shadow-xl hover:shadow-blue-100'
+                            }`}>
+                            {/* "Recommended" Badge for visual break */}
+                            <div className="absolute top-6 right-6">
+                                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-blue-500'}`} />
+                            </div>
+
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-blue-900/50 text-blue-400' : 'bg-blue-50 text-blue-600'
+                                }`}>
+                                <Tablet size={28} strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">The ERP Alternative</h3>
+                            <p className={`${isDark ? 'text-slate-300' : 'text-slate-600'} leading-relaxed font-medium`}>
+                                Skip the $100k SAP implementation. LineSight works with the tablets you already own, deploying in <span className="text-blue-500 font-bold">days, not months</span>.
+                            </p>
+                        </div>
+
+                        {/* Card 3: Accountability (The Benefit) */}
+                        <div className={`group relative p-8 rounded-[32px] border transition-all duration-300 hover:-translate-y-1 ${isDark
+                            ? 'bg-slate-900 border-slate-800 hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-900/20'
+                            : 'bg-white border-slate-200 hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100'
+                            }`}>
+                            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 ${isDark ? 'bg-slate-800 text-emerald-400' : 'bg-emerald-50 text-emerald-600'
+                                }`}>
+                                <Users size={28} strokeWidth={1.5} />
+                            </div>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Operator Accountability</h3>
+                            <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
+                                Track piece-rates, efficiency, and bottlenecks down to the individual operator level.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- NEW SECTION: Social Proof (Bridge to Demo) --- */}
+            <section className={`py-20 px-6 border-t ${isDark ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
+                <div className="max-w-4xl mx-auto text-center">
+                    <Quote size={48} className="mx-auto mb-8 text-blue-500 opacity-50" />
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-8 leading-tight">
+                        "We replaced <span className="text-blue-600">1,000 spreadsheets</span> with one live dashboard."
+                    </h2>
+                    <div className="flex items-center justify-center gap-4">
+                        <div className="h-12 w-12 rounded-full bg-white overflow-hidden border border-slate-200 flex items-center justify-center">
+                            <img src={tsfLogo} alt="Three Stars Fashion Logo" className="w-full h-full object-contain p-1" />
+                        </div>
+                        <div className="text-left">
+                            <div className="font-bold">CEO</div>
+                            <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Three Stars Fashion</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Application Simulation / "Live" Demo */}
             <section className={`py-24 px-6 border-b overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'}`}>
                 <div className="max-w-7xl mx-auto">
@@ -288,7 +422,7 @@ const LandingPage: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Interactive overlay - Click to "Login" or similar */}
+                            {/* Interactive overlay */}
                             <div className={`absolute inset-0 z-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ${isDark ? 'bg-slate-950/50 backdrop-blur-[2px]' : 'bg-slate-900/10 backdrop-blur-[2px]'}`}>
                                 <Link to="/login">
                                     <button className="px-8 py-4 bg-white text-slate-900 text-lg font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-transform">
@@ -361,8 +495,8 @@ const LandingPage: React.FC = () => {
                             <div className={`absolute top-0 right-0 w-1/2 h-full [background-size:20px_20px] [mask-image:linear-gradient(to_left,white,transparent)] ${isDark ? 'bg-[radial-gradient(#334155_1px,transparent_1px)]' : 'bg-[radial-gradient(#e2e8f0_1px,transparent_1px)]'}`} />
                         </div>
 
-                        {/* AI CARD (Keep as is, but maybe add a subtle glow) */}
-                        <div className={`md:col-span-4 p-10 rounded-[40px] flex flex-col justify-between relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 text-white' : 'bg-slate-900 text-white'}`}>
+                        {/* AI CARD */}
+                        <div className="md:col-span-4 p-10 rounded-[40px] flex flex-col justify-between relative overflow-hidden group transition-colors duration-300 bg-slate-900 text-white">
                             <div className={`absolute top-0 right-0 p-8 transition-opacity ${isDark ? 'opacity-10 group-hover:opacity-20' : 'opacity-10 group-hover:opacity-20'}`}>
                                 <Zap size={120} />
                             </div>
@@ -386,7 +520,7 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* PRICING SECTION: THE "LEVEL UP" DESIGN */}
+            {/* PRICING SECTION */}
             <section id="pricing" className={`relative py-32 px-6 overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-[#0B0F1A]'}`}>
                 {/* Visual Interest Backgrounds */}
                 <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/20'}`} />
@@ -460,7 +594,7 @@ const LandingPage: React.FC = () => {
                         <a href="#" className="hover:text-blue-600">Terms</a>
                         <a href="#" className="hover:text-blue-600">API</a>
                     </div>
-                    <p className={`text-sm font-medium italic ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Industrial Prime Logic Systems.</p>
+                    <p className={`text-sm font-medium italic ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 LineSight</p>
                 </div>
             </footer>
         </div>
@@ -473,7 +607,7 @@ const PRICING_PLANS = [
         name: 'Starter',
         // Strategy: Cheap enough to expense, enough lines to run a real shop.
         price: { monthly: 49, annual: 39 },
-        description: 'For the hands-on factory owner digitizing their floor.',
+        description: 'Perfect for replacing paper tickets and getting live visibility.',
         features: [
             '1 Factory',
             'Up to 10 Production Lines', // High enough to capture the whole shop
@@ -494,8 +628,11 @@ const PRICING_PLANS = [
             '25 Production Lines',
             'Role-Based Access (RBAC)', // The Killer Feature: Multi Player Mode
             'Line Manager & Analyst Accounts',
+            'Automatic Data Sync and Analytics',
             'Unlimited Data History',
-            'Export to Excel/CSV'
+            'Unlimited Data Retention',
+            'Unlimited Dashboards',
+            'Export to Excel/CSV',
         ],
         cta: 'Upgrade to Team'
     },
@@ -505,6 +642,7 @@ const PRICING_PLANS = [
         price: 'Custom',
         description: 'For global operations requiring compliance & auditing.',
         features: [
+            `Everything in the Professional plan`,
             'Unlimited Factories',
             'Unlimited Lines',
             'Custom Integrations & Features',

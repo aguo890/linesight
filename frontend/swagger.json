@@ -9235,6 +9235,57 @@
         "title": "UserPreferences",
         "description": "Schema for user preferences JSON structure."
       },
+      "UserPreferencesUpdate": {
+        "properties": {
+          "theme": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Theme"
+          },
+          "country_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country Code"
+          },
+          "notifications": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notifications"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          }
+        },
+        "type": "object",
+        "title": "UserPreferencesUpdate",
+        "description": "Schema for updating user preferences (all fields optional for merging)."
+      },
       "UserRead": {
         "properties": {
           "email": {
@@ -9389,12 +9440,17 @@
           "preferences": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserPreferences"
+                "$ref": "#/components/schemas/UserPreferencesUpdate"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Preferences"
           },
           "is_active": {
             "anyOf": [

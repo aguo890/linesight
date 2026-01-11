@@ -2259,7 +2259,7 @@ export const readUserMeApiV1UsersMeGetResponse = zod.object({
  * Update current user.
  * @summary Update User Me
  */
-export const updateUserMeApiV1UsersMePatchBodyFullNameMaxOne = 255;export const updateUserMeApiV1UsersMePatchBodyTimezoneMaxOne = 50;export const updateUserMeApiV1UsersMePatchBodyPreferencesThemeDefault = "system";export const updateUserMeApiV1UsersMePatchBodyPreferencesNotificationsDefault = true;export const updateUserMeApiV1UsersMePatchBodyPreferencesLocaleDefault = "en-US";
+export const updateUserMeApiV1UsersMePatchBodyFullNameMaxOne = 255;export const updateUserMeApiV1UsersMePatchBodyTimezoneMaxOne = 50;
 
 export const updateUserMeApiV1UsersMePatchBody = zod.object({
   "email": zod.union([zod.email(),zod.null()]).optional(),
@@ -2267,11 +2267,11 @@ export const updateUserMeApiV1UsersMePatchBody = zod.object({
   "role": zod.union([zod.string(),zod.null()]).optional(),
   "timezone": zod.union([zod.string().max(updateUserMeApiV1UsersMePatchBodyTimezoneMaxOne),zod.null()]).optional(),
   "preferences": zod.union([zod.object({
-  "theme": zod.string().default(updateUserMeApiV1UsersMePatchBodyPreferencesThemeDefault),
+  "theme": zod.union([zod.string(),zod.null()]).optional(),
   "country_code": zod.union([zod.string(),zod.null()]).optional(),
-  "notifications": zod.boolean().default(updateUserMeApiV1UsersMePatchBodyPreferencesNotificationsDefault),
-  "locale": zod.string().default(updateUserMeApiV1UsersMePatchBodyPreferencesLocaleDefault)
-}).describe('Schema for user preferences JSON structure.'),zod.null()]).optional(),
+  "notifications": zod.union([zod.boolean(),zod.null()]).optional(),
+  "locale": zod.union([zod.string(),zod.null()]).optional()
+}).describe('Schema for updating user preferences (all fields optional for merging).'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
   "is_active": zod.union([zod.boolean(),zod.null()]).optional()
 }).describe('Schema for updating a user.')
 
