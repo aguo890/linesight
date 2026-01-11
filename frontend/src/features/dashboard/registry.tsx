@@ -299,8 +299,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'production-chart',
         meta: {
-            title: 'Production Chart',
-            description: 'Actual vs Target Output.',
+            title: 'widgets.titles.production_chart',
+            description: 'widgets.descriptions.production_chart',
             category: 'Efficiency',
             tags: ['essential', 'real-time'],
             priority: 100,
@@ -328,8 +328,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'line-efficiency',
         meta: {
-            title: 'Line Efficiency',
-            description: 'Current efficiency gauge.',
+            title: 'widgets.titles.line_efficiency',
+            description: 'widgets.descriptions.line_efficiency',
             category: 'Efficiency',
             tags: ['essential', 'kpi'],
             priority: 95,
@@ -350,8 +350,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'target-realization',
         meta: {
-            title: 'Daily Target',
-            description: 'Real-time Bullet Chart.',
+            title: 'widgets.titles.daily_target',
+            description: 'widgets.descriptions.daily_target',
             category: 'Efficiency',
             tags: ['essential', 'real-time'],
             priority: 85,
@@ -373,8 +373,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'earned-minutes',
         meta: {
-            title: 'Earned Minutes',
-            description: 'True Value Added KPI.',
+            title: 'widgets.titles.earned_minutes',
+            description: 'widgets.descriptions.earned_minutes',
             category: 'Efficiency',
             tags: ['kpi'],
             priority: 75,
@@ -395,8 +395,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'production-timeline',
         meta: {
-            title: 'Production Timeline',
-            description: 'Hourly output tracking.',
+            title: 'widgets.titles.production_timeline',
+            description: 'widgets.descriptions.production_timeline',
             category: 'Efficiency',
             tags: ['tracking'],
             priority: 50,
@@ -417,8 +417,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'sam-performance',
         meta: {
-            title: 'SAM Performance',
-            description: 'Standard Allowed Minutes tracking.',
+            title: 'widgets.titles.sam_performance',
+            description: 'widgets.descriptions.sam_performance',
             category: 'Efficiency',
             tags: ['kpi'],
             priority: 45,
@@ -441,8 +441,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'dhu-quality',
         meta: {
-            title: 'DHU Quality',
-            description: 'DHU% and Quality Trends.',
+            title: 'widgets.titles.dhu_quality',
+            description: 'widgets.descriptions.dhu_quality',
             category: 'Quality',
             tags: ['essential', 'kpi'],
             priority: 90,
@@ -463,8 +463,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'speed-quality',
         meta: {
-            title: 'Speed vs. Quality',
-            description: 'Trade-off analysis (Efficiency vs DHU).',
+            title: 'widgets.titles.speed_quality',
+            description: 'widgets.descriptions.speed_quality',
             category: 'Quality',
             tags: ['advanced', 'kpi'],
             priority: 80,
@@ -485,8 +485,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'complexity-impact',
         meta: {
-            title: 'Complexity Impact',
-            description: 'Efficiency vs SAM Scatter Plot.',
+            title: 'widgets.titles.complexity_impact',
+            description: 'widgets.descriptions.complexity_impact',
             category: 'Quality',
             tags: ['advanced'],
             priority: 55,
@@ -508,8 +508,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'blocker-cloud',
         meta: {
-            title: 'Top Blockers',
-            description: 'Recurring downtime keyword analysis.',
+            title: 'widgets.titles.top_blockers',
+            description: 'widgets.descriptions.top_blockers',
             category: 'Operations',
             tags: ['insight'],
             priority: 70,
@@ -530,8 +530,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'style-progress',
         meta: {
-            title: 'Style Progress',
-            description: 'Track active styles production.',
+            title: 'widgets.titles.style_progress',
+            description: 'widgets.descriptions.style_progress',
             category: 'Operations',
             tags: ['tracking'],
             priority: 60,
@@ -555,8 +555,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'workforce-attendance',
         meta: {
-            title: 'Workforce Attendance',
-            description: 'Real-time attendance stats.',
+            title: 'widgets.titles.workforce_attendance',
+            description: 'widgets.descriptions.workforce_attendance',
             category: 'Workforce',
             tags: ['essential'],
             priority: 65,
@@ -577,8 +577,8 @@ export const ALL_WIDGETS: WidgetManifest[] = [
     {
         id: 'kpi-summary',
         meta: {
-            title: 'KPI Summary',
-            description: 'Top-level aggregated metrics.',
+            title: 'widgets.titles.kpi_summary',
+            description: 'widgets.descriptions.kpi_summary',
             category: 'Efficiency',
             tags: ['kpi', 'essential'],
             priority: 110,

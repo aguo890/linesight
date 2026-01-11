@@ -1,6 +1,7 @@
 import React from 'react';
 import type { SmartWidgetProps } from '../config';
 import { Clock, TrendingUp, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { EarnedMinutesDataSchema } from '../registry';
 import { z } from 'zod';
 
@@ -10,6 +11,7 @@ type EarnedMinutesStats = z.infer<typeof EarnedMinutesDataSchema>;
 const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
     data
 }) => {
+    const { t } = useTranslation();
     // Format numbers for display
     const formatNumber = (val: number | undefined) => {
         if (val === undefined || val === null || isNaN(val)) return '—';
@@ -41,7 +43,7 @@ const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
             <div className={`flex items-center justify-between p-3 rounded-lg ${effBg}`}>
                 <div className="flex items-center gap-2">
                     <TrendingUp className={`w-5 h-5 ${effColor}`} />
-                    <span className="text-sm font-medium text-text-main">Efficiency</span>
+                    <span className="text-sm font-medium text-text-main">{t('widgets.common.efficiency')}</span>
                 </div>
                 <span className={`text-2xl font-bold ${effColor}`}>
                     {efficiencyPct.toFixed(1)}%
@@ -54,24 +56,24 @@ const EarnedMinutesWidget: React.FC<SmartWidgetProps<EarnedMinutesStats>> = ({
                 <div className="flex flex-col items-center p-3 bg-warning/5 rounded-lg border border-warning/10">
                     <div className="flex items-center gap-1.5 text-warning mb-1">
                         <Zap className="w-4 h-4" />
-                        <span className="text-xs font-medium">Earned</span>
+                        <span className="text-xs font-medium">{t('widgets.earned_minutes.earned')}</span>
                     </div>
                     <span className="text-lg font-bold text-text-main">
                         {formatNumber(earnedMins)}
                     </span>
-                    <span className="text-[10px] text-text-muted">minutes</span>
+                    <span className="text-[10px] text-text-muted">{t('widgets.common.minutes')}</span>
                 </div>
 
                 {/* Available Minutes */}
                 <div className="flex flex-col items-center p-3 bg-surface-subtle rounded-lg border border-border">
                     <div className="flex items-center gap-1.5 text-text-muted mb-1">
                         <Clock className="w-4 h-4" />
-                        <span className="text-xs font-medium">Available</span>
+                        <span className="text-xs font-medium">{t('widgets.earned_minutes.available')}</span>
                     </div>
                     <span className="text-lg font-bold text-text-main">
                         {formatNumber(availableMins)}
                     </span>
-                    <span className="text-[10px] text-text-muted">minutes</span>
+                    <span className="text-[10px] text-text-muted">{t('widgets.common.minutes')}</span>
                 </div>
             </div>
         </div>

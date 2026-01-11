@@ -28,7 +28,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' })
                     return (
                         <li key={`${item.label}-${index}`} className="flex items-center">
                             {index > 0 && (
-                                <ChevronRight className="h-4 w-4 text-text-muted mx-2 flex-shrink-0" />
+                                <ChevronRight className="h-4 w-4 text-text-muted mx-2 flex-shrink-0 rtl:rotate-180" />
                             )}
 
                             {isLast ? (

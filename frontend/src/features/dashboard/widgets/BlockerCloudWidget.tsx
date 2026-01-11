@@ -1,6 +1,7 @@
 import React from 'react';
 import { type SmartWidgetProps } from '../config';
 import { AlertOctagon, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { DowntimeDataSchema } from '../registry';
 
@@ -23,6 +24,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
     data,
     settings
 }) => {
+    const { t } = useTranslation();
     // Extract settings with defaults
     const maxItems = settings?.maxItems ?? 10;
     const showCounts = settings?.showCounts ?? true;
@@ -42,7 +44,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
             <div className="flex items-center justify-center h-full text-center">
                 <div className="space-y-2">
                     <AlertOctagon className="w-8 h-8 text-slate-200 mx-auto" />
-                    <p className="text-xs text-slate-400">No downtime blockers detected today.</p>
+                    <p className="text-xs text-slate-400">{t('widgets.blocker_cloud.no_blockers')}</p>
                 </div>
             </div>
         );
@@ -60,7 +62,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
                         <div className="flex justify-between items-center text-xs mb-1">
                             <span className="font-medium text-text-main">{item.reason}</span>
                             {showCounts && (
-                                <span className="text-text-muted">{item.count} occurrences</span>
+                                <span className="text-text-muted">{item.count} {t('widgets.blocker_cloud.occurrences')}</span>
                             )}
                         </div>
                         <div className="h-2 w-full bg-surface-subtle rounded-full overflow-hidden">
@@ -75,7 +77,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
 
             <div className="mt-2 pt-2 border-t border-border">
                 <button className="text-[10px] text-brand font-medium flex items-center hover:underline">
-                    View all logs <ArrowRight className="w-3 h-3 ml-1" />
+                    {t('widgets.blocker_cloud.view_all_logs')} <ArrowRight className="w-3 h-3 ml-1" />
                 </button>
             </div>
         </div>

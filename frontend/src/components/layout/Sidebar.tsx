@@ -6,12 +6,30 @@ import type { SavedDashboard } from '../../features/dashboard/types';
 
 import { useOrganization } from '../../contexts/OrganizationContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useTranslation } from 'react-i18next'; // [I18N]
 import { Logo } from '../common/Logo';
 import { cn } from '../../lib/utils';
 
 const INITIAL_DASHBOARD_LIMIT = 5;
 
+const NAV_ITEMS = [
+    {
+        labelKey: 'navigation.my_dashboards',
+        icon: LayoutGrid,
+        path: '/dashboard/factories',
+        matchPaths: ['/dashboard/factories']
+    },
+    {
+        labelKey: 'navigation.organization',
+        icon: Users,
+        path: '/organization/settings',
+        matchPaths: ['/organization/settings'],
+        ownerOnly: true
+    }
+];
+
 export const Sidebar: React.FC = () => {
+    const { t } = useTranslation(); // [I18N]
     const location = useLocation();
     const navigate = useNavigate();
     const [dashboards, setDashboards] = useState<SavedDashboard[]>([]);
@@ -55,7 +73,6 @@ export const Sidebar: React.FC = () => {
     };
 
     // Helper to check if active for basic highlighting
-    const isActive = (path: string) => location.pathname === path;
 
     const isDashboardActive = (dashboard: SavedDashboard) => {
         return location.pathname === `/dashboard/factories/${dashboard.factoryId}/dashboards/${dashboard.id}`;
@@ -86,7 +103,7 @@ export const Sidebar: React.FC = () => {
     return (
         <>
             <aside className={cn(
-                "fixed top-0 left-0 z-50 h-screen bg-[var(--color-surface-elevated)] border-r border-[var(--color-border)] flex flex-col shrink-0 transition-all duration-300 ease-in-out",
+                "fixed top-0 start-0 z-50 h-screen bg-[var(--color-surface-elevated)] border-inline-end border-[var(--color-border)] flex flex-col shrink-0 transition-all duration-300 ease-in-out",
                 isSidebarOpen ? "w-64" : "w-[70px]"
             )}>
                 {/* BRAND SECTION */}
@@ -111,217 +128,127 @@ export const Sidebar: React.FC = () => {
                 </div>
 
                 <nav className="flex-1 py-4 space-y-1 overflow-y-auto">
-                    {/* Core Header replaced by Brand Section usually, but keeping list structure. Removing explicit Core header text to clean updated layout if desired, or keeping it below. User prompt said 'place logo at top', implies replacing header or sitting above it. I will remove the 'Core' text label to avoid clutter right under the logo unless needed. I'll comment it out or just start with items. Let's keep it clean as per 'Industry Standard' typically has list starts or a section header. I'll add a small spacer if needed. */}
+                    {NAV_ITEMS.map((item) => {
+                        if (item.ownerOnly && !isOwner) return null;
 
-                    {/* Overview */}
-                    {/* Overview */}
-                    {/*
-                    <button
-                        onClick={() => navigate('/dashboard/factories')}
-                        title={!isSidebarOpen ? "Overview" : undefined}
-                        className={cn(
-                            "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
-                            isActive('/dashboard')
-                                ? 'bg-[var(--color-surface)] border-[var(--color-primary)] text-[var(--color-text)]'
-                                : 'border-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20',
-                            isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                        )}
-                    >
-                        <svg className={cn("w-5 h-5 flex-shrink-0", isSidebarOpen ? "mr-3" : "mr-0", isActive('/dashboard') ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text-subtle)]')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        <span className={cn(
-                            "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
-                            isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                        )}>Overview</span>
-                    </button>
-                    */}
+                        const active = item.matchPaths.some(p =>
+                            location.pathname === p || location.pathname.startsWith(p + '/')
+                        );
 
-                    {/* My Dashboards - Split Button (Navigate + Toggle) */}
-                    <div>
-                        <div
-                            title={!isSidebarOpen ? "My Dashboards" : undefined}
-                            className={cn(
-                                "w-full flex items-center border-l-4 transition-colors",
-                                isActive('/dashboard/factories') || isInDashboardsSection
-                                    ? 'bg-[var(--color-surface)] border-[var(--color-primary)]'
-                                    : 'border-transparent hover:bg-[var(--color-border)]/20',
-                                isSidebarOpen ? "" : "justify-center border-l-0"
-                            )}
-                        >
-                            {/* Left: Navigation Button */}
-                            <button
-                                onClick={() => navigate('/dashboard/factories')}
-                                className={cn(
-                                    "flex items-center py-2.5 text-sm font-semibold transition-colors",
-                                    isActive('/dashboard/factories') || isInDashboardsSection
-                                        ? 'text-[var(--color-text)]'
-                                        : 'text-[var(--color-text-muted)]',
-                                    isSidebarOpen ? "flex-1 px-4" : "justify-center px-0 w-full"
-                                )}
-                            >
-                                <LayoutGrid className={cn(
-                                    "w-5 h-5 transition-colors",
-                                    isSidebarOpen ? "mr-3" : "mr-0",
-                                    isActive('/dashboard/factories') || isInDashboardsSection
-                                        ? 'text-[var(--color-primary)]'
-                                        : 'text-[var(--color-text-subtle)]'
-                                )} />
-                                <span className={cn(
-                                    "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
-                                    isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0 hidden"
-                                )}>My Dashboards</span>
-                            </button>
-
-                            {/* Right: Toggle Dropdown Button */}
-                            {/* <button
-                                onClick={() => setIsDashboardsExpanded(!isDashboardsExpanded)}
-                                className={cn(
-                                    "px-3 py-2.5 transition-colors hover:bg-[var(--color-border)]/30",
-                                    isActive('/dashboard/factories') || isInDashboardsSection
-                                        ? 'text-[var(--color-text)]'
-                                        : 'text-[var(--color-text-muted)]',
-                                    !isSidebarOpen && "hidden"
-                                )}
-                                aria-label={isDashboardsExpanded ? 'Collapse dashboards' : 'Expand dashboards'}
-                            >
-                                <ChevronDown
-                                    className={`w-4 h-4 transition-transform ${isDashboardsExpanded ? 'rotate-180' : ''}`}
-                                />
-                            </button> */}
-                        </div>
-
-                        {/* Subsections - Individual Dashboards */}
-                        {isDashboardsExpanded && visibleDashboards.filter(d => d.id !== 'default').length > 0 && (
-                            <div className="mt-1 ml-4 space-y-0.5 border-l-2 border-[var(--color-border)]">
-                                {visibleDashboards.filter(d => d.id !== 'default').map((dashboard) => (
-                                    <button
-                                        key={dashboard.id}
-                                        onClick={() => handleDashboardClick(dashboard)}
-                                        className={`w-full flex items-center pl-4 pr-4 py-2 text-sm transition-colors ${isDashboardActive(dashboard)
-                                            ? 'bg-[var(--color-surface)] text-[var(--color-primary)] font-medium'
-                                            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 hover:text-[var(--color-text)]'
-                                            }`}
+                        // Special handling for My Dashboards with its dynamic subsections
+                        if (item.labelKey === 'navigation.my_dashboards') {
+                            return (
+                                <div key={item.path}>
+                                    <div
+                                        title={!isSidebarOpen ? t(item.labelKey) : undefined}
+                                        className={cn(
+                                            "w-full flex items-center border-l-4 transition-colors",
+                                            active || isInDashboardsSection
+                                                ? 'bg-[var(--color-surface)] border-[var(--color-primary)]'
+                                                : 'border-transparent hover:bg-[var(--color-border)]/20',
+                                            isSidebarOpen ? "" : "justify-center border-l-0"
+                                        )}
                                     >
-                                        <span className="flex-1 truncate text-left">{dashboard.name}</span>
-                                        <span className="text-xs text-[var(--color-text-subtle)]">
-                                            {dashboard.widgets?.length || 0}
-                                        </span>
-                                    </button>
-                                ))}
+                                        <button
+                                            onClick={() => navigate(item.path)}
+                                            className={cn(
+                                                "flex items-center py-2.5 text-sm font-semibold transition-colors",
+                                                active || isInDashboardsSection
+                                                    ? 'text-[var(--color-text)]'
+                                                    : 'text-[var(--color-text-muted)]',
+                                                isSidebarOpen ? "flex-1 px-4" : "justify-center px-0 w-full"
+                                            )}
+                                        >
+                                            <item.icon className={cn(
+                                                "w-5 h-5 transition-colors",
+                                                isSidebarOpen ? "me-3" : "me-0",
+                                                active || isInDashboardsSection
+                                                    ? 'text-[var(--color-primary)]'
+                                                    : 'text-[var(--color-text-subtle)]'
+                                            )} />
+                                            <span className={cn(
+                                                "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
+                                                isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0 hidden"
+                                            )}>{t(item.labelKey)}</span>
+                                        </button>
+                                    </div>
 
-                                {hasMoreDashboards && !showAllDashboards && dashboards.filter(d => d.id !== 'default').length > INITIAL_DASHBOARD_LIMIT && (
-                                    <button
-                                        onClick={() => setShowAllDashboards(true)}
-                                        className="w-full flex items-center justify-center pl-4 pr-4 py-2 text-xs text-[var(--color-primary)] hover:bg-[var(--color-border)]/20 transition-colors"
-                                    >
-                                        <span>Show {dashboards.filter(d => d.id !== 'default').length - INITIAL_DASHBOARD_LIMIT} more</span>
-                                        <ChevronDown className="w-3 h-3 ml-1" />
-                                    </button>
+                                    {/* Subsections - Individual Dashboards */}
+                                    {isDashboardsExpanded && visibleDashboards.filter(d => d.id !== 'default').length > 0 && (
+                                        <div className="mt-1 ml-4 space-y-0.5 border-l-2 border-[var(--color-border)]">
+                                            {visibleDashboards.filter(d => d.id !== 'default').map((dashboard) => (
+                                                <button
+                                                    key={dashboard.id}
+                                                    onClick={() => handleDashboardClick(dashboard)}
+                                                    className={`w-full flex items-center pl-4 pr-4 py-2 text-sm transition-colors ${isDashboardActive(dashboard)
+                                                        ? 'bg-[var(--color-surface)] text-[var(--color-primary)] font-medium'
+                                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 hover:text-[var(--color-text)]'
+                                                        }`}
+                                                >
+                                                    <span className="flex-1 truncate text-left">{dashboard.name}</span>
+                                                    <span className="text-xs text-[var(--color-text-subtle)]">
+                                                        {dashboard.widgets?.length || 0}
+                                                    </span>
+                                                </button>
+                                            ))}
+
+                                            {hasMoreDashboards && !showAllDashboards && dashboards.filter(d => d.id !== 'default').length > INITIAL_DASHBOARD_LIMIT && (
+                                                <button
+                                                    onClick={() => setShowAllDashboards(true)}
+                                                    className="w-full flex items-center justify-center pl-4 pr-4 py-2 text-xs text-[var(--color-primary)] hover:bg-[var(--color-border)]/20 transition-colors"
+                                                >
+                                                    <span>{t('navigation.show_more')}</span>
+                                                    <ChevronDown className="w-3 h-3 ml-1" />
+                                                </button>
+                                            )}
+
+                                            {showAllDashboards && (
+                                                <button
+                                                    onClick={() => setShowAllDashboards(false)}
+                                                    className="w-full flex items-center justify-center px-4 py-2 text-xs text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 transition-colors"
+                                                >
+                                                    <span>{t('navigation.show_less')}</span>
+                                                    <ChevronDown className="w-3 h-3 ml-1 transform rotate-180" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        }
+
+                        // Regular Nav Item
+                        return (
+                            <React.Fragment key={item.path}>
+                                {item.labelKey === 'navigation.organization' && (
+                                    <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>
+                                        {t('navigation.organization')}
+                                    </div>
                                 )}
-
-                                {showAllDashboards && (
-                                    <button
-                                        onClick={() => setShowAllDashboards(false)}
-                                        className="w-full flex items-center justify-center px-4 py-2 text-xs text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 transition-colors"
-                                    >
-                                        <span>Show less</span>
-                                        <ChevronDown className="w-3 h-3 ml-1 transform rotate-180" />
-                                    </button>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* <a href="#"
-                        title={!isSidebarOpen ? "Data Import" : undefined}
-                        className={cn(
-                            "flex items-center py-2.5 text-sm text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors border-l-4 border-transparent",
-                            isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                        )}>
-                        <svg className={cn("w-5 h-5", isSidebarOpen ? "mr-3" : "mr-0", "text-[var(--color-success)]")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <span className={cn(
-                            "transition-all duration-300 overflow-hidden whitespace-nowrap",
-                            isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                        )}>Data Import</span>
-                    </a> */}
-                    {/*
-                    <a href="#"
-                        title={!isSidebarOpen ? "Discrepancies" : undefined}
-                        className={cn(
-                            "flex items-center py-2.5 text-sm text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors border-l-4 border-transparent",
-                            isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                        )}>
-                        <svg className={cn("w-5 h-5", isSidebarOpen ? "mr-3" : "mr-0", "text-[var(--color-warning)]")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        <span className={cn(
-                            "transition-all duration-300 overflow-hidden whitespace-nowrap",
-                            isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                        )}>Discrepancies</span>
-                        {isSidebarOpen && (
-                            <span className="ml-auto bg-[var(--color-warning-bg)] text-[var(--color-warning)] text-xs px-2 py-0.5 rounded-full font-bold">3</span>
-                        )}
-                    </a>
-                    */}
-
-                    {/*
-                    <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>Analytics</div>
-
-                    <a href="#"
-                        title={!isSidebarOpen ? "Workforce Ranking" : undefined}
-                        className={cn(
-                            "flex items-center py-2.5 text-sm text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors border-l-4 border-transparent",
-                            isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                        )}>
-                        <svg className={cn("w-5 h-5", isSidebarOpen ? "mr-3" : "mr-0", "text-[var(--color-text-muted)]")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <span className={cn(
-                            "transition-all duration-300 overflow-hidden whitespace-nowrap",
-                            isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                        )}>Workforce Ranking</span>
-                    </a>
-                    <a href="#"
-                        title={!isSidebarOpen ? "Line Performance" : undefined}
-                        className={cn(
-                            "flex items-center py-2.5 text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors border-l-4 border-transparent",
-                            isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                        )}>
-                        <svg className={cn("w-5 h-5", isSidebarOpen ? "mr-3" : "mr-0", "text-[var(--color-text-muted)]")} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
-                        <span className={cn(
-                            "transition-all duration-300 overflow-hidden whitespace-nowrap",
-                            isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                        )}>Line Performance</span>
-                    </a>
-
-                    {/* Team Management - Owner Only */}
-                    {isOwner && (
-                        <>
-                            <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>Organization</div>
-                            <button
-                                onClick={() => navigate('/organization/settings')}
-                                title={!isSidebarOpen ? "Team" : undefined}
-                                className={cn(
-                                    "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
-                                    isActive('/organization/settings') || location.pathname.startsWith('/organization/settings')
-                                        ? 'bg-[var(--color-surface)] border-[var(--color-primary)] text-[var(--color-text)]'
-                                        : 'border-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20',
-                                    isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
-                                )}
-                            >
-                                <Users className={cn("w-5 h-5 flex-shrink-0", isSidebarOpen ? "mr-3" : "mr-0", (isActive('/organization/settings') || location.pathname.startsWith('/organization/settings')) ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-subtle)]')} />
-                                <span className={cn(
-                                    "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
-                                    isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
-                                )}>Organization</span>
-                            </button>
-                        </>
-                    )}
+                                <button
+                                    onClick={() => navigate(item.path)}
+                                    title={!isSidebarOpen ? t(item.labelKey) : undefined}
+                                    className={cn(
+                                        "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
+                                        active
+                                            ? 'bg-[var(--color-surface)] border-[var(--color-primary)] text-[var(--color-text)]'
+                                            : 'border-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20',
+                                        isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
+                                    )}
+                                >
+                                    <item.icon className={cn(
+                                        "w-5 h-5 flex-shrink-0",
+                                        isSidebarOpen ? "mr-3" : "mr-0",
+                                        active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-subtle)]'
+                                    )} />
+                                    <span className={cn(
+                                        "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
+                                        isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
+                                    )}>{t(item.labelKey)}</span>
+                                </button>
+                            </React.Fragment>
+                        );
+                    })}
                 </nav>
 
                 <div className="p-4 border-t border-[var(--color-border)] space-y-3">

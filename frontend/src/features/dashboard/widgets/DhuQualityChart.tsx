@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import type { SmartWidgetProps } from '../config';
 import { z } from 'zod';
@@ -21,6 +22,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     w: _w,
     h: _h
 }) => {
+    const { t } = useTranslation();
     // Extract settings with defaults
     const maxAcceptableDHU = settings?.maxAcceptableDHU ?? 2.5;
     const showThresholdLine = settings?.showThresholdLine ?? true;
@@ -58,7 +60,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     if (!data || (Array.isArray(data) && data.length === 0)) {
         return (
             <div className="flex h-full items-center justify-center text-text-muted text-sm">
-                No Quality Data
+                {t('widgets.dhu_quality.no_data')}
             </div>
         );
     }
@@ -71,11 +73,11 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                     <span className={`text-2xl font-bold ${isAboveThreshold ? 'text-danger' : 'text-text-main'}`}>
                         {currentDhu.toFixed(2)}%
                     </span>
-                    <span className="text-xs text-text-muted ml-2">Current DHU</span>
+                    <span className="text-xs text-text-muted ml-2">{t('widgets.dhu_quality.current_dhu')}</span>
                 </div>
                 {isAboveThreshold && (
                     <span className="text-xs font-medium text-danger bg-danger/10 px-2 py-0.5 rounded animate-pulse">
-                        Above Limit
+                        {t('widgets.dhu_quality.above_limit')}
                     </span>
                 )}
             </div>
@@ -114,7 +116,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 y={maxAcceptableDHU}
                                 stroke="#f97316"
                                 strokeDasharray="3 3"
-                                label={{ value: 'Limit', position: 'right', fontSize: 9, fill: '#f97316' }}
+                                label={{ value: t('widgets.common.limit'), position: 'right', fontSize: 9, fill: '#f97316' }}
                             />
                         )}
                         <Line

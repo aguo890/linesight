@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { WidgetSelector } from './WidgetSelector';
 import { RightSidebarShell } from './RightSidebarShell';
 
@@ -17,12 +18,13 @@ export const WidgetLibrary: React.FC<WidgetLibraryProps> = ({
     availableFields,
     activeWidgets = []
 }) => {
+    const { t } = useTranslation();
     return (
         <RightSidebarShell
             isOpen={isOpen}
             onClose={onClose}
-            title="Widget Library"
-            subtitle="Choose a widget to add"
+            title={t('widgets.library.title')}
+            subtitle={t('widgets.library.subtitle')}
             zIndex="z-50" // Lower z-index for library vs settings if needed
         >
             <div className="p-6">

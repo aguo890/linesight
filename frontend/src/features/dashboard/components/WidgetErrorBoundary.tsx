@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertCircle, RefreshCw } from 'lucide-react';
+import { withTranslation, type WithTranslation } from 'react-i18next';
 
 interface Props {
     children?: ReactNode;
@@ -8,12 +9,14 @@ interface Props {
     onError?: (error: Error, errorInfo: ErrorInfo, context: { id: string; type: string }) => void;
 }
 
+interface CombinedProps extends Props, WithTranslation { }
+
 interface State {
     hasError: boolean;
     error?: Error;
 }
 
-export class WidgetErrorBoundary extends Component<Props, State> {
+export class WidgetErrorBoundary extends Component<CombinedProps, State> {
     public state: State = {
         hasError: false
     };
@@ -50,10 +53,10 @@ export class WidgetErrorBoundary extends Component<Props, State> {
                     <div className="flex-1 flex flex-col items-center justify-center min-h-0">
                         <AlertCircle className="w-8 h-8 text-red-500 mb-2 flex-shrink-0" />
                         <h3 className="text-sm font-semibold text-red-800 mb-1 truncate max-w-full px-2">
-                            Widget Error
+                            {this.props.t('widgets.common.error')}
                         </h3>
                         <p className="text-xs text-red-600 mb-4 max-w-full px-4 line-clamp-3 break-words">
-                            {this.state.error?.message || 'Unless you verify, you trust nothing.'}
+                            {this.state.error?.message || this.props.t('widgets.error_boundary.default_message')}
                         </p>
                         <button
                             onClick={(e) => {
@@ -64,7 +67,7 @@ export class WidgetErrorBoundary extends Component<Props, State> {
                             className="flex items-center px-3 py-1.5 bg-white border border-red-200 text-red-700 rounded text-xs font-medium hover:bg-red-100 transition-colors shadow-sm flex-shrink-0 cursor-pointer"
                         >
                             <RefreshCw className="w-3 h-3 mr-1.5" />
-                            Retry
+                            {this.props.t('widgets.common.retry')}
                         </button>
                     </div>
                 </div>
@@ -75,4 +78,4 @@ export class WidgetErrorBoundary extends Component<Props, State> {
     }
 }
 
-export default WidgetErrorBoundary;
+export default withTranslation()(WidgetErrorBoundary);

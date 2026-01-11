@@ -3,39 +3,29 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Setup paths (needed for reliable cwd usage)
+# Setup paths
 SCRIPT_DIR = Path(__file__).parent
 ROOT_DIR = SCRIPT_DIR.parent
 BACKEND_ENV = ROOT_DIR / "backend" / ".env"
 
-# Try to import required packages
 try:
     from dotenv import load_dotenv
     from openai import OpenAI
 except ImportError:
-    # If run outside venv or missing deps
     print("⚠️  Missing dependencies (openai, python-dotenv).")
-    print("   Falling back to default message and standard git commands.")
-    # Fix: Use cwd=ROOT_DIR to ensure we add files from the project root, not script dir
     subprocess.run(["git", "add", "."], cwd=ROOT_DIR)
     subprocess.run(["git", "commit", "-m", "wip: quick push (missing deps)"], cwd=ROOT_DIR)
     subprocess.run(["git", "push"], cwd=ROOT_DIR)
     sys.exit(0)
 
-# Load environment variables
 load_dotenv(BACKEND_ENV)
 load_dotenv(ROOT_DIR / ".env")
 
 def get_staged_diff():
     """Get the diff of currently staged files."""
-    # Force utf-8 encoding to handle emojis/special chars on Windows
     result = subprocess.run(
         ["git", "diff", "--cached"], 
-        capture_output=True, 
-        text=True, 
-        encoding='utf-8', 
-        errors='replace', 
-        cwd=ROOT_DIR
+        capture_output=True, text=True, encoding='utf-8', errors='replace', cwd=ROOT_DIR
     )
     return result.stdout or ""
 
@@ -43,11 +33,7 @@ def get_staged_files():
     """Get the list of staged files."""
     result = subprocess.run(
         ["git", "diff", "--name-only", "--cached"], 
-        capture_output=True, 
-        text=True, 
-        encoding='utf-8', 
-        errors='replace', 
-        cwd=ROOT_DIR
+        capture_output=True, text=True, encoding='utf-8', errors='replace', cwd=ROOT_DIR
     )
     return result.stdout or ""
 
@@ -55,13 +41,9 @@ def main():
     api_key = os.getenv("DEEPSEEK_API_KEY")
     commit_msg = ""
 
-    # 1. Stage Everything Immediately
-    # Since this is a 'quick push', we assume the user wants to commit everything.
-    # We do this FIRST so the diff includes untracked (new) files.
     print("📦 Staging all changes...")
     subprocess.run(["git", "add", "."], cwd=ROOT_DIR)
 
-    # 2. Get Diff & Files
     diff = get_staged_diff()
     files = get_staged_files()
     
@@ -69,53 +51,71 @@ def main():
         print("No changes to commit.")
         sys.exit(0)
 
-    # 3. Generate Message
     if not api_key:
         print("⚠️  DeepSeek API Key not found. Using default message.")
         commit_msg = "wip: quick push (missing api key)"
     else:
-        # Truncate diff to prevent token limits/costs
-        diff_context = diff[:4000] 
+        # --- LOGIC CHANGE: Handling Large Diffs ---
+        # 25,000 chars is roughly 6000-7000 tokens. DeepSeek handles 64k context easily.
+        # We prioritize the file list (always sent full) and truncate the diff if needed.
+        MAX_DIFF_LEN = 25000 
         
-        # Add file list to context for better awareness
-        prompt_content = f"Files changed:\n{files}\n\nDiff:\n{diff_context}"
+        # Check for lock files using safe extension check
+        is_lock_file = any(f.endswith(('.lock', '-lock.json', '.lock.yaml')) for f in files.splitlines())
+        
+        if is_lock_file:
+            diff_context = "⚠️ Large lock file changes detected (excluded from context to save tokens)."
+            # If lock files exist, we reduce the code diff limit slightly to be safe
+            diff_context += "\n" + diff[:10000]
+        elif len(diff) > MAX_DIFF_LEN:
+            diff_context = f"⚠️ DIFF TRUNCATED (Total len: {len(diff)} chars). Showing first {MAX_DIFF_LEN} chars:\n"
+            diff_context += diff[:MAX_DIFF_LEN]
+        else:
+            diff_context = diff
 
-        client = OpenAI(
-            api_key=api_key,
-            base_url="https://api.deepseek.com"
-        )
+        prompt_content = f"Staged Files (Always Full List):\n{files}\n\nDiff Content:\n{diff_context}"
 
-        print("🤖 Generating commit message...")
+        client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+
+        print("🤖 Analyzing large changeset...")
         
         try:
             response = client.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
-                    {"role": "system", "content": "You are a git commit assistant. Generate a concise, one-line commit message based on the following changes. Start with a verb (e.g., 'Fix', 'Add', 'Update'). Mention specific file names or components if relevant. Do not use markdown or quotes."},
+                    {"role": "system", "content": (
+                        "You are a senior developer. Generate a detailed commit message complying with Conventional Commits."
+                        "\nStructure:"
+                        "\n<type>: <short summary>"
+                        "\n\n- <bullet point 1>"
+                        "\n- <bullet point 2>"
+                        "\n\nRules:"
+                        "\n1. First line must be under 72 chars."
+                        "\n2. If the file list is long, group changes logically in the bullet points (e.g., 'Refactor auth modules' instead of listing every file)."
+                        "\n3. Use the file list to infer architectural changes if the diff is truncated."
+                        "\n4. Do not use markdown (like **bold**) in the output, just plain text."
+                    )},
                     {"role": "user", "content": prompt_content}
                 ],
-                temperature=0.5,
-                max_tokens=80
+                temperature=0.4, # Lower temperature for more factual summaries
+                max_tokens=250   # Increased tokens for longer body
             )
             commit_msg = response.choices[0].message.content.strip()
         except Exception as e:
             print(f"⚠️  Generation failed: {e}")
-            commit_msg = "wip: quick push (generation failed)"
+            commit_msg = "wip: large update (generation failed)"
 
-    # 4. Execute Git Commands (Commit & Push)
-    # 4. Execute Git Commands (Commit & Push)
-    # Get current branch for sanity check
-    branch = subprocess.run(
-        ["git", "branch", "--show-current"], 
-        capture_output=True, 
-        text=True, 
-        encoding='utf-8', 
-        cwd=ROOT_DIR
-    ).stdout.strip()
-    print(f"🚀 Committing to branch '{branch}' with message: '{commit_msg}'")
+    # 4. Execute Git Commands
+    branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True, cwd=ROOT_DIR).stdout.strip()
     
-    # Note: We already ran 'git add .' at the start of main()
+    print("---------------------------------------------------")
+    print(f"🚀 Branch: {branch}")
+    print(f"📝 Message:\n{commit_msg}")
+    print("---------------------------------------------------")
     
+    # Optional: Safety pause for large commits
+    # input("Press Enter to confirm push...")
+
     try:
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=ROOT_DIR, check=True)
         subprocess.run(["git", "push"], cwd=ROOT_DIR, check=True)

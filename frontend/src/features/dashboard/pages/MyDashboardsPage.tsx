@@ -16,6 +16,7 @@ import {
     Settings,
     Plus
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { MainLayout } from '../../../components/layout/MainLayout';
 import { FactoryCard } from '../components/FactoryCard';
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
@@ -27,6 +28,7 @@ type ViewMode = 'grid' | 'list';
 
 export const MyDashboardsPage: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Control Bar state
     const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -99,13 +101,13 @@ export const MyDashboardsPage: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-text-main">Production Sites</h1>
+                    <h1 className="text-2xl font-bold text-text-main">{t('dashboard.my_dashboards.title')}</h1>
                     <p className="text-sm text-text-muted mt-1">
                         {isLoadingFactories
-                            ? 'Loading your sites...'
+                            ? t('dashboard.my_dashboards.status.loading')
                             : factories.length === 0
-                                ? 'No active production sites'
-                                : `${factories.length} active ${factories.length === 1 ? 'site' : 'sites'} available`
+                                ? t('dashboard.my_dashboards.status.none')
+                                : t('dashboard.my_dashboards.status.available', { count: factories.length })
                         }
                     </p>
                 </div>
@@ -119,7 +121,7 @@ export const MyDashboardsPage: React.FC = () => {
                             className="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
                         >
                             <Plus className="w-4 h-4" />
-                            New Dashboard
+                            {t('dashboard.my_dashboards.actions.new_dashboard')}
                         </button>
                     )}
 
@@ -130,7 +132,7 @@ export const MyDashboardsPage: React.FC = () => {
                             className="flex items-center gap-2 text-text-main hover:text-brand bg-surface border border-border hover:border-brand-light px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
                         >
                             <Settings className="w-4 h-4" />
-                            Configure Sites
+                            {t('dashboard.my_dashboards.actions.configure_sites')}
                         </Link>
                     )}
                 </div>
@@ -145,7 +147,7 @@ export const MyDashboardsPage: React.FC = () => {
                         <input
                             id="factory-search"
                             type="text"
-                            placeholder="Search factories..."
+                            placeholder={t('dashboard.my_dashboards.search_placeholder')}
                             className="w-full pl-10 pr-16 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm placeholder-text-muted"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -162,14 +164,14 @@ export const MyDashboardsPage: React.FC = () => {
                         <button
                             onClick={() => setViewMode('grid')}
                             className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-surface-subtle text-brand shadow-sm' : 'text-text-muted hover:text-text-main'}`}
-                            title="Grid view"
+                            title={t('dashboard.my_dashboards.view.grid')}
                         >
                             <LayoutGrid className="w-4 h-4" />
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
                             className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-surface-subtle text-brand shadow-sm' : 'text-text-muted hover:text-text-main'}`}
-                            title="List view"
+                            title={t('dashboard.my_dashboards.view.list')}
                         >
                             <List className="w-4 h-4" />
                         </button>
@@ -180,7 +182,7 @@ export const MyDashboardsPage: React.FC = () => {
             {/* Search Results Info */}
             {searchQuery && filteredFactories.length !== factories.length && (
                 <p className="text-sm text-text-muted mb-4">
-                    Showing {filteredFactories.length} of {factories.length} factories
+                    {t('dashboard.my_dashboards.search.results_info', { count: filteredFactories.length, total: factories.length })}
                 </p>
             )}
 
@@ -246,11 +248,11 @@ export const MyDashboardsPage: React.FC = () => {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-surface-subtle border-b border-border">
                             <tr>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Name</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Code</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Lines</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Status</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-right">Actions</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_name')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_location')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_lines')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_status')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-right">{t('dashboard.my_dashboards.table.header_actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -267,9 +269,9 @@ export const MyDashboardsPage: React.FC = () => {
                                 };
 
                                 const getStatusText = () => {
-                                    if (quotaPercentage >= 100) return 'At Limit';
-                                    if (quotaPercentage >= 80) return 'Near Limit';
-                                    return 'Active';
+                                    if (quotaPercentage >= 100) return t('dashboard.my_dashboards.factory_status.at_limit');
+                                    if (quotaPercentage >= 80) return t('dashboard.my_dashboards.factory_status.near_limit');
+                                    return t('dashboard.my_dashboards.factory_status.active');
                                 };
 
                                 return (
@@ -314,15 +316,15 @@ export const MyDashboardsPage: React.FC = () => {
             {!isLoadingFactories && searchQuery && filteredFactories.length === 0 && factories.length > 0 && (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                     <Search className="w-12 h-12 text-text-muted mb-4" />
-                    <h3 className="text-lg font-semibold text-text-main mb-1">No factories found</h3>
+                    <h3 className="text-lg font-semibold text-text-main mb-1">{t('dashboard.my_dashboards.search.no_results')}</h3>
                     <p className="text-sm text-text-muted">
-                        No factories match "{searchQuery}". Try a different search term.
+                        {t('dashboard.my_dashboards.search.no_results_detail', { query: searchQuery })}
                     </p>
                     <button
                         onClick={() => setSearchQuery('')}
                         className="mt-4 text-sm text-brand hover:text-brand-dark font-medium"
                     >
-                        Clear search
+                        {t('dashboard.my_dashboards.actions.clear_search')}
                     </button>
                 </div>
             )}
@@ -339,10 +341,13 @@ export const MyDashboardsPage: React.FC = () => {
                     </div>
 
                     {/* Copy */}
-                    <h2 className="text-2xl font-bold text-text-main mb-2">No active sites</h2>
+                    <h2 className="text-2xl font-bold text-text-main mb-2">{t('dashboard.my_dashboards.empty_state.title')}</h2>
                     <p className="text-text-muted mb-8 text-center max-w-md">
-                        Your dashboard is empty because no factories have been configured yet.
-                        {canManageInfrastructure ? ' Head over to Organization Settings to set up your infrastructure.' : ' Please contact your administrator to set up the infrastructure.'}
+                        {t('dashboard.my_dashboards.empty_state.description')}
+                        {" "}
+                        {canManageInfrastructure
+                            ? t('dashboard.my_dashboards.empty_state.admin_hint')
+                            : t('dashboard.my_dashboards.empty_state.user_hint')}
                     </p>
 
                     {/* CTA Button */}
@@ -352,7 +357,7 @@ export const MyDashboardsPage: React.FC = () => {
                             className="group flex items-center gap-3 bg-brand hover:bg-brand-dark text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-brand/20 transition-all active:scale-[0.98]"
                         >
                             <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
-                            Go to Organization Settings
+                            {t('dashboard.my_dashboards.empty_state.cta')}
                         </Link>
                     )}
                 </div>

@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { LayoutGrid, Loader2, Settings, Plus, RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next'; // [I18N]
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 
 // =============================================================================
@@ -54,6 +55,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     onRefresh,
     onReset,
 }) => {
+    const { t } = useTranslation(); // [I18N]
 
     return (
         <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-border px-6 py-4">
@@ -61,9 +63,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                 {/* Breadcrumb Navigation */}
                 <Breadcrumb
                     items={[
-                        { label: 'Workspace', href: '/dashboard/factories' },
-                        ...(factoryId ? [{ label: factoryName || 'Factory', href: `/dashboard/factories/${factoryId}` }] : []),
-                        { label: dashboardName || 'Dashboard' }
+                        { label: t('dashboard_header.breadcrumbs.workspace'), href: '/dashboard/factories' },
+                        ...(factoryId ? [{ label: factoryName || t('dashboard_header.breadcrumbs.factory'), href: `/dashboard/factories/${factoryId}` }] : []),
+                        { label: dashboardName || t('dashboard_header.breadcrumbs.dashboard') }
                     ]}
                     className="mb-4"
                 />
@@ -76,11 +78,11 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
                             </span>
-                            <span>Updated {lastUpdated}</span>
+                            <span>{t('dashboard_header.status.updated', { time: lastUpdated })}</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <h1 className="text-2xl font-bold text-text-main tracking-tight">
-                                {dashboardName || 'Loading Dashboard...'}
+                                {dashboardName || t('dashboard_header.status.loading')}
                             </h1>
                             {dataSourceName && (
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-brand/10 text-brand border border-brand/20 shadow-sm">
@@ -96,23 +98,23 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                             <button
                                 onClick={onRefresh}
                                 className="flex items-center px-4 py-2 bg-surface border border-border text-text-main rounded-full text-sm font-medium hover:bg-surface-subtle hover:border-border transition-all shadow-sm hover:shadow"
-                                title="Refresh all widgets"
+                                title={t('dashboard_header.actions.refresh')}
                             >
                                 <RefreshCw className="w-4 h-4 mr-2" />
-                                Refresh
+                                {t('dashboard_header.actions.refresh')}
                             </button>
                         )}
                         {onReset && (
                             <button
                                 onClick={() => {
-                                    if (confirm('Reset dashboard layout? This will clear all customizations and reload the page.')) {
+                                    if (confirm(t('dashboard_header.actions.reset_confirm'))) {
                                         onReset();
                                     }
                                 }}
                                 className="flex items-center px-3 py-2 bg-surface border border-border text-text-muted rounded-full text-xs font-medium hover:bg-danger/10 hover:border-danger/30 hover:text-danger transition-all"
-                                title="Reset dashboard layout"
+                                title={t('dashboard_header.actions.reset_layout')}
                             >
-                                Reset Layout
+                                {t('dashboard_header.actions.reset_layout')}
                             </button>
                         )}
                         {editMode && (
@@ -121,7 +123,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                                 className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-lg"
                             >
                                 <Plus className="w-4 h-4 mr-2" />
-                                Add Widget
+                                {t('dashboard_header.actions.add_widget')}
                             </button>
                         )}
                         <button
@@ -137,7 +139,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                             ) : (
                                 <LayoutGrid className="w-4 h-4 mr-2" />
                             )}
-                            {editMode ? (isSaving ? 'Saving...' : 'Exit Designer') : 'Design Layout'}
+                            {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
                         </button>
                     </div>
                 </div>

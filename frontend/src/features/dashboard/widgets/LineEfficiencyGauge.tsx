@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SmartWidgetProps } from '../config';
 import { z } from 'zod';
 import { LineEfficiencyDataSchema } from '../registry';
@@ -19,6 +20,7 @@ const LineEfficiencyGauge: React.FC<SmartWidgetProps<EfficiencyData, LineEfficie
     w: _w,
     h
 }) => {
+    const { t } = useTranslation();
     // Extract settings with defaults
     const targetPercentage = settings?.targetPercentage ?? 85;
     const showStatus = settings?.showStatus ?? true;
@@ -34,7 +36,7 @@ const LineEfficiencyGauge: React.FC<SmartWidgetProps<EfficiencyData, LineEfficie
     if (!data) {
         return (
             <div className="flex h-full items-center justify-center text-text-muted text-sm">
-                No Efficiency Data
+                {t('widgets.line_efficiency.no_data', 'No efficiency data available')}
             </div>
         );
     }
@@ -49,19 +51,19 @@ const LineEfficiencyGauge: React.FC<SmartWidgetProps<EfficiencyData, LineEfficie
             {/* Compact vs. Full Layout */}
             {isCompact ? (
                 <div className="text-[10px] text-text-muted mt-1.5 uppercase tracking-wider font-medium">
-                    Target {target}%
+                    {t('widgets.common.target')} {target}%
                 </div>
             ) : (
                 <div className="w-full mt-4 space-y-2.5 max-w-xs">
                     <div className="flex justify-between text-xs">
-                        <span className="text-text-muted">Target</span>
+                        <span className="text-text-muted">{t('widgets.common.target')}</span>
                         <span className="text-text-main font-semibold">{target.toFixed(1)}%</span>
                     </div>
                     {showStatus && (
                         <div className="flex justify-between text-xs">
-                            <span className="text-text-muted">Status</span>
+                            <span className="text-text-muted">{t('widgets.common.status')}</span>
                             <span className={`font-semibold ${efficiency >= target ? "text-brand" : "text-warning"}`}>
-                                {efficiency >= target ? "On Target" : "Below Target"}
+                                {efficiency >= target ? t('widgets.common.on_target') : t('widgets.common.below_target')}
                             </span>
                         </div>
                     )}

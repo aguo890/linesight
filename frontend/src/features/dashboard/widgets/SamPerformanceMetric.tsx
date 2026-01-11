@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SmartWidgetProps } from '../config';
 import { ResponsiveContainer, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { z } from 'zod';
@@ -13,10 +14,9 @@ interface SamSettings {
 
 const SamPerformanceMetric: React.FC<SmartWidgetProps<SamData, SamSettings>> = ({
     data,
-    settings,
-    w,
     h
 }) => {
+    const { t } = useTranslation();
     // Determine layout
     // const density = getDensity(w, h); // We don't need density for wrapper anymore, but might check for compact layout
     const isCompact = (h || 0) <= 2;
@@ -70,7 +70,7 @@ const SamPerformanceMetric: React.FC<SmartWidgetProps<SamData, SamSettings>> = (
                         <Legend wrapperStyle={{ fontSize: '10px' }} />
                         <Bar
                             dataKey="actual"
-                            name="Actual"
+                            name={t('widgets.common.actual')}
                             fill="#8b5cf6"
                             radius={[4, 4, 0, 0]}
                             barSize={20}
@@ -78,7 +78,7 @@ const SamPerformanceMetric: React.FC<SmartWidgetProps<SamData, SamSettings>> = (
                         <Line
                             type="monotone"
                             dataKey="standard"
-                            name="Target"
+                            name={t('widgets.common.target')}
                             stroke="#fb923c"
                             strokeWidth={2}
                             dot={false}

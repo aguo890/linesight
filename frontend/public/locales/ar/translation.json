@@ -41,5 +41,242 @@
             "push": "دفع الإخطارات",
             "weekly": "الملخص الأسبوعي"
         }
+    },
+    "navigation": {
+        "dashboard": "[MOCK] Dashboard",
+        "my_dashboards": "[MOCK] My Dashboards",
+        "organization": "[MOCK] Organization",
+        "show_more": "[MOCK] Show More",
+        "show_less": "[MOCK] Show Less"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "[MOCK] لوحات المعلومات الخاصة بي",
+            "search_placeholder": "[MOCK] البحث في المواقع...",
+            "status": {
+                "loading": "[MOCK] Loading your sites...",
+                "none": "[MOCK] No active production sites",
+                "available_one": "[MOCK] {{count}} موقع متاح",
+                "available_other": "[MOCK] {{count}} مواقع متاحة"
+            },
+            "table": {
+                "header_name": "[MOCK] اسم الموقع",
+                "header_location": "[MOCK] الموقع",
+                "header_status": "[MOCK] الحالة",
+                "header_lines": "[MOCK] Lines",
+                "header_actions": "[MOCK] Actions",
+                "action_view": "[MOCK] عرض"
+            },
+            "actions": {
+                "new_dashboard": "[MOCK] New Dashboard",
+                "configure_sites": "[MOCK] Configure Sites",
+                "clear_search": "[MOCK] Clear search"
+            },
+            "search": {
+                "results_info": "[MOCK] Showing {{count}} of {{total}} factories",
+                "no_results": "[MOCK] No factories found",
+                "no_results_detail": "[MOCK] No factories match \"{{query}}\". Try a different search term."
+            },
+            "factory_status": {
+                "at_limit": "[MOCK] At Limit",
+                "near_limit": "[MOCK] Near Limit",
+                "active": "[MOCK] Active"
+            },
+            "empty_state": {
+                "title": "[MOCK] No active sites",
+                "description": "[MOCK] Your dashboard is empty because no factories have been configured yet.",
+                "admin_hint": "[MOCK] Head over to Organization Settings to set up your infrastructure.",
+                "user_hint": "[MOCK] Please contact your administrator to set up the infrastructure.",
+                "cta": "[MOCK] Go to Organization Settings"
+            },
+            "view": {
+                "grid": "[MOCK] Grid view",
+                "list": "[MOCK] List view"
+            }
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "[MOCK] الصفحة الرئيسية",
+            "list": "[MOCK] لوحات المعلومات الخاصة بي",
+            "production_sites": "[MOCK] Production Sites",
+            "sites": "[MOCK] Sites",
+            "not_found": "[MOCK] Not Found"
+        },
+        "sections": {
+            "overview": "[MOCK] نظرة عامة",
+            "performance": "[MOCK] الأداء",
+            "settings": "[MOCK] الإعدادات",
+            "dashboards": "[MOCK] Dashboards",
+            "data_sources": "[MOCK] Data Sources"
+        },
+        "actions": {
+            "edit": "[MOCK] تعديل التكوين",
+            "delete": "[MOCK] حذف الموقع",
+            "save": "[MOCK] حفظ التغييرات",
+            "settings": "[MOCK] Settings",
+            "new_dashboard": "[MOCK] New Dashboard",
+            "create_dashboard": "[MOCK] Create Dashboard",
+            "add_data_source": "[MOCK] Add Data Source",
+            "new_source": "[MOCK] New Source",
+            "upload_data": "[MOCK] Upload data",
+            "no_write_access": "[MOCK] No write access to this source"
+        },
+        "alerts": {
+            "confirm_delete": "[MOCK] هل أنت متأكد أنك تريد حذف هذا المصنع؟ لا يمكن التراجع عن هذا الإجراء.",
+            "edit_soon": "[MOCK] Edit functionality coming soon",
+            "delete_soon": "[MOCK] Delete functionality coming soon",
+            "delete_fail": "[MOCK] Failed to delete dashboard."
+        },
+        "stats": {
+            "dashboards": "[MOCK] Dashboards",
+            "active_widgets": "[MOCK] Active Widgets",
+            "active_sources": "[MOCK] Active Sources",
+            "used_info": "[MOCK] {{current}} / {{max}} Used"
+        },
+        "not_found": "[MOCK] Factory not found",
+        "search": {
+            "dashboards_placeholder": "[MOCK] Filter dashboards...",
+            "sources_placeholder": "[MOCK] Search sources...",
+            "no_sources_found": "[MOCK] No sources found matching your search."
+        },
+        "quota": {
+            "limit_reached": "[MOCK] Quota limit reached"
+        },
+        "table": {
+            "headers": {
+                "name": "[MOCK] Name",
+                "status": "[MOCK] Status",
+                "actions": "[MOCK] Actions"
+            }
+        },
+        "status": {
+            "active": "[MOCK] Active",
+            "inactive": "[MOCK] Inactive"
+        },
+        "confirm": {
+            "delete_source": "[MOCK] Are you sure you want to delete this data source?",
+            "delete_dashboard": "[MOCK] Are you sure you want to delete this dashboard?"
+        }
+    },
+    "common": {
+        "back": "[MOCK] Back",
+        "cancel": "[MOCK] Cancel",
+        "error": "[MOCK] Error",
+        "success": "[MOCK] Success",
+        "uploading": "[MOCK] Uploading...",
+        "processing": "[MOCK] Processing...",
+        "remove": "[MOCK] Remove",
+        "ready": "[MOCK] Ready",
+        "needs_setup": "[MOCK] Needs Setup",
+        "actions": "[MOCK] Action",
+        "date": "[MOCK] Date"
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "[MOCK] Dashboard Name",
+            "dashboard_name_placeholder": "[MOCK] e.g. Line 4 Production Overview",
+            "name_error_tooltip": "[MOCK] Please enter a Dashboard Name first.",
+            "name_error_text": "[MOCK] Please enter a name for your dashboard to continue.",
+            "selection_title": "[MOCK] Data Source Selection",
+            "selection_desc": "[MOCK] Select a previously uploaded file.",
+            "columns": {
+                "file_name": "[MOCK] File Name",
+                "status": "[MOCK] Status",
+                "uploaded": "[MOCK] Uploaded",
+                "action": "[MOCK] Action"
+            },
+            "btn_configure": "[MOCK] Configure",
+            "btn_complete_setup": "[MOCK] Complete Setup",
+            "note": "[MOCK] Note: Your dashboard will include data from ALL files.",
+            "empty_title": "[MOCK] No Data Sources Yet",
+            "empty_desc": "[MOCK] Upload files from the Production Line page first.",
+            "error_load_failed": "[MOCK] Failed to load configuration."
+        },
+        "step2": {
+            "title": "[MOCK] Validate Mapping",
+            "subtitle": "[MOCK] Review how your columns match the database.",
+            "stats": {
+                "auto": "[MOCK] Auto-mapped",
+                "review": "[MOCK] Need Review",
+                "attention": "[MOCK] Attention",
+                "ignored": "[MOCK] Ignored"
+            },
+            "filter": {
+                "all": "[MOCK] All",
+                "unmapped": "[MOCK] Unmapped",
+                "conflicts": "[MOCK] Conflicts"
+            },
+            "showing_count": "[MOCK] Showing {{filtered}} of {{total}} columns",
+            "table": {
+                "source": "[MOCK] Source Column",
+                "target": "[MOCK] Target Field",
+                "status": "[MOCK] Status",
+                "no_match": "[MOCK] No columns match this filter",
+                "try_different": "[MOCK] Try selecting a different view"
+            },
+            "status_labels": {
+                "exact": "[MOCK] Exact",
+                "exact_tooltip": "[MOCK] Exact column name match",
+                "fuzzy": "[MOCK] Fuzzy",
+                "fuzzy_tooltip": "[MOCK] Similar name matched",
+                "ai": "[MOCK] AI",
+                "ai_tooltip": "[MOCK] AI-suggested mapping",
+                "manual": "[MOCK] Manual",
+                "manual_tooltip": "[MOCK] Manually assigned",
+                "unset": "[MOCK] Unset",
+                "unset_tooltip": "[MOCK] Needs mapping",
+                "duplicate": "[MOCK] Duplicate"
+            },
+            "field_selector": {
+                "select_placeholder": "[MOCK] Select target field...",
+                "search_placeholder": "[MOCK] Search fields...",
+                "suggested": "[MOCK] Suggested",
+                "all_fields": "[MOCK] All Fields",
+                "no_results": "[MOCK] No fields match \"{{term}}\"",
+                "ignore_action": "[MOCK] Ignore this column",
+                "restore_action": "[MOCK] Ignored — click to restore",
+                "in_use": "[MOCK] in use"
+            },
+            "alerts": {
+                "conflict_count_one": "[MOCK] 1 field has duplicate mappings",
+                "conflict_count_other": "[MOCK] {{count}} fields have duplicate mappings",
+                "remaining_needed": "[MOCK] Remaining fields needed"
+            },
+            "btn_confirm": "[MOCK] Confirm Mapping",
+            "processing": {
+                "title": "[MOCK] Processing Data",
+                "subtitle": "[MOCK] Validating and importing...",
+                "logs": {
+                    "init": "[MOCK] Initializing engine...",
+                    "schema": "[MOCK] Verifying schema...",
+                    "mapping": "[MOCK] Mapping column '{{column}}'...",
+                    "req": "[MOCK] Processing request...",
+                    "sending": "[MOCK] Sending data...",
+                    "success": "[MOCK] Ingestion successful."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "[MOCK] Quick Start Blueprints",
+            "divider": "[MOCK] or customize individually",
+            "library_title": "[MOCK] Widget Library",
+            "selected_count": "[MOCK] {{count}} selected",
+            "btn_create": "[MOCK] Create Dashboard",
+            "btn_configuring": "[MOCK] Configuring..."
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "[MOCK] Upload Data",
+            "title_preview": "[MOCK] Preview Data",
+            "subtitle_upload": "[MOCK] Upload data to {{dataSourceName}}",
+            "subtitle_preview": "[MOCK] Review how your data will be imported",
+            "drop_text": "[MOCK] Drop your file here or click to browse",
+            "supports_text": "[MOCK] Supports Excel (.xlsx, .xls) and CSV files",
+            "success_redirect": "[MOCK] Upload successful! Redirecting...",
+            "info_preview": "[MOCK] After upload, you'll review a preview.",
+            "btn_upload_preview": "[MOCK] Upload & Preview"
+        }
     }
 }

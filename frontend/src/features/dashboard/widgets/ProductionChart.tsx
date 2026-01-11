@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     AreaChart,
     Area,
@@ -33,6 +34,7 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
     w: _w,
     h: _h
 }) => {
+    const { t } = useTranslation();
     // 1. Settings Extraction
     const showLegend = settings?.showLegend !== false;
     const yAxisMax = settings?.yAxisMax || 0;
@@ -110,7 +112,7 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                 <Area
                     type="monotone"
                     dataKey="target"
-                    name="Planned"
+                    name={t('widgets.production_chart.planned')}
                     stroke="#94a3b8"
                     strokeWidth={2}
                     strokeDasharray="4 4"
@@ -119,7 +121,7 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                 <Area
                     type="monotone"
                     dataKey="actual"
-                    name="Actual Output"
+                    name={t('widgets.production_chart.actual_output')}
                     stroke="#3b82f6"
                     strokeWidth={2}
                     fill="url(#colorActual)"

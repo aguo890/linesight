@@ -37,11 +37,11 @@ export default function TopNav() {
     }, [showSearchToast]);
 
     return (
-        <nav className={`h-16 bg-surface border-b border-border flex items-center justify-between px-4 sticky top-0 z-40 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-64' : 'ml-[70px]'}`}>
+        <nav className={`h-16 bg-surface border-b border-border flex items-center justify-between px-4 sticky top-0 z-40 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ms-64' : 'ms-[70px]'}`}>
             {/* Search/Left Section */}
             <div className="flex items-center gap-4 flex-1">
                 <div className="relative max-w-md w-full hidden md:block">
-                    <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Search className="w-4 h-4 text-text-muted absolute start-3 top-1/2 -translate-y-1/2" />
                     <input
                         type="text"
                         value={searchQuery}
@@ -52,11 +52,11 @@ export default function TopNav() {
                             }
                         }}
                         placeholder="Search factories, orders..."
-                        className="w-full pl-10 pr-4 py-2 bg-surface-subtle border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
+                        className="w-full ps-10 pe-4 py-2 bg-surface-subtle border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
                     />
                     {/* Toast Notification */}
                     {showSearchToast && (
-                        <div className="absolute top-full left-0 mt-2 px-4 py-2 bg-surface-elevated text-text-main text-sm rounded-lg shadow-lg border border-border flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                        <div className="absolute top-full start-0 mt-2 px-4 py-2 bg-surface-elevated text-text-main text-sm rounded-lg shadow-lg border border-border flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
                             <span>Global search is coming soon!</span>
                         </div>
                     )}
@@ -76,7 +76,7 @@ export default function TopNav() {
                     >
                         <Bell className="w-5 h-5" />
                         {notifications.length > 0 && (
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full border-2 border-surface"></span>
+                            <span className="absolute top-2 end-2 w-2 h-2 bg-danger rounded-full border-2 border-surface"></span>
                         )}
                     </button>
 
@@ -84,7 +84,7 @@ export default function TopNav() {
                     {isNotificationsOpen && (
                         <>
                             <div className="fixed inset-0 z-50 cursor-default" onClick={() => setIsNotificationsOpen(false)}></div>
-                            <div className="absolute right-0 mt-2 w-80 bg-surface border border-border rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in duration-100">
+                            <div className="absolute end-0 mt-2 w-80 bg-surface border border-border rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in duration-100">
                                 <div className="px-4 py-3 border-b border-border-subtle flex justify-between items-center">
                                     <h3 className="text-sm font-semibold text-text-main">Notifications</h3>
                                     {notifications.length > 0 && (
@@ -133,7 +133,7 @@ export default function TopNav() {
                             {/* Overlay to close dropdown */}
                             <div className="fixed inset-0 z-50 cursor-default" onClick={() => setIsDropdownOpen(false)}></div>
 
-                            <div className="absolute right-0 mt-2 w-56 bg-surface border border-border rounded-xl shadow-xl z-50 py-2 overflow-hidden animate-in fade-in zoom-in duration-100">
+                            <div className="absolute end-0 mt-2 w-56 bg-surface border border-border rounded-xl shadow-xl z-50 py-2 overflow-hidden animate-in fade-in zoom-in duration-100">
                                 <div className="px-4 py-3 border-b border-border-subtle">
                                     <p className="text-sm font-semibold text-text-main truncate">{user?.full_name}</p>
                                     <p className="text-xs text-text-muted truncate">{user?.email}</p>

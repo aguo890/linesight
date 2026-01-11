@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Plus, Lock, AlertCircle, Sparkles, CheckCircle, CheckSquare } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus, type WidgetCategory, type CompatibilityStatus } from '../registry';
 import { MicroPreview, type SampleDataMap } from './MicroPreview';
 
@@ -35,6 +36,7 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
     variant = 'sidebar',
     sampleData = {}
 }) => {
+    const { t } = useTranslation();
     const [activeCategory, setActiveCategory] = useState<WidgetCategory>('Efficiency');
 
     // Process all widgets with compatibility status
@@ -149,18 +151,18 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
                         className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-brand bg-brand/10 border border-brand/20 rounded-lg hover:bg-brand/20 transition-colors"
                     >
                         <Sparkles className="w-3.5 h-3.5" />
-                        AI Recommendations
+                        {t('widgets.selector.ai_recommendations')}
                     </button>
                     <button
                         onClick={handleSelectAll}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-text-main bg-surface-subtle border border-border rounded-lg hover:bg-surface transition-colors"
                     >
                         <CheckSquare className="w-3.5 h-3.5" />
-                        Select All Compatible
+                        {t('widgets.selector.select_all')}
                     </button>
                 </div>
                 <div className="text-xs text-text-muted">
-                    {selectedWidgets.length} selected • {allSupportedIds.length} compatible
+                    {selectedWidgets.length} {t('widgets.selector.selected')} • {allSupportedIds.length} {t('widgets.selector.compatible')}
                 </div>
             </div>
 
@@ -183,7 +185,7 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
                                 }
                             `}
                         >
-                            <span>{cat}</span>
+                            <span>{t(`widgets.selector.categories.${cat}` as any)}</span>
                             <span className={`ml-1.5 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
                                 ({counts.supported}/{counts.total})
                             </span>
@@ -276,6 +278,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
     sampleData = {},
     index
 }) => {
+    const { t } = useTranslation();
     const { isSupported, isNearMiss } = widget;
     const isAdded = variant === 'sidebar' && isSelected;
 
@@ -340,16 +343,16 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                             <AlertCircle className="w-5 h-5" />
                         ) : (
                             <div className="w-5 h-5 flex items-center justify-center font-bold text-lg">
-                                {widget.title.charAt(0)}
+                                {(t(widget.title as any) || widget.title).charAt(0)}
                             </div>
                         )}
                     </div>
                     <div className="min-w-0">
                         <p className="text-sm font-semibold leading-tight truncate pr-2 text-text-main">
-                            {widget.title}
+                            {t(widget.title as any) || widget.title}
                         </p>
                         <p className="text-[11px] text-text-muted mt-0.5 line-clamp-2 leading-relaxed">
-                            {widget.description}
+                            {t(widget.description as any) || widget.description}
                         </p>
                     </div>
                 </div>
@@ -405,7 +408,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                         <div className="absolute top-0 right-0 opacity-0 group-hover/chart:opacity-100 transition-opacity">
                             <span className="text-[7px] text-text-muted font-bold uppercase bg-surface/90 px-1 py-0.5 rounded border border-border tracking-tighter shadow-sm whitespace-nowrap">
                                 <span className="inline-block w-1 h-1 bg-success rounded-full animate-pulse mr-1" />
-                                Simulated Data
+                                {t('widgets.selector.simulated_data')}
                             </span>
                         </div>
                     </div>
@@ -415,7 +418,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                         <div className="w-24 h-1 bg-border rounded-full mb-1.5 animate-pulse" />
                         <div className="w-16 h-1 bg-surface-subtle rounded-full mb-2 animate-pulse" style={{ animationDelay: '0.2s' }} />
                         <span className="text-[8px] text-text-muted font-bold uppercase tracking-widest leading-none">
-                            {widget.locked ? 'Coming Soon' : 'Data Req.'}
+                            {widget.locked ? t('widgets.selector.coming_soon') : t('widgets.selector.data_req')}
                         </span>
                     </div>
                 )}
@@ -426,35 +429,35 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                 <div className="mt-1 flex flex-wrap gap-1.5 min-h-[1.5rem] items-center">
                     {widget.locked ? (
                         <div className="flex items-center gap-1 text-[10px] text-brand-secondary font-medium italic">
-                            <span>Future Capability</span>
+                            <span>{t('widgets.selector.future_capability')}</span>
                         </div>
                     ) : isSupported ? (
                         <div className="flex items-center gap-1 text-[10px] text-success font-medium">
                             <CheckCircle className="w-3 h-3" />
-                            <span>Ready to Use</span>
+                            <span>{t('widgets.selector.ready_to_use')}</span>
                         </div>
                     ) : isNearMiss ? (
                         <div className="flex items-center gap-1 text-[10px] text-warning font-medium bg-warning/10 px-1.5 py-0.5 rounded">
                             <Sparkles className="w-3 h-3" />
-                            <span>Near Match</span>
+                            <span>{t('widgets.selector.near_match')}</span>
                         </div>
                     ) : (
                         <div className="flex items-center gap-1 text-[10px] text-text-muted font-medium">
                             <AlertCircle className="w-3 h-3" />
-                            <span>Needs Mapping</span>
+                            <span>{t('widgets.selector.needs_mapping')}</span>
                         </div>
                     )}
                 </div>
                 {isSupported && widget.tags.includes('essential') && (
                     <div className="flex items-center gap-1 text-[10px] text-brand font-medium">
                         <Sparkles className="w-3 h-3" />
-                        <span>Recommended</span>
+                        <span>{t('widgets.selector.recommended')}</span>
                     </div>
                 )}
                 {widget.locked && (
                     <div className="flex items-center gap-1 text-[10px] text-brand-secondary font-semibold bg-brand-secondary/10 px-2 py-1 rounded border border-brand-secondary/20 uppercase tracking-tight">
                         <Lock className="w-3 h-3" />
-                        <span>Coming Soon</span>
+                        <span>{t('widgets.selector.coming_soon')}</span>
                     </div>
                 )}
             </div>

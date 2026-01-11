@@ -8,11 +8,13 @@ interface WizardStep1UploadProps {
 }
 
 import { useDateFormatter } from '@/hooks/useDateFormatter';
+import { useTranslation } from 'react-i18next';
 
 export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
     onUseExisting,
     existingDataSources,
 }) => {
+    const { t } = useTranslation();
     const { formatDate } = useDateFormatter();
     const [dashboardName, setDashboardName] = useState('');
 
@@ -23,10 +25,10 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
     const [error, setError] = useState<string | null>(null);
 
     // HELPER: check if the current error is specifically about the name
-    const isNameError = error === 'Please enter a Dashboard Name first.';
+    const isNameError = error === t('wizard.step1.name_error_tooltip');
 
     const triggerNameError = () => {
-        setError('Please enter a Dashboard Name first.');
+        setError(t('wizard.step1.name_error_tooltip'));
         // LOGIC: Scroll to input and focus it
         if (dashboardInputRef.current) {
             dashboardInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -44,7 +46,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                 }`}>
                 <label htmlFor="dash-name" className={`block text-sm font-medium mb-1 ${isNameError ? 'text-red-700 dark:text-red-400' : 'text-text-main'
                     }`}>
-                    Dashboard Name <span className="text-status-error">*</span>
+                    {t('wizard.step1.dashboard_name_label')} <span className="text-status-error">*</span>
                 </label>
                 <div className="relative">
                     <input
@@ -56,7 +58,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                             setDashboardName(e.target.value);
                             if (isNameError) setError(null);
                         }}
-                        placeholder="e.g. Line 4 Production Overview"
+                        placeholder={t('wizard.step1.dashboard_name_placeholder')}
                         className={`block w-full rounded-md shadow-sm sm:text-sm p-2 border transition-all bg-surface text-text-main ${isNameError
                             ? 'border-red-500 focus:border-red-500 focus:ring-red-500 pr-10 dark:border-red-600'
                             : 'border-border focus:border-brand focus:ring-brand'
@@ -70,7 +72,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                 </div>
                 {isNameError && (
                     <p className="mt-1 text-sm text-red-600 dark:text-red-400 animate-pulse">
-                        Please enter a name for your dashboard to continue.
+                        {t('wizard.step1.name_error_text')}
                     </p>
                 )}
             </div>
@@ -78,9 +80,9 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className="text-lg font-semibold text-text-main">Data Source Selection</h3>
+                    <h3 className="text-lg font-semibold text-text-main">{t('wizard.step1.selection_title')}</h3>
                     <p className="text-sm text-text-muted">
-                        Select a previously uploaded file to configure your dashboard widgets.
+                        {t('wizard.step1.selection_desc')}
                     </p>
                 </div>
             </div>
@@ -92,10 +94,10 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                         <table className="min-w-full divide-y divide-border">
                             <thead className="bg-surface-subtle sticky top-0">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">File Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">Uploaded</th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase">Action</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.file_name')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.status')}</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.uploaded')}</th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.action')}</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-surface divide-y divide-border">
@@ -112,11 +114,11 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 {isComplete ? (
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
-                                                        Ready
+                                                        {t('common.ready')}
                                                     </span>
                                                 ) : (
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
-                                                        Needs Setup
+                                                        {t('common.needs_setup')}
                                                     </span>
                                                 )}
                                             </td>
@@ -138,7 +140,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                                             await onUseExisting(source, dashboardName);
                                                         } catch (err) {
                                                             console.error('Failed to configure existing source:', err);
-                                                            setError('Failed to load existing data source configuration.');
+                                                            setError(t('wizard.step1.error_load_failed'));
                                                         } finally {
                                                             setIsProcessing(false);
                                                         }
@@ -153,7 +155,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                                         <Loader2 className="w-3 h-3 animate-spin mr-1 text-brand" />
                                                     ) : (
                                                         <>
-                                                            {isComplete ? 'Configure' : 'Complete Setup'}
+                                                            {isComplete ? t('wizard.step1.btn_configure') : t('wizard.step1.btn_complete_setup')}
                                                             <ChevronRight className="w-3 h-3 ml-1" />
                                                         </>
                                                     )}
@@ -167,15 +169,15 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                     </div>
                     <div className="p-3 bg-surface-subtle border-t border-border text-xs text-text-muted flex items-center justify-center">
                         <Database className="w-3 h-3 mr-1.5" />
-                        Note: Your dashboard will include data from ALL files in this list. Select any file to define the widget columns.
+                        {t('wizard.step1.note')}
                     </div>
                 </div>
             ) : (
                 <div className="p-8 text-center border-2 border-dashed border-border rounded-lg bg-surface-subtle">
                     <Database className="w-12 h-12 mx-auto text-text-muted/50 mb-4" />
-                    <h4 className="text-lg font-medium text-text-main mb-2">No Data Sources Yet</h4>
+                    <h4 className="text-lg font-medium text-text-main mb-2">{t('wizard.step1.empty_title')}</h4>
                     <p className="text-sm text-text-muted">
-                        Upload files from the Production Line page first, then return here to create a dashboard.
+                        {t('wizard.step1.empty_desc')}
                     </p>
                 </div>
             )}
@@ -185,7 +187,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                 <div className="flex items-start space-x-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                     <div>
-                        <p className="text-sm font-medium text-red-900 dark:text-red-300">Error</p>
+                        <p className="text-sm font-medium text-red-900 dark:text-red-300">{t('common.error')}</p>
                         <p className="text-sm text-red-700 dark:text-red-400 mt-1">{error}</p>
                     </div>
                 </div>

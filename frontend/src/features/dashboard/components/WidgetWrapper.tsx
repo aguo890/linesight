@@ -1,6 +1,7 @@
 import { Settings, Trash2 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { useDashboardSafe } from '../context/DashboardContext';
+import { useTranslation } from 'react-i18next';
 
 export type WidgetDensity = 'default' | 'compact' | 'minimal';
 
@@ -43,6 +44,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     className,
     children,
 }) => {
+    const { t } = useTranslation();
     // 1. Get Context Safely
     const context = useDashboardSafe();
 
@@ -62,14 +64,14 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 {icon && (
                     <div
                         className="absolute top-2 right-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
-                        title={title}
+                        title={t(title as any) || title}
                     >
                         <div className="w-3.5 h-3.5 text-text-muted">
                             {icon}
                         </div>
                         {/* Tooltip on hover - expands to the left */}
                         <div className="absolute right-full top-1/2 -translate-y-1/2 mr-1 px-2 py-1 bg-surface-elevated text-text-main text-[10px] rounded whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none border border-border shadow-lg">
-                            {title}
+                            {t(title as any) || title}
                         </div>
                     </div>
                 )}
@@ -79,7 +81,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         <button
                             onClick={() => id && handleOpenSettings(id)}
                             className="p-1 hover:bg-surface-subtle rounded text-text-muted hover:text-text-main"
-                            title="Settings"
+                            title={t('widgets.common.settings')}
                         >
                             <Settings size={14} />
                         </button>
@@ -87,7 +89,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                             <button
                                 onClick={(e) => { e.stopPropagation(); onRemove(); }}
                                 className="p-1 hover:bg-danger/10 rounded text-text-muted hover:text-danger"
-                                title="Remove Widget"
+                                title={t('widgets.common.remove_widget')}
                             >
                                 <Trash2 size={14} />
                             </button>
@@ -107,14 +109,14 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
             <div className={cn(cardClasses, "rounded-lg h-full flex flex-col overflow-hidden group", className)}>
                 <div className="flex items-center justify-between gap-1.5 px-3 py-1.5 shrink-0 border-b border-transparent">
                     <span className="text-xs font-semibold text-text-main truncate">
-                        {title}
+                        {t(title as any) || title}
                     </span>
                     <div className="flex items-center gap-1 shrink-0">
                         {canSettings && (
                             <button
                                 onClick={() => id && handleOpenSettings(id)}
                                 className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-subtle rounded transition-all"
-                                title="Settings"
+                                title={t('widgets.common.settings')}
                             >
                                 <Settings size={14} className="text-text-muted hover:text-text-main" />
                             </button>
@@ -123,14 +125,14 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                             <button
                                 onClick={(e) => { e.stopPropagation(); onRemove(); }}
                                 className="opacity-0 group-hover:opacity-100 p-1 hover:bg-danger/10 rounded transition-all"
-                                title="Remove Widget"
+                                title={t('widgets.common.remove_widget')}
                             >
                                 <Trash2 size={14} className="text-text-muted hover:text-danger" />
                             </button>
                         )}
                         {actions}
                         {icon && (
-                            <div className="p-1 rounded opacity-60 hover:opacity-100 transition-opacity cursor-help" title={title}>
+                            <div className="p-1 rounded opacity-60 hover:opacity-100 transition-opacity cursor-help" title={t(title as any) || title}>
                                 <div className="w-3.5 h-3.5">
                                     {icon}
                                 </div>
@@ -138,7 +140,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         )}
                         {isMock && (
                             <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded uppercase">
-                                Demo
+                                {t('widgets.common.demo')}
                             </span>
                         )}
                     </div>
@@ -164,11 +166,11 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     )}
                     <div className="min-w-0 flex-1">
                         <h3 className="text-base font-bold text-text-main truncate">
-                            {title}
+                            {t(title as any) || title}
                         </h3>
                         {subtitle && (
                             <p className="text-xs text-text-muted truncate mt-0.5">
-                                {subtitle}
+                                {t(subtitle as any) || subtitle}
                             </p>
                         )}
                     </div>
@@ -178,7 +180,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         <button
                             onClick={() => id && handleOpenSettings(id)}
                             className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-surface-subtle rounded-md transition-all"
-                            title="Settings"
+                            title={t('widgets.common.settings')}
                         >
                             <Settings size={16} className="text-text-muted hover:text-text-main" />
                         </button>
@@ -187,14 +189,14 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         <button
                             onClick={(e) => { e.stopPropagation(); onRemove(); }}
                             className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-danger/10 rounded-md transition-all"
-                            title="Remove Widget"
+                            title={t('widgets.common.remove_widget')}
                         >
                             <Trash2 size={16} className="text-text-muted hover:text-danger" />
                         </button>
                     )}
                     {isMock && (
                         <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded-full uppercase">
-                            Demo Mode
+                            {t('widgets.common.demo_mode')}
                         </span>
                     )}
                     {actions && (

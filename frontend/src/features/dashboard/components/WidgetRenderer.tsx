@@ -1,9 +1,10 @@
 import React, { Suspense, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react';
 import type { ValidatedWidgetConfig } from '../services/WidgetService';
 import type { GlobalFilters } from '../config';
 import { getWidgetManifest } from '../registry';
-import { WidgetErrorBoundary } from './WidgetErrorBoundary';
+import WidgetErrorBoundary from './WidgetErrorBoundary';
 import { useWidgetLogger } from '@/hooks/useWidgetLogger';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { useDashboard } from '../context/DashboardContext';
@@ -28,6 +29,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     dataSourceId,
     onDelete
 }) => {
+    const { t } = useTranslation();
     // 1. Get Global Context
     const { globalFilters: contextFilters } = useDashboard();
 
@@ -59,15 +61,15 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     if (!manifest) {
         return (
             <div className="p-4 bg-error/10 border border-error/30 rounded text-error">
-                Unknown Widget Type: {widget.widget}
+                {t('widgets.renderer.unknown_type')}: {widget.widget}
             </div>
         );
     }
 
     const Component = manifest.component;
     const title = widget.settings?.customTitle || manifest.meta.title;
-    const IconComponent = manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined;
-    const iconElement = IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined;
+    const IconComponent = useMemo(() => manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest.meta.icon]);
+    const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest.meta.iconColor]);
 
     // 6. Centralized Loading State (Initial Load Only)
     // Allows background refreshing for existing data
@@ -81,7 +83,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             <WidgetWrapper id={widget.i} title={title} isMock={isMock} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
                 <div className="flex flex-col items-center justify-center h-full text-red-400 gap-2 p-4 text-center">
                     <AlertCircle className="w-6 h-6" />
-                    <span className="text-xs font-medium">Failed to load data</span>
+                    <span className="text-xs font-medium">{t('widgets.renderer.failed_load')}</span>
                     <span className="text-[10px] opacity-70">{error}</span>
                 </div>
             </WidgetWrapper>
@@ -112,7 +114,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             {editMode && (
                 <div className="absolute top-3 left-3 flex items-center gap-2 z-20 bg-surface/90 backdrop-blur p-1.5 rounded-lg border border-border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="text-[10px] font-bold text-text-muted uppercase px-1">
-                        Widget ID: {widget.i.split('-')[0]}
+                        {t('widgets.renderer.widget_id')}: {widget.i.split('-')[0]}
                     </span>
                 </div>
             )}

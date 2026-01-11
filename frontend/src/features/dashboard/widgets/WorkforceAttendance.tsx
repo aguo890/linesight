@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SmartWidgetProps } from '../config';
 import { WorkforceDataSchema } from '../registry';
 import { z } from 'zod';
@@ -15,6 +16,7 @@ const WorkforceAttendanceCard: React.FC<SmartWidgetProps<WorkforceStats, Workfor
     data,
     settings
 }) => {
+    const { t } = useTranslation();
     // Settings
     const showBreakdown = settings?.showBreakdown ?? true;
 
@@ -30,7 +32,7 @@ const WorkforceAttendanceCard: React.FC<SmartWidgetProps<WorkforceStats, Workfor
         <div className="h-full flex flex-col items-center justify-center flex-1">
             <div className="text-center mt-2">
                 <div className="text-5xl font-bold text-text-main">{attendanceRate}%</div>
-                <div className="text-xs text-text-muted font-medium mt-1">Attendance Rate</div>
+                <div className="text-xs text-text-muted font-medium mt-1">{t('widgets.workforce_attendance.attendance_rate')}</div>
             </div>
 
             {/* Breakdown */}
@@ -38,15 +40,15 @@ const WorkforceAttendanceCard: React.FC<SmartWidgetProps<WorkforceStats, Workfor
                 <div className="w-full mt-auto grid grid-cols-3 divide-x divide-border border-t border-border pt-4 pb-2">
                     <div className="text-center px-1">
                         <div className="text-lg font-bold text-brand">{rawData.present}</div>
-                        <div className="text-[10px] text-text-muted uppercase">Present</div>
+                        <div className="text-[10px] text-text-muted uppercase">{t('widgets.workforce_attendance.present')}</div>
                     </div>
                     <div className="text-center px-1">
                         <div className="text-lg font-bold text-brand-dark">{rawData.target}</div>
-                        <div className="text-[10px] text-text-muted uppercase">Target</div>
+                        <div className="text-[10px] text-text-muted uppercase">{t('widgets.common.target')}</div>
                     </div>
                     <div className="text-center px-1">
                         <div className="text-lg font-bold text-danger">{rawData.absent}</div>
-                        <div className="text-[10px] text-text-muted uppercase">Absent</div>
+                        <div className="text-[10px] text-text-muted uppercase">{t('widgets.workforce_attendance.absent')}</div>
                     </div>
                 </div>
             )}
