@@ -23,8 +23,10 @@ interface FactoryInfo {
     name: string;
 }
 
+import { LanguageSelector } from '../../components/common/LanguageSelector';
+
 export default function ProfilePage() {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { user, updateUser } = useAuth();
     const { setTheme } = useTheme();
     const navigate = useNavigate();
@@ -297,15 +299,7 @@ export default function ProfilePage() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.language')}</label>
-                                    <select
-                                        value={i18n.language}
-                                        onChange={(e) => i18n.changeLanguage(e.target.value)}
-                                        className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
-                                    >
-                                        <option value="en">English (US)</option>
-                                        <option value="es">Spanish</option>
-                                        <option value="ar">Arabic</option>
-                                    </select>
+                                    <LanguageSelector className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.theme')}</label>
