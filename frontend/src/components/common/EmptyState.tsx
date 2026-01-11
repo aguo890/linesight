@@ -40,17 +40,17 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 }) => {
     return (
         <div className={`flex flex-col items-center justify-center text-center py-12 ${className}`}>
-            <div className="p-4 bg-slate-100 rounded-full mb-4">
-                <Icon className="w-8 h-8 text-slate-400" />
+            <div className="p-4 bg-surface-subtle rounded-full mb-4">
+                <Icon className="w-8 h-8 text-text-muted" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-1">{title}</h3>
+            <h3 className="text-lg font-semibold text-text-main mb-1">{title}</h3>
             {description && (
-                <p className="text-slate-500 max-w-sm mb-4">{description}</p>
+                <p className="text-text-muted max-w-sm mb-4">{description}</p>
             )}
             {action && (
                 <button
                     onClick={action.onClick}
-                    className="text-sky-600 font-semibold hover:text-sky-700 hover:underline transition-colors"
+                    className="text-brand font-semibold hover:text-brand-dark hover:underline transition-colors"
                 >
                     {action.label}
                 </button>

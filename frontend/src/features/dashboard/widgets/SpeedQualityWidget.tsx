@@ -6,6 +6,7 @@ import type { SmartWidgetProps } from '../config';
 import { SpeedQualityDataSchema } from '../registry';
 import { z } from 'zod';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
+import { useThemeColors } from '@/hooks/useThemeColor';
 
 // Infer types from the Registry Schema
 type SpeedQualityData = z.infer<typeof SpeedQualityDataSchema>;
@@ -23,6 +24,13 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
     const rawData = data;
     const { formatDate } = useFactoryFormat();
 
+    // Theme Colors for Dark Mode Support
+    const themeColors = useThemeColors(['--text-main', '--text-muted', '--border', '--surface']);
+    const axisColor = themeColors['--text-muted'];
+    const textMainColor = themeColors['--text-main'];
+    const gridColor = themeColors['--border'];
+    const tooltipBg = themeColors['--surface'];
+
     // Data Processing: Extract 'data_points' and map for Recharts
     // Schema guarantees { data_points: [...] }
     const chartData = (rawData?.data_points || []).map((d: any) => ({
@@ -35,10 +43,10 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
         <div className="flex-1 min-h-0 w-full relative" style={{ width: '100%', height: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: -10 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                     <XAxis
                         dataKey="date"
-                        tick={{ fontSize: 10 }}
+                        tick={{ fontSize: 10, fill: axisColor }}
                         axisLine={false}
                         tickLine={false}
                         tickFormatter={(val) => formatDate(val)}
@@ -47,7 +55,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     <YAxis
                         yAxisId="left"
                         orientation="left"
-                        tick={{ fontSize: 10, fill: 'black' }}
+                        tick={{ fontSize: 10, fill: textMainColor }}
                         axisLine={false}
                         tickLine={false}
                         domain={[0, 100]}
@@ -63,8 +71,14 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                         domain={[0, 'auto']}
                     />
                     <Tooltip
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                        labelStyle={{ color: '#6b7280', fontSize: '12px', marginBottom: '4px' }}
+                        contentStyle={{
+                            borderRadius: '8px',
+                            border: 'none',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                            backgroundColor: tooltipBg,
+                            color: axisColor
+                        }}
+                        labelStyle={{ color: axisColor, fontSize: '12px', marginBottom: '4px' }}
                         labelFormatter={(label) => formatDate(label)}
                     />
                     {showLegend && <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '5px' }} />}
@@ -75,7 +89,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                         type="monotone"
                         dataKey="efficiency"
                         name="Efficiency"
-                        stroke="blue"
+                        stroke="#3b82f6"
                         strokeWidth={2}
                         dot={{ r: 2 }}
                         activeDot={{ r: 4 }}

@@ -44,8 +44,21 @@ class OrganizationRead(OrganizationBase):
 
     id: str
     subscription_tier: str
+    settings: dict | None = None
     created_at: datetime
     updated_at: datetime
+
+    @field_validator("settings", mode="before")
+    @classmethod
+    def parse_settings(cls, v):
+        if isinstance(v, str):
+            try:
+                import json
+
+                return json.loads(v)
+            except Exception:
+                return {}
+        return v
 
 
 # =============================================================================

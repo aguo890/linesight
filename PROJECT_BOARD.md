@@ -757,24 +757,25 @@
 
 ## 📋 EPIC 11: Semantic Theme & Dark Mode
 > **Priority**: P1  
-> **Status**: ⬜ Planned  
+> **Status**: 🟡 In Progress  
 > **Strategy**: Refactoring before extending (Semantic Abstraction)
 
 ### 🏗️ Phase 1: Semantic Abstraction (Refactor)
 | ID | Task | Priority | Effort | Status | Notes |
 |----|------|----------|--------|--------|-------|
-| DARK-001 | Define RGB Channel variables in `index.css` | P0 | S | ⬜ Todo | Enable opacity modifiers |
-| DARK-002 | Map semantic aliases in `tailwind.config.js` | P0 | S | ⬜ Todo | background, surface, text-main |
-| DARK-003 | Component audit & class replacement | P1 | L | ⬜ Todo | Audit top 5 color classes |
+| DARK-001 | Define RGB Channel variables in `index.css` | P0 | S | ✅ Done | With color-scheme for scrollbars |
+| DARK-002 | Map semantic aliases in `tailwind.config.js` | P0 | S | ✅ Done | background, surface, text-main, border |
+| DARK-003 | Component audit & class replacement | P1 | L | 🟡 In Progress | Shell migrated (TopNav, DashboardHeader, ProfilePage) |
 | DARK-004 | Verify visual parity (Light mode) | P0 | S | ⬜ Todo | Ensure no regressions |
 
 ### 🌑 Phase 2: Dark Mode Implementation
 | ID | Task | Priority | Effort | Status | Notes |
 |----|------|----------|--------|--------|-------|
-| DARK-010 | Implement `.dark` mode overrides in `index.css` | P1 | M | ⬜ Todo | Define dark channel values |
-| DARK-011 | Implement `ThemeContext` & Toggle UI | P1 | M | ⬜ Todo | Hook up to `html` element |
-| DARK-012 | Dark mode chart synchronization | P2 | M | ⬜ Todo | Update chart colors via JS/CSS variables |
-| DARK-013 | Refine Glassmorphism for Dark Mode | P1 | S | ⬜ Todo | Test `bg-surface/70` in dark mode |
+| DARK-010 | Implement `.dark` mode overrides in `index.css` | P1 | M | ✅ Done | Full dark palette defined |
+| DARK-011 | Implement `ThemeContext` & Toggle UI | P1 | M | ✅ Done | 3-state: light/dark/system |
+| DARK-012 | Reactive chart colors (`useThemeColor` hook) | P2 | M | ✅ Done | SSR-safe, re-renders on toggle |
+| DARK-013 | FOUC Prevention (blocking script) | P1 | S | ✅ Done | Script in `index.html` head |
+| DARK-014 | Refine Glassmorphism for Dark Mode | P1 | S | ⬜ Todo | Test `bg-surface/70` in dark mode |
 
 ---
 

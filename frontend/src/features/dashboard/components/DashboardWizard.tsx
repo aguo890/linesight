@@ -294,23 +294,23 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     const isSelectionComplete = selectedFactoryId && selectedDataSourceId && !isLoadingSources && !isLoadingContext;
 
     return (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl w-[95vw] max-w-[1400px] h-[90vh] flex overflow-hidden ring-1 ring-black/5">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-surface rounded-2xl shadow-2xl w-[95vw] max-w-[1400px] h-[90vh] flex overflow-hidden ring-1 ring-black/5 dark:ring-white/10">
 
                 {/* --- Sidebar (Navigation & Status) --- */}
-                <div className="w-72 bg-slate-50 border-r border-slate-200 flex flex-col hidden md:flex">
+                <div className="w-72 bg-surface-subtle border-r border-border flex flex-col hidden md:flex">
                     <div className="p-5">
-                        <div className="flex items-center space-x-2 text-blue-600 mb-5">
-                            <div className="p-2 bg-blue-100 rounded-lg">
+                        <div className="flex items-center space-x-2 text-brand mb-5">
+                            <div className="p-2 bg-brand/10 rounded-lg">
                                 <Settings className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-gray-900 tracking-tight">LineSight Setup</span>
+                            <span className="font-bold text-text-main tracking-tight">LineSight Setup</span>
                         </div>
 
                         {/* Steps Timeline */}
                         <div className="space-y-0 relative">
                             {/* Connector Line */}
-                            <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-slate-200" />
+                            <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-border" />
 
                             {steps.map((step, index) => {
                                 const Icon = step.icon;
@@ -323,20 +323,20 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             className={`
                                                 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-300
                                                 ${isActive
-                                                    ? 'bg-blue-600 border-blue-600 text-white shadow-md scale-110'
+                                                    ? 'bg-brand border-brand text-white shadow-md scale-110'
                                                     : isCompleted
-                                                        ? 'bg-green-500 border-green-500 text-white'
-                                                        : 'bg-white border-slate-300 text-slate-400'
+                                                        ? 'bg-emerald-500 border-emerald-500 text-white dark:bg-emerald-600 dark:border-emerald-600'
+                                                        : 'bg-surface border-border text-text-muted'
                                                 }
                                             `}
                                         >
                                             <Icon className="w-4 h-4" />
                                         </div>
                                         <div className="ml-4 mt-1">
-                                            <p className={`text-sm font-semibold transition-colors ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
+                                            <p className={`text-sm font-semibold transition-colors ${isActive ? 'text-text-main' : 'text-text-muted'}`}>
                                                 {step.label}
                                             </p>
-                                            <p className="text-xs text-gray-400">{step.description}</p>
+                                            <p className="text-xs text-text-muted">{step.description}</p>
                                         </div>
                                     </div>
                                 );
@@ -352,15 +352,15 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                     )}
 
                     {/* Sidebar Footer (Context Summary) */}
-                    <div className="mt-auto p-4 border-t border-slate-200 bg-slate-100/50">
-                        <div className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Current Context</div>
-                        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm space-y-2">
-                            <div className="flex items-center text-sm text-gray-700">
-                                <Factory className="w-3.5 h-3.5 mr-2 text-slate-400" />
+                    <div className="mt-auto p-4 border-t border-border bg-surface-subtle/50">
+                        <div className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">Current Context</div>
+                        <div className="bg-surface p-3 rounded-lg border border-border shadow-sm space-y-2">
+                            <div className="flex items-center text-sm text-text-main">
+                                <Factory className="w-3.5 h-3.5 mr-2 text-text-muted" />
                                 <span className="truncate">{factories.find(f => f.id === selectedFactoryId)?.name || 'Select Factory'}</span>
                             </div>
-                            <div className="flex items-center text-sm text-gray-700">
-                                <ChevronRight className="w-3.5 h-3.5 mr-2 text-slate-400" />
+                            <div className="flex items-center text-sm text-text-main">
+                                <ChevronRight className="w-3.5 h-3.5 mr-2 text-text-muted" />
                                 <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || 'Select Data Source'}</span>
                             </div>
                         </div>
@@ -368,11 +368,11 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                 </div>
 
                 {/* --- Main Content Area --- */}
-                <div className="flex-1 flex flex-col min-w-0 bg-white relative">
+                <div className="flex-1 flex flex-col min-w-0 bg-surface relative">
                     {/* Floating Close Button */}
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 z-20 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="absolute top-4 right-4 z-20 p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-lg transition-colors"
                         aria-label="Close wizard"
                     >
                         <X className="w-5 h-5" />
@@ -391,9 +391,9 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                     {/* Factory Display - Read only when preselected, selectable otherwise */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <label className="block text-sm font-medium text-gray-700">Factory</label>
+                                            <label className="block text-sm font-medium text-text-main">Factory</label>
                                             {isLoadingContext && (
-                                                <span className="flex items-center text-xs text-blue-600 animate-pulse">
+                                                <span className="flex items-center text-xs text-brand animate-pulse">
                                                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
                                                     Loading...
                                                 </span>
@@ -401,7 +401,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         </div>
                                         {preselectedFactoryId ? (
                                             // Read-only display when factory is preselected (user is already in that factory)
-                                            <div className="block w-full pl-3 pr-10 py-2.5 bg-gray-100 border-0 ring-1 ring-gray-200 rounded-lg text-sm text-gray-700">
+                                            <div className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg text-sm text-text-main">
                                                 {factories.find(f => f.id === preselectedFactoryId)?.name || 'Loading...'}
                                             </div>
                                         ) : (
@@ -410,7 +410,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                                 <select
                                                     value={selectedFactoryId}
                                                     onChange={(e) => setSelectedFactoryId(e.target.value)}
-                                                    className="block w-full pl-3 pr-10 py-2.5 bg-gray-50 border-0 ring-1 ring-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm transition-shadow disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                                    className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
                                                     disabled={isLoadingContext}
                                                 >
                                                     <option value="">
@@ -427,9 +427,9 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                     {/* Data Source Selection */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <label className="block text-sm font-medium text-gray-700">Data Source</label>
+                                            <label className="block text-sm font-medium text-text-main">Data Source</label>
                                             {isLoadingSources && (
-                                                <span className="flex items-center text-xs text-blue-600 animate-pulse">
+                                                <span className="flex items-center text-xs text-brand animate-pulse">
                                                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
                                                     Fetching sources...
                                                 </span>
@@ -439,7 +439,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             <select
                                                 value={selectedDataSourceId}
                                                 onChange={(e) => setSelectedDataSourceId(e.target.value)}
-                                                className="block w-full pl-3 pr-10 py-2.5 bg-gray-50 border-0 ring-1 ring-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm transition-shadow disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                                className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
                                                 disabled={!selectedFactoryId || isLoadingSources || isLoadingContext}
                                             >
                                                 <option value="">
@@ -459,7 +459,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                                 {/* Warning when no sources exist */}
                                 {selectedFactoryId && dataSources.length === 0 && !isLoadingSources && (
-                                    <div className="bg-amber-50 text-amber-800 px-4 py-3 rounded-lg text-sm flex items-center">
+                                    <div className="bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 px-4 py-3 rounded-lg text-sm flex items-center">
                                         <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
                                         <span>No data sources available. Configure sources from the Factory settings page first.</span>
                                     </div>
@@ -473,7 +473,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 */}
                                 <div
                                     className={`
-                                        border-t border-gray-100 pt-6 transition-all duration-500
+                                        border-t border-border pt-6 transition-all duration-500
                                         ${!isSelectionComplete ? 'opacity-40 pointer-events-none grayscale' : 'opacity-100'}
                                     `}
                                 >
@@ -486,7 +486,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         {/* Optional: Add a friendly message overlay if waiting */}
                                         {!isSelectionComplete && !isLoadingContext && !isLoadingSources && (
                                             <div className="absolute inset-0 flex items-center justify-center z-10">
-                                                <div className="bg-white/80 px-4 py-2 rounded-full shadow-sm text-sm text-gray-500 font-medium">
+                                                <div className="bg-surface/80 px-4 py-2 rounded-full shadow-sm text-sm text-text-muted font-medium">
                                                     Select a Data Source to continue
                                                 </div>
                                             </div>
@@ -555,7 +555,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                     window.location.reload();
                                 }
                             }}
-                            className="text-[10px] text-red-300 hover:text-red-500 font-mono"
+                            className="text-[10px] text-status-error/50 hover:text-status-error font-mono"
                         >
                             DEV_RESET
                         </button>
@@ -563,11 +563,11 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                     {/* Processing Overlay */}
                     {isSubmitting && (
-                        <div className="absolute inset-0 bg-white/90 backdrop-blur-[1px] z-50 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-surface/90 backdrop-blur-[1px] z-50 flex items-center justify-center">
                             <div className="flex flex-col items-center">
-                                <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-4" />
-                                <h3 className="text-lg font-semibold text-gray-900">Processing Data</h3>
-                                <p className="text-gray-500 text-sm">Validating structure and importing...</p>
+                                <div className="w-16 h-16 border-4 border-brand/20 border-t-brand rounded-full animate-spin mb-4" />
+                                <h3 className="text-lg font-semibold text-text-main">Processing Data</h3>
+                                <p className="text-text-muted text-sm">Validating structure and importing...</p>
                             </div>
                         </div>
                     )}

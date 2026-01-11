@@ -66,45 +66,45 @@ const STATUS_CONFIG: Record<TierType, {
 }> = {
     hash: {
         icon: Zap,
-        color: 'text-purple-600',
-        bgColor: 'bg-purple-50',
-        borderColor: 'border-purple-200',
+        color: 'text-purple-600 dark:text-purple-400',
+        bgColor: 'bg-purple-50 dark:bg-purple-900/20',
+        borderColor: 'border-purple-200 dark:border-purple-800',
         accentColor: 'border-l-purple-500',
         label: 'Exact',
         tooltip: 'Exact column name match'
     },
     fuzzy: {
         icon: Search,
-        color: 'text-blue-600',
-        bgColor: 'bg-blue-50',
-        borderColor: 'border-blue-200',
+        color: 'text-blue-600 dark:text-blue-400',
+        bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+        borderColor: 'border-blue-200 dark:border-blue-800',
         accentColor: 'border-l-blue-500',
         label: 'Fuzzy',
         tooltip: 'Similar name matched'
     },
     llm: {
         icon: Sparkles,
-        color: 'text-indigo-600',
-        bgColor: 'bg-indigo-50',
-        borderColor: 'border-indigo-200',
+        color: 'text-indigo-600 dark:text-indigo-400',
+        bgColor: 'bg-indigo-50 dark:bg-indigo-900/20',
+        borderColor: 'border-indigo-200 dark:border-indigo-800',
         accentColor: 'border-l-indigo-500',
         label: 'AI',
         tooltip: 'AI-suggested mapping'
     },
     manual: {
         icon: Pencil,
-        color: 'text-gray-500',
-        bgColor: 'bg-gray-50',
-        borderColor: 'border-gray-200',
-        accentColor: 'border-l-gray-400',
+        color: 'text-text-muted',
+        bgColor: 'bg-surface-subtle',
+        borderColor: 'border-border',
+        accentColor: 'border-l-border',
         label: 'Manual',
         tooltip: 'Manually assigned'
     },
     unmatched: {
         icon: HelpCircle,
-        color: 'text-amber-600',
-        bgColor: 'bg-amber-50',
-        borderColor: 'border-amber-200',
+        color: 'text-amber-600 dark:text-amber-400',
+        bgColor: 'bg-amber-50 dark:bg-amber-900/20',
+        borderColor: 'border-amber-200 dark:border-amber-800',
         accentColor: 'border-l-transparent',
         label: 'Unset',
         tooltip: 'Needs mapping'
@@ -211,44 +211,44 @@ const AIProcessingView: React.FC<{
     }, []);
 
     return (
-        <div className="flex flex-col h-full items-center justify-center py-12 px-4 animate-in fade-in duration-500 bg-white">
+        <div className="flex flex-col h-full items-center justify-center py-12 px-4 animate-in fade-in duration-500 bg-surface">
             <div className="w-full max-w-md space-y-6">
                 <div className="flex items-center justify-center gap-8 mb-8 relative">
-                    <div className="relative z-10 bg-white p-4 rounded-xl shadow-md border border-gray-100">
-                        <FileText className="w-8 h-8 text-gray-400" />
+                    <div className="relative z-10 bg-surface p-4 rounded-xl shadow-md border border-border">
+                        <FileText className="w-8 h-8 text-text-muted" />
                     </div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-0.5 bg-gray-100">
-                        <div className="absolute inset-0 bg-blue-500 w-1/3 animate-[shimmer_1.5s_infinite]" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-0.5 bg-border">
+                        <div className="absolute inset-0 bg-brand w-1/3 animate-[shimmer_1.5s_infinite]" />
                     </div>
-                    <div className="relative z-10 bg-white p-4 rounded-xl shadow-md border border-blue-100">
-                        <Database className="w-8 h-8 text-blue-600" />
+                    <div className="relative z-10 bg-surface p-4 rounded-xl shadow-md border border-brand/30">
+                        <Database className="w-8 h-8 text-brand" />
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
                     </div>
                 </div>
 
                 <div className="text-center space-y-2">
-                    <h3 className="text-lg font-semibold text-gray-900">Processing Data</h3>
-                    <p className="text-sm text-gray-500">Validating and importing to production line...</p>
+                    <h3 className="text-lg font-semibold text-text-main">Processing Data</h3>
+                    <p className="text-sm text-text-muted">Validating and importing to production line...</p>
                 </div>
 
-                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-surface-subtle rounded-full overflow-hidden">
                     <div
-                        className="h-full bg-blue-600 transition-all duration-300 ease-out"
+                        className="h-full bg-brand transition-all duration-300 ease-out"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
 
                 <div
                     ref={scrollRef}
-                    className="h-48 bg-gray-50 rounded-lg border border-gray-200 p-4 overflow-y-auto font-mono text-xs space-y-1.5 shadow-inner"
+                    className="h-48 bg-surface-subtle rounded-lg border border-border p-4 overflow-y-auto font-mono text-xs space-y-1.5 shadow-inner"
                 >
                     {logs.map((log, i) => (
-                        <div key={i} className="flex items-start gap-2 text-gray-600 animate-in slide-in-from-bottom-2 duration-300">
-                            <span className="text-blue-500 mt-0.5">❯</span>
+                        <div key={i} className="flex items-start gap-2 text-text-muted animate-in slide-in-from-bottom-2 duration-300">
+                            <span className="text-brand mt-0.5">❯</span>
                             <span>{log}</span>
                         </div>
                     ))}
-                    <div className="animate-pulse text-blue-500 ml-3">_</div>
+                    <div className="animate-pulse text-brand ml-3">_</div>
                 </div>
             </div>
         </div>
@@ -287,7 +287,7 @@ const StatusIndicator: React.FC<{
             {/* Tooltip */}
             {showTooltip && (
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50">
-                    <div className="bg-gray-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg max-w-xs whitespace-normal">
+                    <div className="bg-gray-900 dark:bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg max-w-xs whitespace-normal">
                         <div className="font-medium mb-0.5">{config.label} Match</div>
                         <div className="text-gray-300">{tooltipText}</div>
                     </div>
@@ -303,20 +303,20 @@ const StatusIndicator: React.FC<{
 // Data Preview Pills
 const DataPreview: React.FC<{ samples: any[] }> = ({ samples }) => {
     if (!samples || samples.length === 0) {
-        return <span className="text-xs text-gray-400 italic">No preview</span>;
+        return <span className="text-xs text-text-muted italic">No preview</span>;
     }
 
     return (
         <div className="flex items-center gap-1 mt-1">
             <span
-                className="inline-block text-[11px] font-mono bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded max-w-[80px] truncate"
+                className="inline-block text-[11px] font-mono bg-surface-subtle text-text-muted px-1.5 py-0.5 rounded max-w-[80px] truncate border border-border"
                 title={String(samples[0])}
             >
                 {String(samples[0]).substring(0, 12)}
                 {String(samples[0]).length > 12 && '…'}
             </span>
             {samples.length > 1 && (
-                <span className="text-[10px] text-gray-400">+{samples.length - 1}</span>
+                <span className="text-[10px] text-text-muted">+{samples.length - 1}</span>
             )}
         </div>
     );
@@ -333,7 +333,7 @@ const HighlightText: React.FC<{ text: string; highlight: string }> = ({ text, hi
         <>
             {parts.map((part, i) =>
                 regex.test(part) ? (
-                    <span key={i} className="font-semibold text-blue-700 bg-blue-100 rounded px-0.5">
+                    <span key={i} className="font-semibold text-brand bg-brand/10 rounded px-0.5">
                         {part}
                     </span>
                 ) : (
@@ -416,7 +416,7 @@ const FieldSelector: React.FC<{
         return (
             <button
                 onClick={onIgnore}
-                className="flex items-center gap-2 text-sm text-gray-400 italic hover:text-gray-600 transition-colors h-14 px-3 w-full rounded-lg border border-dashed border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                className="flex items-center gap-2 text-sm text-text-muted italic hover:text-text-main transition-colors h-14 px-3 w-full rounded-lg border border-dashed border-border hover:border-border hover:bg-surface-subtle"
             >
                 <EyeOff className="w-4 h-4" />
                 <span>Ignored — click to restore</span>
@@ -435,30 +435,30 @@ const FieldSelector: React.FC<{
                 className={`
                     relative w-full flex flex-col justify-center px-3 py-2 text-sm rounded-lg
                     transition-all duration-150 ease-in-out
-                    focus:outline-none focus:ring-2 focus:ring-blue-500/50
+                    focus:outline-none focus:ring-2 focus:ring-brand/50
                     border-l-[3px] min-h-[56px]
                     ${isUnmapped
-                        ? 'border border-dashed border-gray-300 bg-gray-50/50 hover:bg-gray-100/50 hover:border-gray-400 border-l-transparent'
-                        : `border border-gray-200 bg-white hover:border-blue-400 shadow-sm hover:shadow ${config.accentColor}`
+                        ? 'border border-dashed border-border bg-surface-subtle/50 hover:bg-surface-subtle hover:border-border border-l-transparent'
+                        : `border border-border bg-surface hover:border-brand/50 shadow-sm hover:shadow ${config.accentColor}`
                     }
                 `}
             >
                 {selectedOption ? (
                     <>
                         <div className="flex items-center justify-between w-full">
-                            <span className="font-semibold text-gray-900 truncate">{selectedOption.field}</span>
-                            <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ml-2 ${isOpen ? 'rotate-180' : ''}`} />
+                            <span className="font-semibold text-text-main truncate">{selectedOption.field}</span>
+                            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform flex-shrink-0 ml-2 ${isOpen ? 'rotate-180' : ''}`} />
                         </div>
                         {selectedOption.description && (
-                            <span className="text-xs text-gray-500 line-clamp-1 text-left mt-0.5">
+                            <span className="text-xs text-text-muted line-clamp-1 text-left mt-0.5">
                                 {selectedOption.description}
                             </span>
                         )}
                     </>
                 ) : (
                     <div className="flex items-center justify-between w-full">
-                        <span className="text-gray-400">Select target field...</span>
-                        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+                        <span className="text-text-muted">Select target field...</span>
+                        <ChevronDown className={`w-4 h-4 text-text-muted transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
                     </div>
                 )}
             </button>
@@ -466,17 +466,17 @@ const FieldSelector: React.FC<{
             {isOpen && (
                 <>
                     <div className="fixed inset-0 z-[9990]" onClick={() => setIsOpen(false)} />
-                    <div style={dropdownStyle} className="fixed bg-white border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+                    <div style={dropdownStyle} className="fixed bg-surface border border-border rounded-xl shadow-2xl flex flex-col overflow-hidden">
                         {/* Search */}
-                        <div className="p-3 border-b shrink-0 bg-gray-50/80">
+                        <div className="p-3 border-b border-border shrink-0 bg-surface-subtle/80">
                             <div className="relative">
-                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                                 <input
                                     type="text"
                                     placeholder="Search fields..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400"
+                                    className="w-full pl-8 pr-3 py-2 text-sm border border-border rounded-lg bg-surface text-text-main focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
                                     autoFocus
                                 />
                             </div>
@@ -486,8 +486,8 @@ const FieldSelector: React.FC<{
                             {/* Suggested Section */}
                             {suggested.length > 0 && (
                                 <>
-                                    <div className="px-3 py-2 bg-indigo-50/50 border-b border-indigo-100">
-                                        <span className="text-xs font-medium text-indigo-600 flex items-center gap-1.5">
+                                    <div className="px-3 py-2 bg-brand/5 border-b border-brand/10">
+                                        <span className="text-xs font-medium text-brand flex items-center gap-1.5">
                                             <Sparkles className="w-3 h-3" />
                                             Suggested
                                         </span>
@@ -516,8 +516,8 @@ const FieldSelector: React.FC<{
                             {/* All Fields Section */}
                             {allFields.length > 0 && (
                                 <>
-                                    <div className="px-3 py-2 bg-gray-50 border-b border-gray-100">
-                                        <span className="text-xs font-medium text-gray-500">All Fields</span>
+                                    <div className="px-3 py-2 bg-surface-subtle border-b border-border">
+                                        <span className="text-xs font-medium text-text-muted">All Fields</span>
                                     </div>
                                     {allFields.map((opt) => {
                                         const usedByColumn = usedFields.get(opt.field);
@@ -541,17 +541,17 @@ const FieldSelector: React.FC<{
                             )}
 
                             {filteredOptions.length === 0 && (
-                                <div className="px-3 py-6 text-sm text-gray-400 text-center">
+                                <div className="px-3 py-6 text-sm text-text-muted text-center">
                                     No fields match "{search}"
                                 </div>
                             )}
                         </div>
 
                         {/* Ignore Action */}
-                        <div className="p-2 border-t bg-gray-50">
+                        <div className="p-2 border-t border-border bg-surface-subtle">
                             <button
                                 onClick={() => { onIgnore(); setIsOpen(false); }}
-                                className="w-full px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-lg flex items-center gap-2 transition-colors"
+                                className="w-full px-3 py-2 text-sm text-text-muted hover:bg-surface rounded-lg flex items-center gap-2 transition-colors"
                             >
                                 <EyeOff className="w-4 h-4" />
                                 Ignore this column
@@ -576,27 +576,27 @@ const FieldOption: React.FC<{
         <button
             onClick={onClick}
             className={`
-                w-full px-3 py-2.5 text-left text-sm hover:bg-blue-50 flex flex-col gap-0.5
+                w-full px-3 py-2.5 text-left text-sm hover:bg-brand/5 flex flex-col gap-0.5
                 transition-colors duration-100
-                ${isSelected ? 'bg-blue-50' : ''}
+                ${isSelected ? 'bg-brand/5' : ''}
                 ${isUsed ? 'opacity-60' : ''}
             `}
         >
             <div className="flex items-center justify-between">
-                <span className={`font-medium ${isUsed ? 'text-gray-500' : 'text-gray-900'}`}>
+                <span className={`font-medium ${isUsed ? 'text-text-muted' : 'text-text-main'}`}>
                     <HighlightText text={field.field} highlight={searchTerm} />
                 </span>
                 <div className="flex items-center gap-2">
                     {isUsed && (
-                        <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-medium">
+                        <span className="text-[10px] bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded font-medium">
                             in use
                         </span>
                     )}
-                    {isSelected && <Check className="w-4 h-4 text-blue-600" />}
+                    {isSelected && <Check className="w-4 h-4 text-brand" />}
                 </div>
             </div>
             {field.description && (
-                <span className="text-xs text-gray-500 line-clamp-1">
+                <span className="text-xs text-text-muted line-clamp-1">
                     <HighlightText text={field.description} highlight={searchTerm} />
                 </span>
             )}
@@ -617,7 +617,7 @@ const FilterPills: React.FC<{
     ];
 
     return (
-        <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg">
+        <div className="flex items-center gap-1 p-1 bg-surface-subtle rounded-lg">
             {pills.map(pill => {
                 const isActive = activeFilter === pill.key;
                 return (
@@ -628,8 +628,8 @@ const FilterPills: React.FC<{
                             flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md
                             transition-all duration-150
                             ${isActive
-                                ? 'bg-white text-gray-900 shadow-sm'
-                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                ? 'bg-surface text-text-main shadow-sm'
+                                : 'text-text-muted hover:text-text-main hover:bg-surface/50'
                             }
                         `}
                     >
@@ -638,9 +638,9 @@ const FilterPills: React.FC<{
                             text-xs px-1.5 py-0.5 rounded-full
                             ${isActive
                                 ? pill.count > 0 && pill.key !== 'all'
-                                    ? pill.key === 'conflicts' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
-                                    : 'bg-gray-100 text-gray-600'
-                                : 'bg-gray-200/50 text-gray-500'
+                                    ? pill.key === 'conflicts' ? 'bg-status-danger-subtle text-status-danger' : 'bg-status-warning-subtle text-status-warning'
+                                    : 'bg-surface-subtle text-text-muted'
+                                : 'bg-border/50 text-text-muted'
                             }
                         `}>
                             {pill.count}
@@ -679,8 +679,8 @@ const MappingRow: React.FC<{
             className={`
                 grid grid-cols-12 gap-4 px-4 py-3 border-b
                 transition-all duration-150 ease-in-out items-center
-                ${mapping.ignored ? 'opacity-50 bg-gray-50/50 border-gray-100' : ''}
-                ${isConflicted ? 'bg-amber-50/80 border-amber-200' : 'border-gray-100 hover:bg-gray-50/80'}
+                ${mapping.ignored ? 'opacity-50 bg-surface-subtle/50 border-border' : ''}
+                ${isConflicted ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800' : 'border-border hover:bg-surface-subtle/80'}
             `}
             style={{ animationDelay: `${index * 30}ms` }}
             title={isConflicted ? `Conflict: Also mapped by ${conflictingColumns?.filter(c => c !== mapping.source_column).join(', ')}` : undefined}
@@ -690,7 +690,7 @@ const MappingRow: React.FC<{
             {/* Source Column */}
             <div className="col-span-4 min-w-0">
                 <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-800 truncate">
+                    <span className="text-sm font-semibold text-text-main truncate">
                         {mapping.source_column}
                     </span>
                 </div>
@@ -701,7 +701,7 @@ const MappingRow: React.FC<{
             <div className="col-span-1 flex items-center justify-center">
                 <ArrowRight className={`
                     w-4 h-4 transition-all duration-200
-                    ${isHovered ? 'text-blue-400 scale-110' : 'text-gray-300'}
+                    ${isHovered ? 'text-brand scale-110' : 'text-border'}
                 `} />
             </div>
 
@@ -722,7 +722,7 @@ const MappingRow: React.FC<{
             {/* Status */}
             <div className="col-span-3 flex items-center justify-end gap-2 min-w-0">
                 {isConflicted && !mapping.ignored && (
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-300">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-amber-700">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span>Duplicate</span>
                     </div>
@@ -735,7 +735,7 @@ const MappingRow: React.FC<{
                     />
                 )}
                 {!mapping.ignored && !mapping.target_field && (
-                    <div className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
                         <AlertCircle className="w-3.5 h-3.5" />
                         <span>Unset</span>
                     </div>
@@ -871,14 +871,14 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
     return (
         <div className="flex flex-col h-full -mx-6 -my-6">
             {/* Scrollable Content Area */}
-            <div className="flex-1 overflow-y-auto bg-gray-50/50 px-6 py-6">
+            <div className="flex-1 overflow-y-auto bg-surface-subtle/50 px-6 py-6">
                 {/* Header */}
                 <div className="flex justify-between items-end mb-6">
                     <div>
-                        <h3 className="text-xl font-semibold text-gray-900">Validate Mapping</h3>
-                        <p className="text-sm text-gray-500 mt-1">Review how your columns match the database.</p>
+                        <h3 className="text-xl font-semibold text-text-main">Validate Mapping</h3>
+                        <p className="text-sm text-text-muted mt-1">Review how your columns match the database.</p>
                     </div>
-                    {filename && <span className="text-xs px-2 py-1 bg-gray-100 rounded text-gray-600 font-mono">{filename}</span>}
+                    {filename && <span className="text-xs px-2 py-1 bg-surface-subtle rounded text-text-muted font-mono">{filename}</span>}
                 </div>
 
                 {/* Stats Grid */}
@@ -891,7 +891,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                     ].map((stat) => {
                         const Icon = stat.icon;
                         return (
-                            <div key={stat.label} className={`${stat.bg} rounded-xl p-4 flex items-center gap-3 border border-transparent hover:border-black/5 transition-colors`}>
+                            <div key={stat.label} className={`${stat.bg} rounded-xl p-4 flex items-center gap-3 border border-transparent hover:border-black/5 dark:hover:border-white/5 transition-colors`}>
                                 <Icon className={`w-5 h-5 ${stat.color}`} />
                                 <div>
                                     <span className={`text-2xl font-bold ${stat.color}`}>{stat.count}</span>
@@ -909,32 +909,32 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         onFilterChange={setActiveFilter}
                         counts={updatedFilterCounts}
                     />
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-text-muted">
                         Showing {filteredMappings.length} of {mappings.length} columns
                     </div>
                 </div>
 
                 {/* Mapping Table */}
-                <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden mb-2">
+                <div className="border border-border rounded-xl bg-surface shadow-sm overflow-hidden mb-2">
                     {/* Table Header */}
-                    <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-gray-50/80 border-b border-gray-200">
-                        <div className="col-span-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <div className="grid grid-cols-12 gap-4 px-4 py-3 bg-surface-subtle/80 border-b border-border">
+                        <div className="col-span-4 text-xs font-semibold text-text-muted uppercase tracking-wide">
                             Source Column
                         </div>
                         <div className="col-span-1"></div>
-                        <div className="col-span-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        <div className="col-span-4 text-xs font-semibold text-text-muted uppercase tracking-wide">
                             Target Field
                         </div>
-                        <div className="col-span-3 text-xs font-semibold text-gray-500 uppercase tracking-wide text-right">
+                        <div className="col-span-3 text-xs font-semibold text-text-muted uppercase tracking-wide text-right">
                             Status
                         </div>
                     </div>
 
                     {/* Mapping Rows */}
-                    <div className="divide-y divide-gray-100">
+                    <div className="divide-y divide-border">
                         {filteredMappings.length === 0 ? (
-                            <div className="px-4 py-12 text-center text-gray-500">
-                                <Filter className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                            <div className="px-4 py-12 text-center text-text-muted">
+                                <Filter className="w-8 h-8 mx-auto mb-2 text-border" />
                                 <p className="font-medium">No columns match this filter</p>
                                 <p className="text-sm mt-1">Try selecting a different view</p>
                             </div>
@@ -969,12 +969,12 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
             </div>
 
             {/* Fixed Footer */}
-            <div className="bg-white border-t border-gray-200 pt-4 px-6">
+            <div className="bg-surface border-t border-border pt-4 px-6">
                 <div className="flex justify-between items-center">
                     {/* Left: Back Button */}
                     <button
                         onClick={onBack}
-                        className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-all"
+                        className="flex items-center px-4 py-2.5 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand/20 transition-all"
                     >
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back
@@ -1000,10 +1000,10 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                             disabled={cannotConfirm}
                             className={`
                                 flex items-center px-6 py-2.5 text-sm font-medium text-white rounded-lg shadow-sm
-                                transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand/50
                                 ${cannotConfirm
-                                    ? 'bg-gray-300 cursor-not-allowed'
-                                    : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md active:scale-[0.98]'
+                                    ? 'bg-gray-300 dark:bg-gray-700 cursor-not-allowed'
+                                    : 'bg-brand hover:bg-brand-dark hover:shadow-md active:scale-[0.98]'
                                 }
                             `}
                         >

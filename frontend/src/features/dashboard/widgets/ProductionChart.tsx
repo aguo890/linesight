@@ -13,6 +13,7 @@ import type { SmartWidgetProps } from '../config';
 import { z } from 'zod';
 import { ProductionChartDataSchema } from '../registry';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
+import { useThemeColors } from '@/hooks/useThemeColor';
 
 // Input type inferred from Zod Schema
 type DataProps = z.infer<typeof ProductionChartDataSchema>;
@@ -37,7 +38,13 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
     const yAxisMax = settings?.yAxisMax || 0;
     const { formatDate } = useFactoryFormat();
 
-    // 2. Data Preparation
+    // 2. Theme Colors for Dark Mode Support
+    const themeColors = useThemeColors(['--text-muted', '--border', '--surface']);
+    const gridColor = themeColors['--border'];
+    const axisColor = themeColors['--text-muted'];
+    const tooltipBg = themeColors['--surface'];
+
+    // 3. Data Preparation
     // Handle new API response shape: { data_points: [...], line_filter: "..." }
     const chartData = useMemo(() => {
         // API returns object with data_points array
@@ -68,23 +75,29 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                         <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
                     </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                 <XAxis
                     dataKey="day"
-                    tick={{ fontSize: 10, fill: '#64748b' }}
+                    tick={{ fontSize: 10, fill: axisColor }}
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(val) => formatDate(val)}
                 />
                 <YAxis
-                    tick={{ fontSize: 10, fill: '#64748b' }}
+                    tick={{ fontSize: 10, fill: axisColor }}
                     axisLine={false}
                     tickLine={false}
                     domain={[0, yAxisMax || 'auto']}
                 />
                 <Tooltip
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    labelStyle={{ color: '#64748b', fontSize: '12px' }}
+                    contentStyle={{
+                        borderRadius: '8px',
+                        border: 'none',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                        backgroundColor: tooltipBg,
+                        color: axisColor
+                    }}
+                    labelStyle={{ color: axisColor, fontSize: '12px' }}
                     labelFormatter={(label) => formatDate(label)}
                 />
                 {showLegend && (

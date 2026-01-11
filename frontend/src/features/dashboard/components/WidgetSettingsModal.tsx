@@ -88,30 +88,30 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-in fade-in duration-200">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="bg-surface rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 border border-border">
 
                 {/* Header */}
-                <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+                <div className="px-6 py-4 bg-surface-subtle border-b border-border flex items-center justify-between flex-shrink-0">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <Settings className="w-4 h-4 text-blue-600" />
+                        <div className="p-2 bg-brand/10 rounded-lg">
+                            <Settings className="w-4 h-4 text-brand" />
                         </div>
                         <div>
-                            <h2 className="text-base font-semibold text-gray-900">
+                            <h2 className="text-base font-semibold text-text-main">
                                 {widgetTitle || 'Widget'} Settings
                             </h2>
-                            <p className="text-xs text-gray-500">Configure display options</p>
+                            <p className="text-xs text-text-muted">Configure display options</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors">
-                        <X className="w-5 h-5 text-gray-500" />
+                    <button onClick={onClose} className="p-1.5 hover:bg-surface-active rounded-lg transition-colors">
+                        <X className="w-5 h-5 text-text-muted" />
                     </button>
                 </div>
 
                 {/* Dynamic Form Generation Loop */}
                 <div className="px-6 py-4 space-y-5 overflow-y-auto flex-1">
                     {fields.length === 0 ? (
-                        <p className="text-gray-500 text-sm text-center py-4">This widget has no configurable settings.</p>
+                        <p className="text-text-muted text-sm text-center py-4">This widget has no configurable settings.</p>
                     ) : (
                         fields.map(({ key, def, description }) => (
                             <div key={key}>
@@ -130,9 +130,9 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
 
                     {/* Dev Preview */}
                     {process.env.NODE_ENV === 'development' && (
-                        <div className="mt-8 p-3 bg-slate-50 rounded border border-slate-100">
-                            <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">Live Config Preview</p>
-                            <pre className="text-[10px] text-slate-600 overflow-x-auto font-mono">
+                        <div className="mt-8 p-3 bg-surface-subtle rounded border border-border">
+                            <p className="text-[10px] font-bold text-text-muted uppercase mb-1">Live Config Preview</p>
+                            <pre className="text-[10px] text-text-muted overflow-x-auto font-mono">
                                 {JSON.stringify(formValues, null, 2)}
                             </pre>
                         </div>
@@ -140,10 +140,10 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between flex-shrink-0">
+                <div className="px-6 py-4 bg-surface-subtle border-t border-border flex items-center justify-between flex-shrink-0">
                     <button
                         onClick={handleReset}
-                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-text-muted hover:text-text-main hover:bg-surface-active rounded-lg transition-colors"
                         title="Reset to last saved state"
                     >
                         <RotateCcw className="w-3.5 h-3.5" />
@@ -152,13 +152,13 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
                     <div className="flex gap-3">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                            className="px-4 py-2 text-sm font-medium text-text-main bg-surface border border-border rounded-lg hover:bg-surface-subtle"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleSave}
-                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm shadow-blue-200"
+                            className="px-4 py-2 text-sm font-medium text-white bg-brand rounded-lg hover:bg-brand-dark shadow-sm shadow-brand/20"
                         >
                             Save Settings
                         </button>
@@ -199,13 +199,13 @@ const ZodFieldRenderer: React.FC<{
         return (
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-gray-700">{label}</label>
+                    <label className="text-sm font-medium text-text-main">{label}</label>
                     <button
                         type="button"
                         onClick={() => onChange(!value)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-blue-600' : 'bg-gray-200'}`}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-brand' : 'bg-surface-active'}`}
                     >
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${value ? 'translate-x-6' : 'translate-x-1'}`} />
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-surface shadow-sm transition-transform ${value ? 'translate-x-6' : 'translate-x-1'}`} />
                     </button>
                 </div>
                 {/* Special Logic: Mock Data Warning */}
@@ -223,12 +223,12 @@ const ZodFieldRenderer: React.FC<{
     if (innerDef instanceof z.ZodNumber) {
         return (
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                <label className="block text-sm font-medium text-text-main mb-1">{label}</label>
                 <input
                     type="number"
                     value={value ?? ''}
                     onChange={(e) => onChange(parseFloat(e.target.value))}
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-shadow ${error ? 'border-red-300 ring-2 ring-red-100' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg text-sm bg-surface text-text-main focus:ring-2 focus:ring-brand outline-none transition-shadow ${error ? 'border-error ring-2 ring-error/20' : 'border-border'}`}
                 />
             </div>
         );
@@ -239,11 +239,11 @@ const ZodFieldRenderer: React.FC<{
         const options = innerDef.options;
         return (
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                <label className="block text-sm font-medium text-text-main mb-1">{label}</label>
                 <select
                     value={String(value || '')}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 bg-white"
+                    className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-brand bg-surface text-text-main"
                 >
                     {options.map((opt: string | number) => (
                         <option key={String(opt)} value={String(opt)}>{String(opt)}</option>
@@ -257,12 +257,12 @@ const ZodFieldRenderer: React.FC<{
     if (innerDef instanceof z.ZodString) {
         return (
             <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                <label className="block text-sm font-medium text-text-main mb-1">{label}</label>
                 <input
                     type="text"
                     value={value || ''}
                     onChange={(e) => onChange(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none ${error ? 'border-red-300 ring-2 ring-red-100' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg text-sm bg-surface text-text-main focus:ring-2 focus:ring-brand outline-none ${error ? 'border-error ring-2 ring-error/20' : 'border-border'}`}
                 />
             </div>
         );
@@ -270,8 +270,8 @@ const ZodFieldRenderer: React.FC<{
 
     // Default Fallback
     return (
-        <div className="p-3 bg-gray-50 rounded border border-gray-200">
-            <p className="text-xs text-gray-500">Unsupported field type: {name}</p>
+        <div className="p-3 bg-surface-subtle rounded border border-border">
+            <p className="text-xs text-text-muted">Unsupported field type: {name}</p>
         </div>
     );
 };

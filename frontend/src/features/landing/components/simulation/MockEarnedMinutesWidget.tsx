@@ -8,6 +8,7 @@ interface MockWidgetProps {
     w?: number;
     h?: number;
     data: any;
+    isDark?: boolean;
 }
 
 const getDensity = (w: number, h: number) => {
@@ -16,7 +17,7 @@ const getDensity = (w: number, h: number) => {
 };
 
 export const MockEarnedMinutesWidget: React.FC<MockWidgetProps> = ({
-    w = 3, h = 3, data: rawData
+    w = 3, h = 3, data: rawData, isDark = false
 }) => {
     const density = getDensity(w, h);
     const isCompact = density === 'compact';
@@ -26,14 +27,14 @@ export const MockEarnedMinutesWidget: React.FC<MockWidgetProps> = ({
     const data = Array.isArray(rawData) ? { breakdown: rawData } : (rawData || { breakdown: [] });
 
     return (
-        <div className="flex flex-col h-full w-full bg-white p-4">
+        <div className={`flex flex-col h-full w-full p-4 transition-colors duration-300 ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-md bg-violet-50`}>
+                    <div className={`p-1.5 rounded-md ${isDark ? 'bg-violet-900/40' : 'bg-violet-50'}`}>
                         <Activity className="w-4 h-4 text-violet-500" />
                     </div>
-                    <h3 className="text-sm font-semibold text-slate-700">Earned Minutes</h3>
+                    <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Earned Minutes</h3>
                 </div>
             </div>
 

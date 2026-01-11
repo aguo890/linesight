@@ -31,7 +31,10 @@ export const loginApiV1AuthLoginPostResponse = zod.object({
   "email": zod.string(),
   "full_name": zod.string(),
   "role": zod.string(),
-  "organization_id": zod.string()
+  "organization_id": zod.string(),
+  "timezone": zod.union([zod.string(),zod.null()]).optional(),
+  "preferences": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+  "avatar_url": zod.union([zod.string(),zod.null()]).optional()
 }).describe('User information returned after login.')
 }).describe('Login response with JWT token.')
 
@@ -1319,6 +1322,7 @@ export const getMyOrganizationApiV1OrganizationsMeGetResponse = zod.object({
   "primary_phone": zod.union([zod.string().max(getMyOrganizationApiV1OrganizationsMeGetResponsePrimaryPhoneMaxOne),zod.null()]).optional(),
   "id": zod.string(),
   "subscription_tier": zod.string(),
+  "settings": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional(),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({})
 }).describe('Schema for reading an organization.')
@@ -1350,6 +1354,7 @@ export const updateMyOrganizationApiV1OrganizationsMePatchResponse = zod.object(
   "primary_phone": zod.union([zod.string().max(updateMyOrganizationApiV1OrganizationsMePatchResponsePrimaryPhoneMaxOne),zod.null()]).optional(),
   "id": zod.string(),
   "subscription_tier": zod.string(),
+  "settings": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional(),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({})
 }).describe('Schema for reading an organization.')
@@ -1383,6 +1388,7 @@ export const getOrganizationApiV1OrganizationsOrganizationIdGetResponse = zod.ob
   "primary_phone": zod.union([zod.string().max(getOrganizationApiV1OrganizationsOrganizationIdGetResponsePrimaryPhoneMaxOne),zod.null()]).optional(),
   "id": zod.string(),
   "subscription_tier": zod.string(),
+  "settings": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional(),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({})
 }).describe('Schema for reading an organization.')

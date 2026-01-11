@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avat
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { UserSearchCommand } from './UserSearchCommand';
-import { useUpdateDataSourceApiV1DatasourcesDataSourceIdPut, useDeleteDataSourceApiV1DatasourcesDataSourceIdDelete } from '../../../api/endpoints/data-sources/data-sources';
+import { useUpdateDataSourceApiV1DataSourcesDataSourceIdPut, useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete } from '../../../api/endpoints/data-sources/data-sources';
 import { listOrgMembers } from '../../../api/endpoints/team/teamApi';
 import type { DataSourceRead as DataSource } from '../../../api/model';
 
@@ -35,8 +35,8 @@ export const DataSourceRow = ({
 }: DataSourceRowProps) => {
     const [allUsers, setAllUsers] = useState<any[]>([]);
 
-    const updateDataSource = useUpdateDataSourceApiV1DatasourcesDataSourceIdPut();
-    const deleteDataSource = useDeleteDataSourceApiV1DatasourcesDataSourceIdDelete();
+    const updateDataSource = useUpdateDataSourceApiV1DataSourcesDataSourceIdPut();
+    const deleteDataSource = useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete();
 
     const loadUsers = async () => {
         const res = await listOrgMembers();

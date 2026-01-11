@@ -47,9 +47,9 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
 
     // Determine status color based on quota usage
     const getStatusColor = () => {
-        if (quotaPercentage >= 100) return { dot: 'bg-red-500', ping: 'bg-red-400' };
-        if (quotaPercentage >= 80) return { dot: 'bg-amber-500', ping: 'bg-amber-400' };
-        return { dot: 'bg-emerald-500', ping: 'bg-emerald-400' };
+        if (quotaPercentage >= 100) return { dot: 'bg-danger', ping: 'bg-danger/70' };
+        if (quotaPercentage >= 80) return { dot: 'bg-warning', ping: 'bg-warning/70' };
+        return { dot: 'bg-success', ping: 'bg-success/70' };
     };
 
     const statusColors = getStatusColor();
@@ -76,7 +76,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
 
     return (
         <div
-            className="group relative bg-white rounded-xl border border-slate-200 hover:shadow-lg transition-all duration-200 cursor-pointer p-5"
+            className="group relative bg-surface rounded-xl border border-border hover:shadow-lg transition-all duration-200 cursor-pointer p-5"
             onClick={handleCardClick}
             data-testid={`factory-card-${factory.id}`}
         >
@@ -84,15 +84,15 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
             <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3">
                     {/* Icon Box */}
-                    <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center border border-indigo-100 group-hover:bg-indigo-100 transition-colors">
-                        <Factory className="w-5 h-5 text-indigo-600" />
+                    <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center border border-brand/20 group-hover:bg-brand/20 transition-colors">
+                        <Factory className="w-5 h-5 text-brand" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                        <h3 className="font-semibold text-text-main group-hover:text-brand transition-colors">
                             {factory.name}
                         </h3>
                         {factory.code && (
-                            <p className="text-xs text-slate-500 font-mono">{factory.code}</p>
+                            <p className="text-xs text-text-muted font-mono">{factory.code}</p>
                         )}
                     </div>
                 </div>
@@ -107,14 +107,14 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
             </div>
 
             {/* Metric Row with Sparkline */}
-            <div className="flex items-end justify-between mt-6 pt-4 border-t border-slate-100">
+            <div className="flex items-end justify-between mt-6 pt-4 border-t border-border">
                 <div>
-                    <span className="text-2xl font-bold text-slate-900">{factory.lineCount}</span>
-                    <span className="text-sm text-slate-500 ml-1">/ {factory.maxLines} sources</span>
+                    <span className="text-2xl font-bold text-text-main">{factory.lineCount}</span>
+                    <span className="text-sm text-text-muted ml-1">/ {factory.maxLines} sources</span>
                 </div>
 
                 {/* Decorative Sparkline */}
-                <svg className="w-24 h-8 text-indigo-500 opacity-50 group-hover:opacity-80 transition-opacity" viewBox="0 0 100 40">
+                <svg className="w-24 h-8 text-brand opacity-50 group-hover:opacity-80 transition-opacity" viewBox="0 0 100 40">
                     <path
                         d={generateSparklinePath(factory.id)}
                         fill="none"
@@ -126,11 +126,11 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
             </div>
 
             {/* Action Buttons - Appear on Hover */}
-            <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border opacity-0 group-hover:opacity-100 transition-opacity">
                 {onEdit && (
                     <button
                         onClick={handleEdit}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-brand hover:bg-brand/10 rounded-md transition-colors"
                         title="Edit factory"
                     >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -140,7 +140,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
                 {onDelete && (
                     <button
                         onClick={handleDelete}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-danger hover:bg-danger/10 rounded-md transition-colors"
                         title="Delete factory"
                         data-testid={`delete-factory-btn-${factory.id}`}
                     >
@@ -150,7 +150,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
                 )}
 
                 {/* Navigate indicator */}
-                <div className="ml-auto flex items-center gap-1 text-xs text-slate-400 group-hover:text-indigo-500 transition-colors">
+                <div className="ml-auto flex items-center gap-1 text-xs text-text-muted group-hover:text-brand transition-colors">
                     <span>Open</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                 </div>

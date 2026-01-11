@@ -122,12 +122,12 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+            <div className="bg-surface rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
 
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                    <h2 className="text-xl font-bold text-gray-900">Map Data Columns</h2>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-gray-600 transition-colors">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+                    <h2 className="text-xl font-bold text-text-main">Map Data Columns</h2>
+                    <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-lg text-text-muted hover:text-text-main transition-colors">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -136,14 +136,14 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                            <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
-                            <p className="text-gray-500">Analyzing file structure...</p>
+                            <Loader2 className="w-8 h-8 text-brand animate-spin" />
+                            <p className="text-text-muted">Analyzing file structure...</p>
                         </div>
                     ) : error ? (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                            <p className="text-red-800 mb-2 font-medium">Processing Failed</p>
-                            <p className="text-red-600 text-sm">{error}</p>
-                            <button onClick={() => rawImportId && initializeFlow(rawImportId)} className="mt-4 px-4 py-2 bg-white border border-red-200 text-red-700 rounded-lg hover:bg-red-50 text-sm">
+                        <div className="bg-error/10 border border-error/20 rounded-lg p-4 text-center">
+                            <p className="text-error mb-2 font-medium">Processing Failed</p>
+                            <p className="text-error/80 text-sm">{error}</p>
+                            <button onClick={() => rawImportId && initializeFlow(rawImportId)} className="mt-4 px-4 py-2 bg-surface border border-error/20 text-error rounded-lg hover:bg-error/10 text-sm">
                                 Retry
                             </button>
                         </div>
@@ -160,10 +160,10 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
                 {/* Overlay for confirming state */}
                 {confirming && (
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                    <div className="absolute inset-0 bg-surface/80 flex items-center justify-center z-10">
                         <div className="text-center">
-                            <Loader2 className="w-8 h-8 text-indigo-600 animate-spin mx-auto mb-2" />
-                            <p className="text-gray-600 font-medium">Saving mappings...</p>
+                            <Loader2 className="w-8 h-8 text-brand animate-spin mx-auto mb-2" />
+                            <p className="text-text-muted font-medium">Saving mappings...</p>
                         </div>
                     </div>
                 )}

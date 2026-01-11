@@ -13,21 +13,21 @@ const KpiCard: React.FC<{
     icon: React.ElementType;
     subtext?: string;
 }> = ({ title, value, trend, icon: Icon, subtext }) => (
-    <div className="flex flex-col p-4 bg-card rounded-lg border shadow-sm h-full justify-between">
+    <div className="flex flex-col p-4 bg-surface rounded-lg border border-border shadow-sm h-full justify-between">
         <div className="flex justify-between items-start mb-2">
-            <span className="text-sm font-medium text-muted-foreground">{title}</span>
-            <Icon className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-text-muted">{title}</span>
+            <Icon className="h-4 w-4 text-text-muted" />
         </div>
         <div>
-            <div className="text-2xl font-bold">{value}</div>
+            <div className="text-2xl font-bold text-text-main">{value}</div>
             <div className="flex items-center mt-1 text-xs">
-                <span className={trend >= 0 ? "text-green-500" : "text-red-500"}>
+                <span className={trend >= 0 ? "text-success" : "text-danger"}>
                     {trend > 0 ? '+' : ''}{trend}%
                 </span>
-                <span className="text-muted-foreground ml-1">vs last period</span>
+                <span className="text-text-muted ml-1">vs last period</span>
             </div>
         </div>
-        {subtext && <div className="text-xs text-muted-foreground mt-1">{subtext}</div>}
+        {subtext && <div className="text-xs text-text-muted mt-1">{subtext}</div>}
     </div>
 );
 

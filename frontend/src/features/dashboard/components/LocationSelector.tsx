@@ -35,10 +35,20 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
             }
         }
 
-        return allCountries.filter((c: ct.Country) =>
-            c.name.toLowerCase().includes(query) ||
-            c.id.toLowerCase().includes(query)
-        );
+        return allCountries.filter((c: ct.Country) => {
+            const name = c.name.toLowerCase();
+            const id = c.id.toLowerCase();
+
+            // Basic matching
+            if (name.includes(query) || id.includes(query)) return true;
+
+            // Common aliases
+            if (query === 'usa' && id === 'us') return true;
+            if (query === 'uk' && (id === 'gb' || id === 'uk')) return true;
+            if (query === 'uae' && id === 'ae') return true;
+
+            return false;
+        });
     }, [inputValue, allCountries, countryCode]);
 
     // Handle outside click to close dropdown
@@ -143,11 +153,11 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
 
             {/* Auto-detect header */}
             <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-slate-500">Location & Timezone</label>
+                <label className="text-xs font-medium text-text-muted">Location & Timezone</label>
                 <button
                     onClick={handleAutoDetect}
                     disabled={isAutoDetecting}
-                    className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 transition-colors"
+                    className="text-xs text-brand hover:text-brand-dark font-medium flex items-center gap-1 transition-colors"
                 >
                     {isAutoDetecting ? <Loader2 className="w-3 h-3 animate-spin" /> : <MapPin className="w-3 h-3" />}
                     Auto-Detect
@@ -171,24 +181,24 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                                 setIsDropdownOpen(true);
                             }}
                             placeholder="Search Country..."
-                            className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                            className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all"
                         />
-                        <Globe className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                        <Globe className="w-4 h-4 text-text-muted absolute left-3 top-2.5" />
                     </div>
 
                     {isDropdownOpen && (
-                        <div className="absolute z-50 mt-1 w-full bg-white rounded-lg shadow-lg border border-slate-100 max-h-60 overflow-y-auto">
+                        <div className="absolute z-50 mt-1 w-full bg-surface rounded-lg shadow-lg border border-border max-h-60 overflow-y-auto">
                             {filteredCountries.length === 0 ? (
-                                <div className="p-3 text-sm text-slate-500 text-center">No countries found</div>
+                                <div className="p-3 text-sm text-text-muted text-center">No countries found</div>
                             ) : (
                                 filteredCountries.map((c: ct.Country) => (
                                     <button
                                         key={c.id}
                                         onClick={() => handleCountrySelect(c)}
-                                        className={`w-full text-left px-3 py-2 text-sm hover:bg-indigo-50 flex items-center justify-between ${countryCode === c.id ? 'bg-indigo-50 text-indigo-700' : 'text-slate-700'}`}
+                                        className={`w-full text-left px-3 py-2 text-sm hover:bg-brand/10 flex items-center justify-between ${countryCode === c.id ? 'bg-brand/10 text-brand' : 'text-text-main'}`}
                                     >
                                         <span className="truncate">{c.name}</span>
-                                        {countryCode === c.id && <Check className="w-3 h-3 text-indigo-600" />}
+                                        {countryCode === c.id && <Check className="w-3 h-3 text-brand" />}
                                     </button>
                                 ))
                             )}
@@ -202,7 +212,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                         value={timezone}
                         onChange={(e) => onChange({ countryCode: countryCode || '', timezone: e.target.value })}
                         disabled={!countryCode}
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none appearance-none disabled:bg-slate-50 disabled:text-slate-400"
+                        className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none appearance-none disabled:bg-surface-subtle disabled:text-text-muted"
                     >
                         {!countryCode ? (
                             <option>Select Country First</option>
@@ -212,7 +222,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                             ))
                         )}
                     </select>
-                    <div className="absolute right-3 top-2.5 pointer-events-none text-slate-400">
+                    <div className="absolute right-3 top-2.5 pointer-events-none text-text-muted">
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                 </div>
@@ -221,9 +231,9 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
 
             {/* Info Helper */}
             {timezone && (
-                <p className="text-xs text-slate-400 flex items-center gap-1">
+                <p className="text-xs text-text-muted flex items-center gap-1">
                     <Check className="w-3 h-3" />
-                    Selected: <span className="font-medium text-slate-600">{timezone}</span>
+                    Selected: <span className="font-medium text-text-main">{timezone}</span>
                 </p>
             )}
         </div>

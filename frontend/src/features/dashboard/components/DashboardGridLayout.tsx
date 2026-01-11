@@ -21,10 +21,10 @@ export const DashboardGridLayout: React.FC<DashboardGridLayoutProps> = ({
     renderWidget
 }) => {
     // Memoize layouts to prevent infinite render loops with RGL
+    // We only provide 'lg' so that RGL auto-calculates the changes for smaller breakpoints
+    // based on the column counts (12 -> 10 -> 6 etc)
     const layouts = useMemo(() => ({
-        lg: widgets.map(w => ({ ...w })),
-        md: widgets.map(w => ({ ...w })),
-        sm: widgets.map(w => ({ ...w, w: 1 })) // Force single column on mobile
+        lg: widgets.map(w => ({ ...w }))
     }), [widgets]);
 
     return (

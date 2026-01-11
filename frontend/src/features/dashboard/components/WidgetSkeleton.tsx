@@ -8,7 +8,7 @@ interface WidgetSkeletonProps {
 
 export const WidgetSkeleton: React.FC<WidgetSkeletonProps> = ({ className }) => {
     return (
-        <div className={cn("flex flex-col h-full w-full p-4 gap-4 bg-white/50 rounded-lg border border-slate-100/50", className)}>
+        <div className={cn("flex flex-col h-full w-full p-4 gap-4 bg-surface/50 rounded-lg border border-border/50", className)}>
             {/* Header Simulation */}
             <div className="flex items-center justify-between shrink-0">
                 <div className="flex flex-col gap-2">

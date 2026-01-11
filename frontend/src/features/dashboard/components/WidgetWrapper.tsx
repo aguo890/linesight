@@ -39,7 +39,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     onRemove,
     openSettings, // Passed prop takes precedence
     actions,
-    iconBgColor = 'bg-slate-100',
+    iconBgColor = 'bg-surface-subtle',
     className,
     children,
 }) => {
@@ -51,8 +51,8 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     const canSettings = !!(id && handleOpenSettings);
 
 
-    // Standard Card Classes (mimicking Card.tsx to ensure theme consistency)
-    const cardClasses = "bg-white text-slate-950 border border-slate-200 shadow-sm";
+    // Standard Card Classes - Uses semantic colors for dark mode
+    const cardClasses = "bg-surface text-text-main border border-border shadow-sm";
 
     // Minimal mode: Overlay icon in corner
     if (density === 'minimal') {
@@ -61,14 +61,14 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 {/* Overlay icon with tooltip */}
                 {icon && (
                     <div
-                        className="absolute top-2 right-2 p-1 bg-white/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
+                        className="absolute top-2 right-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
                         title={title}
                     >
-                        <div className="w-3.5 h-3.5 text-slate-500">
+                        <div className="w-3.5 h-3.5 text-text-muted">
                             {icon}
                         </div>
                         {/* Tooltip on hover - expands to the left */}
-                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-1 px-2 py-1 bg-slate-800 text-white text-[10px] rounded whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none">
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-1 px-2 py-1 bg-surface-elevated text-text-main text-[10px] rounded whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none border border-border shadow-lg">
                             {title}
                         </div>
                     </div>
@@ -78,7 +78,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     <div className="absolute top-2 left-2 flex items-center gap-1 z-10 opacity-0 group-hover:opacity-100 transition-all">
                         <button
                             onClick={() => id && handleOpenSettings(id)}
-                            className="p-1 hover:bg-gray-200 rounded text-slate-400 hover:text-slate-700"
+                            className="p-1 hover:bg-surface-subtle rounded text-text-muted hover:text-text-main"
                             title="Settings"
                         >
                             <Settings size={14} />
@@ -86,7 +86,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         {editMode && onRemove && (
                             <button
                                 onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                                className="p-1 hover:bg-red-50 rounded text-slate-400 hover:text-red-500"
+                                className="p-1 hover:bg-danger/10 rounded text-text-muted hover:text-danger"
                                 title="Remove Widget"
                             >
                                 <Trash2 size={14} />
@@ -106,26 +106,26 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
         return (
             <div className={cn(cardClasses, "rounded-lg h-full flex flex-col overflow-hidden group", className)}>
                 <div className="flex items-center justify-between gap-1.5 px-3 py-1.5 shrink-0 border-b border-transparent">
-                    <span className="text-xs font-semibold text-slate-700 truncate">
+                    <span className="text-xs font-semibold text-text-main truncate">
                         {title}
                     </span>
                     <div className="flex items-center gap-1 shrink-0">
                         {canSettings && (
                             <button
                                 onClick={() => id && handleOpenSettings(id)}
-                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded transition-all"
+                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-subtle rounded transition-all"
                                 title="Settings"
                             >
-                                <Settings size={14} className="text-gray-400 hover:text-gray-700" />
+                                <Settings size={14} className="text-text-muted hover:text-text-main" />
                             </button>
                         )}
                         {id && editMode && onRemove && (
                             <button
                                 onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-50 rounded transition-all"
+                                className="opacity-0 group-hover:opacity-100 p-1 hover:bg-danger/10 rounded transition-all"
                                 title="Remove Widget"
                             >
-                                <Trash2 size={14} className="text-gray-400 hover:text-red-500" />
+                                <Trash2 size={14} className="text-text-muted hover:text-danger" />
                             </button>
                         )}
                         {actions}
@@ -137,7 +137,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                             </div>
                         )}
                         {isMock && (
-                            <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-orange-600 bg-orange-100 border border-orange-200 rounded uppercase">
+                            <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded uppercase">
                                 Demo
                             </span>
                         )}
@@ -163,11 +163,11 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         </div>
                     )}
                     <div className="min-w-0 flex-1">
-                        <h3 className="text-base font-bold text-slate-800 truncate">
+                        <h3 className="text-base font-bold text-text-main truncate">
                             {title}
                         </h3>
                         {subtitle && (
-                            <p className="text-xs text-slate-500 truncate mt-0.5">
+                            <p className="text-xs text-text-muted truncate mt-0.5">
                                 {subtitle}
                             </p>
                         )}
@@ -177,23 +177,23 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     {canSettings && (
                         <button
                             onClick={() => id && handleOpenSettings(id)}
-                            className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-slate-100 rounded-md transition-all"
+                            className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-surface-subtle rounded-md transition-all"
                             title="Settings"
                         >
-                            <Settings size={16} className="text-slate-400 hover:text-slate-700" />
+                            <Settings size={16} className="text-text-muted hover:text-text-main" />
                         </button>
                     )}
                     {id && editMode && onRemove && (
                         <button
                             onClick={(e) => { e.stopPropagation(); onRemove(); }}
-                            className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-red-50 rounded-md transition-all"
+                            className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-danger/10 rounded-md transition-all"
                             title="Remove Widget"
                         >
-                            <Trash2 size={16} className="text-slate-400 hover:text-red-500" />
+                            <Trash2 size={16} className="text-text-muted hover:text-danger" />
                         </button>
                     )}
                     {isMock && (
-                        <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider text-orange-600 bg-orange-100 border border-orange-200 rounded-full uppercase">
+                        <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded-full uppercase">
                             Demo Mode
                         </span>
                     )}

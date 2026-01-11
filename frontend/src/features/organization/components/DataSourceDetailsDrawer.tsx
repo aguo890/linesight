@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { removeUserScope, type MemberRead } from '../../../api/endpoints/team/teamApi';
 import {
-    useUpdateDataSourceApiV1DatasourcesDataSourceIdPut,
-    useDeleteDataSourceApiV1DatasourcesDataSourceIdDelete
+    useUpdateDataSourceApiV1DataSourcesDataSourceIdPut,
+    useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete
 } from '../../../api/endpoints/data-sources/data-sources';
 import type { DataSourceRead as DataSource } from '../../../api/model';
 
@@ -31,8 +31,8 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
     const [isEditingName, setIsEditingName] = useState(false);
     const [nameInput, setNameInput] = useState('');
 
-    const updateDataSource = useUpdateDataSourceApiV1DatasourcesDataSourceIdPut();
-    const deleteDataSource = useDeleteDataSourceApiV1DatasourcesDataSourceIdDelete();
+    const updateDataSource = useUpdateDataSourceApiV1DataSourcesDataSourceIdPut();
+    const deleteDataSource = useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete();
 
     // Reset input when line changes
     React.useEffect(() => {

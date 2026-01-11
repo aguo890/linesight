@@ -19,17 +19,14 @@ interface MockTargetProps {
         target: number;
         percentage?: number;
     };
+    isDark?: boolean;
 }
 
-const getDensity = (w: number, h: number) => {
-    if (w <= 2 || h <= 2) return 'compact';
-    return 'normal';
-};
+
 
 export const MockTargetRealizationWidget: React.FC<MockTargetProps> = ({
-    w = 4, h = 3, data
+    data, isDark = false
 }) => {
-    // const density = getDensity(w, h);
 
     // Defaults
     const actual = data?.actual || 0;
@@ -42,22 +39,24 @@ export const MockTargetRealizationWidget: React.FC<MockTargetProps> = ({
     ];
 
     const percentBadge = (
-        <div className={`px-2 py-1 rounded text-xs font-bold ${percentage >= 100 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}`}>
+        <div className={`px-2 py-1 rounded text-xs font-bold ${percentage >= 100
+            ? 'bg-emerald-500/10 text-emerald-500'
+            : isDark ? 'bg-slate-700 text-slate-300' : 'bg-slate-100 text-slate-600'}`}>
             {percentage}%
         </div>
     );
 
     return (
-        <div className="flex flex-col h-full w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+        <div className={`flex flex-col h-full w-full p-4 rounded-xl shadow-sm border transition-colors duration-300 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-md bg-sky-50`}>
-                        <Target className="w-4 h-4 text-sky-600" />
+                    <div className={`p-1.5 rounded-md ${isDark ? 'bg-sky-900/40' : 'bg-sky-50'}`}>
+                        <Target className="w-4 h-4 text-sky-500" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-slate-700">Daily Target</h3>
-                        <div className="text-[10px] text-slate-400">Real-time Realization</div>
+                        <h3 className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Daily Target</h3>
+                        <div className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Real-time Realization</div>
                     </div>
                 </div>
                 {percentBadge}
@@ -84,14 +83,14 @@ export const MockTargetRealizationWidget: React.FC<MockTargetProps> = ({
                         </ResponsiveContainer>
                     </div>
 
-                    <div className="flex justify-between mt-2 text-xs text-slate-600 px-1">
+                    <div className={`flex justify-between mt-2 px-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
                         <div className="flex flex-col">
-                            <span className="text-[10px] text-slate-400">Actual</span>
-                            <div className="text-3xl font-bold text-slate-900">{actual ? actual.toLocaleString() : '0'}</div>
+                            <span className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Actual</span>
+                            <div className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>{actual ? actual.toLocaleString() : '0'}</div>
                         </div>
                         <div className="flex flex-col text-right">
-                            <span className="text-[10px] text-slate-400">Target</span>
-                            <div className="text-sm font-medium text-slate-500">Target: {target ? target.toLocaleString() : '0'}</div>
+                            <span className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Target</span>
+                            <div className={`text-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Target: {target ? target.toLocaleString() : '0'}</div>
                         </div>
                     </div>
 

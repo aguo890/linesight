@@ -174,14 +174,14 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                 />
 
                 {/* Modal */}
-                <div className={`relative bg-white rounded-2xl shadow-xl p-6 ${showPreview ? 'w-full max-w-6xl' : 'w-full max-w-lg'}`}>
+                <div className={`relative bg-surface rounded-2xl shadow-xl p-6 ${showPreview ? 'w-full max-w-6xl' : 'w-full max-w-lg'}`}>
                     {/* Header */}
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900">
+                            <h2 className="text-xl font-bold text-text-main">
                                 {showPreview ? 'Preview Data' : 'Upload Data'}
                             </h2>
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-sm text-text-muted mt-1">
                                 {showPreview
                                     ? 'Review how your data will be imported'
                                     : `Upload data to ${dataSourceName}`}
@@ -189,7 +189,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                         </div>
                         <button
                             onClick={handleClose}
-                            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg"
+                            className="p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-lg"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -217,10 +217,10 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                                     border-2 border-dashed rounded-xl p-8 text-center cursor-pointer
                                     transition-all duration-200
                                     ${dragOver
-                                        ? 'border-indigo-400 bg-indigo-50'
+                                        ? 'border-brand bg-brand/10'
                                         : file
-                                            ? 'border-green-300 bg-green-50'
-                                            : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50'
+                                            ? 'border-success/40 bg-success/10'
+                                            : 'border-border hover:border-brand/40 hover:bg-surface-subtle'
                                     }
                                 `}
                             >
@@ -234,25 +234,25 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
 
                                 {file ? (
                                     <div className="flex flex-col items-center">
-                                        <FileSpreadsheet className="w-12 h-12 text-green-500 mb-3" />
-                                        <p className="font-medium text-gray-900">{file.name}</p>
-                                        <p className="text-sm text-gray-500 mt-1">
+                                        <FileSpreadsheet className="w-12 h-12 text-success mb-3" />
+                                        <p className="font-medium text-text-main">{file.name}</p>
+                                        <p className="text-sm text-text-muted mt-1">
                                             {(file.size / 1024).toFixed(1)} KB
                                         </p>
                                         <button
                                             onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                                            className="mt-3 text-sm text-red-600 hover:text-red-800"
+                                            className="mt-3 text-sm text-error hover:text-error/80"
                                         >
                                             Remove
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col items-center">
-                                        <Upload className="w-12 h-12 text-gray-400 mb-3" />
-                                        <p className="font-medium text-gray-900">
+                                        <Upload className="w-12 h-12 text-text-muted mb-3" />
+                                        <p className="font-medium text-text-main">
                                             Drop your file here or click to browse
                                         </p>
-                                        <p className="text-sm text-gray-500 mt-1">
+                                        <p className="text-sm text-text-muted mt-1">
                                             Supports Excel (.xlsx, .xls) and CSV files
                                         </p>
                                     </div>
@@ -261,23 +261,23 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
 
                             {/* Error Message */}
                             {error && (
-                                <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-                                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                                    <p className="text-sm text-red-700">{error}</p>
+                                <div className="mt-4 p-3 bg-error/10 border border-error/20 rounded-lg flex items-center gap-2">
+                                    <AlertCircle className="w-5 h-5 text-error flex-shrink-0" />
+                                    <p className="text-sm text-error">{error}</p>
                                 </div>
                             )}
 
                             {/* Success Message */}
                             {success && (
-                                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
-                                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                    <p className="text-sm text-green-700">Upload successful! Redirecting to mapping...</p>
+                                <div className="mt-4 p-3 bg-success/10 border border-success/20 rounded-lg flex items-center gap-2">
+                                    <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+                                    <p className="text-sm text-success">Upload successful! Redirecting to mapping...</p>
                                 </div>
                             )}
 
                             {/* Info */}
-                            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                <p className="text-sm text-blue-700">
+                            <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-lg">
+                                <p className="text-sm text-info">
                                     <Calendar className="w-4 h-4 inline-block mr-1" />
                                     After upload, you'll review a preview before mapping columns.
                                 </p>
@@ -287,14 +287,14 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                             <div className="flex justify-end gap-3 mt-6">
                                 <button
                                     onClick={handleClose}
-                                    className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                                    className="px-4 py-2 text-text-muted border border-border rounded-lg hover:bg-surface-subtle"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleUpload}
                                     disabled={!file || uploading || success}
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    className="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                                 >
                                     {uploading ? (
                                         <>

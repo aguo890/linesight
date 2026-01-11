@@ -10,7 +10,7 @@ const Card = React.forwardRef<
     <div
         ref={ref}
         className={cn(
-            "rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm",
+            "rounded-lg border border-border bg-surface text-text-main shadow-sm",
             className
         )}
         {...props}
@@ -51,7 +51,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <p
         ref={ref}
-        className={cn("text-sm text-slate-500 dark:text-slate-400", className)}
+        className={cn("text-sm text-text-muted dark:text-text-muted", className)}
         {...props}
     />
 ))
@@ -105,15 +105,15 @@ const SmartCard = React.forwardRef<HTMLDivElement, LegacyCardProps>(({ className
             <div
                 ref={ref}
                 className={cn(
-                    "rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm",
+                    "rounded-lg border border-border bg-surface text-text-main shadow-sm",
                     className
                 )}
                 {...props}
             >
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border dark:border-border">
                     <div>
-                        {title && <h3 className="font-semibold text-slate-900">{title}</h3>}
-                        {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+                        {title && <h3 className="font-semibold text-text-main">{title}</h3>}
+                        {subtitle && <p className="text-sm text-text-muted">{subtitle}</p>}
                     </div>
                     {action && <div>{action}</div>}
                 </div>
@@ -127,7 +127,7 @@ const SmartCard = React.forwardRef<HTMLDivElement, LegacyCardProps>(({ className
         <div
             ref={ref}
             className={cn(
-                "rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm",
+                "rounded-lg border border-border bg-surface text-text-main shadow-sm",
                 className
             )}
             {...props}

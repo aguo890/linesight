@@ -102,38 +102,38 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-2xl max-w-md w-full">
-                <div className="flex items-center justify-between p-6 border-b">
+            <div className="bg-surface rounded-lg shadow-2xl max-w-md w-full">
+                <div className="flex items-center justify-between p-6 border-b border-border">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                            <Settings className="w-6 h-6 text-blue-600" />
+                        <div className="p-2 bg-brand/10 rounded-lg">
+                            <Settings className="w-6 h-6 text-brand" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900">Add Data Source</h2>
-                            <p className="text-sm text-gray-500 mt-0.5">
+                            <h2 className="text-xl font-bold text-text-main">Add Data Source</h2>
+                            <p className="text-sm text-text-muted mt-0.5">
                                 Add a new source to {factoryName}
                             </p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                        <X className="w-5 h-5 text-gray-500" />
+                    <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-full">
+                        <X className="w-5 h-5 text-text-muted" />
                     </button>
                 </div>
 
                 {/* Quota Status */}
                 {factoryQuota && (
                     <div className={`mx-6 mt-4 p-3 rounded-lg border ${canCreate
-                        ? 'bg-blue-50 border-blue-200'
-                        : 'bg-orange-50 border-orange-200'
+                        ? 'bg-brand/10 border-brand/20'
+                        : 'bg-warning/10 border-warning/20'
                         }`}>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-700">Source Usage</span>
-                            <span className={`text-sm font-bold ${canCreate ? 'text-blue-700' : 'text-orange-700'}`}>
+                            <span className="text-sm font-medium text-text-main">Source Usage</span>
+                            <span className={`text-sm font-bold ${canCreate ? 'text-brand' : 'text-warning'}`}>
                                 {factoryQuota.current} / {quotaStatus?.lines_per_factory.max}
                             </span>
                         </div>
                         {!canCreate && (
-                            <p className="text-xs text-orange-600 mt-1">
+                            <p className="text-xs text-warning mt-1">
                                 Maximum sources reached for this factory.
                             </p>
                         )}
@@ -142,12 +142,12 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                        <label className="block text-sm font-medium text-text-main mb-1">Name *</label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
                             placeholder="e.g. Line 3 / Cutting Table A"
                             disabled={!canCreate || isSubmitting}
                         />
@@ -155,23 +155,23 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Code</label>
+                            <label className="block text-sm font-medium text-text-main mb-1">Code</label>
                             <input
                                 type="text"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 font-mono"
+                                className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand font-mono"
                                 placeholder="L-03"
                                 disabled={!canCreate || isSubmitting}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+                            <label className="block text-sm font-medium text-text-main mb-1">Specialty</label>
                             <input
                                 type="text"
                                 value={specialty}
                                 onChange={(e) => setSpecialty(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
                                 placeholder="e.g. Assembly"
                                 disabled={!canCreate || isSubmitting}
                             />
@@ -179,11 +179,11 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <label className="block text-sm font-medium text-text-main mb-1">Description</label>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-border rounded-md bg-surface text-text-main focus:ring-2 focus:ring-brand"
                             placeholder="Briefly describe this data source..."
                             rows={2}
                             disabled={!canCreate || isSubmitting}
@@ -191,30 +191,30 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                     </div>
 
                     {/* Schedule Configuration */}
-                    <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+                    <div className="bg-surface-subtle p-4 rounded-md border border-border">
                         <div className="flex items-center justify-between mb-2">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="checkbox"
                                     checked={useDefaults}
                                     onChange={(e) => setUseDefaults(e.target.checked)}
-                                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                                    className="w-4 h-4 text-brand rounded focus:ring-brand"
                                     disabled={!canCreate || isSubmitting}
                                 />
-                                <span className="text-sm font-medium text-gray-900">Use Factory Defaults</span>
+                                <span className="text-sm font-medium text-text-main">Use Factory Defaults</span>
                             </label>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-text-muted">
                                 {useDefaults ? 'Inherits shifts & weekends' : 'Custom configuration'}
                             </span>
                         </div>
 
                         {useDefaults ? (
-                            <p className="text-xs text-gray-500 ml-6">
+                            <p className="text-xs text-text-muted ml-6">
                                 This source will automatically inherit the factory's standard shift pattern.
                             </p>
                         ) : (
                             <div className="ml-6 mt-2">
-                                <p className="text-xs text-orange-600 flex items-center gap-1.5">
+                                <p className="text-xs text-warning flex items-center gap-1.5">
                                     <AlertCircle className="w-3.5 h-3.5" />
                                     Starting with empty schedule
                                 </p>
@@ -223,7 +223,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                     </div>
 
                     {error && (
-                        <div className="p-3 bg-red-50 text-red-700 text-sm rounded-md flex items-center gap-2">
+                        <div className="p-3 bg-error/10 text-error text-sm rounded-md flex items-center gap-2">
                             <AlertCircle className="w-4 h-4" />
                             {error}
                         </div>
@@ -233,14 +233,14 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
+                            className="px-4 py-2 text-text-muted hover:bg-surface-subtle rounded-md"
                             disabled={isSubmitting}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                            className="flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-md hover:bg-brand-dark disabled:opacity-50"
                             disabled={isSubmitting || !canCreate}
                         >
                             {isSubmitting ? 'Creating...' : (

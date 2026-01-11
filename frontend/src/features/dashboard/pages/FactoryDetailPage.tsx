@@ -33,7 +33,7 @@ import { CreateDataSourceModal } from '../../organization/components/CreateDataS
 import { DataSourceUploadModal } from '../components/DataSourceUploadModal';
 import { MappingFlowModal } from '../components/MappingFlowModal';
 import { DashboardWizard } from '../components/DashboardWizard';
-import { CardsSkeleton } from '../components/CardsSkeleton';
+
 import { Skeleton } from '../../../components/ui/Skeleton';
 import { DashboardCard } from '../components/DashboardCard';
 import { FactorySettingsModal } from '../components/FactorySettingsModal';
@@ -213,7 +213,7 @@ export const FactoryDetailPage: React.FC = () => {
     if (factoryLoading) {
         // Reuse skeleton structure
         const DashboardCardSkeleton = () => (
-            <div className="bg-white rounded-xl border border-slate-200 p-5 h-full">
+            <div className="bg-surface rounded-xl border border-border p-5 h-full">
                 <div className="flex justify-between items-start mb-4">
                     <Skeleton className="h-9 w-9 rounded-lg" />
                 </div>
@@ -224,7 +224,7 @@ export const FactoryDetailPage: React.FC = () => {
                         <Skeleton className="h-3 w-16" />
                     </div>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                <div className="mt-4 pt-3 border-t border-border flex items-center justify-between">
                     <Skeleton className="h-4 w-32" />
                     <Skeleton className="h-4 w-4 rounded" />
                 </div>
@@ -232,8 +232,8 @@ export const FactoryDetailPage: React.FC = () => {
         );
 
         const DataSourceCardSkeleton = () => (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden h-full">
-                <div className="h-1.5 w-full bg-slate-100" />
+            <div className="bg-surface rounded-xl border border-border overflow-hidden h-full">
+                <div className="h-1.5 w-full bg-surface-subtle" />
                 <div className="p-5">
                     <div className="flex items-start justify-between mb-4">
                         <Skeleton className="h-10 w-10 rounded-lg" />
@@ -244,7 +244,7 @@ export const FactoryDetailPage: React.FC = () => {
                         <Skeleton className="h-4 w-20" />
                     </div>
                     <Skeleton className="h-9 w-full rounded-md mb-4" />
-                    <div className="flex items-center justify-end gap-2 pt-4 border-t border-gray-100">
+                    <div className="flex items-center justify-end gap-2 pt-4 border-t border-border">
                         <Skeleton className="h-8 w-8 rounded-lg" />
                         <Skeleton className="h-8 w-8 rounded-lg" />
                         <Skeleton className="h-8 w-8 rounded-lg" />
@@ -259,7 +259,7 @@ export const FactoryDetailPage: React.FC = () => {
                     <Skeleton className="h-4 w-48 mb-4" />
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                         <div className="flex items-center gap-4">
-                            <div className="h-14 w-14 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center justify-center">
+                            <div className="h-14 w-14 bg-surface rounded-xl border border-border shadow-sm flex items-center justify-center">
                                 <Skeleton className="w-7 h-7 rounded" />
                             </div>
                             <div>
@@ -275,7 +275,7 @@ export const FactoryDetailPage: React.FC = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div key={i} className="bg-surface p-5 rounded-xl border border-border shadow-sm flex items-center justify-between">
                             <div>
                                 <Skeleton className="h-3 w-24 mb-2" />
                                 <Skeleton className="h-8 w-12" />
@@ -297,7 +297,7 @@ export const FactoryDetailPage: React.FC = () => {
                             <DashboardCardSkeleton />
                         </div>
                     </section>
-                    <div className="h-px bg-slate-200 w-full" />
+                    <div className="h-px bg-border w-full" />
                     <section>
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
@@ -320,7 +320,7 @@ export const FactoryDetailPage: React.FC = () => {
         return (
             <MainLayout>
                 <div className="text-center py-12">
-                    <h2 className="text-xl font-bold text-slate-900">Factory not found</h2>
+                    <h2 className="text-xl font-bold text-text-main">Factory not found</h2>
                     <Breadcrumb items={[{ label: 'Sites', href: '/dashboard/factories' }, { label: 'Not Found' }]} className="mt-4 justify-center" />
                 </div>
             </MainLayout>
@@ -341,23 +341,23 @@ export const FactoryDetailPage: React.FC = () => {
 
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex items-center gap-4">
-                        <div className="h-14 w-14 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center justify-center">
-                            <FactoryIcon className="w-7 h-7 text-indigo-600" />
+                        <div className="h-14 w-14 bg-surface rounded-xl border border-border shadow-sm flex items-center justify-center">
+                            <FactoryIcon className="w-7 h-7 text-brand" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-slate-900">{factory.name}</h1>
-                            <div className="flex items-center flex-wrap gap-x-4 gap-y-2 mt-1.5 text-sm text-slate-500">
+                            <h1 className="text-2xl font-bold text-text-main">{factory.name}</h1>
+                            <div className="flex items-center flex-wrap gap-x-4 gap-y-2 mt-1.5 text-sm text-text-muted">
                                 {factory.code && (
-                                    <span className="flex items-center gap-1.5 font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600 text-xs border border-slate-200">
+                                    <span className="flex items-center gap-1.5 font-mono bg-surface-subtle px-2 py-0.5 rounded text-text-muted text-xs border border-border">
                                         {factory.code}
                                     </span>
                                 )}
                                 <span className="flex items-center gap-1.5">
-                                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                                    <MapPin className="w-3.5 h-3.5 text-text-muted" />
                                     {factory.city ? `${factory.city}, ${factory.country}` : factory.country || 'Unknown Location'}
                                 </span>
                                 <span className="flex items-center gap-1.5">
-                                    <Globe className="w-3.5 h-3.5 text-slate-400" />
+                                    <Globe className="w-3.5 h-3.5 text-text-muted" />
                                     {factory.organization_id}
                                 </span>
                             </div>
@@ -366,7 +366,7 @@ export const FactoryDetailPage: React.FC = () => {
 
                     <button
                         onClick={() => setIsSettingsModalOpen(true)}
-                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm"
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle hover:text-text-main transition-colors shadow-sm"
                     >
                         <Settings className="w-4 h-4" />
                         Settings
@@ -376,32 +376,32 @@ export const FactoryDetailPage: React.FC = () => {
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-indigo-200 transition-colors">
+                <div className="bg-surface p-5 rounded-xl border border-border shadow-sm flex items-center justify-between group hover:border-brand/40 transition-colors">
                     <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Dashboards</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{stats.totalDashboards}</h3>
+                        <p className="text-xs font-semibold text-text-muted uppercase tracking-wide">Dashboards</p>
+                        <h3 className="text-2xl font-bold text-text-main mt-1">{stats.totalDashboards}</h3>
                     </div>
-                    <div className="p-3 bg-indigo-50 rounded-lg group-hover:bg-indigo-100 transition-colors">
-                        <LayoutGrid className="w-5 h-5 text-indigo-600" />
+                    <div className="p-3 bg-brand/10 rounded-lg group-hover:bg-brand/20 transition-colors">
+                        <LayoutGrid className="w-5 h-5 text-brand" />
                     </div>
                 </div>
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-purple-200 transition-colors">
+                <div className="bg-surface p-5 rounded-xl border border-border shadow-sm flex items-center justify-between group hover:border-accent-purple/40 transition-colors">
                     <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Active Widgets</p>
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{stats.totalWidgets}</h3>
+                        <p className="text-xs font-semibold text-text-muted uppercase tracking-wide">Active Widgets</p>
+                        <h3 className="text-2xl font-bold text-text-main mt-1">{stats.totalWidgets}</h3>
                     </div>
-                    <div className="p-3 bg-purple-50 rounded-lg group-hover:bg-purple-100 transition-colors">
-                        <Grid3x3 className="w-5 h-5 text-purple-600" />
+                    <div className="p-3 bg-accent-purple/10 rounded-lg group-hover:bg-accent-purple/20 transition-colors">
+                        <Grid3x3 className="w-5 h-5 text-accent-purple" />
                     </div>
                 </div>
-                <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between group hover:border-emerald-200 transition-colors">
+                <div className="bg-surface p-5 rounded-xl border border-border shadow-sm flex items-center justify-between group hover:border-success/40 transition-colors">
                     <div>
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Active Sources</p>
+                        <p className="text-xs font-semibold text-text-muted uppercase tracking-wide">Active Sources</p>
                         {/* Counting data sources instead of complexity for now */}
-                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{dataSources.length}</h3>
+                        <h3 className="text-2xl font-bold text-text-main mt-1">{dataSources.length}</h3>
                     </div>
-                    <div className="p-3 bg-emerald-50 rounded-lg group-hover:bg-emerald-100 transition-colors">
-                        <TrendingUp className="w-5 h-5 text-emerald-600" />
+                    <div className="p-3 bg-success/10 rounded-lg group-hover:bg-success/20 transition-colors">
+                        <TrendingUp className="w-5 h-5 text-success" />
                     </div>
                 </div>
             </div>
@@ -411,9 +411,9 @@ export const FactoryDetailPage: React.FC = () => {
                 <section>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
-                            <MonitorPlay className="w-5 h-5 text-slate-400" />
-                            <h2 className="text-lg font-bold text-slate-900">Dashboards</h2>
-                            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">
+                            <MonitorPlay className="w-5 h-5 text-text-muted" />
+                            <h2 className="text-lg font-bold text-text-main">Dashboards</h2>
+                            <span className="px-2 py-0.5 rounded-full bg-surface-subtle text-text-muted text-xs font-medium border border-border">
                                 {dashboards.length}
                             </span>
                         </div>
@@ -422,20 +422,20 @@ export const FactoryDetailPage: React.FC = () => {
                     {/* Control Bar - Dashboards */}
                     <div className="flex items-center gap-3 mb-6 p-1">
                         <div className="relative flex-1 max-w-sm group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                             <input
                                 type="text"
                                 placeholder="Filter dashboards..."
                                 value={dashboardSearch}
                                 onChange={(e) => setDashboardSearch(e.target.value)}
-                                className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm"
+                                className="w-full pl-9 pr-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                             />
                         </div>
                         <div className="flex-1"></div>
                         {dashboards.length > 0 && (
                             <button
                                 onClick={handleCreateDashboard}
-                                className="hidden sm:flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
+                                className="hidden sm:flex items-center gap-2 bg-surface hover:bg-surface-subtle text-text-main border border-border px-3 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm"
                             >
                                 <Plus className="w-4 h-4" />
                                 New Dashboard
@@ -447,12 +447,12 @@ export const FactoryDetailPage: React.FC = () => {
                         {/* Ghost Card for New Dashboard */}
                         <button
                             onClick={handleCreateDashboard}
-                            className="group flex flex-col items-center justify-center min-h-[160px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 hover:bg-white hover:border-indigo-400 hover:shadow-md transition-all duration-200"
+                            className="group flex flex-col items-center justify-center min-h-[160px] rounded-xl border border-dashed border-border bg-surface-subtle/50 hover:bg-surface hover:border-brand hover:shadow-md transition-all duration-200"
                         >
-                            <div className="h-10 w-10 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-sm transition-all duration-200">
-                                <Plus className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                            <div className="h-10 w-10 rounded-full bg-surface border border-border flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-brand/40 group-hover:shadow-sm transition-all duration-200">
+                                <Plus className="w-5 h-5 text-text-muted group-hover:text-brand transition-colors" />
                             </div>
-                            <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Create Dashboard</span>
+                            <span className="font-medium text-text-muted group-hover:text-brand transition-colors">Create Dashboard</span>
                         </button>
 
                         {/* Dashboard Cards */}
@@ -467,18 +467,18 @@ export const FactoryDetailPage: React.FC = () => {
                     </div>
                 </section>
 
-                <div className="h-px bg-slate-200 w-full" />
+                <div className="h-px bg-border w-full" />
 
                 {/* ---------------- Data Sources Section ---------------- */}
                 <section>
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
-                            <Activity className="w-5 h-5 text-slate-400" />
-                            <h2 className="text-lg font-bold text-slate-900">Data Sources</h2>
+                            <Activity className="w-5 h-5 text-text-muted" />
+                            <h2 className="text-lg font-bold text-text-main">Data Sources</h2>
                             {factoryQuota && (
                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${factoryQuota.current >= (quotaStatus?.lines_per_factory.max || 0)
-                                    ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                    ? 'bg-warning/10 text-warning border-warning/20'
+                                    : 'bg-success/10 text-success border-success/20'
                                     }`}>
                                     {factoryQuota.current} / {quotaStatus?.lines_per_factory.max || 0} Used
                                 </span>
@@ -487,29 +487,29 @@ export const FactoryDetailPage: React.FC = () => {
                     </div>
 
                     {/* Control Bar - Data Sources */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sticky top-0 z-10 bg-slate-50/90 backdrop-blur-sm py-2 rounded-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sticky top-0 z-10 bg-surface-subtle/90 backdrop-blur-sm py-2 rounded-lg">
                         <div className="relative w-full sm:max-w-xs group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                             <input
                                 type="text"
                                 placeholder="Search sources..."
                                 value={sourceSearch}
                                 onChange={(e) => setSourceSearch(e.target.value)}
-                                className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm"
+                                className="w-full pl-9 pr-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                             />
                         </div>
 
                         <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                            <div className="flex items-center p-1 bg-white border border-slate-200 rounded-lg shadow-sm">
+                            <div className="flex items-center p-1 bg-surface border border-border rounded-lg shadow-sm">
                                 <button
                                     onClick={() => setSourceViewMode('grid')}
-                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'grid' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'grid' ? 'bg-brand/10 text-brand shadow-sm' : 'text-text-muted hover:text-text-main'}`}
                                 >
                                     <LayoutGrid className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => setSourceViewMode('list')}
-                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'list' ? 'bg-indigo-50 text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                    className={`p-1.5 rounded-md transition-all ${sourceViewMode === 'list' ? 'bg-brand/10 text-brand shadow-sm' : 'text-text-muted hover:text-text-main'}`}
                                 >
                                     <List className="w-4 h-4" />
                                 </button>
@@ -520,7 +520,7 @@ export const FactoryDetailPage: React.FC = () => {
                                 <button
                                     onClick={handleCreateSource}
                                     disabled={!canCreateSource}
-                                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors whitespace-nowrap"
+                                    className="flex items-center gap-2 bg-brand hover:bg-brand-dark disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors whitespace-nowrap"
                                 >
                                     <Plus className="w-4 h-4" />
                                     New Source
@@ -537,13 +537,13 @@ export const FactoryDetailPage: React.FC = () => {
                                 <button
                                     onClick={handleCreateSource}
                                     disabled={!canCreateSource}
-                                    className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-dashed border-slate-300 bg-slate-50/50 hover:bg-white hover:border-indigo-400 hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="group flex flex-col items-center justify-center min-h-[180px] rounded-xl border border-dashed border-border bg-surface-subtle/50 hover:bg-surface hover:border-brand hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <div className="h-12 w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-indigo-200 group-hover:shadow-sm transition-all duration-200">
-                                        <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                                    <div className="h-12 w-12 rounded-full bg-surface border border-border flex items-center justify-center mb-3 group-hover:scale-110 group-hover:border-brand/40 group-hover:shadow-sm transition-all duration-200">
+                                        <Plus className="w-6 h-6 text-text-muted group-hover:text-brand transition-colors" />
                                     </div>
-                                    <span className="font-medium text-slate-600 group-hover:text-indigo-700 transition-colors">Add Data Source</span>
-                                    {!canCreateSource && <span className="text-xs text-red-400 mt-1">Quota limit reached</span>}
+                                    <span className="font-medium text-text-muted group-hover:text-brand transition-colors">Add Data Source</span>
+                                    {!canCreateSource && <span className="text-xs text-error mt-1">Quota limit reached</span>}
                                 </button>
                             )}
 
@@ -562,34 +562,34 @@ export const FactoryDetailPage: React.FC = () => {
 
                     {/* Content - List View */}
                     {sourceViewMode === 'list' && (
-                        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                        <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm">
                             <table className="w-full text-left border-collapse">
-                                <thead className="bg-slate-50 border-b border-slate-200">
+                                <thead className="bg-surface-subtle border-b border-border">
                                     <tr>
-                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
-                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                        <th className="py-3 px-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Name</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">Status</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-right">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100">
+                                <tbody className="divide-y divide-border">
                                     {filteredDataSources.map(source => (
                                         <tr
                                             key={source.id}
                                             onClick={() => navigate(`/dashboard/factories/${factoryId}/lines/${source.id}`)}
-                                            className="hover:bg-slate-50 transition-colors cursor-pointer group"
+                                            className="hover:bg-surface-subtle transition-colors cursor-pointer group"
                                         >
                                             <td className="py-3 px-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-slate-100 rounded-lg text-slate-500">
+                                                    <div className="p-2 bg-surface-subtle rounded-lg text-text-muted">
                                                         <Database className="w-4 h-4" />
                                                     </div>
-                                                    <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">{source.name}</span>
+                                                    <span className="font-medium text-text-main group-hover:text-brand transition-colors">{source.name}</span>
                                                 </div>
                                             </td>
                                             <td className="py-3 px-4">
                                                 <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.is_active
-                                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                                                    : 'bg-gray-100 text-gray-600 border-gray-200'
+                                                    ? 'bg-success/10 text-success border-success/20'
+                                                    : 'bg-surface-subtle text-text-muted border-border'
                                                     }`}>
                                                     {source.is_active ? 'Active' : 'Inactive'}
                                                 </span>
@@ -602,15 +602,15 @@ export const FactoryDetailPage: React.FC = () => {
                                                             onClick={() => canUploadToLine(source.id) && handleUploadSource(source.id)}
                                                             disabled={!canUploadToLine(source.id)}
                                                             className={`p-1.5 rounded ${canUploadToLine(source.id)
-                                                                ? 'text-slate-400 hover:text-indigo-600 hover:bg-indigo-50'
-                                                                : 'text-slate-300 cursor-not-allowed'
+                                                                ? 'text-text-muted hover:text-brand hover:bg-brand/10'
+                                                                : 'text-text-muted/50 cursor-not-allowed'
                                                                 }`}
                                                             title={canUploadToLine(source.id) ? 'Upload data' : 'No write access to this source'}
                                                         >
                                                             <Settings className="w-4 h-4" />
                                                         </button>
                                                     )}
-                                                    <ChevronRight className="w-4 h-4 text-slate-300 ml-2" />
+                                                    <ChevronRight className="w-4 h-4 text-text-muted/50 ml-2" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -618,7 +618,7 @@ export const FactoryDetailPage: React.FC = () => {
                                 </tbody>
                             </table>
                             {filteredDataSources.length === 0 && (
-                                <div className="p-8 text-center text-slate-500">
+                                <div className="p-8 text-center text-text-muted">
                                     No sources found matching your search.
                                 </div>
                             )}
@@ -640,6 +640,7 @@ export const FactoryDetailPage: React.FC = () => {
                 onSuccess={handleSourceCreationSuccess}
                 factoryId={factory.id}
                 factoryName={factory.name}
+                quotaStatus={quotaStatus}
             />
             {selectedDataSourceForUpload && (
                 <DataSourceUploadModal

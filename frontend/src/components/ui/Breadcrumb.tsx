@@ -28,12 +28,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' })
                     return (
                         <li key={`${item.label}-${index}`} className="flex items-center">
                             {index > 0 && (
-                                <ChevronRight className="h-4 w-4 text-gray-400 mx-2 flex-shrink-0" />
+                                <ChevronRight className="h-4 w-4 text-text-muted mx-2 flex-shrink-0" />
                             )}
 
                             {isLast ? (
                                 <span
-                                    className="font-semibold text-gray-900 truncate max-w-[200px] md:max-w-none"
+                                    className="font-semibold text-text-main truncate max-w-[200px] md:max-w-none"
                                     aria-current="page"
                                 >
                                     {item.label}
@@ -41,7 +41,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' })
                             ) : (
                                 <Link
                                     to={item.href || '#'}
-                                    className="text-gray-500 hover:text-indigo-600 transition-colors duration-200"
+                                    className="text-text-muted hover:text-brand transition-colors duration-200"
                                 >
                                     {item.label}
                                 </Link>

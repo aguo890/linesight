@@ -49,10 +49,10 @@ const getLayoutFromWidgetIds = (widgetIds: string[]): LayoutItem[] => {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-    Efficiency: 'bg-blue-400/60 border-blue-500/40',
-    Quality: 'bg-purple-400/60 border-purple-500/40',
-    Workforce: 'bg-amber-400/60 border-amber-500/40',
-    Operations: 'bg-slate-400/60 border-slate-500/40',
+    Efficiency: 'bg-blue-400/40 border-blue-500/30',
+    Quality: 'bg-purple-400/40 border-purple-500/30',
+    Workforce: 'bg-amber-400/40 border-amber-500/30',
+    Operations: 'bg-slate-400/40 border-slate-500/30',
 };
 
 export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
@@ -73,27 +73,27 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
     }, [layout]);
 
     const densityStatus = {
-        empty: { label: 'Empty', color: 'text-gray-400', bg: 'bg-gray-100' },
-        light: { label: 'Compact', color: 'text-green-600', bg: 'bg-green-50' },
-        normal: { label: 'Balanced', color: 'text-blue-600', bg: 'bg-blue-50' },
-        heavy: { label: 'Heavy', color: 'text-amber-600', bg: 'bg-amber-50' },
+        empty: { label: 'Empty', color: 'text-text-muted', bg: 'bg-surface-subtle' },
+        light: { label: 'Compact', color: 'text-success', bg: 'bg-success/10' },
+        normal: { label: 'Balanced', color: 'text-brand', bg: 'bg-brand/10' },
+        heavy: { label: 'Heavy', color: 'text-warning', bg: 'bg-warning/10' },
     };
 
     const status = densityStatus[density];
 
     return (
-        <div className="w-full bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div className="w-full bg-surface border border-border rounded-xl shadow-sm overflow-hidden">
             {/* Header */}
-            <div className="px-2.5 py-1.5 bg-gray-50 border-b border-gray-100">
+            <div className="px-2.5 py-1.5 bg-surface-subtle border-b border-border">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
-                        <Layout className="w-3 h-3 text-gray-400" />
-                        <span className="text-[9px] uppercase font-bold text-gray-500 tracking-wide">
+                        <Layout className="w-3 h-3 text-text-muted" />
+                        <span className="text-[9px] uppercase font-bold text-text-muted tracking-wide">
                             Spatial Preview
                         </span>
                     </div>
                     {selectedWidgetIds.length > 0 && (
-                        <span className={`text-[8px] font-semibold px-1 rounded ${status.bg} ${status.color}`}>
+                        <span className={`text-[8px] font-semibold px-1 rounded border border-current/10 ${status.bg} ${status.color}`}>
                             {status.label}
                         </span>
                     )}
@@ -103,15 +103,15 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
             {/* Grid Preview */}
             <div className="p-1.5">
                 {selectedWidgetIds.length === 0 ? (
-                    <div className="h-24 flex items-center justify-center text-[10px] text-gray-400 italic text-center px-4">
+                    <div className="h-24 flex items-center justify-center text-[10px] text-text-muted italic text-center px-4">
                         Select widgets to preview layout
                     </div>
                 ) : (
-                    <div className="relative bg-slate-50 rounded border border-slate-100 p-0.5 overflow-hidden" style={{ height: '140px' }}>
+                    <div className="relative bg-surface-subtle rounded border border-border p-0.5 overflow-hidden" style={{ height: '140px' }}>
                         {/* 12-column grid lines */}
                         <div className="absolute inset-0 grid grid-cols-12 gap-px opacity-30 pointer-events-none">
                             {Array.from({ length: 12 }).map((_, i) => (
-                                <div key={i} className="bg-slate-200/50" />
+                                <div key={i} className="bg-border" />
                             ))}
                         </div>
 
@@ -128,7 +128,7 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                                 <div
                                     key={item.id}
                                     className={`
-                                        ${CATEGORY_COLORS[item.category] || 'bg-gray-400/60 border-gray-500/40'}
+                                        ${CATEGORY_COLORS[item.category] || 'bg-text-muted/40 border-text-muted/30'}
                                         border rounded-sm transition-all duration-300 ease-out
                                         animate-in fade-in zoom-in-95
                                     `}
@@ -146,19 +146,19 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
 
             {/* Footer Stats */}
             {selectedWidgetIds.length > 0 && (
-                <div className="px-3 py-2 bg-gray-50 border-t border-gray-100">
+                <div className="px-3 py-2 bg-surface-subtle border-t border-border">
                     <div className="flex items-center justify-between text-[10px]">
-                        <span className="text-gray-500">
+                        <span className="text-text-muted">
                             {selectedWidgetIds.length} widget{selectedWidgetIds.length !== 1 ? 's' : ''}
                         </span>
-                        <span className="text-gray-400">
+                        <span className="text-text-muted/70">
                             ~{Math.ceil(totalRows / 16)} screen{Math.ceil(totalRows / 16) !== 1 ? 's' : ''}
                         </span>
                     </div>
 
                     {/* Heavy warning */}
                     {density === 'heavy' && (
-                        <div className="mt-1.5 flex items-center gap-1 text-[9px] text-amber-600 font-medium">
+                        <div className="mt-1.5 flex items-center gap-1 text-[9px] text-warning font-medium">
                             <AlertTriangle className="w-2.5 h-2.5" />
                             <span>Dashboard may require scrolling</span>
                         </div>

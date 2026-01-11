@@ -8,6 +8,7 @@
 import type { OrganizationReadCode } from './organizationReadCode';
 import type { OrganizationReadPrimaryEmail } from './organizationReadPrimaryEmail';
 import type { OrganizationReadPrimaryPhone } from './organizationReadPrimaryPhone';
+import type { OrganizationReadSettings } from './organizationReadSettings';
 
 /**
  * Schema for reading an organization.
@@ -23,6 +24,7 @@ export interface OrganizationRead {
   primary_phone?: OrganizationReadPrimaryPhone;
   id: string;
   subscription_tier: string;
+  settings?: OrganizationReadSettings;
   created_at: string;
   updated_at: string;
 }
