@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Layout } from 'lucide-react';
 import { WIDGET_DEFINITIONS } from '../registry';
 import { calculateSmartLayout } from '../../../utils/layoutUtils';
@@ -8,20 +9,21 @@ interface LayoutMiniMapProps {
     maxRows?: number;
 }
 
-interface LayoutItem {
+interface LayoutItemWithMeta {
     id: string;
     w: number;
     h: number;
     x: number;
     y: number;
     category: string;
+    titleKey: string;
 }
 
 /**
  * Converts widget IDs to layout items using the shared smart packing algorithm.
  * Ensures the preview exactly matches what the wizard will generate.
  */
-const getLayoutFromWidgetIds = (widgetIds: string[]): LayoutItem[] => {
+const getLayoutFromWidgetIds = (widgetIds: string[]): LayoutItemWithMeta[] => {
     // Prepare items with dimensions
     const items = widgetIds.map(id => {
         const widget = WIDGET_DEFINITIONS.find(w => w.id === id);
@@ -38,14 +40,18 @@ const getLayoutFromWidgetIds = (widgetIds: string[]): LayoutItem[] => {
     // Run same smart packing algorithm used by wizard
     const packedLayout = calculateSmartLayout(items);
 
-    return packedLayout.map(item => ({
-        id: item.id,
-        w: item.w,
-        h: item.h,
-        x: item.x,
-        y: item.y,
-        category: item.category
-    }));
+    return packedLayout.map(item => {
+        const widgetDef = WIDGET_DEFINITIONS.find(w => w.id === item.id);
+        return {
+            id: item.id,
+            w: item.w,
+            h: item.h,
+            x: item.x,
+            y: item.y,
+            category: item.category,
+            titleKey: widgetDef?.title || 'Unknown Widget'
+        };
+    });
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -59,12 +65,13 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
     selectedWidgetIds,
     maxRows: _maxRows = 24
 }) => {
+    const { t } = useTranslation();
     const layout = useMemo(() => getLayoutFromWidgetIds(selectedWidgetIds), [selectedWidgetIds]);
 
     const { totalRows, density } = useMemo(() => {
         if (layout.length === 0) return { totalRows: 0, density: 'empty' as const };
 
-        const maxY = Math.max(...layout.map((item: LayoutItem) => item.y + item.h));
+        const maxY = Math.max(...layout.map((item: LayoutItemWithMeta) => item.y + item.h));
 
         // Density calculation (screen heights, assuming ~16 rows per screen)
         if (maxY <= 16) return { totalRows: maxY, density: 'light' as const };
@@ -124,21 +131,43 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                                 overflowY: 'auto',
                             }}
                         >
-                            {layout.map((item: LayoutItem, index: number) => (
-                                <div
-                                    key={item.id}
-                                    className={`
-                                        ${CATEGORY_COLORS[item.category] || 'bg-text-muted/40 border-text-muted/30'}
-                                        border rounded-sm transition-all duration-300 ease-out
-                                        animate-in fade-in zoom-in-95
-                                    `}
-                                    style={{
-                                        gridColumn: `${item.x + 1} / span ${item.w}`,
-                                        gridRow: `${item.y + 1} / span ${item.h}`,
-                                        animationDelay: `${index * 50}ms`,
-                                    }}
-                                />
-                            ))}
+                            {layout.map((item: LayoutItemWithMeta, index: number) => {
+                                // Design Callout: Only show label if widget is tall enough (>= 4 rows / 20px)
+                                const showLabel = item.h >= 4;
+
+                                return (
+                                    <div
+                                        key={item.id}
+                                        className={`
+                                            ${CATEGORY_COLORS[item.category] || 'bg-text-muted/40 border-text-muted/30'}
+                                            border rounded-sm transition-all duration-300 ease-out
+                                            animate-in fade-in zoom-in-95
+                                            overflow-hidden relative group
+                                        `}
+                                        style={{
+                                            gridColumn: `${item.x + 1} / span ${item.w}`,
+                                            gridRow: `${item.y + 1} / span ${item.h}`,
+                                            animationDelay: `${index * 50}ms`,
+                                        }}
+                                        title={t(item.titleKey as any)}
+                                    >
+                                        {/* 
+                                            Mock Layout Label 
+                                            - Only render if size permits
+                                            - Use semi-transparent background for contrast on any color
+                                        */}
+                                        {showLabel && (
+                                            <div className="absolute inset-0 p-0.5 pointer-events-none flex items-start justify-center">
+                                                <div className="px-1 py-0.5 rounded-[2px] bg-white/60 dark:bg-black/40 backdrop-blur-[1px] max-w-full">
+                                                    <span className="block text-[6px] font-bold text-black dark:text-white leading-tight truncate select-none uppercase tracking-wide">
+                                                        {t(item.titleKey as any)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 )}

@@ -217,7 +217,19 @@
             "recommended": "Recommended",
             "future_capability": "Future Capability",
             "coming_soon": "Coming Soon",
-            "near_match": "Near Match"
+            "near_match": "Near Match",
+            "ai_recommendations": "AI Recommendations",
+            "select_all": "Select All",
+            "selected": "selected",
+            "compatible": "compatible",
+            "data_req": "Data Required",
+            "needs_mapping": "Needs Mapping",
+            "categories": {
+                "Efficiency": "Efficiency",
+                "Quality": "Quality",
+                "Workforce": "Workforce",
+                "Operations": "Operations"
+            }
         },
         "common": {
             "planned": "PLANNED",

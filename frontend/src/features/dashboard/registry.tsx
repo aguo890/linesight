@@ -808,6 +808,7 @@ export const WIDGET_BUNDLES: WidgetBundle[] = [
     }
 ];
 
+
 export interface BundleReadiness {
     isReady: boolean;
     percentage: number;
@@ -820,16 +821,22 @@ export const getBundleReadiness = (bundleId: string, activeFields: string[]): Bu
     const bundle = WIDGET_BUNDLES.find(b => b.id === bundleId);
     if (!bundle) return { isReady: false, percentage: 0, supportedCount: 0, totalCount: 0, supportedWidgetIds: [] };
 
-    const supportedWidgetIds = bundle.widgetIds.filter(id => {
+    // Filter out locked widgets from the total count
+    const activeWidgetIds = bundle.widgetIds.filter(id => {
+        const manifest = getWidgetManifest(id);
+        return manifest && !manifest.locked;
+    });
+
+    const supportedWidgetIds = activeWidgetIds.filter(id => {
         const { status } = getCompatibilityStatus(id, activeFields);
         return status === 'supported';
     });
 
     const supportedCount = supportedWidgetIds.length;
-    const totalCount = bundle.widgetIds.length;
+    const totalCount = activeWidgetIds.length;
 
     return {
-        isReady: supportedCount === totalCount,
+        isReady: totalCount > 0 && supportedCount === totalCount,
         percentage: totalCount > 0 ? Math.round((supportedCount / totalCount) * 100) : 0,
         supportedCount,
         totalCount,

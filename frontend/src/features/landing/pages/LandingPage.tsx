@@ -183,6 +183,28 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> =
 
 // BackgroundTrendline removed in favor of SnakeLane
 
+// Shared constants to ensure the loop gap exactly matches the item gap.
+const MARQUEE_SPACING = "gap-16";
+
+const LogoSet = ({ logos }: { logos: string[] }) => (
+    <div className={`flex ${MARQUEE_SPACING} items-center shrink-0`}>
+        {logos.map((logoUrl, i) => (
+            <div
+                key={i}
+                className="group flex flex-col items-center justify-center gap-2 cursor-pointer"
+            >
+                <div className="transition-all duration-500 opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110">
+                    <img
+                        src={logoUrl}
+                        alt={`Partner logo ${i + 1}`}
+                        className="w-auto h-16 object-contain dark:invert"
+                    />
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 const LandingPage: React.FC = () => {
     const { isAuthenticated } = useAuth();
     const { resolvedTheme } = useTheme();
@@ -326,45 +348,18 @@ const LandingPage: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Infinite Scroll Marquee */}
-                <div className="relative flex overflow-hidden mask-gradient-x py-6"> {/* Reduced py-10 to py-6 */}
-
-                    {/* Fade Masks (Left & Right) */}
+                {/* Infinite Scroll Marquee - CSS Solution */}
+                <div className="relative flex overflow-hidden mask-gradient-x py-6">
+                    {/* Fade Masks */}
                     <div className="absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-950" />
                     <div className="absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l from-slate-50 to-transparent dark:from-slate-950" />
 
-                    <motion.div
-                        className="flex gap-12 items-center px-4"
-                        // We calculate the X movement based on percentage. 
-                        // Since we duplicate the list once, moving -50% creates a seamless loop.
-                        animate={{ x: ["0%", "-50%"] }}
-                        transition={{
-                            repeat: Infinity,
-                            ease: "linear",
-                            duration: 20 // Adjust speed: Lower = Faster
-                        }}
-                        style={{ width: "max-content" }} // Ensures container fits all items
-                    >
-                        {/* Render the set TWICE to ensure seamless loop */}
-                        {[...Array(2)].map((_, setIndex) => (
-                            <div key={setIndex} className="flex gap-16 items-center shrink-0">
-                                {PARTNER_LOGOS.map((logoUrl, i) => (
-                                    <div
-                                        key={i}
-                                        className="group flex flex-col items-center justify-center gap-2 cursor-pointer"
-                                    >
-                                        <div className={`transition-all duration-500 opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-110`}>
-                                            <img
-                                                src={logoUrl}
-                                                alt={`Partner logo ${i + 1}`}
-                                                className="w-auto h-16 object-contain dark:invert"
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </motion.div>
+                    <div className="flex animate-marquee gap-16">
+                        <LogoSet logos={PARTNER_LOGOS} />
+                        <LogoSet logos={PARTNER_LOGOS} />
+                        <LogoSet logos={PARTNER_LOGOS} />
+                        <LogoSet logos={PARTNER_LOGOS} />
+                    </div>
                 </div>
             </div>
 

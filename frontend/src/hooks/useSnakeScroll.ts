@@ -1,7 +1,7 @@
 import { useScroll, MotionValue } from 'framer-motion';
-import { RefObject } from 'react';
+import type { RefObject } from 'react';
 
-export const useSnakeScroll = (ref: RefObject<HTMLElement>): MotionValue<number> => {
+export const useSnakeScroll = <T extends HTMLElement>(ref: RefObject<T | null>): MotionValue<number> => {
     const { scrollYProgress } = useScroll({
         target: ref,
         // OFFSET EXPLANATION:
