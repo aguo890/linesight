@@ -287,10 +287,10 @@ const LoginPage: React.FC = () => {
 
                 {/* Footer Legal/Compliance */}
                 <div className={`flex items-center gap-4 text-xs font-medium ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
-                    <span className="flex items-center gap-1.5">
+                    {/* <span className="flex items-center gap-1.5">
                         <ShieldCheck size={14} /> SOC2 Compliant
-                    </span>
-                    <span>•</span>
+                    </span> */}
+                    {/* <span>•</span> */}
                     <a href="#" className="hover:text-slate-500">Privacy</a>
                     <span>•</span>
                     <a href="#" className="hover:text-slate-500">Terms</a>

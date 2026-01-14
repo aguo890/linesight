@@ -182,8 +182,8 @@ const PricingPlan: React.FC<{ plan: any; isAnnual: boolean; isDark: boolean }> =
 // Shared constants to ensure the loop gap exactly matches the item gap.
 const MARQUEE_SPACING = "gap-16";
 
-const LogoSet = ({ logos }: { logos: string[] }) => (
-    <div className={`flex ${MARQUEE_SPACING} items-center shrink-0`}>
+const LogoSet = ({ logos, ariaHidden }: { logos: string[], ariaHidden?: boolean }) => (
+    <div className={`flex ${MARQUEE_SPACING} pr-16 items-center shrink-0`} aria-hidden={ariaHidden}>
         {logos.map((logoUrl, i) => (
             <div
                 key={i}
@@ -393,11 +393,11 @@ const LandingPage: React.FC = () => {
                     <div className="absolute left-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-950" />
                     <div className="absolute right-0 top-0 bottom-0 w-32 z-10 bg-gradient-to-l from-slate-50 to-transparent dark:from-slate-950" />
 
-                    <div className="flex animate-marquee gap-16">
+                    <div className="flex animate-marquee shrink-0">
                         <LogoSet logos={PARTNER_LOGOS} />
-                        <LogoSet logos={PARTNER_LOGOS} />
-                        <LogoSet logos={PARTNER_LOGOS} />
-                        <LogoSet logos={PARTNER_LOGOS} />
+                        <LogoSet logos={PARTNER_LOGOS} ariaHidden={true} />
+                        <LogoSet logos={PARTNER_LOGOS} ariaHidden={true} />
+                        <LogoSet logos={PARTNER_LOGOS} ariaHidden={true} />
                     </div>
                 </div>
             </div>
