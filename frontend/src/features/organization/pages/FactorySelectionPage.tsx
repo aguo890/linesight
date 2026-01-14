@@ -95,11 +95,14 @@ export const FactorySelectionPage: React.FC = () => {
     // -- Helpers --
     const getManagerCount = (factory: Factory): number => {
         const sourceIds = factory.data_sources?.map((ds) => ds.id) || [];
-        // Managers assigned to any data source in this factory
+        // Managers assigned to this factory directly OR to any data source in this factory
         const assignedManagers = members.filter(
             (m) =>
-                m.role === 'manager' &&
-                (m.scopes || []).some((s) => sourceIds.includes(s.data_source_id || ''))
+                (m.role === 'factory_manager' || m.role === 'line_manager') &&
+                (m.scopes || []).some((s) =>
+                    s.factory_id === factory.id ||
+                    sourceIds.includes(s.data_source_id || '')
+                )
         );
         return assignedManagers.length;
     };
@@ -153,7 +156,7 @@ export const FactorySelectionPage: React.FC = () => {
 
     // -- Render --
     return (
-        <div className="max-w-7xl">
+        <div className="w-full">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
                 <div>
