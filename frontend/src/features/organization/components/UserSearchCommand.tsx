@@ -98,8 +98,8 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                             onClick={() => onSelect(user.id)}
                             className="w-full flex items-center gap-3 px-3 py-2 hover:bg-indigo-50 dark:hover:bg-slate-700 transition-colors text-left group"
                         >
-                            <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center border border-slate-200 dark:border-slate-600 group-hover:bg-white dark:group-hover:bg-slate-600 group-hover:border-indigo-200 dark:group-hover:border-indigo-500">
-                                <span className="text-xs font-medium text-slate-600 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
+                            <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center ring-2 ring-white dark:ring-slate-800 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:ring-indigo-100 dark:group-hover:ring-slate-800">
+                                <span className="text-xs font-medium text-slate-600 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
                                     {(user.full_name || user.email).charAt(0).toUpperCase()}
                                 </span>
                             </div>

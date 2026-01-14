@@ -26,7 +26,7 @@ export const MemberIdentityCell: React.FC<MemberIdentityCellProps> = ({ member }
                     </AvatarFallback>
                 </Avatar>
                 <span
-                    className={`absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full ring-2 ring-white ${isActive ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                    className={`absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-slate-800 ${isActive ? 'bg-emerald-500' : 'bg-amber-500'}`}
                     title={isActive ? "Active" : "Inactive"}
                 />
             </div>

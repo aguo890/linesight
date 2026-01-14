@@ -129,7 +129,7 @@ export const DataSourceRow = ({
                         {/* Facepile */}
                         <div className="flex -space-x-2">
                             {assignedUsers.map((u: any) => (
-                                <Avatar key={u.id} className="w-8 h-8 border-2 border-white ring-1 ring-gray-100" title={u.full_name}>
+                                <Avatar key={u.id} className="w-8 h-8 ring-2 ring-white dark:ring-slate-800" title={u.full_name}>
                                     {/* src is likely undefined, checking types tells us MemberRead has no avatar_url. Avatar component handles missing src safely now. */}
                                     <AvatarImage src={(u as any).avatar_url} />
                                     <AvatarFallback className="bg-brand/10 text-brand text-xs">
