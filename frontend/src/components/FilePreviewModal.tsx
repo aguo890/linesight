@@ -90,22 +90,22 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+            <div className="bg-white dark:bg-slate-900 rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col border border-gray-200 dark:border-slate-800">
 
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                <div className="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center bg-gray-50 dark:bg-slate-800/50">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
                             <Eye className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900">File Preview</h3>
-                            <p className="text-sm text-gray-600">{filename}</p>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">File Preview</h3>
+                            <p className="text-sm text-gray-600 dark:text-slate-400">{filename}</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full"
+                        className="text-gray-400 hover:text-gray-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full"
                         aria-label="Close"
                     >
                         <X className="w-5 h-5" />
@@ -117,17 +117,17 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                     {loading && (
                         <div className="flex flex-col items-center justify-center py-20">
                             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-                            <p className="text-gray-600 font-medium">Loading preview...</p>
-                            <p className="text-sm text-gray-500 mt-1">Analyzing file structure</p>
+                            <p className="text-gray-600 dark:text-slate-300 font-medium">Loading preview...</p>
+                            <p className="text-sm text-gray-500 dark:text-slate-500 mt-1">Analyzing file structure</p>
                         </div>
                     )}
 
                     {error && (
-                        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 rounded-lg">
+                            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                             <div>
-                                <p className="text-sm font-medium text-red-900">Preview Error</p>
-                                <p className="text-sm text-red-700 mt-1">{error}</p>
+                                <p className="text-sm font-medium text-red-900 dark:text-red-200">Preview Error</p>
+                                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
                             </div>
                         </div>
                     )}
@@ -135,8 +135,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                     {processing && (
                         <div className="flex flex-col items-center justify-center py-20">
                             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-                            <p className="text-gray-900 font-medium text-lg">{processingMessage}</p>
-                            <p className="text-sm text-gray-500 mt-1">This may take a moment...</p>
+                            <p className="text-gray-900 dark:text-white font-medium text-lg">{processingMessage}</p>
+                            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">This may take a moment...</p>
                         </div>
                     )}
 
@@ -145,8 +145,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
                                 <CheckCircle2 className="w-10 h-10 text-green-600" />
                             </div>
-                            <p className="text-gray-900 font-semibold text-lg">Processing Complete!</p>
-                            <p className="text-sm text-gray-600 mt-1">Redirecting to dashboard...</p>
+                            <p className="text-gray-900 dark:text-white font-semibold text-lg">Processing Complete!</p>
+                            <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">Redirecting to dashboard...</p>
                         </div>
                     )}
 
@@ -154,8 +154,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                         <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg mt-4">
                             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                             <div>
-                                <p className="text-sm font-medium text-red-900">Processing Error</p>
-                                <p className="text-sm text-red-700 mt-1">{processingError}</p>
+                                <p className="text-sm font-medium text-red-900 dark:text-red-200">Processing Error</p>
+                                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{processingError}</p>
                             </div>
                         </div>
                     )}
@@ -164,40 +164,40 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                         <div className="space-y-4">
                             {/* Preview Badge */}
                             <div className="flex items-center justify-between">
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-md">
-                                    <Eye className="w-4 h-4 text-blue-600" />
-                                    <span className="text-sm font-medium text-blue-900">
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 rounded-md">
+                                    <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                    <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
                                         Showing first {data.sample_rows.length} rows
                                     </span>
                                 </div>
-                                <div className="text-sm text-gray-500">
+                                <div className="text-sm text-gray-500 dark:text-slate-400">
                                     {(data.headers?.length || 0)} columns detected
                                 </div>
                             </div>
 
                             {/* Table */}
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
+                            <div className="border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden">
                                 <div className="overflow-x-auto">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-gray-50">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+                                        <thead className="bg-gray-50 dark:bg-slate-800/50">
                                             <tr>
                                                 {(data.headers || []).map((col, idx) => (
                                                     <th
                                                         key={idx}
-                                                        className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-200 last:border-r-0"
+                                                        className="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap border-r border-gray-200 dark:border-slate-700 last:border-r-0"
                                                     >
                                                         {col}
                                                     </th>
                                                 ))}
                                             </tr>
                                         </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200">
+                                        <tbody className="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-slate-700">
                                             {(data.sample_rows || []).map((row, rowIdx) => (
-                                                <tr key={rowIdx} className="hover:bg-gray-50 transition-colors">
+                                                <tr key={rowIdx} className="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
                                                     {(data.headers || []).map((_, colIdx) => (
                                                         <td
                                                             key={`${rowIdx}-${colIdx}`}
-                                                            className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap border-r border-gray-200 last:border-r-0"
+                                                            className="px-4 py-3 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap border-r border-gray-200 dark:border-slate-700 last:border-r-0"
                                                         >
                                                             {row[colIdx] !== null && row[colIdx] !== undefined
                                                                 ? String(row[colIdx])
@@ -212,8 +212,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                             </div>
 
                             {/* Info Message */}
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <p className="text-sm text-blue-900">
+                            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 rounded-lg p-4">
+                                <p className="text-sm text-blue-900 dark:text-blue-200">
                                     <strong>Note:</strong> This is a preview of your data. Review the columns and values
                                     to ensure the file uploaded correctly. When ready, proceed to analysis.
                                 </p>
@@ -223,10 +223,10 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+                <div className="px-6 py-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors font-medium"
+                        className="px-4 py-2 text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-md hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors font-medium"
                         disabled={processing}
                     >
                         Close

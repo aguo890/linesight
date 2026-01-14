@@ -495,7 +495,7 @@ export const FactoryDetailPage: React.FC = () => {
                     </div>
 
                     {/* Control Bar - Data Sources */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sticky top-0 z-10 bg-surface-subtle/90 backdrop-blur-sm py-2 rounded-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 top-0 z-10 bg-surface-subtle/90 backdrop-blur-sm py-1 rounded-lg">
                         <div className="relative w-full sm:max-w-xs group">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                             <input

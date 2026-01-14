@@ -1,8 +1,65 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Layout } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { WIDGET_DEFINITIONS } from '../registry';
 import { calculateSmartLayout } from '../../../utils/layoutUtils';
+
+// --- 1. Helpers for Icons & Tooltips ---
+
+// Helper: Safe Icon Lookup
+const resolveIcon = (iconName: string | undefined) => {
+    if (!iconName) return LucideIcons.Box;
+    // @ts-ignore - Dynamic access to Lucide icons
+    const IconComponent = LucideIcons[iconName];
+    return IconComponent || LucideIcons.Box; // Fallback
+};
+
+// Component: Lightweight Portal Tooltip (No external lib)
+const SimpleTooltip = ({ children, content }: { children: React.ReactNode, content: React.ReactNode }) => {
+    const [visible, setVisible] = useState(false);
+    const [coords, setCoords] = useState({ top: 0, left: 0 });
+    const triggerRef = useRef<HTMLDivElement>(null);
+
+    const handleMouseEnter = () => {
+        if (triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect();
+            // Position tooltip above the element, centered
+            setCoords({
+                top: rect.top - 8, // 8px offset
+                left: rect.left + rect.width / 2
+            });
+            setVisible(true);
+        }
+    };
+
+    return (
+        <>
+            <div
+                ref={triggerRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={() => setVisible(false)}
+                className="w-full h-full"
+            >
+                {children}
+            </div>
+            {visible && createPortal(
+                <div
+                    className="fixed z-[9999] px-2 py-1 text-[10px] font-medium text-white bg-slate-900 rounded shadow-lg pointer-events-none transform -translate-x-1/2 -translate-y-full whitespace-nowrap"
+                    style={{ top: coords.top, left: coords.left }}
+                >
+                    {content}
+                    {/* Tiny CSS Arrow */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
+                </div>,
+                document.body
+            )}
+        </>
+    );
+};
+
+// --- 2. Main Component Logic ---
 
 interface LayoutMiniMapProps {
     selectedWidgetIds: string[];
@@ -17,6 +74,7 @@ interface LayoutItemWithMeta {
     y: number;
     category: string;
     titleKey: string;
+    iconName: string;
 }
 
 /**
@@ -49,16 +107,17 @@ const getLayoutFromWidgetIds = (widgetIds: string[]): LayoutItemWithMeta[] => {
             x: item.x,
             y: item.y,
             category: item.category,
-            titleKey: widgetDef?.title || 'Unknown Widget'
+            titleKey: widgetDef?.title || 'Unknown Widget',
+            iconName: widgetDef?.icon || 'Box'
         };
     });
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-    Efficiency: 'bg-blue-400/40 border-blue-500/30',
-    Quality: 'bg-purple-400/40 border-purple-500/30',
-    Workforce: 'bg-amber-400/40 border-amber-500/30',
-    Operations: 'bg-slate-400/40 border-slate-500/30',
+    Efficiency: 'bg-blue-400',
+    Quality: 'bg-purple-400',
+    Workforce: 'bg-amber-400',
+    Operations: 'bg-slate-400',
 };
 
 export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
@@ -132,39 +191,54 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                             }}
                         >
                             {layout.map((item: LayoutItemWithMeta, index: number) => {
-                                // Design Callout: Only show label if widget is tall enough (>= 4 rows / 20px)
-                                const showLabel = item.h >= 4;
+                                const Icon = resolveIcon(item.iconName);
+
+                                // LOGIC: Size Thresholds (assuming rowHeight ~5px)
+                                // Large: > 20px height (approx 4 rows)
+                                const isLarge = item.h >= 4;
+                                // Medium: > 10px height (approx 2 rows)
+                                const isMedium = !isLarge && item.h >= 2;
+
+                                // STYLE: Blueprint Aesthetic
+                                // Use category colors but with low opacity for the background
+                                // and higher opacity for the border.
+                                const baseColor = CATEGORY_COLORS[item.category] || 'bg-slate-200';
 
                                 return (
                                     <div
                                         key={item.id}
-                                        className={`
-                                            ${CATEGORY_COLORS[item.category] || 'bg-text-muted/40 border-text-muted/30'}
-                                            border rounded-sm transition-all duration-300 ease-out
-                                            animate-in fade-in zoom-in-95
-                                            overflow-hidden relative group
-                                        `}
                                         style={{
                                             gridColumn: `${item.x + 1} / span ${item.w}`,
                                             gridRow: `${item.y + 1} / span ${item.h}`,
                                             animationDelay: `${index * 50}ms`,
                                         }}
-                                        title={t(item.titleKey as any)}
+                                        className={`
+                                            relative rounded-sm border 
+                                            ${baseColor.replace('bg-', 'bg-opacity-20 border-opacity-40 border-')} 
+                                            transition-colors hover:bg-opacity-30
+                                            animate-in fade-in zoom-in-95
+                                            cursor-default
+                                        `}
                                     >
-                                        {/* 
-                                            Mock Layout Label 
-                                            - Only render if size permits
-                                            - Use semi-transparent background for contrast on any color
-                                        */}
-                                        {showLabel && (
-                                            <div className="absolute inset-0 p-0.5 pointer-events-none flex items-start justify-center">
-                                                <div className="px-1 py-0.5 rounded-[2px] bg-white/60 dark:bg-black/40 backdrop-blur-[1px] max-w-full">
-                                                    <span className="block text-[6px] font-bold text-black dark:text-white leading-tight truncate select-none uppercase tracking-wide">
-                                                        {t(item.titleKey as any)}
-                                                    </span>
-                                                </div>
+                                        <SimpleTooltip content={<>{t(item.titleKey as any)} <span className="opacity-50 ml-1">({item.w}x{item.h})</span></>}>
+                                            <div className="w-full h-full flex items-center justify-center overflow-hidden">
+
+                                                {/* VISUAL: Icon for Large Items */}
+                                                {isLarge && (
+                                                    <Icon
+                                                        strokeWidth={1.5}
+                                                        className="w-3 h-3 text-current opacity-50"
+                                                    />
+                                                )}
+
+                                                {/* VISUAL: Dot for Medium Items */}
+                                                {isMedium && (
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-current opacity-30" />
+                                                )}
+
+                                                {/* Small items remain just colored blocks */}
                                             </div>
-                                        )}
+                                        </SimpleTooltip>
                                     </div>
                                 );
                             })}

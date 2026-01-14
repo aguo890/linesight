@@ -78,21 +78,21 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity">
-            <div className="bg-surface rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-border animal-fade-in">
+            <div className="bg-surface dark:bg-slate-900 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden border border-border dark:border-slate-800 animal-fade-in">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-surface-subtle/50">
+                <div className="px-6 py-4 border-b border-border dark:border-slate-800 flex items-center justify-between bg-surface-subtle/50 dark:bg-slate-800/50">
                     <div className="flex items-center gap-2">
                         <div className="p-2 bg-brand/10 rounded-lg text-brand">
                             <Settings className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-text-main">Data Source Configuration</h3>
-                            <p className="text-xs text-text-muted">Production Line: {lineId}</p>
+                            <h3 className="text-lg font-bold text-text-main dark:text-white">Data Source Configuration</h3>
+                            <p className="text-xs text-text-muted dark:text-slate-400">Production Line: {lineId}</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 text-text-muted hover:text-text-main hover:bg-surface-active rounded-full transition-colors"
+                        className="p-2 text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white hover:bg-surface-active dark:hover:bg-slate-700 rounded-full transition-colors"
                     >
                         <X className="w-5 h-5" />
                     </button>
@@ -107,18 +107,18 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                         </div>
                     ) : !dataSource ? (
                         <div className="py-8 flex flex-col items-center justify-center text-center space-y-4">
-                            <div className="p-4 bg-yellow-50 rounded-full text-yellow-600">
+                            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-full text-yellow-600 dark:text-yellow-400">
                                 <Database className="w-12 h-12" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-900">No Data Source Configured</h4>
-                                <p className="text-sm text-gray-500 mt-1 max-w-xs mx-auto">
+                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">No Data Source Configured</h4>
+                                <p className="text-sm text-gray-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
                                     No Data Source configured for this line. You need to upload data first to create one.
                                 </p>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="px-6 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+                                className="px-6 py-2 bg-gray-900 dark:bg-slate-700 text-white rounded-lg text-sm font-medium hover:bg-gray-800 dark:hover:bg-slate-600 transition-colors"
                             >
                                 Close Modal
                             </button>
@@ -126,14 +126,14 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                     ) : (
                         <form onSubmit={handleSave} className="space-y-5">
                             {error && (
-                                <div className="p-3 bg-red-50 border border-red-100 rounded-lg flex items-center gap-2 text-red-700 text-sm animate-shake">
+                                <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-300 text-sm animate-shake">
                                     <AlertCircle className="w-4 h-4" />
                                     {error}
                                 </div>
                             )}
 
                             {success && (
-                                <div className="p-3 bg-green-50 border border-green-100 rounded-lg flex items-center gap-2 text-green-700 text-sm">
+                                <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-300 text-sm">
                                     <CheckCircle2 className="w-4 h-4" />
                                     Configuration updated successfully!
                                 </div>
@@ -141,7 +141,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5">
+                                    <label className="block text-sm font-semibold text-text-main dark:text-white mb-1.5 flex items-center gap-1.5">
                                         Time Column
                                         <span className="text-error">*</span>
                                     </label>
@@ -151,7 +151,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                         onChange={(e) => setTimeColumn(e.target.value)}
                                         placeholder="e.g. Timestamp, Date, Time"
                                         required
-                                        className="w-full px-4 py-2.5 bg-surface-subtle border border-border rounded-lg text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm"
+                                        className="w-full px-4 py-2.5 bg-surface-subtle dark:bg-slate-800 border border-border dark:border-slate-700 rounded-lg text-text-main dark:text-white focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm"
                                     />
                                     <p className="mt-1.5 text-xs text-text-muted">
                                         The name of the column in your Excel/CSV files used for time-series analysis.
@@ -159,28 +159,28 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-text-main mb-2 flex items-center justify-between">
+                                    <label className="block text-sm font-semibold text-text-main dark:text-white mb-2 flex items-center justify-between">
                                         Active Schema Mapping
                                         <span className="text-[10px] bg-brand/10 text-brand px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
                                             Version {dataSource.schema_mappings.find(m => m.is_active)?.version || 1}
                                         </span>
                                     </label>
-                                    <div className="border border-border rounded-lg overflow-hidden bg-surface-subtle/30">
+                                    <div className="border border-border dark:border-slate-700 rounded-lg overflow-hidden bg-surface-subtle/30 dark:bg-slate-800/30">
                                         <div className="max-h-60 overflow-y-auto">
                                             <table className="w-full text-left border-collapse">
                                                 <thead>
-                                                    <tr className="bg-surface-subtle border-b border-border">
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted uppercase tracking-tight">Source Column</th>
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted uppercase tracking-tight">Target Field</th>
+                                                    <tr className="bg-surface-subtle dark:bg-slate-800 border-b border-border dark:border-slate-700">
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">Source Column</th>
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">Target Field</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody className="divide-y divide-border">
+                                                <tbody className="divide-y divide-border dark:divide-slate-800">
                                                     {(() => {
                                                         const rawMap = dataSource.schema_mappings.find(m => m.is_active)?.column_map || {};
                                                         const columnMap = typeof rawMap === 'string' ? JSON.parse(rawMap) : rawMap;
                                                         return Object.entries(columnMap).map(([src, target]) => (
-                                                            <tr key={src} className="hover:bg-surface/50 transition-colors">
-                                                                <td className="px-4 py-2.5 text-sm font-medium text-text-main font-mono text-[13px]">{src}</td>
+                                                            <tr key={src} className="hover:bg-surface/50 dark:hover:bg-slate-700/50 transition-colors">
+                                                                <td className="px-4 py-2.5 text-sm font-medium text-text-main dark:text-slate-200 font-mono text-[13px]">{src}</td>
                                                                 <td className="px-4 py-2.5 text-sm">
                                                                     <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-brand/10 text-brand border border-brand/20 font-medium text-[13px]">
                                                                         {String(target)}
@@ -199,7 +199,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-text-main mb-1.5">
+                                    <label className="block text-sm font-semibold text-text-main dark:text-white mb-1.5">
                                         Description
                                     </label>
                                     <textarea
@@ -207,16 +207,16 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                         onChange={(e) => setDescription(e.target.value)}
                                         placeholder="Briefly describe this data source..."
                                         rows={2}
-                                        className="w-full px-4 py-2.5 bg-surface-subtle border border-border rounded-lg text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm resize-none"
+                                        className="w-full px-4 py-2.5 bg-surface-subtle dark:bg-slate-800 border border-border dark:border-slate-700 rounded-lg text-text-main dark:text-white focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm resize-none"
                                     />
                                 </div>
                             </div>
 
-                            <div className="pt-4 flex items-center justify-end gap-3 border-t border-border">
+                            <div className="pt-4 flex items-center justify-end gap-3 border-t border-border dark:border-slate-800">
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="px-5 py-2.5 text-sm font-semibold text-text-muted hover:text-text-main hover:bg-surface-active rounded-lg transition-colors"
+                                    className="px-5 py-2.5 text-sm font-semibold text-text-muted hover:text-text-main dark:hover:text-white hover:bg-surface-active dark:hover:bg-slate-800 rounded-lg transition-colors"
                                 >
                                     Cancel
                                 </button>

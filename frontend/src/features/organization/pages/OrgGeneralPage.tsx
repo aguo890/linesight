@@ -39,19 +39,29 @@ const OrgGeneralPage: React.FC = () => {
             try {
                 // Fetch members to count managers
                 const membersRes = await AXIOS_INSTANCE.get('/api/v1/organizations/members');
-                const members = membersRes.data;
-                const managers = members.filter((m: any) => m.role === 'manager');
-                const assignedManagers = managers.filter((m: any) => m.scopes?.length > 0);
+                const members = membersRes.data || [];
+
+                // Filter managers (handle potentially different matching strategies or role strings)
+                const managers = members.filter((m: any) => {
+                    const role = m.role || '';
+                    return role === 'factory_manager' || role === 'line_manager';
+                });
+
+                // Count assigned managers (must have at least one scope)
+                const assignedManagers = managers.filter((m: any) => m.scopes && m.scopes.length > 0);
 
                 // Fetch factories
                 const factoriesRes = await AXIOS_INSTANCE.get('/api/v1/factories');
-                const factories = factoriesRes.data;
+                const factories = factoriesRes.data || [];
 
-                // Count lines per factory (Parallel Fetching)
+                // Count lines (now Data Sources) per factory (Parallel Fetching)
                 const linePromises = factories.map((factory: any) =>
-                    AXIOS_INSTANCE.get(`/api/v1/factories/${factory.id}/lines`)
+                    AXIOS_INSTANCE.get(`/api/v1/factories/${factory.id}/data-sources`)
                         .then(res => res.data?.length || 0)
-                        .catch(() => 0)
+                        .catch(err => {
+                            console.warn(`Failed to fetch data sources for factory ${factory.id}`, err);
+                            return 0;
+                        })
                 );
 
                 const lineCounts = await Promise.all(linePromises);
