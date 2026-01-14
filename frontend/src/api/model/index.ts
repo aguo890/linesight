@@ -430,6 +430,8 @@ export * from './userUpdateRole';
 export * from './userUpdateTimezone';
 export * from './validationError';
 export * from './validationErrorLocItem';
+export * from './waitlistCreate';
+export * from './waitlistResponse';
 export * from './widgetConfig';
 export * from './widgetConfigWidgetSettings';
 export * from './widgetConfigWidgetSettingsAnyOf';

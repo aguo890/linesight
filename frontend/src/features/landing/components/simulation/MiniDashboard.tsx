@@ -14,7 +14,7 @@ interface MiniDashboardProps {
 
 export const MiniDashboard: React.FC<MiniDashboardProps> = ({ demoEfficiencyData, demoEarnedMinutesData, demoProductionData, isDark = false }) => {
     return (
-        <div className={`relative w-[1280px] h-[800px] rounded-xl overflow-hidden shadow-2xl select-none pointer-events-none transform origin-top-left scale-[0.6] sm:scale-[0.8] md:scale-100 transition-colors duration-300 ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-white border border-slate-200'}`}>
+        <div className={`relative w-[1280px] h-[800px] rounded-xl overflow-hidden shadow-2xl select-none pointer-events-none transition-colors duration-300 ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-white border border-slate-200'}`}>
             {/* 1. Sidebar */}
             <MiniSidebar isDark={isDark} />
 

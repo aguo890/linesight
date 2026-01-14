@@ -5,7 +5,6 @@
  * LineSight: AI-driven Semantic ETL platform for SMB apparel manufacturing. Parse messy Excel files, track SAM/DHU metrics, and ensure UFLPA compliance.
  * OpenAPI spec version: 0.1.0
  */
-import type { FactoryWithDataSourcesCode } from './factoryWithDataSourcesCode';
 import type { FactoryWithDataSourcesLocation } from './factoryWithDataSourcesLocation';
 import type { FactoryWithDataSourcesCountry } from './factoryWithDataSourcesCountry';
 import type { FactoryWithDataSourcesTimezone } from './factoryWithDataSourcesTimezone';
@@ -27,7 +26,8 @@ export interface FactoryWithDataSources {
    * @maxLength 255
    */
   name: string;
-  code?: FactoryWithDataSourcesCode;
+  /** @maxLength 50 */
+  code: string;
   location?: FactoryWithDataSourcesLocation;
   country?: FactoryWithDataSourcesCountry;
   timezone?: FactoryWithDataSourcesTimezone;

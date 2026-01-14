@@ -1,29 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
 import { Logo } from '../../../components/common/Logo';
 import {
     ArrowRight,
     Check,
-    Zap,
     FileSpreadsheet, // For "Kill Spreadsheets"
     Tablet,          // For "ERP Alternative"
     Users,           // For "Operator Accountability"
     Quote,           // For Social Proof
-
-    LayoutDashboard, // Needed for Bento Grid
     BarChart3        // Needed for Hero/Widgets
 } from 'lucide-react';
-import { MockSpeedQualityWidget } from '../components/simulation/MockSpeedQualityWidget';
-import { MockTargetRealizationWidget } from '../components/simulation/MockTargetRealizationWidget';
-import { MockBlockerCloudWidget } from '../components/simulation/MockBlockerCloudWidget';
 import { MiniDashboard } from '../components/simulation/MiniDashboard';
 import { PARTNER_LOGOS } from '../components/PartnerLogos';
 import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
 import { useSnakeScroll } from '../../../hooks/useSnakeScroll';
 import { SnakeLane } from '../components/SnakeLane';
+import { WaitlistForm } from '../components/WaitlistForm';
+import { FeaturesSection } from '../components/FeaturesSection';
 
 const springTransition = { type: "spring", stiffness: 100, damping: 20 } as const;
 
@@ -208,21 +204,20 @@ const LogoSet = ({ logos }: { logos: string[] }) => (
 const LandingPage: React.FC = () => {
     const { isAuthenticated } = useAuth();
     const { resolvedTheme } = useTheme();
+    // --- CONFIGURATION ---
+    const IS_WAITLIST_MODE = true;
+    const WAITLIST_SECTION_ID = "waitlist-form-section";
+
+    // --- ROUTES ---
+    const ROUTES = {
+        LOGIN: "/login",
+        REGISTER: "/register",
+    };
+
     const [isAnnual, setIsAnnual] = useState(true);
     const isDark = resolvedTheme === 'dark';
 
-    // Parallax Logic for "Industrial Widget Library"
-    const widgetSectionRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: widgetSectionRef,
-        offset: ["start end", "end start"]
-    });
-
-    const yLayer1 = useTransform(scrollYProgress, [0, 1], [0, -60]);  // TargetRealization
-    const yLayer2 = useTransform(scrollYProgress, [0, 1], [0, -120]); // SpeedQuality (Closer/Faster)
-    const yLayer3 = useTransform(scrollYProgress, [0, 1], [0, -30]);  // BlockerCloud (Farther/Slower)
-
-    // Snake Scroll Logic
+    // snake scroll logic
     const snakeContainerRef = useRef<HTMLDivElement>(null);
     const snakeProgress = useSnakeScroll(snakeContainerRef);
 
@@ -239,25 +234,56 @@ const LandingPage: React.FC = () => {
         });
     }, [snakeProgress]);
 
+    // --- SCROLL HANDLER ---
+    const scrollToWaitlist = () => {
+        const element = document.getElementById(WAITLIST_SECTION_ID);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
         <div className="min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
 
             {/* Navigation */}
             <nav className="fixed top-0 w-full z-[100] backdrop-blur-xl border-b transition-colors duration-300 bg-white/80 border-slate-100 dark:bg-slate-950/80 dark:border-slate-800">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Logo variant="marketing" />
-                    <div className="flex items-center gap-8">
-                        <a href="#features" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Platform</a>
-                        <a href="#pricing" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Pricing</a>
-                        <Link to={isAuthenticated ? "/dashboard" : "/login"}>
+                <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+                    <Logo variant="marketing" textClassName="text-lg md:text-xl" />
+                    <div className="flex items-center gap-4 md:gap-8">
+                        {!IS_WAITLIST_MODE && (
+                            <>
+                                <a href="#features" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Platform</a>
+                                <a href="#pricing" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Pricing</a>
+                            </>
+                        )}
+
+                        {/* Always show Sign In explicitly */}
+                        <Link to={ROUTES.LOGIN} className={`text-xs md:text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>
+                            Sign In
+                        </Link>
+
+
+
+                        {IS_WAITLIST_MODE ? (
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`px-5 py-2 rounded-full text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
+                                onClick={scrollToWaitlist}
+                                className={`px-3 py-2 md:px-5 rounded-full text-xs md:text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
                             >
-                                {isAuthenticated ? "Dashboard" : "Sign In"}
+                                Join Waitlist
                             </motion.button>
-                        </Link>
+                        ) : (
+                            <Link to={isAuthenticated ? "/dashboard" : ROUTES.REGISTER}>
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`px-3 py-2 md:px-5 rounded-full text-xs md:text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
+                                >
+                                    {isAuthenticated ? "Dashboard" : "Get Started"}
+                                </motion.button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -290,13 +316,26 @@ const LandingPage: React.FC = () => {
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             {/* IMPROVEMENT 2: Colored Shadow Button */}
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
-                            >
-                                Start Free Trial <ArrowRight size={20} />
-                            </motion.button>
+                            {IS_WAITLIST_MODE ? (
+                                <motion.button
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={scrollToWaitlist}
+                                    className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
+                                >
+                                    Join Waitlist <ArrowRight size={20} />
+                                </motion.button>
+                            ) : (
+                                <Link to={ROUTES.REGISTER}>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
+                                    >
+                                        Start Free Trial <ArrowRight size={20} />
+                                    </motion.button>
+                                </Link>
+                            )}
 
                             <button className="px-8 py-4 rounded-2xl text-lg font-bold transition-colors bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
                                 Watch Demo
@@ -364,13 +403,13 @@ const LandingPage: React.FC = () => {
             </div>
 
             {/* --- NEW SECTION: The Problem/Solution Snake Layout --- */}
-            <div ref={snakeContainerRef} className={`relative w-full pt-57 pb-15 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
+            <div ref={snakeContainerRef} className={`relative w-full pt-16 pb-16 md:pt-57 md:pb-15 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
 
                 {/* The Responsive Grid Architecture */}
                 <div className="relative max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_120px_1fr] gap-4">
 
                     {/* COLUMN 1: Left Content */}
-                    <div className="flex flex-col gap-96 py-20 px-6 text-right">
+                    <div className="flex flex-col gap-12 md:gap-96 py-4 md:py-20 px-6 text-center md:text-right">
                         {/* Card 1: Spreadsheets */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
@@ -420,7 +459,7 @@ const LandingPage: React.FC = () => {
                     </div>
 
                     {/* COLUMN 3: Right Content */}
-                    <div className="flex flex-col gap-96 py-20 px-6 text-left mt-64">
+                    <div className="flex flex-col gap-12 md:gap-96 py-4 md:py-20 px-6 text-center md:text-left mt-0 md:mt-64">
                         {/* mt-64 offsets the right side to create a stagger effect */}
 
                         {/* Card 2: ERP */}
@@ -510,7 +549,7 @@ const LandingPage: React.FC = () => {
                         <div className={`w-full h-full rounded-[24px] overflow-hidden relative ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
                             {/* Abs positioning & Scaling to fit the fixed 1280x800 dashboard into variable container */}
                             <div className={`absolute inset-0 flex items-center justify-center ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
-                                <div className="transform scale-[0.5] sm:scale-[0.65] md:scale-[0.8] lg:scale-[0.9] xl:scale-100 origin-center transition-transform duration-500">
+                                <div className="transform scale-[0.27] sm:scale-[0.45] md:scale-[0.55] lg:scale-[0.75] xl:scale-[0.95] origin-center transition-transform duration-500">
                                     <MiniDashboard
                                         isDark={isDark}
                                         demoEfficiencyData={DEMO_EFFICIENCY}
@@ -534,150 +573,102 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* Features (Bento Grid) - Light & Clean */}
-            <section id="features" className={`py-24 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid md:grid-cols-12 gap-6">
+            {!IS_WAITLIST_MODE && (
+                <>
+                    <FeaturesSection
+                        isDark={isDark}
+                        demoTarget={DEMO_TARGET}
+                        demoSpeedQuality={DEMO_SPEED_QUALITY}
+                        demoBlockers={DEMO_BLOCKERS}
+                    />
 
-                        {/* THE UPGRADED WIDGET LIBRARY CARD */}
-                        <div ref={widgetSectionRef} className={`md:col-span-8 p-10 md:p-12 rounded-[40px] border shadow-sm relative overflow-hidden group transition-colors duration-300 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
-                            <div className="relative z-10 flex flex-col h-full">
-                                <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white mb-8 shadow-lg shadow-blue-200 dark:shadow-blue-900/50">
-                                    <LayoutDashboard size={28} />
-                                </div>
-                                <div className="max-w-sm">
-                                    <h3 className="text-4xl font-bold tracking-tight mb-4">Industrial Widget Library</h3>
-                                    <p className={`text-lg font-medium leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                                        A massive suite of specialized components for downtime, SAM variances, and shift-over-shift analysis.
-                                        Built for <span className={`underline decoration-blue-500/30 ${isDark ? 'text-white' : 'text-slate-900'}`}>high-density</span> monitoring.
-                                    </p>
-                                </div>
+                    {/* PRICING SECTION */}
+                    <section id="pricing" className={`relative py-32 px-6 overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-[#0B0F1A]'}`}>
+                        {/* Visual Interest Backgrounds */}
+                        <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/20'}`} />
+                        <div className={`absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-indigo-600/5' : 'bg-indigo-600/10'}`} />
+                        <GridPattern />
 
-                                {/* The "Show" instead of "Tell" - Animated Widget Cluster */}
-                                <div className="mt-12 relative h-[320px] w-full">
-                                    {/* Widget 1: Target Realization (Floating Left) */}
-                                    <motion.div
-                                        style={{ y: yLayer1 }}
-                                        className="absolute left-0 top-0 z-20 w-[280px] h-[200px]"
+                        <div className="max-w-7xl mx-auto relative z-10">
+                            <div className="text-center mb-20">
+                                <motion.h2
+                                    initial="hidden" whileInView="visible" variants={fadeInVariant}
+                                    className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6"
+                                >
+                                    Scale with Precision.
+                                </motion.h2>
+
+                                {/* Custom Toggle */}
+                                <div className="flex items-center justify-center gap-4 mt-12">
+                                    <span className={`text-sm font-bold ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
+                                    <button
+                                        onClick={() => setIsAnnual(!isAnnual)}
+                                        className="w-16 h-8 bg-slate-800 rounded-full p-1 relative flex items-center transition-colors"
                                     >
-                                        <div className={`w-full h-full rounded-2xl shadow-xl border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-blue-900/50' : 'bg-white border-blue-100'}`}>
-                                            <MockTargetRealizationWidget w={3} h={3} data={DEMO_TARGET} isDark={isDark} />
-                                        </div>
-                                    </motion.div>
-
-                                    {/* Widget 2: Speed vs Quality (Center/Right) */}
-                                    <motion.div
-                                        style={{ y: yLayer2 }}
-                                        className="absolute left-[240px] top-[60px] z-30 w-[340px] h-[240px]"
-                                    >
-                                        <div className={`w-full h-full rounded-2xl shadow-2xl shadow-blue-900/10 border overflow-hidden transform hover:scale-105 transition-transform duration-300 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
-                                            <MockSpeedQualityWidget w={3} h={3} data={DEMO_SPEED_QUALITY} isDark={isDark} />
-                                        </div>
-                                    </motion.div>
-
-                                    {/* Widget 3: Blocker Cloud (Right Back) */}
-                                    <motion.div
-                                        style={{ y: yLayer3 }}
-                                        className="absolute right-0 top-0 z-10 w-[240px] h-[180px] hidden xl:block"
-                                    >
-                                        <div className={`w-full h-full backdrop-blur-sm rounded-2xl shadow-lg border overflow-hidden ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white/80 border-slate-100'}`}>
-                                            <MockBlockerCloudWidget w={3} h={2} data={DEMO_BLOCKERS} isDark={isDark} />
-                                        </div>
-                                    </motion.div>
+                                        <motion.div
+                                            animate={{ x: isAnnual ? 32 : 0 }}
+                                            className="w-6 h-6 bg-blue-500 rounded-full shadow-lg"
+                                        />
+                                    </button>
+                                    <span className={`text-sm font-bold ${isAnnual ? 'text-white' : 'text-slate-500'}`}>
+                                        Annual <span className="text-blue-400 ml-1">(-20%)</span>
+                                    </span>
                                 </div>
                             </div>
 
-                            {/* Technical Grid Background Overlay */}
-                            <div className={`absolute top-0 right-0 w-1/2 h-full [background-size:20px_20px] [mask-image:linear-gradient(to_left,white,transparent)] ${isDark ? 'bg-[radial-gradient(#334155_1px,transparent_1px)]' : 'bg-[radial-gradient(#e2e8f0_1px,transparent_1px)]'}`} />
-                        </div>
-
-                        {/* AI CARD */}
-                        <div className="md:col-span-4 p-10 rounded-[40px] flex flex-col justify-between relative overflow-hidden group transition-colors duration-300 bg-slate-900 text-white">
-                            <div className={`absolute top-0 right-0 p-8 transition-opacity ${isDark ? 'opacity-10 group-hover:opacity-20' : 'opacity-10 group-hover:opacity-20'}`}>
-                                <Zap size={120} />
-                            </div>
-                            <div className="space-y-4 relative z-10">
-                                <div className={`inline-flex px-3 py-1 bg-blue-500/20 rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-400 border border-blue-500/30 ${isDark ? '' : ''}`}>Intelligence</div>
-                                <h3 className="text-2xl font-bold tracking-tight">AI Transparency</h3>
-                                <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-400'}`}>No black boxes. Our Logic Engine exports the exact decision tree used for every predictive alert.</p>
-                            </div>
-                            <div className={`mt-8 p-4 bg-black/40 backdrop-blur-sm rounded-2xl border border-white/10 font-mono text-[10px] relative z-10 ${isDark ? 'text-blue-300' : 'text-blue-300'}`}>
-                                <div className="flex gap-2 mb-2">
-                                    <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                                    <div className="w-2 h-2 rounded-full bg-amber-500/50" />
-                                    <div className="w-2 h-2 rounded-full bg-green-500/50" />
-                                </div>
-                                <span className="text-slate-500 italic">// Analyzing pattern_delta_7...</span> <br />
-                                <span className="text-blue-400">{`> confidence: 0.982`}</span> <br />
-                                <span className="text-emerald-400">{`> recommendation: check_bearing_L4`}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* PRICING SECTION */}
-            <section id="pricing" className={`relative py-32 px-6 overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-[#0B0F1A]'}`}>
-                {/* Visual Interest Backgrounds */}
-                <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/20'}`} />
-                <div className={`absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[120px] ${isDark ? 'bg-indigo-600/5' : 'bg-indigo-600/10'}`} />
-                <GridPattern />
-
-                <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="text-center mb-20">
-                        <motion.h2
-                            initial="hidden" whileInView="visible" variants={fadeInVariant}
-                            className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6"
-                        >
-                            Scale with Precision.
-                        </motion.h2>
-
-                        {/* Custom Toggle */}
-                        <div className="flex items-center justify-center gap-4 mt-12">
-                            <span className={`text-sm font-bold ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
-                            <button
-                                onClick={() => setIsAnnual(!isAnnual)}
-                                className="w-16 h-8 bg-slate-800 rounded-full p-1 relative flex items-center transition-colors"
+                            <motion.div
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                transition={{ staggerChildren: 0.1 }}
+                                className="grid lg:grid-cols-3 gap-8 items-center"
                             >
-                                <motion.div
-                                    animate={{ x: isAnnual ? 32 : 0 }}
-                                    className="w-6 h-6 bg-blue-500 rounded-full shadow-lg"
-                                />
-                            </button>
-                            <span className={`text-sm font-bold ${isAnnual ? 'text-white' : 'text-slate-500'}`}>
-                                Annual <span className="text-blue-400 ml-1">(-20%)</span>
-                            </span>
+                                {PRICING_PLANS.map((plan) => (
+                                    <PricingPlan key={plan.id} plan={plan} isAnnual={isAnnual} isDark={isDark} />
+                                ))}
+                            </motion.div>
                         </div>
-                    </div>
+                    </section>
+                </>
+            )}
 
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        transition={{ staggerChildren: 0.1 }}
-                        className="grid lg:grid-cols-3 gap-8 items-center"
-                    >
-                        {PRICING_PLANS.map((plan) => (
-                            <PricingPlan key={plan.id} plan={plan} isAnnual={isAnnual} isDark={isDark} />
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
+            {/* CTA / Final Section (The Destination) */}
+            <section
+                id={WAITLIST_SECTION_ID}
+                className={`py-32 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}
+            >
+                <div className="max-w-5xl mx-auto text-center relative z-10">
+                    {IS_WAITLIST_MODE ? (
+                        /* --- WAITLIST MODE CONTENT --- */
+                        <div className="max-w-2xl mx-auto animate-in slide-in-from-bottom-4">
+                            <h2 className={`text-4xl md:text-5xl font-black tracking-tighter mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                                Get early access.
+                            </h2>
+                            <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                                We are rolling out access gradually. Secure your spot in line today.
+                            </p>
 
-            {/* CTA / Final Section */}
-            <section className={`py-32 px-6 transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-white'}`}>
-                <div className="max-w-5xl mx-auto rounded-[48px] p-16 text-center text-white relative overflow-hidden shadow-2xl bg-blue-600 shadow-blue-200 dark:bg-blue-700 dark:shadow-blue-900/40">
-                    <div className="relative z-10">
-                        <h2 className="text-5xl font-black tracking-tighter mb-8">Ready to digitize your floor?</h2>
-                        <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-blue-100/80' : 'text-blue-100'}`}>
-                            Join 40+ factories reducing downtime by an average of 18% in the first 90 days.
-                        </p>
-                        <button className="px-10 py-5 bg-white text-blue-600 rounded-2xl text-xl font-bold hover:scale-105 transition-transform shadow-xl dark:hover:bg-blue-50">
-                            Get Started Now
-                        </button>
-                    </div>
-                    {/* Abstract circles */}
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+                            <WaitlistForm />
+                        </div>
+                    ) : (
+                        /* --- LAUNCH MODE CONTENT --- */
+                        <div className="rounded-[48px] p-16 text-white relative overflow-hidden shadow-2xl bg-blue-600 shadow-blue-200 dark:bg-blue-700 dark:shadow-blue-900/40">
+                            <div className="relative z-10">
+                                <h2 className="text-5xl font-black tracking-tighter mb-8">Ready to digitize your floor?</h2>
+                                <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-blue-100/80' : 'text-blue-100'}`}>
+                                    Join 40+ factories reducing downtime by an average of 18% in the first 90 days.
+                                </p>
+                                <Link to={ROUTES.REGISTER}>
+                                    <button className="px-10 py-5 bg-white text-blue-600 rounded-2xl text-xl font-bold hover:scale-105 transition-transform shadow-xl dark:hover:bg-blue-50">
+                                        Get Started Now
+                                    </button>
+                                </Link>
+                            </div>
+                            {/* Abstract circles */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+                        </div>
+                    )}
                 </div>
             </section>
 

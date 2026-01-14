@@ -454,14 +454,14 @@ RBAC:
 - MANAGER: Only see factories where they have assigned lines.
  * @summary List Factories
  */
-export const listFactoriesApiV1FactoriesGetResponseNameMax = 255;export const listFactoriesApiV1FactoriesGetResponseCodeMaxOne = 50;export const listFactoriesApiV1FactoriesGetResponseLocationMaxOne = 255;export const listFactoriesApiV1FactoriesGetResponseCountryMaxOne = 100;export const listFactoriesApiV1FactoriesGetResponseTimezoneMaxOne = 50;export const listFactoriesApiV1FactoriesGetResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
+export const listFactoriesApiV1FactoriesGetResponseNameMax = 255;export const listFactoriesApiV1FactoriesGetResponseCodeMax = 50;export const listFactoriesApiV1FactoriesGetResponseLocationMaxOne = 255;export const listFactoriesApiV1FactoriesGetResponseCountryMaxOne = 100;export const listFactoriesApiV1FactoriesGetResponseTimezoneMaxOne = 50;export const listFactoriesApiV1FactoriesGetResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const listFactoriesApiV1FactoriesGetResponseSettingsDefaultShiftPatternItemEndTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const listFactoriesApiV1FactoriesGetResponseSettingsStandardNonWorkingDaysDefault = [5, 6];export const listFactoriesApiV1FactoriesGetResponseSettingsTimezoneDefault = "UTC";export const listFactoriesApiV1FactoriesGetResponseSettingsDateFormatDefault = "MM/DD/YYYY";export const listFactoriesApiV1FactoriesGetResponseSettingsNumberFormatDefault = "1,000.00";export const listFactoriesApiV1FactoriesGetResponseSettingsMeasurementSystemDefault = "metric";export const listFactoriesApiV1FactoriesGetResponseSettingsFiscalYearStartMonthDefault = 1;
 export const listFactoriesApiV1FactoriesGetResponseSettingsFiscalYearStartMonthMax = 12;
 
 export const listFactoriesApiV1FactoriesGetResponseItem = zod.object({
   "name": zod.string().min(1).max(listFactoriesApiV1FactoriesGetResponseNameMax),
-  "code": zod.union([zod.string().max(listFactoriesApiV1FactoriesGetResponseCodeMaxOne),zod.null()]).optional(),
+  "code": zod.string().max(listFactoriesApiV1FactoriesGetResponseCodeMax),
   "location": zod.union([zod.string().max(listFactoriesApiV1FactoriesGetResponseLocationMaxOne),zod.null()]).optional(),
   "country": zod.union([zod.string().max(listFactoriesApiV1FactoriesGetResponseCountryMaxOne),zod.null()]).optional(),
   "timezone": zod.union([zod.string().max(listFactoriesApiV1FactoriesGetResponseTimezoneMaxOne),zod.null()]).optional(),
@@ -497,14 +497,14 @@ export const listFactoriesApiV1FactoriesGetResponse = zod.array(listFactoriesApi
  * Create a new factory with quota enforcement.
  * @summary Create Factory
  */
-export const createFactoryApiV1FactoriesPostBodyNameMax = 255;export const createFactoryApiV1FactoriesPostBodyCodeMaxOne = 50;export const createFactoryApiV1FactoriesPostBodyLocationMaxOne = 255;export const createFactoryApiV1FactoriesPostBodyCountryMaxOne = 100;export const createFactoryApiV1FactoriesPostBodyTimezoneMaxOne = 50;export const createFactoryApiV1FactoriesPostBodySettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
+export const createFactoryApiV1FactoriesPostBodyNameMax = 255;export const createFactoryApiV1FactoriesPostBodyCodeMax = 50;export const createFactoryApiV1FactoriesPostBodyLocationMaxOne = 255;export const createFactoryApiV1FactoriesPostBodyCountryMaxOne = 100;export const createFactoryApiV1FactoriesPostBodyTimezoneMaxOne = 50;export const createFactoryApiV1FactoriesPostBodySettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const createFactoryApiV1FactoriesPostBodySettingsDefaultShiftPatternItemEndTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const createFactoryApiV1FactoriesPostBodySettingsStandardNonWorkingDaysDefault = [5, 6];export const createFactoryApiV1FactoriesPostBodySettingsTimezoneDefault = "UTC";export const createFactoryApiV1FactoriesPostBodySettingsDateFormatDefault = "MM/DD/YYYY";export const createFactoryApiV1FactoriesPostBodySettingsNumberFormatDefault = "1,000.00";export const createFactoryApiV1FactoriesPostBodySettingsMeasurementSystemDefault = "metric";export const createFactoryApiV1FactoriesPostBodySettingsFiscalYearStartMonthDefault = 1;
 export const createFactoryApiV1FactoriesPostBodySettingsFiscalYearStartMonthMax = 12;
 
 export const createFactoryApiV1FactoriesPostBody = zod.object({
   "name": zod.string().min(1).max(createFactoryApiV1FactoriesPostBodyNameMax),
-  "code": zod.union([zod.string().max(createFactoryApiV1FactoriesPostBodyCodeMaxOne),zod.null()]).optional(),
+  "code": zod.string().max(createFactoryApiV1FactoriesPostBodyCodeMax),
   "location": zod.union([zod.string().max(createFactoryApiV1FactoriesPostBodyLocationMaxOne),zod.null()]).optional(),
   "country": zod.union([zod.string().max(createFactoryApiV1FactoriesPostBodyCountryMaxOne),zod.null()]).optional(),
   "timezone": zod.union([zod.string().max(createFactoryApiV1FactoriesPostBodyTimezoneMaxOne),zod.null()]).optional(),
@@ -536,7 +536,7 @@ export const getFactoryApiV1FactoriesFactoryIdGetParams = zod.object({
   "factory_id": zod.string()
 })
 
-export const getFactoryApiV1FactoriesFactoryIdGetResponseNameMax = 255;export const getFactoryApiV1FactoriesFactoryIdGetResponseCodeMaxOne = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseLocationMaxOne = 255;export const getFactoryApiV1FactoriesFactoryIdGetResponseCountryMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseTimezoneMaxOne = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
+export const getFactoryApiV1FactoriesFactoryIdGetResponseNameMax = 255;export const getFactoryApiV1FactoriesFactoryIdGetResponseCodeMax = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseLocationMaxOne = 255;export const getFactoryApiV1FactoriesFactoryIdGetResponseCountryMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseTimezoneMaxOne = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDefaultShiftPatternItemEndTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsStandardNonWorkingDaysDefault = [5, 6];export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsTimezoneDefault = "UTC";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDateFormatDefault = "MM/DD/YYYY";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsNumberFormatDefault = "1,000.00";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsMeasurementSystemDefault = "metric";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsFiscalYearStartMonthDefault = 1;
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsFiscalYearStartMonthMax = 12;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemNameMax = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemCodeMaxOne = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSpecialtyMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetOperatorsMinOne = 0;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetEfficiencyPctMinOne = 0;
@@ -544,7 +544,7 @@ export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetEf
 
 export const getFactoryApiV1FactoriesFactoryIdGetResponse = zod.object({
   "name": zod.string().min(1).max(getFactoryApiV1FactoriesFactoryIdGetResponseNameMax),
-  "code": zod.union([zod.string().max(getFactoryApiV1FactoriesFactoryIdGetResponseCodeMaxOne),zod.null()]).optional(),
+  "code": zod.string().max(getFactoryApiV1FactoriesFactoryIdGetResponseCodeMax),
   "location": zod.union([zod.string().max(getFactoryApiV1FactoriesFactoryIdGetResponseLocationMaxOne),zod.null()]).optional(),
   "country": zod.union([zod.string().max(getFactoryApiV1FactoriesFactoryIdGetResponseCountryMaxOne),zod.null()]).optional(),
   "timezone": zod.union([zod.string().max(getFactoryApiV1FactoriesFactoryIdGetResponseTimezoneMaxOne),zod.null()]).optional(),
@@ -635,14 +635,14 @@ export const updateFactoryApiV1FactoriesFactoryIdPatchBody = zod.object({
 }),zod.record(zod.string(), zod.any()),zod.null()]).optional()
 }).describe('Schema for updating a factory.')
 
-export const updateFactoryApiV1FactoriesFactoryIdPatchResponseNameMax = 255;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseCodeMaxOne = 50;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseLocationMaxOne = 255;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseCountryMaxOne = 100;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseTimezoneMaxOne = 50;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
+export const updateFactoryApiV1FactoriesFactoryIdPatchResponseNameMax = 255;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseCodeMax = 50;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseLocationMaxOne = 255;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseCountryMaxOne = 100;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseTimezoneMaxOne = 50;export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsDefaultShiftPatternItemStartTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsDefaultShiftPatternItemEndTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsStandardNonWorkingDaysDefault = [5, 6];export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsTimezoneDefault = "UTC";export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsDateFormatDefault = "MM/DD/YYYY";export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsNumberFormatDefault = "1,000.00";export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsMeasurementSystemDefault = "metric";export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsFiscalYearStartMonthDefault = 1;
 export const updateFactoryApiV1FactoriesFactoryIdPatchResponseSettingsFiscalYearStartMonthMax = 12;
 
 export const updateFactoryApiV1FactoriesFactoryIdPatchResponse = zod.object({
   "name": zod.string().min(1).max(updateFactoryApiV1FactoriesFactoryIdPatchResponseNameMax),
-  "code": zod.union([zod.string().max(updateFactoryApiV1FactoriesFactoryIdPatchResponseCodeMaxOne),zod.null()]).optional(),
+  "code": zod.string().max(updateFactoryApiV1FactoriesFactoryIdPatchResponseCodeMax),
   "location": zod.union([zod.string().max(updateFactoryApiV1FactoriesFactoryIdPatchResponseLocationMaxOne),zod.null()]).optional(),
   "country": zod.union([zod.string().max(updateFactoryApiV1FactoriesFactoryIdPatchResponseCountryMaxOne),zod.null()]).optional(),
   "timezone": zod.union([zod.string().max(updateFactoryApiV1FactoriesFactoryIdPatchResponseTimezoneMaxOne),zod.null()]).optional(),
@@ -1244,6 +1244,16 @@ export const recalculateMetricsApiV1AnalyticsRecalculatePostQueryParams = zod.ob
 })
 
 export const recalculateMetricsApiV1AnalyticsRecalculatePostResponse = zod.any()
+
+
+/**
+ * Join the waitlist.
+Returns the created entry with a unique referral code.
+ * @summary Join Waitlist
+ */
+export const joinWaitlistApiV1WaitlistPostBody = zod.object({
+  "email": zod.email()
+}).describe('Schema for creating a waitlist entry.')
 
 
 /**
