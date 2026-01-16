@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../../components/ui/checkbox';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
+// Popover no longer used for assignment
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { UserSearchCommand } from './UserSearchCommand';
 import { useUpdateDataSourceApiV1DataSourcesDataSourceIdPut, useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete } from '../../../api/endpoints/data-sources/data-sources';
@@ -36,6 +36,8 @@ export const DataSourceRow = ({
 }: DataSourceRowProps) => {
     const { t } = useTranslation();
     const [allUsers, setAllUsers] = useState<any[]>([]);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const [popupStyle, setPopupStyle] = useState<React.CSSProperties | undefined>(undefined);
 
     const updateDataSource = useUpdateDataSourceApiV1DataSourcesDataSourceIdPut();
     const deleteDataSource = useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete();
@@ -43,6 +45,47 @@ export const DataSourceRow = ({
     const loadUsers = async () => {
         const res = await listOrgMembers();
         setAllUsers(res.data);
+    };
+
+    const handleToggleSearchWrapper = (open: boolean) => {
+        if (!open) {
+            onToggleSearch(false);
+            setPopupStyle(undefined);
+            return;
+        }
+
+        if (allUsers.length === 0) loadUsers();
+
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            const POPUP_HEIGHT = 300;
+            const GAP = 8;
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            // Flip if not enough space below AND there is enough space above (or more space above than below)
+            const shouldFlip = spaceBelow < POPUP_HEIGHT && spaceAbove > spaceBelow;
+
+            const baseStyle: React.CSSProperties = {
+                position: 'fixed',
+                left: Math.min(rect.left, window.innerWidth - 320), // Prevent right overflow
+                width: '300px',
+                zIndex: 1000,
+            };
+
+            if (shouldFlip) {
+                setPopupStyle({
+                    ...baseStyle,
+                    bottom: window.innerHeight - rect.top + GAP,
+                });
+            } else {
+                setPopupStyle({
+                    ...baseStyle,
+                    top: rect.bottom + GAP,
+                });
+            }
+        }
+        onToggleSearch(true);
     };
 
     // --- Structure Mode Handlers ---
@@ -141,17 +184,20 @@ export const DataSourceRow = ({
                             ))}
                         </div>
 
-                        {/* Quick Assign Button (Popover) */}
-                        <Popover open={isSearchOpen} onOpenChange={(open) => {
-                            onToggleSearch(open);
-                            if (open && allUsers.length === 0) loadUsers();
-                        }}>
-                            <PopoverTrigger asChild>
-                                <button className="h-8 w-8 rounded-full border border-dashed border-border flex items-center justify-center text-text-muted hover:border-text-muted hover:text-text-main">
-                                    <Plus className="w-4 h-4" />
-                                </button>
-                            </PopoverTrigger>
-                            <PopoverContent className="p-0 w-64" side="start">
+                        {/* Quick Assign Button (Manual Positioning) */}
+                        <div className="relative">
+                            <button
+                                ref={buttonRef}
+                                className="h-8 w-8 rounded-full border border-dashed border-border flex items-center justify-center text-text-muted hover:border-text-muted hover:text-text-main"
+                                onClick={(e) => {
+                                    e.stopPropagation(); // prevent row click
+                                    handleToggleSearchWrapper(!isSearchOpen);
+                                }}
+                            >
+                                <Plus className="w-4 h-4" />
+                            </button>
+
+                            {isSearchOpen && (
                                 <UserSearchCommand
                                     users={allUsers}
                                     onSelect={(uid) => {
@@ -159,10 +205,12 @@ export const DataSourceRow = ({
                                         onToggleSearch(false);
                                     }}
                                     onClose={() => onToggleSearch(false)}
-                                    inline={true}
+                                    inline={false}
+                                    style={popupStyle}
+                                    triggerRef={buttonRef as React.RefObject<HTMLElement>}
                                 />
-                            </PopoverContent>
-                        </Popover>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

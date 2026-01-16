@@ -151,3 +151,5 @@ branch:
 	@if "$(BRANCH_ARGS)"=="" (echo "⚠️  Usage: make branch <name>" & exit /b 1)
 	@echo "🌿 Creating new branch: $(BRANCH_ARGS)"
 	@git checkout -b $(BRANCH_ARGS)
+	@echo "🚀 Pushing to origin..."
+	@git push --set-upstream origin $(BRANCH_ARGS)

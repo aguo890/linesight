@@ -12,6 +12,8 @@ interface UserSearchCommandProps {
     onClose: () => void;
     position?: { top: number; left: number };
     inline?: boolean;
+    style?: React.CSSProperties;
+    triggerRef?: React.RefObject<HTMLElement>;
 }
 
 export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
@@ -20,7 +22,9 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
     excludeUserIds = [],
     onClose,
     position,
-    inline
+    inline,
+    style,
+    triggerRef
 }) => {
     const [query, setQuery] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -37,14 +41,15 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
         if (inline) return; // Don't handle outside click if inline (parent Popover handles it)
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+            const isTriggerClick = triggerRef?.current?.contains(event.target as Node);
+            if (containerRef.current && !containerRef.current.contains(event.target as Node) && !isTriggerClick) {
                 onClose?.();
             }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [onClose, inline]);
+    }, [onClose, inline, triggerRef]);
 
     const filteredUsers = useMemo(() => {
         return users
@@ -59,13 +64,15 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
             });
     }, [users, excludeUserIds, query]);
 
-    const style: React.CSSProperties = (position && !inline) ? {
+    const contentStyle: React.CSSProperties = (position && !inline) ? {
         position: 'fixed',
         top: position.top,
         insetInlineStart: position.left,
         zIndex: 50,
         maxHeight: '300px'
     } : {};
+
+    const finalStyle = !inline ? { zIndex: 1000, ...contentStyle, ...style } : {};
 
     const content = (
         <div
@@ -75,7 +82,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                 !inline && "w-72 shadow-xl border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-100",
                 inline && "w-full border-0 shadow-none bg-transparent dark:bg-transparent"
             )}
-            style={style}
+            style={finalStyle}
         >
             <div className="flex items-center px-3 py-2 border-b border-slate-100 dark:border-slate-700">
                 <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 me-2" />
