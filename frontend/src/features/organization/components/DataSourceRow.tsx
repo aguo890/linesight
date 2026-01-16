@@ -58,32 +58,24 @@ export const DataSourceRow = ({
 
         if (buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
-            const POPUP_HEIGHT = 300;
+            const MODAL_WIDTH = 300;
             const GAP = 8;
-            const spaceBelow = window.innerHeight - rect.bottom;
-            const spaceAbove = rect.top;
+            const VIEWPORT_MARGIN = 10;
 
-            // Flip if not enough space below AND there is enough space above (or more space above than below)
-            const shouldFlip = spaceBelow < POPUP_HEIGHT && spaceAbove > spaceBelow;
-
-            const baseStyle: React.CSSProperties = {
-                position: 'fixed',
-                left: Math.min(rect.left, window.innerWidth - 320), // Prevent right overflow
-                width: '300px',
-                zIndex: 1000,
-            };
-
-            if (shouldFlip) {
-                setPopupStyle({
-                    ...baseStyle,
-                    bottom: window.innerHeight - rect.top + GAP,
-                });
-            } else {
-                setPopupStyle({
-                    ...baseStyle,
-                    top: rect.bottom + GAP,
-                });
+            // Horizontal Positioning: Prevent right-edge overflow
+            let leftPos = rect.left;
+            if (leftPos + MODAL_WIDTH > window.innerWidth) {
+                leftPos = window.innerWidth - MODAL_WIDTH - VIEWPORT_MARGIN;
             }
+
+            // Defaults to opening DOWN. Adjust later via onLayoutUpdate if needed.
+            setPopupStyle({
+                position: 'fixed',
+                top: rect.bottom + GAP,
+                left: leftPos,
+                width: `${MODAL_WIDTH}px`,
+                zIndex: 1000,
+            });
         }
         onToggleSearch(true);
     };
@@ -208,6 +200,22 @@ export const DataSourceRow = ({
                                     inline={false}
                                     style={popupStyle}
                                     triggerRef={buttonRef as React.RefObject<HTMLElement>}
+                                    onLayoutUpdate={(height) => {
+                                        if (buttonRef.current) {
+                                            const rect = buttonRef.current.getBoundingClientRect();
+                                            const GAP = 8;
+                                            const spaceBelow = window.innerHeight - rect.bottom;
+
+                                            // If not enough space below, flip upwards
+                                            if (spaceBelow < height) {
+                                                setPopupStyle(prev => ({
+                                                    ...prev,
+                                                    top: undefined,
+                                                    bottom: window.innerHeight - rect.top + GAP
+                                                }));
+                                            }
+                                        }
+                                    }}
                                 />
                             )}
                         </div>

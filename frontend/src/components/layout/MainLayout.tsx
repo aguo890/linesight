@@ -4,11 +4,26 @@ import { Sidebar } from './Sidebar';
 
 
 export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: boolean }> = ({ children, disablePadding = false }) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [isMobile, setIsMobile] = useState(false);
+    // Lazy initialization to prevent layout shift
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window === 'undefined') return false;
+        return window.matchMedia("(min-width: 768px)").matches === false;
+    });
+
+    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+        if (typeof window === 'undefined') return true;
+
+        // Check mobile state synchronously
+        const mobile = window.matchMedia("(min-width: 768px)").matches === false;
+        if (mobile) return false;
+
+        // Check saved preference
+        const saved = localStorage.getItem('sidebar-desktop-preference');
+        return saved !== null ? JSON.parse(saved) : true;
+    });
 
     const toggleSidebar = () => {
-        setIsSidebarOpen((prev) => {
+        setIsSidebarOpen((prev: boolean) => {
             const newState = !prev;
             // Only persist preference if we are in desktop mode
             if (!isMobile) {
@@ -20,23 +35,6 @@ export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: 
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(min-width: 768px)");
-
-        // Initial sync (Hydration safe)
-        const checkInitialState = () => {
-            const mobile = !mediaQuery.matches;
-            setIsMobile(mobile);
-
-            if (mobile) {
-                setIsSidebarOpen(false);
-            } else {
-                const saved = localStorage.getItem('sidebar-desktop-preference');
-                if (saved !== null) {
-                    setIsSidebarOpen(JSON.parse(saved));
-                }
-            }
-        };
-
-        checkInitialState();
 
         // Handler for breakpoint crossings
         const handleBreakpointChange = (e: MediaQueryListEvent) => {

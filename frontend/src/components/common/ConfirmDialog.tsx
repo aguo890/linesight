@@ -7,6 +7,7 @@
 import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useToast } from '../../contexts/ToastContext';
 
 // =============================================================================
 // Types
@@ -18,7 +19,7 @@ export interface ConfirmDialogProps {
     /** Close the dialog */
     onClose: () => void;
     /** Confirm action */
-    onConfirm: () => void;
+    onConfirm: () => void | Promise<void>;
     /** Dialog title */
     title: string;
     /** Dialog message */
@@ -31,6 +32,10 @@ export interface ConfirmDialogProps {
     variant?: 'danger' | 'warning' | 'info';
     /** Whether confirm action is in progress */
     isLoading?: boolean;
+    /** Message to show on success toast */
+    successMessage?: string;
+    /** Message to show on cancel toast */
+    cancelMessage?: string;
 }
 
 // =============================================================================
@@ -47,8 +52,11 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     cancelLabel,
     variant = 'danger',
     isLoading = false,
+    successMessage,
+    cancelMessage,
 }) => {
     const { t } = useTranslation();
+    const { addToast } = useToast();
 
     // Resolve labels inside the body to avoid Rules of Hooks violation
     const effectiveConfirmLabel = confirmLabel || t('components.confirm_dialog.confirm');
@@ -56,6 +64,26 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     const processingText = t('components.confirm_dialog.please_wait');
 
     if (!isOpen) return null;
+
+    const handleConfirm = async () => {
+        try {
+            await onConfirm();
+            if (successMessage) {
+                addToast(successMessage, 'success');
+            }
+        } catch (error) {
+            console.error('ConfirmDialog action failed:', error);
+            addToast(t('common.errors.generic'), 'error');
+        }
+        onClose();
+    };
+
+    const handleCancel = () => {
+        if (cancelMessage) {
+            addToast(cancelMessage, 'info');
+        }
+        onClose();
+    };
 
     const variantStyles = {
         danger: {
@@ -79,14 +107,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-                onClick={onClose}
+                onClick={handleCancel}
             />
 
             {/* Dialog */}
             <div className="relative bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
                 {/* Close button */}
                 <button
-                    onClick={onClose}
+                    onClick={handleCancel}
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
                 >
                     <X className="w-5 h-5" />
@@ -104,14 +132,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
                 {/* Actions */}
                 <div className="flex gap-3 justify-end">
                     <button
-                        onClick={onClose}
+                        onClick={handleCancel}
                         disabled={isLoading}
                         className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors disabled:opacity-50"
                     >
                         {effectiveCancelLabel}
                     </button>
                     <button
-                        onClick={onConfirm}
+                        onClick={handleConfirm}
                         disabled={isLoading}
                         className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${styles.button}`}
                     >
