@@ -20,7 +20,8 @@ function App() {
     if (user) {
       // Sync Theme
       const dbTheme = getPrefs(user).theme as 'light' | 'dark' | 'system' | undefined;
-      // Only update theme if it differs from current and is defined in DB
+      // SAFE SYNC: Only override local state if the DB source of truth is actually different.
+      // This allows local "previews" to exist without being immediately overwritten by the old DB state.
       if (dbTheme && dbTheme !== theme) {
         setTheme(dbTheme);
       }
@@ -30,14 +31,13 @@ function App() {
       if (dbLocale) {
         const shortLocale = toShortLocale(dbLocale);
         // Only update language if DB value differs from current
-        // AND this effect was triggered by a user upate (implied by dependency array)
         if (shortLocale !== i18n.language) {
           i18n.changeLanguage(shortLocale);
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, setTheme, theme]);
+  }, [user]);
 
   // Handle RTL/LTR direction based on language
   useEffect(() => {

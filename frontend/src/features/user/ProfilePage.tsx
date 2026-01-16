@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useBlocker } from 'react-router-dom';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
 import { User, Mail, Globe, Save, Loader2, Bell, Shield, Smartphone, ArrowLeft, Building2, Factory } from 'lucide-react';
@@ -24,7 +24,7 @@ interface FactoryInfo {
     name: string;
 }
 
-import { toRegionLocale, detectBestLocale } from '../../utils/localeUtils';
+import { toRegionLocale, detectBestLocale, toShortLocale } from '../../utils/localeUtils';
 import { LanguageSelector } from '../../components/common/LanguageSelector';
 import { AutoFlipIcon } from '../../components/common/AutoFlipIcon';
 
@@ -35,7 +35,7 @@ const getNormalizedLocale = (u: UserInfo | null) => {
 };
 
 export default function ProfilePage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user, updateUser } = useAuth();
     const { setTheme, systemTheme } = useTheme();
     const navigate = useNavigate();
@@ -46,6 +46,18 @@ export default function ProfilePage() {
     // Organization and factory context
     const [organization, setOrganization] = useState<OrgInfo | null>(null);
     const [factories, setFactories] = useState<FactoryInfo[]>([]);
+
+    // SNAPSHOT STATE: Tracks the "Safe" state to revert to if the user leaves without saving
+    const initialSnapshot = useRef<{
+        theme: 'light' | 'dark' | 'system';
+        language: string;
+    }>({
+        theme: systemTheme as 'light' | 'dark' | 'system',
+        language: i18n.language,
+    });
+
+    // LOCK: Prevents revert logic if we are in the middle of a valid save
+    const isSaveOperation = useRef(false);
 
     // Local state for form
     const [formData, setFormData] = useState({
@@ -69,15 +81,43 @@ export default function ProfilePage() {
     useEffect(() => {
         if (user) {
             const prefs = getPrefs(user);
+            const userTheme = (prefs.theme as 'light' | 'dark' | 'system') || 'system';
+            const userLocale = getNormalizedLocale(user);
+
             setFormData({
                 full_name: user.full_name || '',
                 timezone: user.timezone || 'UTC',
                 country_code: prefs.country_code || '',
-                theme: (prefs.theme as 'light' | 'dark' | 'system') || 'system',
-                locale: getNormalizedLocale(user)
+                theme: userTheme,
+                locale: userLocale
             });
+
+            // Update snapshot when user data loads
+            initialSnapshot.current = {
+                theme: userTheme,
+                language: toShortLocale(userLocale || detectBestLocale())
+            };
         }
     }, [user]);
+
+    // CLEANUP: Revert to snapshot on unmount unless saved
+    useEffect(() => {
+        return () => {
+            if (!isSaveOperation.current) {
+                // Revert Theme
+                // Note: We need to set it back to what it was. 
+                // Context expects exact strings.
+                // We use the last committed snapshot.
+                setTheme(initialSnapshot.current.theme as 'light' | 'dark' | 'system');
+
+                // Revert Language
+                if (initialSnapshot.current.language !== i18n.language) {
+                    i18n.changeLanguage(initialSnapshot.current.language);
+                }
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Fetch organization and factory context
     useEffect(() => {
@@ -130,6 +170,9 @@ export default function ProfilePage() {
         setSuccessMessage('');
         setErrorMessage('');
 
+        // LOCK: Prevent cleanup revert while we process save
+        isSaveOperation.current = true;
+
         try {
             const currentPrefs = getPrefs(user);
 
@@ -149,11 +192,22 @@ export default function ProfilePage() {
             // IMMEDIATE UI UPDATE: Sync theme to context
             setTheme(formData.theme as 'light' | 'dark' | 'system');
 
+            // SUCCESS: Update the snapshot to the NEW reality
+            initialSnapshot.current = {
+                theme: formData.theme as 'light' | 'dark' | 'system',
+                language: toShortLocale(formData.locale)
+            };
+
+            // UNLOCK: Reset so if they edit *again* without saving, revert works
+            isSaveOperation.current = false;
+
             setSuccessMessage(t('profile.success'));
             setTimeout(() => setSuccessMessage(''), 3000);
         } catch (error) {
             console.error("Failed to update profile", error);
             setErrorMessage(t('profile.error_fail'));
+            // FAILURE: Release lock so revert protection is active again
+            isSaveOperation.current = false;
         } finally {
             setIsLoading(false);
         }
@@ -341,6 +395,13 @@ export default function ProfilePage() {
                                         className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                         onPreferenceChange={(key, value) => {
                                             setFormData(prev => ({ ...prev, [key]: value }));
+                                            // IMMEDIATE PREVIEW: Language
+                                            if (key === 'locale') {
+                                                const shortCode = toShortLocale(value);
+                                                if (shortCode !== i18n.language) {
+                                                    i18n.changeLanguage(shortCode);
+                                                }
+                                            }
                                         }}
                                     />
                                 </div>
@@ -348,7 +409,12 @@ export default function ProfilePage() {
                                     <label className="block text-sm font-medium text-text-main mb-1">{t('profile.fields.theme')}</label>
                                     <select
                                         value={formData.theme}
-                                        onChange={(e) => setFormData({ ...formData, theme: e.target.value as 'light' | 'dark' | 'system' })}
+                                        onChange={(e) => {
+                                            const newTheme = e.target.value as 'light' | 'dark' | 'system';
+                                            setFormData({ ...formData, theme: newTheme });
+                                            // IMMEDIATE PREVIEW: Theme
+                                            setTheme(newTheme);
+                                        }}
                                         className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
                                     >
                                         <option value="light">{t('profile.themes.light')}</option>
