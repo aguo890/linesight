@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "Kullanıcı Profili",
+        "subtitle": "Hesap ayarları",
+        "back": "Geri",
+        "save_btn": "Kaydet",
+        "success": "Başarılı!",
+        "error_required": "İsim gerekli",
+        "error_fail": "Hata",
+        "at": "@",
+        "roles": {
+            "admin": "Yönetici",
+            "user": "Kullanıcı",
+            "manager": "Müdür"
+        },
+        "sections": {
+            "factories": "Fabrikalar",
+            "security": "Güvenlik",
+            "personal_info": "Kişisel",
+            "localization": "Bölge",
+            "notifications": "Bildirimler"
+        },
+        "security": {
+            "change_password": "Şifre Değiştir",
+            "two_factor": "2FA"
+        },
+        "fields": {
+            "full_name": "Tam İsim",
+            "email": "E-posta",
+            "email_hint": "E-posta",
+            "language": "Dil",
+            "theme": "Tema"
+        },
+        "themes": {
+            "light": "Açık",
+            "dark": "Koyu",
+            "system": "Sistem"
+        },
+        "notifications": {
+            "email": "E-posta",
+            "push": "Push",
+            "weekly": "Haftalık"
+        },
+        "location_selector": {
+            "label": "Konum",
+            "auto_detect": "Otomatik",
+            "search_placeholder": "Ülke...",
+            "no_results": "Yok",
+            "select_country_first": "Seçiniz",
+            "selected": "Seçilen:"
+        },
+        "unsaved_changes": {
+            "title": "Kaydedilmemiş",
+            "message": "Çıkmak istiyor musunuz?",
+            "confirm": "Çık",
+            "cancel": "Kal"
+        }
+    },
+    "navigation": {
+        "dashboard": "Panel",
+        "my_dashboards": "Panellerim",
+        "organization": "Organizasyon",
+        "show_more": "Daha fazla",
+        "show_less": "Daha az"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Panellerim",
+            "search_placeholder": "Ara...",
+            "status": {
+                "loading": "Yükleniyor...",
+                "none": "Yok",
+                "available_one": "{{count}} adet",
+                "available_other": "{{count}} adet"
+            },
+            "table": {
+                "header_name": "İsim",
+                "header_location": "Konum",
+                "header_status": "Durum",
+                "header_lines": "Hatlar",
+                "header_actions": "İşlemler",
+                "action_view": "Görüntüle"
+            },
+            "actions": {
+                "new_dashboard": "Yeni",
+                "configure_sites": "Yapılandır",
+                "clear_search": "Temizle"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "Sonuç yok",
+                "no_results_detail": "Bulunamadı"
+            },
+            "factory_status": {
+                "at_limit": "Limit",
+                "near_limit": "Yakın",
+                "active": "Aktif"
+            },
+            "empty_state": {
+                "title": "Boş",
+                "description": "Fabrika yok",
+                "admin_hint": "Ayarlar",
+                "user_hint": "Yönetici",
+                "cta": "Ayarlar"
+            },
+            "view": {
+                "grid": "Izgara",
+                "list": "Liste"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} kaynak",
+            "edit": "Düzenle",
+            "delete": "Sil",
+            "open": "Aç",
+            "edit_title": "Düzenle",
+            "delete_title": "Sil"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Anasayfa",
+            "list": "Liste",
+            "production_sites": "Siteler",
+            "sites": "Siteler",
+            "not_found": "Bulunamadı"
+        },
+        "sections": {
+            "overview": "Genel",
+            "performance": "Performans",
+            "settings": "Ayarlar",
+            "dashboards": "Paneller",
+            "data_sources": "Kaynaklar"
+        },
+        "actions": {
+            "edit": "Düzenle",
+            "delete": "Sil",
+            "save": "Kaydet",
+            "settings": "Ayarlar",
+            "new_dashboard": "Yeni Panel",
+            "create_dashboard": "Oluştur",
+            "add_data_source": "Ekle",
+            "new_source": "Yeni",
+            "upload_data": "Yükle",
+            "no_write_access": "Yetki yok"
+        },
+        "alerts": {
+            "confirm_delete": "Emin misiniz?",
+            "edit_soon": "Yakında",
+            "delete_soon": "Yakında",
+            "delete_fail": "Hata"
+        },
+        "stats": {
+            "dashboards": "Paneller",
+            "active_widgets": "Widgetlar",
+            "active_sources": "Kaynaklar",
+            "used_info": "{{current}}/{{max}}"
+        },
+        "not_found": "Bulunamadı",
+        "search": {
+            "dashboards_placeholder": "Filtrele...",
+            "sources_placeholder": "Ara...",
+            "no_sources_found": "Yok"
+        },
+        "quota": {
+            "limit_reached": "Limit Dolu"
+        },
+        "table": {
+            "headers": {
+                "name": "İsim",
+                "status": "Durum",
+                "actions": "İşlemler"
+            }
+        },
+        "status": {
+            "active": "Aktif",
+            "inactive": "Pasif"
+        },
+        "confirm": {
+            "delete_source": "Sil?",
+            "delete_dashboard": "Sil?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Bugün",
+            "yesterday": "Dün",
+            "last_7_days": "Son 7 Gün",
+            "last_30_days": "Son 30 Gün",
+            "this_month": "Bu Ay",
+            "last_month": "Geçen Ay"
+        },
+        "shifts": {
+            "all": "Tüm Vardiyalar",
+            "shift_a": "A",
+            "shift_b": "B",
+            "shift_c": "C"
+        },
+        "date_range": "Tarih",
+        "to": "-"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Çalışma Alanı",
+            "factory": "Fabrika",
+            "line": "Hat",
+            "dashboard": "Panel"
+        },
+        "status": {
+            "updated": "Güncellendi {{time}}",
+            "live": "Canlı",
+            "loading": "Yükleniyor...",
+            "saving": "Kaydediliyor..."
+        },
+        "actions": {
+            "refresh": "Yenile",
+            "reset_layout": "Sıfırla",
+            "reset_confirm": "Emin misiniz?",
+            "design_layout": "Tasarla",
+            "save_layout": "Kaydet",
+            "add_widget": "Ekle",
+            "cancel": "İptal"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Kütüphane",
+            "subtitle": "Sürükle bırak",
+            "categories": {
+                "all": "Tümü",
+                "production": "Üretim",
+                "quality": "Kalite",
+                "efficiency": "Verimlilik"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simülasyon",
+            "ready_to_use": "Hazır",
+            "recommended": "Önerilen",
+            "future_capability": "Gelecek",
+            "coming_soon": "Yakında",
+            "near_match": "Yakın",
+            "ai_recommendations": "AI",
+            "select_all": "Tümünü Seç",
+            "selected": "Seçili",
+            "compatible": "Uyumlu",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "Veri Gerekli",
+            "needs_mapping": "Haritalama Gerekli",
+            "categories": {
+                "Efficiency": "Verimlilik",
+                "Quality": "Kalite",
+                "Workforce": "İşgücü",
+                "Operations": "Operasyon"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Önerilen",
+                "Operations": "Operasyon",
+                "Strategy": "Strateji"
+            },
+            "efficiency_starter": {
+                "title": "Başlangıç",
+                "description": "Temel"
+            },
+            "quality_auditor": {
+                "title": "Kalite",
+                "description": "DHU"
+            },
+            "floor_manager": {
+                "title": "Saha Yöneticisi",
+                "description": "Canlı"
+            },
+            "executive_summary": {
+                "title": "Yönetici Özeti",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "PLANLANAN",
+            "actual": "GERÇEKLEŞEN",
+            "target": "HEDEF",
+            "efficiency": "Verimlilik",
+            "minutes": "dk",
+            "limit": "Limit",
+            "status": "Durum",
+            "on_target": "HEDEFTE",
+            "below_target": "ALTINDA",
+            "defect_rate": "Hata Oranı"
+        },
+        "titles": {
+            "production_chart": "Üretim Çıktısı",
+            "line_efficiency": "Hat Verimliliği",
+            "earned_minutes": "Kazanılan Süre",
+            "sam_performance": "SAM Performansı",
+            "dhu_quality": "DHU Kalite",
+            "speed_quality": "Hız vs Kalite",
+            "top_blockers": "Engeller",
+            "style_progress": "Model İlerlemesi",
+            "daily_target": "Günlük Hedef",
+            "production_timeline": "Zaman Çizelgesi",
+            "complexity_impact": "Karmaşıklık",
+            "workforce_attendance": "Katılım",
+            "kpi_summary": "KPI Özeti"
+        },
+        "descriptions": {
+            "production_chart": "Karşılaştırma",
+            "line_efficiency": "Canlı",
+            "earned_minutes": "SAM",
+            "sam_performance": "Metrik",
+            "dhu_quality": "Trend",
+            "speed_quality": "Korelasyon",
+            "top_blockers": "Sorunlar",
+            "style_progress": "%",
+            "daily_target": "İlerleme",
+            "production_timeline": "Gantt",
+            "complexity_impact": "Analiz",
+            "workforce_attendance": "Denge",
+            "kpi_summary": "Genel Bakış"
+        },
+        "production_chart": {
+            "planned": "PLANLANAN",
+            "actual_output": "GERÇEKLEŞEN"
+        },
+        "production_timeline": {
+            "output": "Çıktı",
+            "target": "Hedef"
+        },
+        "complexity_impact": {
+            "title": "Karmaşıklık",
+            "loading_styles": "Yükleniyor...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Karmaşık)",
+            "styles": "Modeller"
+        },
+        "speed_quality": {
+            "efficiency": "Verimlilik",
+            "defect_rate": "Hata Oranı"
+        },
+        "earned_minutes": {
+            "earned": "KAZANILAN",
+            "available": "MEVCUT"
+        },
+        "dhu_quality": {
+            "no_data": "Veri yok",
+            "current_dhu": "Mevcut DHU",
+            "above_limit": "LİMİT ÜSTÜ"
+        },
+        "blocker_cloud": {
+            "occurrences": "kez",
+            "view_all_logs": "Tümü",
+            "no_blockers": "Engel yok"
+        }
+    },
+    "common": {
+        "back": "Geri",
+        "cancel": "İptal",
+        "error": "Hata",
+        "success": "Başarılı",
+        "uploading": "Yükleniyor...",
+        "processing": "İşleniyor...",
+        "remove": "Kaldır",
+        "ready": "Hazır",
+        "needs_setup": "Kurulum Gerekli",
+        "date": "Tarih",
+        "actions": {
+            "save": "Kaydet",
+            "cancel": "İptal",
+            "close": "Kapat",
+            "delete": "Sil",
+            "edit": "Düzenle",
+            "search": "Ara...",
+            "confirm": "Onayla",
+            "back": "Geri",
+            "create": "Oluştur",
+            "invite": "Davet Et"
+        },
+        "status": {
+            "active": "Aktif",
+            "inactive": "Pasif",
+            "unknown": "Bilinmiyor"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Panel Adı",
+            "dashboard_name_placeholder": "Örn. Hat 4",
+            "name_error_tooltip": "İsim girin",
+            "name_error_text": "Gerekli",
+            "selection_title": "Veri Kaynağı",
+            "selection_desc": "Seç",
+            "columns": {
+                "file_name": "Dosya",
+                "status": "D",
+                "uploaded": "Yüklendi",
+                "action": "İşlem"
+            },
+            "btn_configure": "Yapılandır",
+            "btn_complete_setup": "Tamamla",
+            "note": "Not",
+            "empty_title": "Yok",
+            "empty_desc": "Yükleyin",
+            "error_load_failed": "Hata"
+        },
+        "step2": {
+            "title": "Haritalama",
+            "subtitle": "İncele",
+            "stats": {
+                "auto": "Oto",
+                "review": "İncele",
+                "attention": "Dikkat",
+                "ignored": "Yoksay"
+            },
+            "filter": {
+                "all": "Tümü",
+                "unmapped": "Eşleşmemiş",
+                "conflicts": "Çakışma"
+            },
+            "showing_count": "{{filtered}}/{{total}}",
+            "table": {
+                "source": "Kaynak",
+                "target": "Hedef",
+                "status": "D",
+                "no_match": "Eşleşme yok",
+                "try_different": "Değiştir"
+            },
+            "status_labels": {
+                "exact": "Tam",
+                "exact_tooltip": "Tam",
+                "fuzzy": "Benzer",
+                "fuzzy_tooltip": "Benzer",
+                "ai": "AI",
+                "ai_tooltip": "AI",
+                "manual": "Manuel",
+                "manual_tooltip": "Manuel",
+                "unset": "Boş",
+                "unset_tooltip": "Boş",
+                "duplicate": "Kopya"
+            },
+            "field_selector": {
+                "select_placeholder": "Seç...",
+                "search_placeholder": "Ara...",
+                "suggested": "Önerilen",
+                "all_fields": "Tümü",
+                "no_results": "Yok",
+                "ignore_action": "Yoksay",
+                "restore_action": "Geri al",
+                "in_use": "kullanımda"
+            },
+            "alerts": {
+                "conflict_count_one": "1 çakışma",
+                "conflict_count_other": "{{count}} çakışma",
+                "remaining_needed": "Gerekli"
+            },
+            "btn_confirm": "Onayla",
+            "processing": {
+                "title": "İşleniyor",
+                "subtitle": "İçe aktarılıyor...",
+                "logs": {
+                    "init": "Başlatılıyor...",
+                    "schema": "Doğrulama...",
+                    "mapping": "Haritalama...",
+                    "req": "İstek...",
+                    "sending": "Gönderiliyor...",
+                    "success": "Başarılı"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Şablonlar",
+            "divider": "veya",
+            "library_title": "Kütüphane",
+            "selected_count": "{{count}}",
+            "btn_create": "Oluştur",
+            "btn_configuring": "Yapılandırılıyor..."
+        },
+        "title": "Kurulum",
+        "steps": {
+            "upload": {
+                "label": "Kaynak",
+                "desc": "Yükle"
+            },
+            "mapping": {
+                "label": "Haritalama",
+                "desc": "Doğrula"
+            },
+            "widgets": {
+                "label": "Panel",
+                "desc": "Tasarım"
+            }
+        },
+        "mini_map": {
+            "title": "Önizleme",
+            "empty_state": "Seç",
+            "stats": {
+                "widgets_one": "{{count}}",
+                "widgets_other": "{{count}}",
+                "screens_one": "{{count}}",
+                "screens_other": "{{count}}"
+            },
+            "density": {
+                "empty": "Boş",
+                "compact": "Sıkı",
+                "balanced": "Dengeli",
+                "heavy": "Yoğun"
+            },
+            "scroll_warning": "Kaydırma"
+        },
+        "context": {
+            "title": "Bağlam",
+            "select_factory": "Fabrika Seç",
+            "select_source": "Kaynak Seç",
+            "select_factory_first": "Önce Fabrika",
+            "loading_factories": "Yükleniyor...",
+            "loading_sources": "Yükleniyor...",
+            "fetching_sources": "Getiriliyor...",
+            "no_sources_alert": "Kaynak yok",
+            "select_source_overlay": "Seç"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Yükle",
+            "title_preview": "Önizleme",
+            "subtitle_upload": "Yükle",
+            "subtitle_preview": "İncele",
+            "drop_text": "Sürükle",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "Başarılı",
+            "info_preview": "Önizleme",
+            "btn_upload_preview": "Yükle",
+            "btn_uploading": "Yükleniyor...",
+            "errors": {
+                "invalid_extension": "Hata",
+                "duplicate_file": "Kopya",
+                "preview_failed": "Hata",
+                "upload_failed": "Hata"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Ayarlar",
+        "description": "Yönetim",
+        "cards": {
+            "general": {
+                "title": "Genel",
+                "description": "Profil"
+            },
+            "members": {
+                "title": "Üyeler",
+                "description": "Erişim"
+            },
+            "infrastructure": {
+                "title": "Altyapı",
+                "description": "Fabrika"
+            },
+            "security": {
+                "title": "Güvenlik",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "Fatura",
+                "description": "Ödeme"
+            }
+        },
+        "badges": {
+            "coming_soon": "Yakında"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Geri"
+        },
+        "top_nav": {
+            "search_placeholder": "Ara...",
+            "search_coming_soon": "Yakında",
+            "notifications": {
+                "title": "Bildirimler",
+                "mark_read": "Okundu",
+                "empty": "Boş"
+            },
+            "user_menu": {
+                "profile": "Profil",
+                "logout": "Çıkış",
+                "default_user": "User",
+                "default_role": "Viewer"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organizasyon",
+            "factories": "Fabrikalar"
+        },
+        "header": {
+            "title": "Yapılandırma",
+            "popover_trigger_label": "Bilgi"
+        },
+        "popover": {
+            "title": "Yapılandırma",
+            "assignment": {
+                "title": "Atama",
+                "desc_part1": "Detay",
+                "desc_part2": "Ata"
+            },
+            "structure": {
+                "title": "Yapı",
+                "desc": "Özelleştir"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Atama",
+            "structure_mode": "Yapı",
+            "customize_layout": "Özelleştir",
+            "done_editing": "Bitti"
+        },
+        "list": {
+            "add_data_source": "Ekle",
+            "no_data_sources": "Yok"
+        },
+        "bulk_actions": {
+            "selected": "Seçili",
+            "assign_manager": "Ata"
+        },
+        "messages": {
+            "loading": "Yükleniyor...",
+            "assignment_failed": "Hata"
+        }
+    },
+    "roles": {
+        "system_admin": "SysAdmin",
+        "owner": "Sahip",
+        "admin": "Yönetici",
+        "viewer": "İzleyici",
+        "member": "Üye",
+        "operator": "Operatör",
+        "factory_manager": "Fabrika Müdürü",
+        "line_manager": "Hat Müdürü",
+        "user": "Kullanıcı",
+        "manager": "Yönetici"
+    },
+    "org_general": {
+        "title": "Genel",
+        "profile": {
+            "logged_in_as": "Giriş"
+        },
+        "at_a_glance": "Özet",
+        "stats": {
+            "total_managers": "Yöneticiler",
+            "assigned": "Atanan",
+            "factories": "Fabrikalar",
+            "production_lines": "Hatlar"
+        },
+        "danger_zone": {
+            "title": "Tehlike",
+            "description": "Silme",
+            "delete_button": "Sil"
+        }
+    },
+    "org_members": {
+        "title": "Üyeler",
+        "invite_member": "Davet Et",
+        "search_placeholder": "Ara...",
+        "filter": "Filtre",
+        "table": {
+            "user": "Kullanıcı",
+            "global_role": "Rol",
+            "access": "Erişim",
+            "last_active": "Son",
+            "actions": "İşlem",
+            "loading": "Yükleniyor...",
+            "no_members": "Yok",
+            "assignments": "Atamalar",
+            "unassigned": "Atanmamış",
+            "never_active": "Hiç",
+            "view_details": "Detay"
+        },
+        "drawer": {
+            "title": "Detay",
+            "role_label": "Rol",
+            "active_assignments": "Aktif",
+            "no_assignments": "Yok",
+            "current_factory": "Fabrika",
+            "danger_zone": {
+                "title": "Tehlike",
+                "suspend_button": "Askıya Al"
+            }
+        },
+        "cell": {
+            "unknown_user": "Bilinmiyor",
+            "active": "Aktif",
+            "inactive": "Pasif"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Geri",
+        "back_button": "Geri",
+        "title": "Altyapı",
+        "sites_count": "{{count}} Site",
+        "sites": "Site",
+        "add_factory": "Ekle",
+        "search_placeholder": "Ara...",
+        "retry": "Tekrar",
+        "new_factory": {
+            "title": "Yeni",
+            "subtitle": "Ekle"
+        },
+        "card": {
+            "data_sources": "Kaynaklar",
+            "managers": "Yöneticiler",
+            "configure_site": "Yapılandır",
+            "edit_details": "Düzenle",
+            "delete_factory": "Sil"
+        },
+        "list": {
+            "name": "İsim",
+            "factory": "Fabrika",
+            "code": "Kod",
+            "country": "Ülke",
+            "sources": "Kaynak",
+            "managers": "Yönetici",
+            "actions": "İşlem"
+        },
+        "no_match": "Eşleşme yok",
+        "confirm_delete": "Sil?",
+        "delete_fail": "Hata"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Ekle",
+            "subtitle": "Yeni",
+            "name_label": "İsim",
+            "name_placeholder": "İsim",
+            "code_label": "Kod",
+            "code_placeholder": "Kod",
+            "specialty_label": "Uzmanlık",
+            "specialty_placeholder": "Uzmanlık",
+            "description_label": "Açıklama",
+            "description_placeholder": "Açıklama...",
+            "use_defaults": "Varsayılan",
+            "inherit_tooltip": "Miras",
+            "custom_tooltip": "Özel",
+            "inherit_desc": "Miras",
+            "custom_desc": "Boş",
+            "source_usage": "Kullanım",
+            "quota_reached": "Dolu",
+            "submit_button": "Ekle",
+            "submitting": "Ekleniyor..."
+        },
+        "create_factory": {
+            "title": "Oluştur",
+            "subtitle": "Yeni",
+            "quota_reached": "Dolu",
+            "name_label": "İsim",
+            "name_placeholder": "İsim",
+            "code_label": "Kod",
+            "code_placeholder": "Kod",
+            "code_desc": "ID",
+            "source_name_label": "Kaynak",
+            "source_name_placeholder": "Kaynak",
+            "source_specialty_label": "Uzmanlık",
+            "source_specialty_placeholder": "Tip",
+            "source_specialty_desc": "Tip",
+            "source_desc_label": "Açıklama",
+            "source_desc_placeholder": "Açıklama",
+            "source_desc_help": "Yardım",
+            "submitting_msg": "Oluşturuluyor...",
+            "submit_button": "Oluştur",
+            "submitting_button": "Oluşturuluyor..."
+        },
+        "edit_factory": {
+            "title": "Düzenle",
+            "name_label": "İsim",
+            "code_label": "Kod",
+            "submit_button": "Kaydet",
+            "submitting_button": "Kaydediliyor..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Yeniden Adlandır",
+            "managers_stat": "Yönetici",
+            "efficiency_stat": "Verim",
+            "assigned_team": "Takım",
+            "no_managers": "Yok",
+            "remove_button": "Kaldır",
+            "danger_zone": "Tehlike",
+            "delete_button": "Sil",
+            "confirm_remove": "Kaldır?",
+            "remove_fail": "Hata",
+            "confirm_delete": "Sil?",
+            "delete_fail": "Hata",
+            "rename_fail": "Hata"
+        },
+        "row": {
+            "untitled_source": "İsimsiz",
+            "rename_required": "İsim!",
+            "click_to_view": "Görüntüle",
+            "click_tooltip": "Tıkla",
+            "confirm_delete": "Sil?",
+            "rename_prompt": "İsim:"
+        },
+        "user_search": {
+            "placeholder": "Ara...",
+            "no_results": "Yok",
+            "no_available": "Yok",
+            "available_count": "{{count}}"
+        },
+        "user_search_placeholder": "Ara...",
+        "no_results": "Yok",
+        "manager_exists": "Mevcut"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Hoşgeldiniz",
+            "welcome_subtitle": "Giriş",
+            "email_label": "E-posta",
+            "password_label": "Şifre",
+            "forgot_password": "Unuttum?",
+            "sign_in_button": "Giriş",
+            "no_account": "Hesap yok mu?",
+            "contact_sales": "İletişim",
+            "back_to_landing": "Geri",
+            "errors": {
+                "network_error": "Hata",
+                "invalid_credentials": "Hata"
+            },
+            "demo_card": {
+                "title": "Rapor",
+                "subtitle": "Canlı",
+                "efficiency": "Verim",
+                "efficiency_sub": "hedef",
+                "output": "Çıktı",
+                "output_sub": "Rota",
+                "chart_title": "Hız",
+                "chart_period": "4s",
+                "chart_current": "Şu an"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Hata",
+            "unknown_error": "Bilinmiyor",
+            "return_home": "Anasayfa"
+        },
+        "confirm_dialog": {
+            "confirm": "Onayla",
+            "cancel": "İptal",
+            "please_wait": "Bekleyin..."
+        },
+        "quota_warning": {
+            "limit_reached": "Limit",
+            "near_limit": "Yakın",
+            "upgrade_prompt": "Yükselt",
+            "consider_upgrade": "Düşün",
+            "upgrade_button": "Yükselt",
+            "dismiss_label": "Kapat",
+            "type_factories": "fabrika",
+            "type_lines": "hat"
+        },
+        "date_range_picker": {
+            "start_date": "Başlangıç",
+            "end_date": "Bitiş",
+            "start_in_timezone": "Başlangıç",
+            "end_in_timezone": "Bitiş"
+        },
+        "breadcrumb": {
+            "aria_label": "Yol"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Standartlar",
+            "subtitle": "Varsayılan"
+        },
+        "sections": {
+            "localization": "Bölge",
+            "shifts": {
+                "title": "Vardiya",
+                "description": "Miras"
+            },
+            "non_working_days": {
+                "title": "Tatil",
+                "description": "Varsayılan"
+            },
+            "schema_configuration": "Şema",
+            "upload_history": "Geçmiş",
+            "active_field_mapping": "Harita",
+            "field_mapping_description": "Map"
+        },
+        "fields": {
+            "date_format": "Tarih",
+            "currency": "Para",
+            "measurement_system": "Ölçü",
+            "preview": "Önizleme"
+        },
+        "shifts": {
+            "add": "Ekle",
+            "new_shift": "Yeni",
+            "empty": "Boş",
+            "name_label": "İsim",
+            "name_placeholder": "İsim",
+            "start_time": "Başla",
+            "end_time": "Bitir"
+        },
+        "timezone_warning": {
+            "title": "Zaman?",
+            "message": "Etki",
+            "confirm": "Evet"
+        },
+        "buttons": {
+            "save": "Kaydet",
+            "saving": "Kaydediliyor..."
+        },
+        "errors": {
+            "save_failed": "Hata"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Bulunamadı",
+        "system_node": "Düğüm",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "Şema",
+            "upload_history": "Geçmiş"
+        },
+        "schema": {
+            "active_field_mapping": "Harita",
+            "field_mapping_description": "Map",
+            "edit_mappings": "Düzenle",
+            "reset_schema": "Sıfırla",
+            "no_mappings": "Yok",
+            "system_status": "Durum",
+            "last_updated": "Son",
+            "no_config_title": "Yok",
+            "no_config_description": "Yok",
+            "no_config_hint": "Yükle",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "Sistem"
+            }
+        },
+        "uploads": {
+            "processed_files": "İşlenen",
+            "clear_history": "Temizle",
+            "no_files": "Yok"
+        },
+        "confirm": {
+            "reset_schema": "Sıfırla?",
+            "clear_history": "Temizle?"
+        },
+        "errors": {
+            "reset_failed": "Hata",
+            "clear_failed": "Hata"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Boş",
+            "description": "Ekle",
+            "action": "Tasarla"
+        }
+    },
+    "file_preview": {
+        "title": "Önizleme",
+        "loading": "Yükleniyor...",
+        "loading_subtitle": "Analiz",
+        "error_title": "Hata",
+        "error_default": "Hata",
+        "showing_rows": "Gösterilen {{count}}",
+        "columns_detected": "{{count}} sütun",
+        "info_note": "Not",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Entegrasyon",
+        "subtitle": "Yönet",
+        "upload_data": "Yükle",
+        "collapse": "Daralt",
+        "expand": "Genişlet",
+        "tabs": {
+            "schema": "Şema",
+            "uploads": "Yüklemeler"
+        },
+        "empty_sources": "Boş",
+        "configure_new": "Yapılandır",
+        "no_description": "Tanım yok",
+        "schema_version": "v{{version}}",
+        "no_active_schema": "Pasif",
+        "edit_config": "Düzenle",
+        "error_update": "Hata",
+        "modal": {
+            "title": "Düzenle",
+            "source_name": "İsim",
+            "time_column": "Zaman",
+            "time_column_hint": "Başlık",
+            "config_active": "Aktif"
+        }
+    },
+    "data_source_config": {
+        "title": "Yapılandırma",
+        "subtitle": "ID: {{id}}",
+        "loading": "Yükleniyor...",
+        "not_configured_title": "Yapılandırılmamış",
+        "not_configured_desc": "Yükle",
+        "close_modal": "Kapat",
+        "time_column": "Zaman",
+        "time_column_placeholder": "Zaman",
+        "time_column_hint": "İsim",
+        "schema_title": "Harita",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "Kaynak",
+            "target": "Hedef"
+        },
+        "schema_note": "Not",
+        "description": "Açıklama",
+        "description_placeholder": "Açıklama...",
+        "success": "Başarılı",
+        "error_save": "Hata",
+        "error_load": "Hata",
+        "save_button": "Kaydet"
+    },
+    "upload_history": {
+        "title": "Geçmiş",
+        "loading": "Yükleniyor...",
+        "empty": "Boş",
+        "error": "Hata"
+    }
+}

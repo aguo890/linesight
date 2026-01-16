@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "사용자 프로필",
+        "subtitle": "계정 설정 및 환경설정 관리",
+        "back": "뒤로",
+        "save_btn": "변경 사항 저장",
+        "success": "업데이트 성공!",
+        "error_required": "이름은 필수입니다",
+        "error_fail": "업데이트 실패",
+        "at": "@",
+        "roles": {
+            "admin": "관리자",
+            "user": "사용자",
+            "manager": "매니저"
+        },
+        "sections": {
+            "factories": "공장",
+            "security": "보안",
+            "personal_info": "개인 정보",
+            "localization": "현지화",
+            "notifications": "알림"
+        },
+        "security": {
+            "change_password": "비밀번호 변경",
+            "two_factor": "2단계 인증"
+        },
+        "fields": {
+            "full_name": "전체 이름",
+            "email": "이메일",
+            "email_hint": "이메일",
+            "language": "언어",
+            "theme": "테마"
+        },
+        "themes": {
+            "light": "라이트 모드",
+            "dark": "다크 모드",
+            "system": "시스템 기본값"
+        },
+        "notifications": {
+            "email": "이메일 알림",
+            "push": "푸시 알림",
+            "weekly": "주간 요약"
+        },
+        "location_selector": {
+            "label": "위치",
+            "auto_detect": "자동 감지",
+            "search_placeholder": "국가 검색...",
+            "no_results": "국가를 찾을 수 없음",
+            "select_country_first": "국가 선택",
+            "selected": "선택됨:"
+        },
+        "unsaved_changes": {
+            "title": "저장되지 않은 변경 사항",
+            "message": "정말 나가시겠습니까?",
+            "confirm": "나가기",
+            "cancel": "머무르기"
+        }
+    },
+    "navigation": {
+        "dashboard": "대시보드",
+        "my_dashboards": "내 대시보드",
+        "organization": "조직",
+        "show_more": "더 보기",
+        "show_less": "접기"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "내 대시보드",
+            "search_placeholder": "검색...",
+            "status": {
+                "loading": "로딩 중...",
+                "none": "사이트 없음",
+                "available_one": "{{count}} 사이트",
+                "available_other": "{{count}} 사이트"
+            },
+            "table": {
+                "header_name": "이름",
+                "header_location": "위치",
+                "header_status": "상태",
+                "header_lines": "라인",
+                "header_actions": "작업",
+                "action_view": "보기"
+            },
+            "actions": {
+                "new_dashboard": "새 대시보드",
+                "configure_sites": "사이트 구성",
+                "clear_search": "검색 지우기"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "결과 없음",
+                "no_results_detail": "찾을 수 없습니다."
+            },
+            "factory_status": {
+                "at_limit": "한도 도달",
+                "near_limit": "한도 근접",
+                "active": "활성"
+            },
+            "empty_state": {
+                "title": "사이트 없음",
+                "description": "구성된 공장이 없습니다.",
+                "admin_hint": "설정으로 이동하세요.",
+                "user_hint": "관리자에게 문의하세요.",
+                "cta": "설정으로 이동"
+            },
+            "view": {
+                "grid": "그리드",
+                "list": "목록"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} 소스",
+            "edit": "편집",
+            "delete": "삭제",
+            "open": "열기",
+            "edit_title": "편집",
+            "delete_title": "삭제"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "홈",
+            "list": "목록",
+            "production_sites": "생산 사이트",
+            "sites": "사이트",
+            "not_found": "찾을 수 없음"
+        },
+        "sections": {
+            "overview": "개요",
+            "performance": "성능",
+            "settings": "설정",
+            "dashboards": "대시보드",
+            "data_sources": "데이터 소스"
+        },
+        "actions": {
+            "edit": "구성 편집",
+            "delete": "사이트 삭제",
+            "save": "저장",
+            "settings": "설정",
+            "new_dashboard": "새 대시보드",
+            "create_dashboard": "생성",
+            "add_data_source": "소스 추가",
+            "new_source": "새 소스",
+            "upload_data": "데이터 업로드",
+            "no_write_access": "쓰기 권한 없음"
+        },
+        "alerts": {
+            "confirm_delete": "확실합니까?",
+            "edit_soon": "준비 중",
+            "delete_soon": "준비 중",
+            "delete_fail": "삭제 실패"
+        },
+        "stats": {
+            "dashboards": "대시보드",
+            "active_widgets": "위젯",
+            "active_sources": "소스",
+            "used_info": "{{current}}/{{max}} 사용 중"
+        },
+        "not_found": "사이트를 찾을 수 없음",
+        "search": {
+            "dashboards_placeholder": "필터...",
+            "sources_placeholder": "검색...",
+            "no_sources_found": "소스를 찾을 수 없음"
+        },
+        "quota": {
+            "limit_reached": "쿼터 도달"
+        },
+        "table": {
+            "headers": {
+                "name": "이름",
+                "status": "상태",
+                "actions": "작업"
+            }
+        },
+        "status": {
+            "active": "활성",
+            "inactive": "비활성"
+        },
+        "confirm": {
+            "delete_source": "소스를 삭제하시겠습니까?",
+            "delete_dashboard": "대시보드를 삭제하시겠습니까?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "오늘",
+            "yesterday": "어제",
+            "last_7_days": "최근 7일",
+            "last_30_days": "최근 30일",
+            "this_month": "이번 달",
+            "last_month": "지난 달"
+        },
+        "shifts": {
+            "all": "모든 교대",
+            "shift_a": "교대 A",
+            "shift_b": "교대 B",
+            "shift_c": "교대 C"
+        },
+        "date_range": "날짜 범위",
+        "to": "~"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "워크스페이스",
+            "factory": "공장",
+            "line": "라인",
+            "dashboard": "대시보드"
+        },
+        "status": {
+            "updated": "업데이트: {{time}}",
+            "live": "라이브",
+            "loading": "로딩 중...",
+            "saving": "저장 중..."
+        },
+        "actions": {
+            "refresh": "새로고침",
+            "reset_layout": "초기화",
+            "reset_confirm": "확인?",
+            "design_layout": "레이아웃 설계",
+            "save_layout": "저장",
+            "add_widget": "위젯 추가",
+            "cancel": "취소"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "위젯 라이브러리",
+            "subtitle": "드래그 앤 드롭",
+            "categories": {
+                "all": "전체",
+                "production": "생산",
+                "quality": "품질",
+                "efficiency": "효율성"
+            }
+        },
+        "selector": {
+            "simulated_data": "시뮬레이션",
+            "ready_to_use": "준비됨",
+            "recommended": "추천",
+            "future_capability": "미래 기능",
+            "coming_soon": "곧 출시",
+            "near_match": "유사",
+            "ai_recommendations": "AI 추천",
+            "select_all": "전체 선택",
+            "selected": "선택됨",
+            "compatible": "호환",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "데이터 필요",
+            "needs_mapping": "매핑 필요",
+            "categories": {
+                "Efficiency": "효율성",
+                "Quality": "품질",
+                "Workforce": "인력",
+                "Operations": "운영"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "추천",
+                "Operations": "운영",
+                "Strategy": "전략"
+            },
+            "efficiency_starter": {
+                "title": "효율성 스타터",
+                "description": "기본 추적"
+            },
+            "quality_auditor": {
+                "title": "품질 감사",
+                "description": "DHU 집중"
+            },
+            "floor_manager": {
+                "title": "플로어 매니저",
+                "description": "실시간"
+            },
+            "executive_summary": {
+                "title": "임원 요약",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "계획됨",
+            "actual": "실제",
+            "target": "목표",
+            "efficiency": "효율성",
+            "minutes": "분",
+            "limit": "한도",
+            "status": "상태",
+            "on_target": "목표 달성",
+            "below_target": "미달",
+            "defect_rate": "불량률"
+        },
+        "titles": {
+            "production_chart": "생산량",
+            "line_efficiency": "라인 효율성",
+            "earned_minutes": "획득 분",
+            "sam_performance": "SAM 성과",
+            "dhu_quality": "DHU 품질",
+            "speed_quality": "속도 vs 품질",
+            "top_blockers": "주요 장애 요인",
+            "style_progress": "스타일 진행률",
+            "daily_target": "일일 목표",
+            "production_timeline": "생산 타임라인",
+            "complexity_impact": "복잡도 영향",
+            "workforce_attendance": "출석",
+            "kpi_summary": "KPI 요약"
+        },
+        "descriptions": {
+            "production_chart": "비교",
+            "line_efficiency": "실시간 효율성",
+            "earned_minutes": "SAM",
+            "sam_performance": "표준 성과",
+            "dhu_quality": "불량 분석",
+            "speed_quality": "상관관계",
+            "top_blockers": "중단 원인",
+            "style_progress": "완료율 (%)",
+            "daily_target": "진행 상황",
+            "production_timeline": "간트 차트",
+            "complexity_impact": "분석",
+            "workforce_attendance": "작업자 출석",
+            "kpi_summary": "지표 개요"
+        },
+        "production_chart": {
+            "planned": "계획됨",
+            "actual_output": "실제 생산량"
+        },
+        "production_timeline": {
+            "output": "실제",
+            "target": "목표"
+        },
+        "complexity_impact": {
+            "title": "복잡도",
+            "loading_styles": "로딩 중...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (복잡도)",
+            "styles": "스타일"
+        },
+        "speed_quality": {
+            "efficiency": "효율성",
+            "defect_rate": "불량률"
+        },
+        "earned_minutes": {
+            "earned": "획득",
+            "available": "가용"
+        },
+        "dhu_quality": {
+            "no_data": "데이터 없음",
+            "current_dhu": "현재 DHU",
+            "above_limit": "초과"
+        },
+        "blocker_cloud": {
+            "occurrences": "회",
+            "view_all_logs": "전체 로그 보기",
+            "no_blockers": "장애 요인 없음"
+        }
+    },
+    "common": {
+        "back": "뒤로",
+        "cancel": "취소",
+        "error": "오류",
+        "success": "성공",
+        "uploading": "업로드 중...",
+        "processing": "처리 중...",
+        "remove": "제거",
+        "ready": "준비됨",
+        "needs_setup": "설정 필요",
+        "date": "날짜",
+        "actions": {
+            "save": "저장",
+            "cancel": "취소",
+            "close": "닫기",
+            "delete": "삭제",
+            "edit": "편집",
+            "search": "검색...",
+            "confirm": "확인",
+            "back": "뒤로",
+            "create": "생성",
+            "invite": "초대"
+        },
+        "status": {
+            "active": "활성",
+            "inactive": "비활성",
+            "unknown": "알 수 없음"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "대시보드 이름",
+            "dashboard_name_placeholder": "예: 라인 4",
+            "name_error_tooltip": "이름 입력",
+            "name_error_text": "이름 필수",
+            "selection_title": "데이터 소스 선택",
+            "selection_desc": "파일 선택",
+            "columns": {
+                "file_name": "파일명",
+                "status": "상태",
+                "uploaded": "업로드됨",
+                "action": "작업"
+            },
+            "btn_configure": "구성",
+            "btn_complete_setup": "설정 완료",
+            "note": "참고",
+            "empty_title": "소스 없음",
+            "empty_desc": "파일 업로드",
+            "error_load_failed": "로드 실패"
+        },
+        "step2": {
+            "title": "데이터 매핑",
+            "subtitle": "열 검토",
+            "stats": {
+                "auto": "자동",
+                "review": "검토",
+                "attention": "주의",
+                "ignored": "무시됨"
+            },
+            "filter": {
+                "all": "전체",
+                "unmapped": "매핑되지 않음",
+                "conflicts": "충돌"
+            },
+            "showing_count": "{{filtered}}/{{total}} 열",
+            "table": {
+                "source": "소스",
+                "target": "대상",
+                "status": "상태",
+                "no_match": "일치 없음",
+                "try_different": "다른 보기 시도"
+            },
+            "status_labels": {
+                "exact": "정확",
+                "exact_tooltip": "정확한 일치",
+                "fuzzy": "유사",
+                "fuzzy_tooltip": "유사 일치",
+                "ai": "AI",
+                "ai_tooltip": "AI 제안",
+                "manual": "수동",
+                "manual_tooltip": "수동",
+                "unset": "미설정",
+                "unset_tooltip": "매핑 필요",
+                "duplicate": "중복"
+            },
+            "field_selector": {
+                "select_placeholder": "필드 선택...",
+                "search_placeholder": "검색...",
+                "suggested": "제안됨",
+                "all_fields": "모든 필드",
+                "no_results": "결과 없음",
+                "ignore_action": "무시",
+                "restore_action": "복원",
+                "in_use": "사용 중"
+            },
+            "alerts": {
+                "conflict_count_one": "1 중복",
+                "conflict_count_other": "{{count}} 중복",
+                "remaining_needed": "나머지 필요"
+            },
+            "btn_confirm": "확인",
+            "processing": {
+                "title": "처리 중",
+                "subtitle": "가져오는 중...",
+                "logs": {
+                    "init": "초기화...",
+                    "schema": "스키마...",
+                    "mapping": "매핑...",
+                    "req": "요청...",
+                    "sending": "전송...",
+                    "success": "성공"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "블루프린트",
+            "divider": "또는 사용자 지정",
+            "library_title": "라이브러리",
+            "selected_count": "{{count}} 선택됨",
+            "btn_create": "대시보드 생성",
+            "btn_configuring": "구성 중..."
+        },
+        "title": "설정",
+        "steps": {
+            "upload": {
+                "label": "소스",
+                "desc": "업로드"
+            },
+            "mapping": {
+                "label": "매핑",
+                "desc": "검증"
+            },
+            "widgets": {
+                "label": "대시보드",
+                "desc": "레이아웃"
+            }
+        },
+        "mini_map": {
+            "title": "미리보기",
+            "empty_state": "위젯 선택",
+            "stats": {
+                "widgets_one": "{{count}} 위젯",
+                "widgets_other": "{{count}} 위젯",
+                "screens_one": "~{{count}} 화면",
+                "screens_other": "~{{count}} 화면"
+            },
+            "density": {
+                "empty": "비어 있음",
+                "compact": "컴팩트",
+                "balanced": "균형",
+                "heavy": "밀집"
+            },
+            "scroll_warning": "스크롤 필요 할 수 있음"
+        },
+        "context": {
+            "title": "컨텍스트",
+            "select_factory": "공장 선택",
+            "select_source": "소스 선택",
+            "select_factory_first": "공장 먼저 선택",
+            "loading_factories": "공장 로딩...",
+            "loading_sources": "소스 로딩...",
+            "fetching_sources": "가져오는 중...",
+            "no_sources_alert": "소스 없음",
+            "select_source_overlay": "소스 선택"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "업로드",
+            "title_preview": "미리보기",
+            "subtitle_upload": "업로드",
+            "subtitle_preview": "검토",
+            "drop_text": "파일 드롭",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "성공!",
+            "info_preview": "데이터 미리보기",
+            "btn_upload_preview": "업로드 및 미리보기",
+            "btn_uploading": "업로드 중...",
+            "errors": {
+                "invalid_extension": "Excel/CSV 필요",
+                "duplicate_file": "중복 파일",
+                "preview_failed": "미리보기 실패",
+                "upload_failed": "업로드 실패"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "조직 설정",
+        "description": "구성 및 기본 설정",
+        "cards": {
+            "general": {
+                "title": "일반",
+                "description": "프로필"
+            },
+            "members": {
+                "title": "멤버",
+                "description": "팀 액세스"
+            },
+            "infrastructure": {
+                "title": "인프라",
+                "description": "공장"
+            },
+            "security": {
+                "title": "보안",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "청구",
+                "description": "송장"
+            }
+        },
+        "badges": {
+            "coming_soon": "준비 중"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "설정으로 돌아가기"
+        },
+        "top_nav": {
+            "search_placeholder": "검색...",
+            "search_coming_soon": "곧 출시!",
+            "notifications": {
+                "title": "알림",
+                "mark_read": "읽음 표시",
+                "empty": "알림 없음"
+            },
+            "user_menu": {
+                "profile": "프로필",
+                "logout": "로그아웃",
+                "default_user": "사용자",
+                "default_role": "뷰어"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "조직",
+            "factories": "공장"
+        },
+        "header": {
+            "title": "공장 구성",
+            "popover_trigger_label": "정보"
+        },
+        "popover": {
+            "title": "구성",
+            "assignment": {
+                "title": "할당:",
+                "desc_part1": "세부 정보",
+                "desc_part2": "매니저 할당"
+            },
+            "structure": {
+                "title": "구조:",
+                "desc": "사용자 지정"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "할당",
+            "structure_mode": "구조",
+            "customize_layout": "사용자 지정",
+            "done_editing": "완료"
+        },
+        "list": {
+            "add_data_source": "소스 추가",
+            "no_data_sources": "데이터 소스 없음"
+        },
+        "bulk_actions": {
+            "selected": "선택됨",
+            "assign_manager": "매니저 할당"
+        },
+        "messages": {
+            "loading": "로딩 중...",
+            "assignment_failed": "실패"
+        }
+    },
+    "roles": {
+        "system_admin": "시스템 관리자",
+        "owner": "소유자",
+        "admin": "관리자",
+        "viewer": "뷰어",
+        "member": "멤버",
+        "operator": "운영자",
+        "factory_manager": "공장장",
+        "line_manager": "라인 관리자",
+        "user": "사용자",
+        "manager": "매니저"
+    },
+    "org_general": {
+        "title": "일반",
+        "profile": {
+            "logged_in_as": "로그인 됨"
+        },
+        "at_a_glance": "요약",
+        "stats": {
+            "total_managers": "총 매니저",
+            "assigned": "할당됨",
+            "factories": "공장",
+            "production_lines": "라인"
+        },
+        "danger_zone": {
+            "title": "위험 구역",
+            "description": "영구 삭제",
+            "delete_button": "조직 삭제"
+        }
+    },
+    "org_members": {
+        "title": "멤버",
+        "invite_member": "멤버 초대",
+        "search_placeholder": "검색...",
+        "filter": "필터",
+        "table": {
+            "user": "사용자",
+            "global_role": "역할",
+            "access": "액세스",
+            "last_active": "마지막 활동",
+            "actions": "작업",
+            "loading": "로딩...",
+            "no_members": "멤버 없음",
+            "assignments": "할당",
+            "unassigned": "미할당",
+            "never_active": "없음",
+            "view_details": "상세 보기"
+        },
+        "drawer": {
+            "title": "상세 정보",
+            "role_label": "역할",
+            "active_assignments": "활성",
+            "no_assignments": "없음",
+            "current_factory": "공장",
+            "danger_zone": {
+                "title": "위험",
+                "suspend_button": "일시 중지"
+            }
+        },
+        "cell": {
+            "unknown_user": "알 수 없음",
+            "active": "활성",
+            "inactive": "비활성"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "돌아가기",
+        "back_button": "뒤로",
+        "title": "인프라",
+        "sites_count": "{{count}} 사이트",
+        "sites": "사이트",
+        "add_factory": "공장 추가",
+        "search_placeholder": "검색...",
+        "retry": "재시도",
+        "new_factory": {
+            "title": "새 공장",
+            "subtitle": "추가"
+        },
+        "card": {
+            "data_sources": "소스",
+            "managers": "매니저",
+            "configure_site": "구성",
+            "edit_details": "편집",
+            "delete_factory": "삭제"
+        },
+        "list": {
+            "name": "이름",
+            "factory": "공장",
+            "code": "코드",
+            "country": "국가",
+            "sources": "소스",
+            "managers": "매니저",
+            "actions": "작업"
+        },
+        "no_match": "일치 없음",
+        "confirm_delete": "삭제하시겠습니까?",
+        "delete_fail": "실패"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "추가",
+            "subtitle": "새 소스",
+            "name_label": "이름",
+            "name_placeholder": "이름",
+            "code_label": "코드",
+            "code_placeholder": "코드",
+            "specialty_label": "전문 분야",
+            "specialty_placeholder": "조립",
+            "description_label": "설명",
+            "description_placeholder": "설명...",
+            "use_defaults": "기본값",
+            "inherit_tooltip": "상속",
+            "custom_tooltip": "사용자 지정",
+            "inherit_desc": "상속",
+            "custom_desc": "비어 있음",
+            "source_usage": "사용량",
+            "quota_reached": "쿼터 도달",
+            "submit_button": "추가",
+            "submitting": "추가 중..."
+        },
+        "create_factory": {
+            "title": "생성",
+            "subtitle": "설정",
+            "quota_reached": "쿼터 도달",
+            "name_label": "이름",
+            "name_placeholder": "이름",
+            "code_label": "코드",
+            "code_placeholder": "코드",
+            "code_desc": "ID",
+            "source_name_label": "소스",
+            "source_name_placeholder": "소스",
+            "source_specialty_label": "전문 분야",
+            "source_specialty_placeholder": "유형",
+            "source_specialty_desc": "유형",
+            "source_desc_label": "설명",
+            "source_desc_placeholder": "설명",
+            "source_desc_help": "도움말",
+            "submitting_msg": "생성 중...",
+            "submit_button": "생성",
+            "submitting_button": "생성 중..."
+        },
+        "edit_factory": {
+            "title": "편집",
+            "name_label": "이름",
+            "code_label": "코드",
+            "submit_button": "저장",
+            "submitting_button": "저장 중..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "이름 변경",
+            "managers_stat": "매니저",
+            "efficiency_stat": "효율성",
+            "assigned_team": "팀",
+            "no_managers": "없음",
+            "remove_button": "제거",
+            "danger_zone": "위험",
+            "delete_button": "삭제",
+            "confirm_remove": "제거?",
+            "remove_fail": "실패",
+            "confirm_delete": "삭제?",
+            "delete_fail": "실패",
+            "rename_fail": "실패"
+        },
+        "row": {
+            "untitled_source": "무제",
+            "rename_required": "이름 필요!",
+            "click_to_view": "보기",
+            "click_tooltip": "클릭",
+            "confirm_delete": "삭제?",
+            "rename_prompt": "이름:"
+        },
+        "user_search": {
+            "placeholder": "검색...",
+            "no_results": "없음",
+            "no_available": "없음",
+            "available_count": "{{count}}"
+        },
+        "user_search_placeholder": "검색...",
+        "no_results": "없음",
+        "manager_exists": "존재함"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "환영합니다",
+            "welcome_subtitle": "로그인",
+            "email_label": "이메일",
+            "password_label": "비밀번호",
+            "forgot_password": "잊으셨나요?",
+            "sign_in_button": "로그인",
+            "no_account": "계정 없나요?",
+            "contact_sales": "문의",
+            "back_to_landing": "뒤로",
+            "errors": {
+                "network_error": "네트워크 오류",
+                "invalid_credentials": "잘못된 정보"
+            },
+            "demo_card": {
+                "title": "리포트",
+                "subtitle": "라이브",
+                "efficiency": "효율성",
+                "efficiency_sub": "목표",
+                "output": "생산량",
+                "output_sub": "트랙",
+                "chart_title": "비율",
+                "chart_period": "4시간",
+                "chart_current": "현재"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "오류",
+            "unknown_error": "알 수 없음",
+            "return_home": "홈"
+        },
+        "confirm_dialog": {
+            "confirm": "확인",
+            "cancel": "취소",
+            "please_wait": "잠시만..."
+        },
+        "quota_warning": {
+            "limit_reached": "한도",
+            "near_limit": "근접",
+            "upgrade_prompt": "업그레이드",
+            "consider_upgrade": "고려",
+            "upgrade_button": "업그레이드",
+            "dismiss_label": "닫기",
+            "type_factories": "공장",
+            "type_lines": "라인"
+        },
+        "date_range_picker": {
+            "start_date": "시작",
+            "end_date": "종료",
+            "start_in_timezone": "시작",
+            "end_in_timezone": "종료"
+        },
+        "breadcrumb": {
+            "aria_label": "브레드크럼"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "표준",
+            "subtitle": "기본값"
+        },
+        "sections": {
+            "localization": "현지화",
+            "shifts": {
+                "title": "교대",
+                "description": "상속"
+            },
+            "non_working_days": {
+                "title": "휴무일",
+                "description": "기본값"
+            },
+            "schema_configuration": "스키마",
+            "upload_history": "기록",
+            "active_field_mapping": "매핑",
+            "field_mapping_description": "매핑"
+        },
+        "fields": {
+            "date_format": "날짜",
+            "currency": "통화",
+            "measurement_system": "측정",
+            "preview": "미리보기"
+        },
+        "shifts": {
+            "add": "추가",
+            "new_shift": "새 교대",
+            "empty": "없음",
+            "name_label": "이름",
+            "name_placeholder": "이름",
+            "start_time": "시작",
+            "end_time": "종료"
+        },
+        "timezone_warning": {
+            "title": "시간대?",
+            "message": "영향",
+            "confirm": "예"
+        },
+        "buttons": {
+            "save": "저장",
+            "saving": "저장..."
+        },
+        "errors": {
+            "save_failed": "실패"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "없음",
+        "system_node": "노드",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "스키마",
+            "upload_history": "기록"
+        },
+        "schema": {
+            "active_field_mapping": "매핑",
+            "field_mapping_description": "매핑",
+            "edit_mappings": "편집",
+            "reset_schema": "초기화",
+            "no_mappings": "없음",
+            "system_status": "상태",
+            "last_updated": "업데이트",
+            "no_config_title": "없음",
+            "no_config_description": "없음",
+            "no_config_hint": "업로드",
+            "table": {
+                "excel_header": "엑셀",
+                "system_field": "시스템"
+            }
+        },
+        "uploads": {
+            "processed_files": "처리됨",
+            "clear_history": "지우기",
+            "no_files": "없음"
+        },
+        "confirm": {
+            "reset_schema": "초기화?",
+            "clear_history": "지우기?"
+        },
+        "errors": {
+            "reset_failed": "실패",
+            "clear_failed": "실패"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "비어 있음",
+            "description": "추가",
+            "action": "디자이너"
+        }
+    },
+    "file_preview": {
+        "title": "미리보기",
+        "loading": "로딩...",
+        "loading_subtitle": "분석",
+        "error_title": "오류",
+        "error_default": "실패",
+        "showing_rows": "표시 {{count}}",
+        "columns_detected": "{{count}} 열",
+        "info_note": "참고",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "통합",
+        "subtitle": "관리",
+        "upload_data": "업로드",
+        "collapse": "접기",
+        "expand": "펼치기",
+        "tabs": {
+            "schema": "스키마",
+            "uploads": "업로드"
+        },
+        "empty_sources": "없음",
+        "configure_new": "구성",
+        "no_description": "설명 없음",
+        "schema_version": "v{{version}}",
+        "no_active_schema": "비활성",
+        "edit_config": "편집",
+        "error_update": "실패",
+        "modal": {
+            "title": "편집",
+            "source_name": "이름",
+            "time_column": "시간",
+            "time_column_hint": "헤더",
+            "config_active": "활성"
+        }
+    },
+    "data_source_config": {
+        "title": "구성",
+        "subtitle": "ID: {{id}}",
+        "loading": "로딩...",
+        "not_configured_title": "미구성",
+        "not_configured_desc": "업로드",
+        "close_modal": "닫기",
+        "time_column": "시간",
+        "time_column_placeholder": "시간",
+        "time_column_hint": "이름",
+        "schema_title": "매핑",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "소스",
+            "target": "대상"
+        },
+        "schema_note": "참고",
+        "description": "설명",
+        "description_placeholder": "설명...",
+        "success": "성공",
+        "error_save": "실패",
+        "error_load": "실패",
+        "save_button": "저장"
+    },
+    "upload_history": {
+        "title": "기록",
+        "loading": "로딩...",
+        "empty": "없음",
+        "error": "실패"
+    }
+}

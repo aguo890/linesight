@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "Hồ sơ người dùng",
+        "subtitle": "Quản lý cài đặt tài khoản",
+        "back": "Quay lại",
+        "save_btn": "Lưu thay đổi",
+        "success": "Cập nhật thành công!",
+        "error_required": "Tên là bắt buộc",
+        "error_fail": "Lỗi cập nhật",
+        "at": "@",
+        "roles": {
+            "admin": "Quản trị viên",
+            "user": "Người dùng",
+            "manager": "Quản lý"
+        },
+        "sections": {
+            "factories": "Nhà máy",
+            "security": "Bảo mật",
+            "personal_info": "Thông tin cá nhân",
+            "localization": "Định dạng vùng",
+            "notifications": "Thông báo"
+        },
+        "security": {
+            "change_password": "Đổi mật khẩu",
+            "two_factor": "Xác thực 2 bước"
+        },
+        "fields": {
+            "full_name": "Họ tên",
+            "email": "Email",
+            "email_hint": "Email",
+            "language": "Ngôn ngữ",
+            "theme": "Giao diện"
+        },
+        "themes": {
+            "light": "Sáng",
+            "dark": "Tối",
+            "system": "Hệ thống"
+        },
+        "notifications": {
+            "email": "Email",
+            "push": "Thông báo đẩy",
+            "weekly": "Hàng tuần"
+        },
+        "location_selector": {
+            "label": "Vị trí",
+            "auto_detect": "Tự động",
+            "search_placeholder": "Tìm quốc gia...",
+            "no_results": "Không tìm thấy",
+            "select_country_first": "Chọn quốc gia",
+            "selected": "Đã chọn:"
+        },
+        "unsaved_changes": {
+            "title": "Chưa lưu",
+            "message": "Bạn có chắc muốn rời đi?",
+            "confirm": "Rời đi",
+            "cancel": "Ở lại"
+        }
+    },
+    "navigation": {
+        "dashboard": "Bảng điều khiển",
+        "my_dashboards": "Bảng của tôi",
+        "organization": "Tổ chức",
+        "show_more": "Xem thêm",
+        "show_less": "Thu gọn"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Bảng điều khiển của tôi",
+            "search_placeholder": "Tìm kiếm...",
+            "status": {
+                "loading": "Đang tải...",
+                "none": "Trống",
+                "available_one": "{{count}} trang",
+                "available_other": "{{count}} trang"
+            },
+            "table": {
+                "header_name": "Tên",
+                "header_location": "Vị trí",
+                "header_status": "Trạng thái",
+                "header_lines": "Dây chuyền",
+                "header_actions": "Hành động",
+                "action_view": "Xem"
+            },
+            "actions": {
+                "new_dashboard": "Mới",
+                "configure_sites": "Cấu hình",
+                "clear_search": "Xóa"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "Không có kết quả",
+                "no_results_detail": "Không tìm thấy"
+            },
+            "factory_status": {
+                "at_limit": "Giới hạn",
+                "near_limit": "Gần giới hạn",
+                "active": "Hoạt động"
+            },
+            "empty_state": {
+                "title": "Trống",
+                "description": "Chưa cấu hình",
+                "admin_hint": "Cài đặt",
+                "user_hint": "Liên hệ quản trị",
+                "cta": "Cài đặt"
+            },
+            "view": {
+                "grid": "Lưới",
+                "list": "Danh sách"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} nguồn",
+            "edit": "Sửa",
+            "delete": "Xóa",
+            "open": "Mở",
+            "edit_title": "Sửa",
+            "delete_title": "Xóa"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Trang chủ",
+            "list": "Danh sách",
+            "production_sites": "Nhà máy",
+            "sites": "Nhà máy",
+            "not_found": "Không tìm thấy"
+        },
+        "sections": {
+            "overview": "Tổng quan",
+            "performance": "Hiệu suất",
+            "settings": "Cài đặt",
+            "dashboards": "Bảng điều khiển",
+            "data_sources": "Nguồn dữ liệu"
+        },
+        "actions": {
+            "edit": "Sửa cấu hình",
+            "delete": "Xóa nhà máy",
+            "save": "Lưu",
+            "settings": "Cài đặt",
+            "new_dashboard": "Tạo bảng tin",
+            "create_dashboard": "Tạo",
+            "add_data_source": "Thêm nguồn",
+            "new_source": "Nguồn mới",
+            "upload_data": "Tải lên",
+            "no_write_access": "Không có quyền"
+        },
+        "alerts": {
+            "confirm_delete": "Chắc chắn xóa?",
+            "edit_soon": "Sắp ra mắt",
+            "delete_soon": "Sắp ra mắt",
+            "delete_fail": "Lỗi xóa"
+        },
+        "stats": {
+            "dashboards": "Bảng tin",
+            "active_widgets": "Widget",
+            "active_sources": "Nguồn",
+            "used_info": "{{current}}/{{max}}"
+        },
+        "not_found": "Không tìm thấy",
+        "search": {
+            "dashboards_placeholder": "Lọc...",
+            "sources_placeholder": "Tìm nguồn...",
+            "no_sources_found": "Không thấy"
+        },
+        "quota": {
+            "limit_reached": "Đạt giới hạn"
+        },
+        "table": {
+            "headers": {
+                "name": "Tên",
+                "status": "Trạng thái",
+                "actions": "Hành động"
+            }
+        },
+        "status": {
+            "active": "Hoạt động",
+            "inactive": "Dừng"
+        },
+        "confirm": {
+            "delete_source": "Xóa nguồn này?",
+            "delete_dashboard": "Xóa bảng tin này?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Hôm nay",
+            "yesterday": "Hôm qua",
+            "last_7_days": "7 ngày qua",
+            "last_30_days": "30 ngày qua",
+            "this_month": "Tháng này",
+            "last_month": "Tháng trước"
+        },
+        "shifts": {
+            "all": "Tất cả ca",
+            "shift_a": "Ca A",
+            "shift_b": "Ca B",
+            "shift_c": "Ca C"
+        },
+        "date_range": "Khoảng ngày",
+        "to": "đến"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Nhà máy",
+            "line": "Dây chuyền",
+            "dashboard": "Bảng tin"
+        },
+        "status": {
+            "updated": "Cập nhật {{time}}",
+            "live": "Trực tiếp",
+            "loading": "Đang tải...",
+            "saving": "Đang lưu..."
+        },
+        "actions": {
+            "refresh": "Làm mới",
+            "reset_layout": "Đặt lại",
+            "reset_confirm": "Chắc chắn?",
+            "design_layout": "Thiết kế",
+            "save_layout": "Lưu",
+            "add_widget": "Thêm widget",
+            "cancel": "Hủy"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Thư viện Widget",
+            "subtitle": "Kéo thả",
+            "categories": {
+                "all": "Tất cả",
+                "production": "Sản xuất",
+                "quality": "Chất lượng",
+                "efficiency": "Hiệu suất"
+            }
+        },
+        "selector": {
+            "simulated_data": "Mô phỏng",
+            "ready_to_use": "Sẵn sàng",
+            "recommended": "Đề xuất",
+            "future_capability": "Tương lai",
+            "coming_soon": "Sắp tới",
+            "near_match": "Gần đúng",
+            "ai_recommendations": "AI Gợi ý",
+            "select_all": "Chọn hết",
+            "selected": "Đã chọn",
+            "compatible": "Tương thích",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "Cần dữ liệu",
+            "needs_mapping": "Cần ánh xạ",
+            "categories": {
+                "Efficiency": "Hiệu suất",
+                "Quality": "Chất lượng",
+                "Workforce": "Nhân lực",
+                "Operations": "Vận hành"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Đề xuất",
+                "Operations": "Vận hành",
+                "Strategy": "Chiến lược"
+            },
+            "efficiency_starter": {
+                "title": "Gói Hiệu suất",
+                "description": "Cơ bản"
+            },
+            "quality_auditor": {
+                "title": "Gói Chất lượng",
+                "description": "Kiểm tra lỗi"
+            },
+            "floor_manager": {
+                "title": "Quản lý sàn",
+                "description": "Giám sát"
+            },
+            "executive_summary": {
+                "title": "Báo cáo tổng hợp",
+                "description": "KPI Lãnh đạo"
+            }
+        },
+        "common": {
+            "planned": "KẾ HOẠCH",
+            "actual": "THỰC TẾ",
+            "target": "MỤC TIÊU",
+            "efficiency": "Hiệu suất",
+            "minutes": "phút",
+            "limit": "Giới hạn",
+            "status": "Trạng thái",
+            "on_target": "ĐẠT",
+            "below_target": "DƯỚI",
+            "defect_rate": "Tỷ lệ lỗi"
+        },
+        "titles": {
+            "production_chart": "Sản lượng",
+            "line_efficiency": "Hiệu suất dây chuyền",
+            "earned_minutes": "Phút kiếm được",
+            "sam_performance": "Hiệu suất SAM",
+            "dhu_quality": "Chất lượng DHU",
+            "speed_quality": "Tốc độ v Chất lượng",
+            "top_blockers": "Sự cố hàng đầu",
+            "style_progress": "Tiến độ mã hàng",
+            "daily_target": "Mục tiêu ngày",
+            "production_timeline": "Dòng thời gian",
+            "complexity_impact": "Độ phức tạp",
+            "workforce_attendance": "Điểm danh",
+            "kpi_summary": "KPI Tổng hợp"
+        },
+        "descriptions": {
+            "production_chart": "So sánh kế hoạch/thực tế",
+            "line_efficiency": "Thời gian thực",
+            "earned_minutes": "SAM",
+            "sam_performance": "Theo phút chuẩn",
+            "dhu_quality": "Phân tích lỗi",
+            "speed_quality": "Tương quan",
+            "top_blockers": "Dừng chuyền",
+            "style_progress": "% Hoàn thành",
+            "daily_target": "Tiến độ",
+            "production_timeline": "Gantt",
+            "complexity_impact": "Phân tích",
+            "workforce_attendance": "Cân bằng chuyền",
+            "kpi_summary": "Tổng quan"
+        },
+        "production_chart": {
+            "planned": "KẾ HOẠCH",
+            "actual_output": "THỰC TẾ"
+        },
+        "production_timeline": {
+            "output": "Thực tế",
+            "target": "Mục tiêu"
+        },
+        "complexity_impact": {
+            "title": "Độ phức tạp",
+            "loading_styles": "Đang tải...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Phức tạp)",
+            "styles": "Mã hàng"
+        },
+        "speed_quality": {
+            "efficiency": "Hiệu suất",
+            "defect_rate": "Tỷ lệ lỗi"
+        },
+        "earned_minutes": {
+            "earned": "KIẾM ĐƯỢC",
+            "available": "CÓ SẴN"
+        },
+        "dhu_quality": {
+            "no_data": "Không có dữ liệu",
+            "current_dhu": "DHU Hiện tại",
+            "above_limit": "VƯỢT NGƯỠNG"
+        },
+        "blocker_cloud": {
+            "occurrences": "lần",
+            "view_all_logs": "Xem log",
+            "no_blockers": "Không có sự cố"
+        }
+    },
+    "common": {
+        "back": "Lùi",
+        "cancel": "Hủy",
+        "error": "Lỗi",
+        "success": "Thành công",
+        "uploading": "Đang tải...",
+        "processing": "Đang xử lý...",
+        "remove": "Xóa",
+        "ready": "Sẵn sàng",
+        "needs_setup": "Cần cài đặt",
+        "date": "Ngày",
+        "actions": {
+            "save": "Lưu",
+            "cancel": "Hủy",
+            "close": "Đóng",
+            "delete": "Xóa",
+            "edit": "Sửa",
+            "search": "Tìm...",
+            "confirm": "Xác nhận",
+            "back": "Lùi",
+            "create": "Tạo",
+            "invite": "Mời"
+        },
+        "status": {
+            "active": "Hoạt động",
+            "inactive": "Dừng",
+            "unknown": "Không rõ"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Tên bảng tin",
+            "dashboard_name_placeholder": "VD: Chuyền 4",
+            "name_error_tooltip": "Nhập tên",
+            "name_error_text": "Tên là bắt buộc",
+            "selection_title": "Chọn nguồn dữ liệu",
+            "selection_desc": "Chọn file",
+            "columns": {
+                "file_name": "Tên file",
+                "status": "TT",
+                "uploaded": "Đã tải lên",
+                "action": "Hành động"
+            },
+            "btn_configure": "Cấu hình",
+            "btn_complete_setup": "Hoàn tất",
+            "note": "Lưu ý",
+            "empty_title": "Chưa có dữ liệu",
+            "empty_desc": "Vui lòng tải lên file trước",
+            "error_load_failed": "Lỗi tải"
+        },
+        "step2": {
+            "title": "Ánh xạ dữ liệu",
+            "subtitle": "Kiểm tra cột",
+            "stats": {
+                "auto": "Tự động",
+                "review": "Cần xem",
+                "attention": "Chú ý",
+                "ignored": "Bỏ qua"
+            },
+            "filter": {
+                "all": "Tất cả",
+                "unmapped": "Chưa map",
+                "conflicts": "Xung đột"
+            },
+            "showing_count": "{{filtered}}/{{total}}",
+            "table": {
+                "source": "Cột nguồn",
+                "target": "Trường đích",
+                "status": "TT",
+                "no_match": "Không khớp",
+                "try_different": "Thử lại"
+            },
+            "status_labels": {
+                "exact": "Chính xác",
+                "exact_tooltip": "Khớp tên",
+                "fuzzy": "Gần đúng",
+                "fuzzy_tooltip": "Gần giống",
+                "ai": "AI",
+                "ai_tooltip": "AI Gợi ý",
+                "manual": "Thủ công",
+                "manual_tooltip": "Tự chọn",
+                "unset": "Trống",
+                "unset_tooltip": "Cần chọn",
+                "duplicate": "Trùng lặp"
+            },
+            "field_selector": {
+                "select_placeholder": "Chọn trường...",
+                "search_placeholder": "Tìm...",
+                "suggested": "Gợi ý",
+                "all_fields": "Tất cả",
+                "no_results": "Không thấy",
+                "ignore_action": "Bỏ qua",
+                "restore_action": "Khôi phục",
+                "in_use": "đang dùng"
+            },
+            "alerts": {
+                "conflict_count_one": "1 trùng",
+                "conflict_count_other": "{{count}} trùng",
+                "remaining_needed": "Còn thiếu"
+            },
+            "btn_confirm": "Xác nhận",
+            "processing": {
+                "title": "Xử lý",
+                "subtitle": "Đang nhập...",
+                "logs": {
+                    "init": "Khởi tạo...",
+                    "schema": "Kiểm tra...",
+                    "mapping": "Map...",
+                    "req": "Gửi...",
+                    "sending": "Gửi...",
+                    "success": "Thành công"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Mẫu nhanh",
+            "divider": "hoặc",
+            "library_title": "Thư viện",
+            "selected_count": "{{count}} chọn",
+            "btn_create": "Tạo bảng tin",
+            "btn_configuring": "Đang tạo..."
+        },
+        "title": "Cài đặt",
+        "steps": {
+            "upload": {
+                "label": "Nguồn",
+                "desc": "Tải lên"
+            },
+            "mapping": {
+                "label": "Ánh xạ",
+                "desc": "Kiểm tra"
+            },
+            "widgets": {
+                "label": "Bảng tin",
+                "desc": "Bố cục"
+            }
+        },
+        "mini_map": {
+            "title": "Xem trước",
+            "empty_state": "Chọn widget",
+            "stats": {
+                "widgets_one": "{{count}}",
+                "widgets_other": "{{count}}",
+                "screens_one": "{{count}}",
+                "screens_other": "{{count}}"
+            },
+            "density": {
+                "empty": "Trống",
+                "compact": "Gọn",
+                "balanced": "Vừa",
+                "heavy": "Dày"
+            },
+            "scroll_warning": "Sẽ cuộn"
+        },
+        "context": {
+            "title": "Ngữ cảnh",
+            "select_factory": "Chọn NM",
+            "select_source": "Chọn Nguồn",
+            "select_factory_first": "Chọn NM trước",
+            "loading_factories": "Tải NM...",
+            "loading_sources": "Tải nguồn...",
+            "fetching_sources": "Lấy nguồn...",
+            "no_sources_alert": "Không có nguồn",
+            "select_source_overlay": "Chọn nguồn"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Tải lên",
+            "title_preview": "Xem trước",
+            "subtitle_upload": "Tải lên {{dataSourceName}}",
+            "subtitle_preview": "Xem lại",
+            "drop_text": "Kéo thả file",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "Thành công",
+            "info_preview": "Xem trước dữ liệu",
+            "btn_upload_preview": "Tải & Xem",
+            "btn_uploading": "Đang tải...",
+            "errors": {
+                "invalid_extension": "Sai định dạng",
+                "duplicate_file": "Trùng file",
+                "preview_failed": "Lỗi xem trước",
+                "upload_failed": "Lỗi tải"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Cài đặt Tổ chức",
+        "description": "Quản lý",
+        "cards": {
+            "general": {
+                "title": "Chung",
+                "description": "Thông tin"
+            },
+            "members": {
+                "title": "Thành viên",
+                "description": "Nhóm"
+            },
+            "infrastructure": {
+                "title": "Hạ tầng",
+                "description": "Nhà máy"
+            },
+            "security": {
+                "title": "Bảo mật",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "Thanh toán",
+                "description": "Hóa đơn"
+            }
+        },
+        "badges": {
+            "coming_soon": "Sắp ra mắt"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Quay lại"
+        },
+        "top_nav": {
+            "search_placeholder": "Tìm kiếm...",
+            "search_coming_soon": "Sắp có",
+            "notifications": {
+                "title": "Thông báo",
+                "mark_read": "Đã đọc",
+                "empty": "Trống"
+            },
+            "user_menu": {
+                "profile": "Hồ sơ",
+                "logout": "Đăng xuất",
+                "default_user": "User",
+                "default_role": "Viewer"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Tổ chức",
+            "factories": "Nhà máy"
+        },
+        "header": {
+            "title": "Cấu hình",
+            "popover_trigger_label": "Thông tin"
+        },
+        "popover": {
+            "title": "Cấu hình",
+            "assignment": {
+                "title": "Phân công",
+                "desc_part1": "Xem",
+                "desc_part2": "Gán quản lý"
+            },
+            "structure": {
+                "title": "Cấu trúc",
+                "desc": "Sửa đổi"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Phân công",
+            "structure_mode": "Cấu trúc",
+            "customize_layout": "Tùy chỉnh",
+            "done_editing": "Xong"
+        },
+        "list": {
+            "add_data_source": "Thêm nguồn",
+            "no_data_sources": "Chưa có nguồn"
+        },
+        "bulk_actions": {
+            "selected": "Đã chọn",
+            "assign_manager": "Gán quản lý"
+        },
+        "messages": {
+            "loading": "Đang tải...",
+            "assignment_failed": "Lỗi"
+        }
+    },
+    "roles": {
+        "system_admin": "SysAdmin",
+        "owner": "Chủ sở hữu",
+        "admin": "Quản trị",
+        "viewer": "Người xem",
+        "member": "Thành viên",
+        "operator": "Vận hành",
+        "factory_manager": "GĐ Nhà máy",
+        "line_manager": "Trưởng chuyền",
+        "user": "Người dùng",
+        "manager": "Quản lý"
+    },
+    "org_general": {
+        "title": "Chung",
+        "profile": {
+            "logged_in_as": "Đăng nhập"
+        },
+        "at_a_glance": "Sơ lược",
+        "stats": {
+            "total_managers": "Tổng quản lý",
+            "assigned": "Đã gán",
+            "factories": "Nhà máy",
+            "production_lines": "Dây chuyền"
+        },
+        "danger_zone": {
+            "title": "Vùng nguy hiểm",
+            "description": "Xóa vĩnh viễn",
+            "delete_button": "Xóa Tổ chức"
+        }
+    },
+    "org_members": {
+        "title": "Thành viên",
+        "invite_member": "Mời",
+        "search_placeholder": "Tìm...",
+        "filter": "Lọc",
+        "table": {
+            "user": "Người dùng",
+            "global_role": "Vai trò",
+            "access": "Truy cập",
+            "last_active": "Hoạt động cuối",
+            "actions": "Hành động",
+            "loading": "Tải...",
+            "no_members": "Không tìm thấy",
+            "assignments": "Phân công",
+            "unassigned": "Chưa gán",
+            "never_active": "Chưa bao giờ",
+            "view_details": "Chi tiết"
+        },
+        "drawer": {
+            "title": "Chi tiết",
+            "role_label": "Vai trò",
+            "active_assignments": "Phân công",
+            "no_assignments": "Trống",
+            "current_factory": "Nhà máy",
+            "danger_zone": {
+                "title": "Nguy hiểm",
+                "suspend_button": "Đình chỉ"
+            }
+        },
+        "cell": {
+            "unknown_user": "Không rõ",
+            "active": "Hoạt động",
+            "inactive": "Ngưng"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Quay lại",
+        "back_button": "Quay lại",
+        "title": "Hạ tầng",
+        "sites_count": "{{count}} Sites",
+        "sites": "Sites",
+        "add_factory": "Thêm NM",
+        "search_placeholder": "Tìm...",
+        "retry": "Thử lại",
+        "new_factory": {
+            "title": "Nhà máy mới",
+            "subtitle": "Thêm mới"
+        },
+        "card": {
+            "data_sources": "Nguồn",
+            "managers": "Quản lý",
+            "configure_site": "Cấu hình",
+            "edit_details": "Sửa",
+            "delete_factory": "Xóa"
+        },
+        "list": {
+            "name": "Tên",
+            "factory": "NM",
+            "code": "Mã",
+            "country": "QG",
+            "sources": "Nguồn",
+            "managers": "Quản lý",
+            "actions": "Hành động"
+        },
+        "no_match": "Không khớp",
+        "confirm_delete": "Xóa?",
+        "delete_fail": "Lỗi"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Thêm nguồn",
+            "subtitle": "Mới",
+            "name_label": "Tên",
+            "name_placeholder": "Tên",
+            "code_label": "Mã",
+            "code_placeholder": "Mã",
+            "specialty_label": "Chuyên môn",
+            "specialty_placeholder": "May",
+            "description_label": "Mô tả",
+            "description_placeholder": "Mô tả...",
+            "use_defaults": "Mặc định",
+            "inherit_tooltip": "Kế thừa",
+            "custom_tooltip": "Tùy chỉnh",
+            "inherit_desc": "Kế thừa",
+            "custom_desc": "Trống",
+            "source_usage": "Sử dụng",
+            "quota_reached": "Đầy",
+            "submit_button": "Thêm",
+            "submitting": "Đang thêm..."
+        },
+        "create_factory": {
+            "title": "Tạo NM",
+            "subtitle": "Mới",
+            "quota_reached": "Đầy",
+            "name_label": "Tên",
+            "name_placeholder": "Tên",
+            "code_label": "Mã",
+            "code_placeholder": "Mã",
+            "code_desc": "ID",
+            "source_name_label": "Nguồn",
+            "source_name_placeholder": "Nguồn",
+            "source_specialty_label": "Chuyên môn",
+            "source_specialty_placeholder": "Loại",
+            "source_specialty_desc": "Loại",
+            "source_desc_label": "Mô tả",
+            "source_desc_placeholder": "Mô tả",
+            "source_desc_help": "Help",
+            "submitting_msg": "Đang tạo...",
+            "submit_button": "Tạo",
+            "submitting_button": "Đang tạo..."
+        },
+        "edit_factory": {
+            "title": "Sửa",
+            "name_label": "Tên",
+            "code_label": "Mã",
+            "submit_button": "Lưu",
+            "submitting_button": "Đang lưu..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Đổi tên",
+            "managers_stat": "Quản lý",
+            "efficiency_stat": "Hiệu suất",
+            "assigned_team": "Team",
+            "no_managers": "Trống",
+            "remove_button": "Gỡ",
+            "danger_zone": "Nguy hiểm",
+            "delete_button": "Xóa Nguồn",
+            "confirm_remove": "Gỡ?",
+            "remove_fail": "Lỗi",
+            "confirm_delete": "Xóa?",
+            "delete_fail": "Lỗi",
+            "rename_fail": "Lỗi"
+        },
+        "row": {
+            "untitled_source": "Không tên",
+            "rename_required": "Cần tên",
+            "click_to_view": "Xem",
+            "click_tooltip": "Chi tiết",
+            "confirm_delete": "Xóa?",
+            "rename_prompt": "Tên mới:"
+        },
+        "user_search": {
+            "placeholder": "Tìm...",
+            "no_results": "Không thấy",
+            "no_available": "Hết",
+            "available_count": "{{count}}"
+        },
+        "user_search_placeholder": "Tìm...",
+        "no_results": "Không thấy",
+        "manager_exists": "Đã có"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Chào mừng",
+            "welcome_subtitle": "Đăng nhập",
+            "email_label": "Email",
+            "password_label": "Mật khẩu",
+            "forgot_password": "Quên?",
+            "sign_in_button": "Đăng nhập",
+            "no_account": "Chưa có TK?",
+            "contact_sales": "Liên hệ",
+            "back_to_landing": "Quay lại",
+            "errors": {
+                "network_error": "Lỗi mạng",
+                "invalid_credentials": "Sai thông tin"
+            },
+            "demo_card": {
+                "title": "Báo cáo",
+                "subtitle": "Live",
+                "efficiency": "Hiệu suất",
+                "efficiency_sub": "vs mục tiêu",
+                "output": "Sản lượng",
+                "output_sub": "Ổn",
+                "chart_title": "Tốc độ",
+                "chart_period": "4h",
+                "chart_current": "Hiện tại"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Lỗi",
+            "unknown_error": "Lỗi lạ",
+            "return_home": "Trang chủ"
+        },
+        "confirm_dialog": {
+            "confirm": "Xác nhận",
+            "cancel": "Hủy",
+            "please_wait": "Chờ..."
+        },
+        "quota_warning": {
+            "limit_reached": "Đạt giới hạn",
+            "near_limit": "Gần giới hạn",
+            "upgrade_prompt": "Nâng cấp",
+            "consider_upgrade": "Cân nhắc",
+            "upgrade_button": "Nâng cấp",
+            "dismiss_label": "Bỏ qua",
+            "type_factories": "nhà máy",
+            "type_lines": "dây chuyền"
+        },
+        "date_range_picker": {
+            "start_date": "Từ",
+            "end_date": "Đến",
+            "start_in_timezone": "Từ",
+            "end_in_timezone": "Đến"
+        },
+        "breadcrumb": {
+            "aria_label": "Breadcrumb"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Tiêu chuẩn",
+            "subtitle": "Mặc định"
+        },
+        "sections": {
+            "localization": "Vùng",
+            "shifts": {
+                "title": "Ca",
+                "description": "Kế thừa"
+            },
+            "non_working_days": {
+                "title": "Ngày nghỉ",
+                "description": "Mặc định"
+            },
+            "schema_configuration": "Schema",
+            "upload_history": "Lịch sử",
+            "active_field_mapping": "Mapping",
+            "field_mapping_description": "Map"
+        },
+        "fields": {
+            "date_format": "Ngày",
+            "currency": "Tiền tệ",
+            "measurement_system": "Đo lường",
+            "preview": "Xem trước"
+        },
+        "shifts": {
+            "add": "Thêm Ca",
+            "new_shift": "Ca mới",
+            "empty": "Trống",
+            "name_label": "Tên",
+            "name_placeholder": "Tên",
+            "start_time": "Bắt đầu",
+            "end_time": "Kết thúc"
+        },
+        "timezone_warning": {
+            "title": "Múi giờ?",
+            "message": "Ảnh hưởng",
+            "confirm": "Có"
+        },
+        "buttons": {
+            "save": "Lưu",
+            "saving": "Lưu..."
+        },
+        "errors": {
+            "save_failed": "Lỗi"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Không tìm thấy",
+        "system_node": "Node",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "Schema",
+            "upload_history": "Lịch sử"
+        },
+        "schema": {
+            "active_field_mapping": "Mapping",
+            "field_mapping_description": "Map",
+            "edit_mappings": "Sửa",
+            "reset_schema": "Reset",
+            "no_mappings": "Trống",
+            "system_status": "Trạng thái",
+            "last_updated": "Cập nhật",
+            "no_config_title": "Chưa cấu hình",
+            "no_config_description": "Chưa map",
+            "no_config_hint": "Tải lên",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "Hệ thống"
+            }
+        },
+        "uploads": {
+            "processed_files": "Đã xử lý",
+            "clear_history": "Xóa",
+            "no_files": "Trống"
+        },
+        "confirm": {
+            "reset_schema": "Xóa?",
+            "clear_history": "Xóa lịch sử?"
+        },
+        "errors": {
+            "reset_failed": "Lỗi",
+            "clear_failed": "Lỗi"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Trống",
+            "description": "Thêm widget",
+            "action": "Thiết kế"
+        }
+    },
+    "file_preview": {
+        "title": "Xem trước",
+        "loading": "Tải...",
+        "loading_subtitle": "Đọc",
+        "error_title": "Lỗi",
+        "error_default": "Lỗi",
+        "showing_rows": "Hiện {{count}}",
+        "columns_detected": "{{count}} cột",
+        "info_note": "Lưu ý",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Tích hợp",
+        "subtitle": "Quản lý",
+        "upload_data": "Tải lên",
+        "collapse": "Thu",
+        "expand": "Mở",
+        "tabs": {
+            "schema": "Schema",
+            "uploads": "Uploads"
+        },
+        "empty_sources": "Trống",
+        "configure_new": "Cấu hình",
+        "no_description": "Không mô tả",
+        "schema_version": "v{{version}}",
+        "no_active_schema": "Không schema",
+        "edit_config": "Sửa",
+        "error_update": "Lỗi",
+        "modal": {
+            "title": "Sửa",
+            "source_name": "Tên",
+            "time_column": "Cột thời gian",
+            "time_column_hint": "Header",
+            "config_active": "Active"
+        }
+    },
+    "data_source_config": {
+        "title": "Cấu hình",
+        "subtitle": "ID: {{id}}",
+        "loading": "Tải...",
+        "not_configured_title": "Chưa cấu hình",
+        "not_configured_desc": "Tải lên",
+        "close_modal": "Đóng",
+        "time_column": "Thời gian",
+        "time_column_placeholder": "Thời gian",
+        "time_column_hint": "Tên",
+        "schema_title": "Mapping",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "Nguồn",
+            "target": "Đích"
+        },
+        "schema_note": "Lưu ý",
+        "description": "Mô tả",
+        "description_placeholder": "Mô tả...",
+        "success": "Thành công",
+        "error_save": "Lỗi",
+        "error_load": "Lỗi",
+        "save_button": "Lưu"
+    },
+    "upload_history": {
+        "title": "Tải lên gần đây",
+        "loading": "Tải...",
+        "empty": "Trống",
+        "error": "Lỗi"
+    }
+}

@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "Gebruikersprofiel",
+        "subtitle": "Beheer uw accountinstellingen",
+        "back": "Terug",
+        "save_btn": "Opslaan",
+        "success": "Succesvol!",
+        "error_required": "Naam is verplicht",
+        "error_fail": "Fout",
+        "at": "@",
+        "roles": {
+            "admin": "Beheerder",
+            "user": "Gebruiker",
+            "manager": "Manager"
+        },
+        "sections": {
+            "factories": "Fabrieken",
+            "security": "Beveiliging",
+            "personal_info": "Persoonlijke info",
+            "localization": "Lokalisatie",
+            "notifications": "Meldingen"
+        },
+        "security": {
+            "change_password": "Wachtwoord wijzigen",
+            "two_factor": "2FA"
+        },
+        "fields": {
+            "full_name": "Volledige naam",
+            "email": "E-mail",
+            "email_hint": "E-mail",
+            "language": "Taal",
+            "theme": "Thema"
+        },
+        "themes": {
+            "light": "Licht",
+            "dark": "Donker",
+            "system": "Systeem"
+        },
+        "notifications": {
+            "email": "E-mail",
+            "push": "Push",
+            "weekly": "Wekelijks"
+        },
+        "location_selector": {
+            "label": "Locatie",
+            "auto_detect": "Auto",
+            "search_placeholder": "Zoek land...",
+            "no_results": "Geen resultaten",
+            "select_country_first": "Selecteer land",
+            "selected": "Geselecteerd:"
+        },
+        "unsaved_changes": {
+            "title": "Niet-opgeslagen wijzigingen",
+            "message": "Wilt u vertrekken?",
+            "confirm": "Vertrekken",
+            "cancel": "Blijven"
+        }
+    },
+    "navigation": {
+        "dashboard": "Dashboard",
+        "my_dashboards": "Mijn Dashboards",
+        "organization": "Organisatie",
+        "show_more": "Toon meer",
+        "show_less": "Toon minder"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Mijn Dashboards",
+            "search_placeholder": "Zoeken...",
+            "status": {
+                "loading": "Laden...",
+                "none": "Geen",
+                "available_one": "{{count}} site",
+                "available_other": "{{count}} sites"
+            },
+            "table": {
+                "header_name": "Naam",
+                "header_location": "Locatie",
+                "header_status": "Status",
+                "header_lines": "Lijnen",
+                "header_actions": "Acties",
+                "action_view": "Bekijk"
+            },
+            "actions": {
+                "new_dashboard": "Nieuw",
+                "configure_sites": "Configureren",
+                "clear_search": "Wissen"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "Geen resultaten",
+                "no_results_detail": "Niet gevonden"
+            },
+            "factory_status": {
+                "at_limit": "Limiet",
+                "near_limit": "Bijna limiet",
+                "active": "Actief"
+            },
+            "empty_state": {
+                "title": "Leeg",
+                "description": "Geen fabrieken",
+                "admin_hint": "Instellingen",
+                "user_hint": "Contacteer admin",
+                "cta": "Naar instellingen"
+            },
+            "view": {
+                "grid": "Raster",
+                "list": "Lijst"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} bronnen",
+            "edit": "Bewerken",
+            "delete": "Verwijderen",
+            "open": "Open",
+            "edit_title": "Bewerken",
+            "delete_title": "Verwijderen"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Home",
+            "list": "Lijst",
+            "production_sites": "Sites",
+            "sites": "Sites",
+            "not_found": "Niet gevonden"
+        },
+        "sections": {
+            "overview": "Overzicht",
+            "performance": "Prestaties",
+            "settings": "Instellingen",
+            "dashboards": "Dashboards",
+            "data_sources": "Databronnen"
+        },
+        "actions": {
+            "edit": "Config bewerken",
+            "delete": "Site verwijderen",
+            "save": "Opslaan",
+            "settings": "Instellingen",
+            "new_dashboard": "Nieuw Dashboard",
+            "create_dashboard": "Maken",
+            "add_data_source": "Bron toevoegen",
+            "new_source": "Nieuwe bron",
+            "upload_data": "Uploaden",
+            "no_write_access": "Geen schrijftoegang"
+        },
+        "alerts": {
+            "confirm_delete": "Zeker?",
+            "edit_soon": "Binnenkort",
+            "delete_soon": "Binnenkort",
+            "delete_fail": "Fout"
+        },
+        "stats": {
+            "dashboards": "Dashboards",
+            "active_widgets": "Widgets",
+            "active_sources": "Bronnen",
+            "used_info": "{{current}}/{{max}} gebr."
+        },
+        "not_found": "Niet gevonden",
+        "search": {
+            "dashboards_placeholder": "Filter...",
+            "sources_placeholder": "Zoek...",
+            "no_sources_found": "Geen bronnen"
+        },
+        "quota": {
+            "limit_reached": "Limiet bereikt"
+        },
+        "table": {
+            "headers": {
+                "name": "Naam",
+                "status": "Status",
+                "actions": "Acties"
+            }
+        },
+        "status": {
+            "active": "Actief",
+            "inactive": "Inactief"
+        },
+        "confirm": {
+            "delete_source": "Bron verwijderen?",
+            "delete_dashboard": "Dashboard verwijderen?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Vandaag",
+            "yesterday": "Gisteren",
+            "last_7_days": "7 dagen",
+            "last_30_days": "30 dagen",
+            "this_month": "Deze maand",
+            "last_month": "Vorige maand"
+        },
+        "shifts": {
+            "all": "Alle diensten",
+            "shift_a": "Dienst A",
+            "shift_b": "Dienst B",
+            "shift_c": "Dienst C"
+        },
+        "date_range": "Datumbereik",
+        "to": "tot"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Fabriek",
+            "line": "Lijn",
+            "dashboard": "Dashboard"
+        },
+        "status": {
+            "updated": "Geüpdatet {{time}}",
+            "live": "Live",
+            "loading": "Laden...",
+            "saving": "Opslaan..."
+        },
+        "actions": {
+            "refresh": "Verversen",
+            "reset_layout": "Reset",
+            "reset_confirm": "Bevestigen?",
+            "design_layout": "Ontwerp",
+            "save_layout": "Opslaan",
+            "add_widget": "Widget toevoegen",
+            "cancel": "Annuleren"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Bibliotheek",
+            "subtitle": "Sleep",
+            "categories": {
+                "all": "Alle",
+                "production": "Productie",
+                "quality": "Kwaliteit",
+                "efficiency": "Efficiëntie"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simulatie",
+            "ready_to_use": "Klaar",
+            "recommended": "Aanbevolen",
+            "future_capability": "Toekomst",
+            "coming_soon": "Binnenkort",
+            "near_match": "Bijna match",
+            "ai_recommendations": "AI",
+            "select_all": "Alles selecteren",
+            "selected": "Geselecteerd",
+            "compatible": "Compatibel",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "Data nodig",
+            "needs_mapping": "Mapping nodig",
+            "categories": {
+                "Efficiency": "Efficiëntie",
+                "Quality": "Kwaliteit",
+                "Workforce": "Personeel",
+                "Operations": "Operaties"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Aanbevolen",
+                "Operations": "Operaties",
+                "Strategy": "Strategie"
+            },
+            "efficiency_starter": {
+                "title": "Efficiëntie Start",
+                "description": "Basis tracking"
+            },
+            "quality_auditor": {
+                "title": "Kwaliteitsauditor",
+                "description": "DHU"
+            },
+            "floor_manager": {
+                "title": "Vloermanager",
+                "description": "Real-time"
+            },
+            "executive_summary": {
+                "title": "Executive Summary",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "GEPLAND",
+            "actual": "WERKELIJK",
+            "target": "DOEL",
+            "efficiency": "Efficiëntie",
+            "minutes": "min",
+            "limit": "Limiet",
+            "status": "Status",
+            "on_target": "OP DOEL",
+            "below_target": "ONDER",
+            "defect_rate": "Defect %"
+        },
+        "titles": {
+            "production_chart": "Productie Output",
+            "line_efficiency": "Lijn Efficiëntie",
+            "earned_minutes": "Verdiende Minuten",
+            "sam_performance": "SAM Prestatie",
+            "dhu_quality": "DHU Kwaliteit",
+            "speed_quality": "Snelheid vs Kwaliteit",
+            "top_blockers": "Top Blokkades",
+            "style_progress": "Stijl Voortgang",
+            "daily_target": "Dagelijks Doel",
+            "production_timeline": "Productie Tijdlijn",
+            "complexity_impact": "Complexiteit Impact",
+            "workforce_attendance": "Aanwezigheid",
+            "kpi_summary": "KPI Samenvatting"
+        },
+        "descriptions": {
+            "production_chart": "Vergelijking",
+            "line_efficiency": "Real-time",
+            "earned_minutes": "SAM",
+            "sam_performance": "Standaard",
+            "dhu_quality": "Defect analyse",
+            "speed_quality": "Correlatie",
+            "top_blockers": "Oorzaken stilstand",
+            "style_progress": "% Voltooid",
+            "daily_target": "Voortgang",
+            "production_timeline": "Gantt",
+            "complexity_impact": "Analyse",
+            "workforce_attendance": "Personeel",
+            "kpi_summary": "Overzicht"
+        },
+        "production_chart": {
+            "planned": "GEPLAND",
+            "actual_output": "WERKELIJK"
+        },
+        "production_timeline": {
+            "output": "Werkelijk",
+            "target": "Doel"
+        },
+        "complexity_impact": {
+            "title": "Complexiteit",
+            "loading_styles": "Laden...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Complexiteit)",
+            "styles": "Stijl"
+        },
+        "speed_quality": {
+            "efficiency": "Efficiëntie",
+            "defect_rate": "Defect %"
+        },
+        "earned_minutes": {
+            "earned": "VERDIEND",
+            "available": "BESCHIKBAAR"
+        },
+        "dhu_quality": {
+            "no_data": "Geen data",
+            "current_dhu": "Huidige DHU",
+            "above_limit": "BOVEN LIMIET"
+        },
+        "blocker_cloud": {
+            "occurrences": "keer",
+            "view_all_logs": "Alle logs",
+            "no_blockers": "Geen blokkades"
+        }
+    },
+    "common": {
+        "back": "Terug",
+        "cancel": "Annuleren",
+        "error": "Fout",
+        "success": "Succes",
+        "uploading": "Uploaden...",
+        "processing": "Verwerken...",
+        "remove": "Verwijderen",
+        "ready": "Klaar",
+        "needs_setup": "Setup nodig",
+        "date": "Datum",
+        "actions": {
+            "save": "Opslaan",
+            "cancel": "Annuleren",
+            "close": "Sluiten",
+            "delete": "Verwijderen",
+            "edit": "Bewerken",
+            "search": "Zoeken...",
+            "confirm": "Bevestigen",
+            "back": "Terug",
+            "create": "Maken",
+            "invite": "Uitnodigen"
+        },
+        "status": {
+            "active": "Actief",
+            "inactive": "Inactief",
+            "unknown": "Onbekend"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Dashboard Naam",
+            "dashboard_name_placeholder": "Bijv. Lijn 4",
+            "name_error_tooltip": "Voer naam in",
+            "name_error_text": "Naam verplicht",
+            "selection_title": "Bron Selectie",
+            "selection_desc": "Kies bestand",
+            "columns": {
+                "file_name": "Bestandsnaam",
+                "status": "Status",
+                "uploaded": "Geüpload",
+                "action": "Actie"
+            },
+            "btn_configure": "Configureren",
+            "btn_complete_setup": "Voltooien",
+            "note": "Let op",
+            "empty_title": "Geen bronnen",
+            "empty_desc": "Upload bestand",
+            "error_load_failed": "Fout laden"
+        },
+        "step2": {
+            "title": "Data Mapping",
+            "subtitle": "Review Kolommen",
+            "stats": {
+                "auto": "Auto",
+                "review": "Review",
+                "attention": "Let op",
+                "ignored": "Genegeerd"
+            },
+            "filter": {
+                "all": "Alles",
+                "unmapped": "Niet gemapt",
+                "conflicts": "Conflicten"
+            },
+            "showing_count": "{{filtered}}/{{total}} kolommen",
+            "table": {
+                "source": "Bron",
+                "target": "Doel",
+                "status": "Status",
+                "no_match": "Geen match",
+                "try_different": "Probeer anders"
+            },
+            "status_labels": {
+                "exact": "Exact",
+                "exact_tooltip": "Exacte match",
+                "fuzzy": "Fuzzy",
+                "fuzzy_tooltip": "Lijkt op",
+                "ai": "AI",
+                "ai_tooltip": "AI Suggestie",
+                "manual": "Handmatig",
+                "manual_tooltip": "Handmatig",
+                "unset": "Niet ingesteld",
+                "unset_tooltip": "Mapping nodig",
+                "duplicate": "Duplicaat"
+            },
+            "field_selector": {
+                "select_placeholder": "Kies veld...",
+                "search_placeholder": "Zoeken...",
+                "suggested": "Voorgesteld",
+                "all_fields": "Alle velden",
+                "no_results": "Geen resultaten",
+                "ignore_action": "Negeren",
+                "restore_action": "Herstellen",
+                "in_use": "in gebruik"
+            },
+            "alerts": {
+                "conflict_count_one": "1 duplicaat",
+                "conflict_count_other": "{{count}} duplicaten",
+                "remaining_needed": "Resterend nodig"
+            },
+            "btn_confirm": "Bevestigen",
+            "processing": {
+                "title": "Verwerken",
+                "subtitle": "Importeren...",
+                "logs": {
+                    "init": "Init...",
+                    "schema": "Schema...",
+                    "mapping": "Mapping...",
+                    "req": "Verzoek...",
+                    "sending": "Verzenden...",
+                    "success": "Succes"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Blauwdrukken",
+            "divider": "of",
+            "library_title": "Bibliotheek",
+            "selected_count": "{{count}} geselecteerd",
+            "btn_create": "Dashboard Maken",
+            "btn_configuring": "Configureren..."
+        },
+        "title": "Setup",
+        "steps": {
+            "upload": {
+                "label": "Bron",
+                "desc": "Upload"
+            },
+            "mapping": {
+                "label": "Mapping",
+                "desc": "Validatie"
+            },
+            "widgets": {
+                "label": "Dashboard",
+                "desc": "Lay-out"
+            }
+        },
+        "mini_map": {
+            "title": "Voorbeeld",
+            "empty_state": "Kies widget",
+            "stats": {
+                "widgets_one": "{{count}} widget",
+                "widgets_other": "{{count}} widgets",
+                "screens_one": "~{{count}} scherm",
+                "screens_other": "~{{count}} schermen"
+            },
+            "density": {
+                "empty": "Leeg",
+                "compact": "Compact",
+                "balanced": "Gebalanceerd",
+                "heavy": "Dicht"
+            },
+            "scroll_warning": "Scrollen"
+        },
+        "context": {
+            "title": "Context",
+            "select_factory": "Kies Fabriek",
+            "select_source": "Kies Bron",
+            "select_factory_first": "Fabriek eerst",
+            "loading_factories": "Laden...",
+            "loading_sources": "Laden...",
+            "fetching_sources": "Ophalen...",
+            "no_sources_alert": "Geen bronnen",
+            "select_source_overlay": "Kies bron"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Uploaden",
+            "title_preview": "Voorbeeld",
+            "subtitle_upload": "Upload naar {{dataSourceName}}",
+            "subtitle_preview": "Review",
+            "drop_text": "Sleep bestand",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "Succes!",
+            "info_preview": "Data voorbeeld",
+            "btn_upload_preview": "Upload & Voorbeeld",
+            "btn_uploading": "Uploaden...",
+            "errors": {
+                "invalid_extension": "Excel/CSV",
+                "duplicate_file": "Bestand bestaat",
+                "preview_failed": "Voorbeeld mislukt",
+                "upload_failed": "Upload mislukt"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Organisatie Instellingen",
+        "description": "Configuratie",
+        "cards": {
+            "general": {
+                "title": "Algemeen",
+                "description": "Profiel"
+            },
+            "members": {
+                "title": "Leden",
+                "description": "Toegang"
+            },
+            "infrastructure": {
+                "title": "Infrastructuur",
+                "description": "Fabrieken"
+            },
+            "security": {
+                "title": "Beveiliging",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "Facturering",
+                "description": "Facturen"
+            }
+        },
+        "badges": {
+            "coming_soon": "Binnenkort"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Terug naar instellingen"
+        },
+        "top_nav": {
+            "search_placeholder": "Zoeken...",
+            "search_coming_soon": "Binnenkort!",
+            "notifications": {
+                "title": "Meldingen",
+                "mark_read": "Gelezen",
+                "empty": "Geen meldingen"
+            },
+            "user_menu": {
+                "profile": "Profiel",
+                "logout": "Uitloggen",
+                "default_user": "Gebruiker",
+                "default_role": "Kijker"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organisatie",
+            "factories": "Fabrieken"
+        },
+        "header": {
+            "title": "Fabriek Config",
+            "popover_trigger_label": "Info"
+        },
+        "popover": {
+            "title": "Configuratie",
+            "assignment": {
+                "title": "Toewijzing:",
+                "desc_part1": "Details",
+                "desc_part2": "manager"
+            },
+            "structure": {
+                "title": "Structuur:",
+                "desc": "aanpassen"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Toewijzing",
+            "structure_mode": "Structuur",
+            "customize_layout": "Aanpassen",
+            "done_editing": "Klaar"
+        },
+        "list": {
+            "add_data_source": "Bron toevoegen",
+            "no_data_sources": "Geen bronnen"
+        },
+        "bulk_actions": {
+            "selected": "Geselecteerd",
+            "assign_manager": "Manager toewijzen"
+        },
+        "messages": {
+            "loading": "Laden...",
+            "assignment_failed": "Mislukt"
+        }
+    },
+    "roles": {
+        "system_admin": "Systeembeheerder",
+        "owner": "Eigenaar",
+        "admin": "Beheerder",
+        "viewer": "Kijker",
+        "member": "Lid",
+        "operator": "Operator",
+        "factory_manager": "Fabrieksmanager",
+        "line_manager": "Lijnmanager",
+        "user": "Gebruiker",
+        "manager": "Manager"
+    },
+    "org_general": {
+        "title": "Algemeen",
+        "profile": {
+            "logged_in_as": "Ingelogd als"
+        },
+        "at_a_glance": "Overzicht",
+        "stats": {
+            "total_managers": "Totaal managers",
+            "assigned": "Toegewezen",
+            "factories": "Fabrieken",
+            "production_lines": "Lijnen"
+        },
+        "danger_zone": {
+            "title": "Gevarenzone",
+            "description": "Permanent verwijderen",
+            "delete_button": "Verwijder Organisatie"
+        }
+    },
+    "org_members": {
+        "title": "Leden",
+        "invite_member": "Uitnodigen",
+        "search_placeholder": "Zoeken...",
+        "filter": "Filter",
+        "table": {
+            "user": "Gebruiker",
+            "global_role": "Rol",
+            "access": "Toegang",
+            "last_active": "Activiteit",
+            "actions": "Acties",
+            "loading": "Laden...",
+            "no_members": "Geen leden",
+            "assignments": "Toewijzingen",
+            "unassigned": "Niet toegewezen",
+            "never_active": "Nooit",
+            "view_details": "Details"
+        },
+        "drawer": {
+            "title": "Details",
+            "role_label": "Rol",
+            "active_assignments": "Actief",
+            "no_assignments": "Geen",
+            "current_factory": "Fabriek",
+            "danger_zone": {
+                "title": "Gevaar",
+                "suspend_button": "Opschorten"
+            }
+        },
+        "cell": {
+            "unknown_user": "Onbekend",
+            "active": "Actief",
+            "inactive": "Inactief"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Terug",
+        "back_button": "Terug",
+        "title": "Infrastructuur",
+        "sites_count": "{{count}} Sites",
+        "sites": "Sites",
+        "add_factory": "Fabriek toevoegen",
+        "search_placeholder": "Zoeken...",
+        "retry": "Opnieuw",
+        "new_factory": {
+            "title": "Nieuwe Fabriek",
+            "subtitle": "Toevoegen"
+        },
+        "card": {
+            "data_sources": "Bronnen",
+            "managers": "Managers",
+            "configure_site": "Config",
+            "edit_details": "Bewerken",
+            "delete_factory": "Verwijderen"
+        },
+        "list": {
+            "name": "Naam",
+            "factory": "Fabriek",
+            "code": "Code",
+            "country": "Land",
+            "sources": "Bronnen",
+            "managers": "Managers",
+            "actions": "Acties"
+        },
+        "no_match": "Geen match",
+        "confirm_delete": "Verwijderen?",
+        "delete_fail": "Fout"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Toevoegen",
+            "subtitle": "Nieuwe bron",
+            "name_label": "Naam",
+            "name_placeholder": "Naam",
+            "code_label": "Code",
+            "code_placeholder": "L-01",
+            "specialty_label": "Specialiteit",
+            "specialty_placeholder": "Assemblage",
+            "description_label": "Beschrijving",
+            "description_placeholder": "Beschrijving...",
+            "use_defaults": "Standaard",
+            "inherit_tooltip": "Overerven",
+            "custom_tooltip": "Aangepast",
+            "inherit_desc": "Overerft",
+            "custom_desc": "Leeg",
+            "source_usage": "Gebruik",
+            "quota_reached": "Limiet bereikt",
+            "submit_button": "Toevoegen",
+            "submitting": "Bezig..."
+        },
+        "create_factory": {
+            "title": "Maken",
+            "subtitle": "Setup",
+            "quota_reached": "Limiet bereikt",
+            "name_label": "Naam",
+            "name_placeholder": "Naam",
+            "code_label": "Code",
+            "code_placeholder": "Code",
+            "code_desc": "ID",
+            "source_name_label": "Bron (std)",
+            "source_name_placeholder": "Bronnaam",
+            "source_specialty_label": "Spec. (std)",
+            "source_specialty_placeholder": "Type",
+            "source_specialty_desc": "Type",
+            "source_desc_label": "Beschr. (std)",
+            "source_desc_placeholder": "Beschrijving",
+            "source_desc_help": "Help",
+            "submitting_msg": "Maken...",
+            "submit_button": "Maken",
+            "submitting_button": "Maken..."
+        },
+        "edit_factory": {
+            "title": "Bewerken",
+            "name_label": "Naam",
+            "code_label": "Code",
+            "submit_button": "Opslaan",
+            "submitting_button": "Opslaan..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Hernoemen",
+            "managers_stat": "Managers",
+            "efficiency_stat": "Efficiëntie",
+            "assigned_team": "Team",
+            "no_managers": "Geen",
+            "remove_button": "Verwijderen",
+            "danger_zone": "Gevaar",
+            "delete_button": "Verwijderen",
+            "confirm_remove": "Verwijderen?",
+            "remove_fail": "Fout",
+            "confirm_delete": "Verwijderen?",
+            "delete_fail": "Fout",
+            "rename_fail": "Fout"
+        },
+        "row": {
+            "untitled_source": "Naamloos",
+            "rename_required": "Naam nodig!",
+            "click_to_view": "Bekijk",
+            "click_tooltip": "Klik",
+            "confirm_delete": "Verwijderen?",
+            "rename_prompt": "Hernoemen:"
+        },
+        "user_search": {
+            "placeholder": "Zoeken...",
+            "no_results": "Geen",
+            "no_available": "Geen beschikbaar",
+            "available_count": "{{count}}"
+        },
+        "user_search_placeholder": "Zoeken...",
+        "no_results": "Geen",
+        "manager_exists": "Bestaat al"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Welkom",
+            "welcome_subtitle": "Inloggen",
+            "email_label": "E-mail",
+            "password_label": "Wachtwoord",
+            "forgot_password": "Vergeten?",
+            "sign_in_button": "Inloggen",
+            "no_account": "Geen account?",
+            "contact_sales": "Contact",
+            "back_to_landing": "Terug",
+            "errors": {
+                "network_error": "Netwerkfout",
+                "invalid_credentials": "Ongeldig"
+            },
+            "demo_card": {
+                "title": "Rapport",
+                "subtitle": "Live",
+                "efficiency": "Efficiëntie",
+                "efficiency_sub": "doel",
+                "output": "Output",
+                "output_sub": "schema",
+                "chart_title": "Tempo",
+                "chart_period": "4u",
+                "chart_current": "Huidig"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Fout",
+            "unknown_error": "Onbekend",
+            "return_home": "Home"
+        },
+        "confirm_dialog": {
+            "confirm": "Bevestigen",
+            "cancel": "Annuleren",
+            "please_wait": "Wachten..."
+        },
+        "quota_warning": {
+            "limit_reached": "Limiet ({{max}})",
+            "near_limit": "Bijna limiet",
+            "upgrade_prompt": "Upgrade",
+            "consider_upgrade": "Overwegen",
+            "upgrade_button": "Upgrade",
+            "dismiss_label": "Sluiten",
+            "type_factories": "fabrieken",
+            "type_lines": "lijnen"
+        },
+        "date_range_picker": {
+            "start_date": "Start",
+            "end_date": "Eind",
+            "start_in_timezone": "Start ({{timezone}})",
+            "end_in_timezone": "Eind ({{timezone}})"
+        },
+        "breadcrumb": {
+            "aria_label": "Broodkruimel"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Standaarden",
+            "subtitle": "Standaardwaarden"
+        },
+        "sections": {
+            "localization": "Lokalisatie",
+            "shifts": {
+                "title": "Diensten",
+                "description": "Overerving"
+            },
+            "non_working_days": {
+                "title": "Vrije dagen",
+                "description": "Standaard"
+            },
+            "schema_configuration": "Schema",
+            "upload_history": "Geschiedenis",
+            "active_field_mapping": "Mapping",
+            "field_mapping_description": "Map"
+        },
+        "fields": {
+            "date_format": "Datum formaat",
+            "currency": "Valuta",
+            "measurement_system": "Meting",
+            "preview": "Voorbeeld"
+        },
+        "shifts": {
+            "add": "Toevoegen",
+            "new_shift": "Nieuw",
+            "empty": "Leeg",
+            "name_label": "Naam",
+            "name_placeholder": "Naam",
+            "start_time": "Start",
+            "end_time": "Eind"
+        },
+        "timezone_warning": {
+            "title": "Tijdzone?",
+            "message": "Impact",
+            "confirm": "Ja"
+        },
+        "buttons": {
+            "save": "Opslaan",
+            "saving": "Opslaan..."
+        },
+        "errors": {
+            "save_failed": "Fout"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Niet gevonden",
+        "system_node": "Node",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "Schema",
+            "upload_history": "Geschiedenis"
+        },
+        "schema": {
+            "active_field_mapping": "Mapping",
+            "field_mapping_description": "Mapping",
+            "edit_mappings": "Bewerken",
+            "reset_schema": "Reset",
+            "no_mappings": "Geen mapping",
+            "system_status": "Status",
+            "last_updated": "Geüpdatet",
+            "no_config_title": "Geen config",
+            "no_config_description": "Niet ingesteld",
+            "no_config_hint": "Uploaden",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "Systeem"
+            }
+        },
+        "uploads": {
+            "processed_files": "Verwerkt",
+            "clear_history": "Wissen",
+            "no_files": "Geen bestanden"
+        },
+        "confirm": {
+            "reset_schema": "Let op: reset.",
+            "clear_history": "Let op: wissen."
+        },
+        "errors": {
+            "reset_failed": "Fout",
+            "clear_failed": "Fout"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Leeg",
+            "description": "Voeg widgets toe",
+            "action": "Ontwerper"
+        }
+    },
+    "file_preview": {
+        "title": "Voorbeeld",
+        "loading": "Laden...",
+        "loading_subtitle": "Analyse",
+        "error_title": "Fout",
+        "error_default": "Mislukt",
+        "showing_rows": "Toont {{count}}",
+        "columns_detected": "{{count}} kolommen",
+        "info_note": "Alleen voorbeeld.",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Integratie",
+        "subtitle": "Beheer",
+        "upload_data": "Upload",
+        "collapse": "Inklappen",
+        "expand": "Uitklappen",
+        "tabs": {
+            "schema": "Schema",
+            "uploads": "Uploads"
+        },
+        "empty_sources": "Geen bronnen",
+        "configure_new": "Instellen",
+        "no_description": "Geen beschrijving",
+        "schema_version": "Versie {{version}}",
+        "no_active_schema": "Inactief",
+        "edit_config": "Bewerken",
+        "error_update": "Fout",
+        "modal": {
+            "title": "Bewerken",
+            "source_name": "Naam",
+            "time_column": "Tijd kolom",
+            "time_column_hint": "Header",
+            "config_active": "Actief"
+        }
+    },
+    "data_source_config": {
+        "title": "Configuratie",
+        "subtitle": "Lijn: {{id}}",
+        "loading": "Laden...",
+        "not_configured_title": "Niet geconfigureerd",
+        "not_configured_desc": "Niet ingesteld",
+        "close_modal": "Sluiten",
+        "time_column": "Tijd",
+        "time_column_placeholder": "Bijv. Timestamp",
+        "time_column_hint": "Header voor tijd",
+        "schema_title": "Mapping",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "Bron",
+            "target": "Doel"
+        },
+        "schema_note": "Auto-generatie",
+        "description": "Beschrijving",
+        "description_placeholder": "Beschrijving...",
+        "success": "Succes",
+        "error_save": "Fout opslaan",
+        "error_load": "Fout laden",
+        "save_button": "Opslaan"
+    },
+    "upload_history": {
+        "title": "Geschiedenis",
+        "loading": "Laden...",
+        "empty": "Leeg",
+        "error": "Fout"
+    }
+}

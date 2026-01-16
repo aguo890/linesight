@@ -41,7 +41,7 @@ function App() {
 
   // Handle RTL/LTR direction based on language
   useEffect(() => {
-    const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+    const dir = ['ar', 'ur', 'he'].includes(i18n.language) ? 'rtl' : 'ltr';
     document.documentElement.dir = dir;
     document.documentElement.lang = i18n.language;
   }, [i18n.language]);

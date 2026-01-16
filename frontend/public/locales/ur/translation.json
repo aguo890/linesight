@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "صارف پروفائل",
+        "subtitle": "اپنے اکاؤنٹ کی ترتیبات کا انتظام کریں",
+        "back": "واپس",
+        "save_btn": "تبدیلیاں محفوظ کریں",
+        "success": "کامیابی سے اپ ڈیٹ کر دیا گیا!",
+        "error_required": "پورا نام درکار ہے",
+        "error_fail": "اپ ڈیٹ کرنے میں ناکامی",
+        "at": "@",
+        "roles": {
+            "admin": "ایڈمن",
+            "user": "صارف",
+            "manager": "مینیجر"
+        },
+        "sections": {
+            "factories": "فیکٹریاں",
+            "security": "سیکورٹی",
+            "personal_info": "ذاتی معلومات",
+            "localization": "لوکلائزیشن",
+            "notifications": "نوٹیفکیشنز"
+        },
+        "security": {
+            "change_password": "پاس ورڈ تبدیل کریں",
+            "two_factor": "ٹو فیکٹر توثیق"
+        },
+        "fields": {
+            "full_name": "پورا نام",
+            "email": "ای میل پتہ",
+            "email_hint": "ای میل",
+            "language": "زبان",
+            "theme": "تھیم"
+        },
+        "themes": {
+            "light": "لائٹ موڈ",
+            "dark": "ڈارک موڈ",
+            "system": "سسٹم ڈیفالٹ"
+        },
+        "notifications": {
+            "email": "ای میل الرٹس",
+            "push": "پش نوٹیفکیشن",
+            "weekly": "ہفتہ وار"
+        },
+        "location_selector": {
+            "label": "مقام",
+            "auto_detect": "خودکار",
+            "search_placeholder": "ملک تلاش کریں...",
+            "no_results": "کوئی ملک نہیں ملا",
+            "select_country_first": "ملک منتخب کریں",
+            "selected": "منتخب شدہ:"
+        },
+        "unsaved_changes": {
+            "title": "غیر محفوظ شدہ تبدیلیاں",
+            "message": "کیا آپ واقعی چھوڑنا چاہتے ہیں؟",
+            "confirm": "ہاں، چھوڑ دیں",
+            "cancel": "نہیں، رہیں"
+        }
+    },
+    "navigation": {
+        "dashboard": "ڈیش بورڈ",
+        "my_dashboards": "میرے ڈیش بورڈز",
+        "organization": "تنظیم",
+        "show_more": "مزید دیکھیں",
+        "show_less": "کم دکھائیں"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "میرے ڈیش بورڈز",
+            "search_placeholder": "تلاش کریں...",
+            "status": {
+                "loading": "لوڈ ہو رہا ہے...",
+                "none": "کوئی سائٹ نہیں",
+                "available_one": "{{count}} سائٹ دستیاب",
+                "available_other": "{{count}} سائٹس دستیاب"
+            },
+            "table": {
+                "header_name": "نام",
+                "header_location": "مقام",
+                "header_status": "حالت",
+                "header_lines": "لائنز",
+                "header_actions": "ایکشن",
+                "action_view": "دیکھیں"
+            },
+            "actions": {
+                "new_dashboard": "نیا ڈیش بورڈ",
+                "configure_sites": "سائٹس کنفیگر کریں",
+                "clear_search": "تلاش صاف کریں"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "کوئی نتیجہ نہیں",
+                "no_results_detail": "کچھ نہیں ملا۔"
+            },
+            "factory_status": {
+                "at_limit": "حد پر",
+                "near_limit": "حد کے قریب",
+                "active": "فعال"
+            },
+            "empty_state": {
+                "title": "کوئی سائٹ نہیں",
+                "description": "کوئی فیکٹری کنفیگر نہیں ہے۔",
+                "admin_hint": "ترتیبات میں جائیں۔",
+                "user_hint": "ایڈمن سے رابطہ کریں۔",
+                "cta": "ترتیبات میں جائیں"
+            },
+            "view": {
+                "grid": "گرڈ",
+                "list": "فہرست"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} ذرائع",
+            "edit": "ترمیم",
+            "delete": "حذف",
+            "open": "کھولیں",
+            "edit_title": "ترمیم",
+            "delete_title": "حذف"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "ہوم",
+            "list": "فہرست",
+            "production_sites": "پیداواری سائٹس",
+            "sites": "سائٹس",
+            "not_found": "نہیں ملا"
+        },
+        "sections": {
+            "overview": "جائزہ",
+            "performance": "کارکردگی",
+            "settings": "ترتیبات",
+            "dashboards": "ڈیش بورڈز",
+            "data_sources": "ڈیٹا کے ذرائع"
+        },
+        "actions": {
+            "edit": "کنفیگریشن ترمیم",
+            "delete": "سائٹ حذف کریں",
+            "save": "محفوظ کریں",
+            "settings": "ترتیبات",
+            "new_dashboard": "نیا ڈیش بورڈ",
+            "create_dashboard": "بنائیں",
+            "add_data_source": "ذریعہ شامل کریں",
+            "new_source": "نیا ذریعہ",
+            "upload_data": "ڈیٹا اپ لوڈ",
+            "no_write_access": "لکھنے کی اجازت نہیں"
+        },
+        "alerts": {
+            "confirm_delete": "کیا آپ کو یقین ہے؟",
+            "edit_soon": "جلد آ رہا ہے",
+            "delete_soon": "جلد آ رہا ہے",
+            "delete_fail": "حذف ناکام"
+        },
+        "stats": {
+            "dashboards": "ڈیش بورڈز",
+            "active_widgets": "وجیٹس",
+            "active_sources": "ذرائع",
+            "used_info": "{{current}}/{{max}} استعمال شدہ"
+        },
+        "not_found": "سائٹ نہیں ملی",
+        "search": {
+            "dashboards_placeholder": "فلٹر...",
+            "sources_placeholder": "تلاش...",
+            "no_sources_found": "کوئی ذریعہ نہیں ملا"
+        },
+        "quota": {
+            "limit_reached": "کوٹہ پورا ہو گیا"
+        },
+        "table": {
+            "headers": {
+                "name": "نام",
+                "status": "حالت",
+                "actions": "ایکشن"
+            }
+        },
+        "status": {
+            "active": "فعال",
+            "inactive": "غیر فعال"
+        },
+        "confirm": {
+            "delete_source": "ذریعہ حذف کریں؟",
+            "delete_dashboard": "ڈیش بورڈ حذف کریں؟"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "آج",
+            "yesterday": "کل",
+            "last_7_days": "گزشتہ 7 دن",
+            "last_30_days": "گزشتہ 30 دن",
+            "this_month": "اس مہینے",
+            "last_month": "گزشتہ مہینے"
+        },
+        "shifts": {
+            "all": "تمام شفٹس",
+            "shift_a": "شفٹ A",
+            "shift_b": "شفٹ B",
+            "shift_c": "شفٹ C"
+        },
+        "date_range": "تاریخ کی حد",
+        "to": "سے"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "ورک اسپیس",
+            "factory": "فیکٹری",
+            "line": "لائن",
+            "dashboard": "ڈیش بورڈ"
+        },
+        "status": {
+            "updated": "اپ ڈیٹ: {{time}}",
+            "live": "لائیو",
+            "loading": "لوڈ ہو رہا ہے...",
+            "saving": "محفوظ ہو رہا ہے..."
+        },
+        "actions": {
+            "refresh": "ریفریش",
+            "reset_layout": "ری سیٹ",
+            "reset_confirm": "تصدیق؟",
+            "design_layout": "ڈیزائن",
+            "save_layout": "محفوظ",
+            "add_widget": "وجیٹ شامل کریں",
+            "cancel": "منسوخ"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "وجیٹ لائبریری",
+            "subtitle": "ڈریگ کریں",
+            "categories": {
+                "all": "سب",
+                "production": "پیداوار",
+                "quality": "معیار",
+                "efficiency": "کارکردگی"
+            }
+        },
+        "selector": {
+            "simulated_data": "مصنوعی",
+            "ready_to_use": "تیار",
+            "recommended": "تجویز کردہ",
+            "future_capability": "مستقبل",
+            "coming_soon": "جلد",
+            "near_match": "قریبی",
+            "ai_recommendations": "AI تجاویز",
+            "select_all": "سب منتخب کریں",
+            "selected": "منتخب شدہ",
+            "compatible": "موافق",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "ڈیٹا درکار",
+            "needs_mapping": "میپنگ درکار",
+            "categories": {
+                "Efficiency": "کارکردگی",
+                "Quality": "معیار",
+                "Workforce": "افرادی قوت",
+                "Operations": "آپریشنز"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "تجویز کردہ",
+                "Operations": "آپریشنز",
+                "Strategy": "حکمت عملی"
+            },
+            "efficiency_starter": {
+                "title": "کارکردگی سٹارٹر",
+                "description": "بنیادی ٹریکنگ"
+            },
+            "quality_auditor": {
+                "title": "کوالٹی آڈیٹر",
+                "description": "DHU فوکس"
+            },
+            "floor_manager": {
+                "title": "فلور مینیجر",
+                "description": "ریئل ٹائم"
+            },
+            "executive_summary": {
+                "title": "ایگزیکٹو خلاصہ",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "منصوبہ بندی",
+            "actual": "اصل",
+            "target": "ہدف",
+            "efficiency": "کارکردگی",
+            "minutes": "منٹ",
+            "limit": "حد",
+            "status": "حالت",
+            "on_target": "ہدف پر",
+            "below_target": "ہدف سے نیچے",
+            "defect_rate": "نقص کی شرح"
+        },
+        "titles": {
+            "production_chart": "پیداواری آؤٹ پٹ",
+            "line_efficiency": "لائن کی کارکردگی",
+            "earned_minutes": "حاصل شدہ منٹ",
+            "sam_performance": "SAM کارکردگی",
+            "dhu_quality": "DHU معیار",
+            "speed_quality": "رفتار بمقابلہ معیار",
+            "top_blockers": "بڑے مسائل",
+            "style_progress": "اسٹائل کی پیشرفت",
+            "daily_target": "روزانہ کا ہدف",
+            "production_timeline": "پیداواری ٹائم لائن",
+            "complexity_impact": "پیچیدگی کا اثر",
+            "workforce_attendance": "حاضری",
+            "kpi_summary": "KPI خلاصہ"
+        },
+        "descriptions": {
+            "production_chart": "موازنہ",
+            "line_efficiency": "ریئل ٹائم",
+            "earned_minutes": "SAM",
+            "sam_performance": "معیاری کارکردگی",
+            "dhu_quality": "نقص کا تجزیہ",
+            "speed_quality": "تعلق",
+            "top_blockers": "رکاوٹیں",
+            "style_progress": "فیصد",
+            "daily_target": "پیشرفت",
+            "production_timeline": "گینٹ چارٹ",
+            "complexity_impact": "تجزیہ",
+            "workforce_attendance": "آپریٹر حاضری",
+            "kpi_summary": "میٹرکس جائزہ"
+        },
+        "production_chart": {
+            "planned": "منصوبہ بندی",
+            "actual_output": "اصل آؤٹ پٹ"
+        },
+        "production_timeline": {
+            "output": "اصل",
+            "target": "ہدف"
+        },
+        "complexity_impact": {
+            "title": "پیچیدگی",
+            "loading_styles": "لوڈ ہو رہا ہے...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (پیچیدگی)",
+            "styles": "اسٹائل"
+        },
+        "speed_quality": {
+            "efficiency": "کارکردگی",
+            "defect_rate": "نقص کی شرح"
+        },
+        "earned_minutes": {
+            "earned": "حاصل شدہ",
+            "available": "دستیاب"
+        },
+        "dhu_quality": {
+            "no_data": "ڈیٹا نہیں",
+            "current_dhu": "موجودہ DHU",
+            "above_limit": "حد سے اوپر"
+        },
+        "blocker_cloud": {
+            "occurrences": "واقعات",
+            "view_all_logs": "لاگز دیکھیں",
+            "no_blockers": "کوئی مسئلہ نہیں"
+        }
+    },
+    "common": {
+        "back": "واپس",
+        "cancel": "منسوخ",
+        "error": "غلطی",
+        "success": "کامیاب",
+        "uploading": "اپ لوڈ...",
+        "processing": "پروسیسنگ...",
+        "remove": "ہٹائیں",
+        "ready": "تیار",
+        "needs_setup": "سیٹ اپ درکار",
+        "date": "تاریخ",
+        "actions": {
+            "save": "محفوظ",
+            "cancel": "منسوخ",
+            "close": "بند",
+            "delete": "حذف",
+            "edit": "ترمیم",
+            "search": "تلاش...",
+            "confirm": "تصدیق",
+            "back": "واپس",
+            "create": "بنائیں",
+            "invite": "مدعو کریں"
+        },
+        "status": {
+            "active": "فعال",
+            "inactive": "غیر فعال",
+            "unknown": "نامعلوم"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "ڈیش بورڈ کا نام",
+            "dashboard_name_placeholder": "مثلا لائن 4",
+            "name_error_tooltip": "نام درج کریں",
+            "name_error_text": "نام درکار ہے",
+            "selection_title": "ڈیٹا ذریعہ کا انتخاب",
+            "selection_desc": "فائل منتخب کریں",
+            "columns": {
+                "file_name": "فائل کا نام",
+                "status": "حالت",
+                "uploaded": "اپ لوڈ",
+                "action": "ایکشن"
+            },
+            "btn_configure": "کنفیگر",
+            "btn_complete_setup": "سیٹ اپ مکمل",
+            "note": "نوٹ",
+            "empty_title": "کوئی ذریعہ نہیں",
+            "empty_desc": "فائل اپ لوڈ کریں",
+            "error_load_failed": "لوڈ ناکام"
+        },
+        "step2": {
+            "title": "ڈیٹا میپنگ",
+            "subtitle": "کالم جائزہ",
+            "stats": {
+                "auto": "خودکار",
+                "review": "جائزہ",
+                "attention": "توجہ",
+                "ignored": "نظر انداز"
+            },
+            "filter": {
+                "all": "سب",
+                "unmapped": "ان میپڈ",
+                "conflicts": "تضادات"
+            },
+            "showing_count": "{{filtered}}/{{total}} کالم",
+            "table": {
+                "source": "ذریعہ",
+                "target": "ہدف",
+                "status": "حالت",
+                "no_match": "کوئی میچ نہیں",
+                "try_different": "مختلف منظر"
+            },
+            "status_labels": {
+                "exact": "درست",
+                "exact_tooltip": "درست میچ",
+                "fuzzy": "مبہم",
+                "fuzzy_tooltip": "قریبی میچ",
+                "ai": "AI",
+                "ai_tooltip": "AI تجویز کردہ",
+                "manual": "دستی",
+                "manual_tooltip": "دستی",
+                "unset": "سیٹ نہیں",
+                "unset_tooltip": "میپنگ درکار",
+                "duplicate": "ڈپلیکیٹ"
+            },
+            "field_selector": {
+                "select_placeholder": "فیلڈ منتخب کریں...",
+                "search_placeholder": "تلاش...",
+                "suggested": "تجویز کردہ",
+                "all_fields": "تمام فیلڈز",
+                "no_results": "نہیں ملا",
+                "ignore_action": "نظر انداز",
+                "restore_action": "بحال",
+                "in_use": "استعمال میں"
+            },
+            "alerts": {
+                "conflict_count_one": "1 ڈپلیکیٹ",
+                "conflict_count_other": "{{count}} ڈپلیکیٹس",
+                "remaining_needed": "باقی درکار"
+            },
+            "btn_confirm": "تصدیق",
+            "processing": {
+                "title": "پروسیسنگ",
+                "subtitle": "درآمد ہو رہا ہے...",
+                "logs": {
+                    "init": "شروع...",
+                    "schema": "اسکیما...",
+                    "mapping": "میپنگ...",
+                    "req": "درخواست...",
+                    "sending": "بھیج رہا ہے...",
+                    "success": "کامیاب"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "بلیو پرنٹس",
+            "divider": "یا اپنی مرضی",
+            "library_title": "لائبریری",
+            "selected_count": "{{count}} منتخب",
+            "btn_create": "ڈیش بورڈ بنائیں",
+            "btn_configuring": "کنفیگرنگ..."
+        },
+        "title": "سیٹ اپ",
+        "steps": {
+            "upload": {
+                "label": "ذریعہ",
+                "desc": "اپ لوڈ"
+            },
+            "mapping": {
+                "label": "میپنگ",
+                "desc": "تصدیق"
+            },
+            "widgets": {
+                "label": "ڈیش بورڈ",
+                "desc": "لے آؤٹ"
+            }
+        },
+        "mini_map": {
+            "title": "پیش نظارہ",
+            "empty_state": "وجیٹ منتخب کریں",
+            "stats": {
+                "widgets_one": "{{count}} وجیٹ",
+                "widgets_other": "{{count}} وجیٹس",
+                "screens_one": "~{{count}} اسکرین",
+                "screens_other": "~{{count}} اسکرینز"
+            },
+            "density": {
+                "empty": "خالی",
+                "compact": "کمپیکٹ",
+                "balanced": "متوازن",
+                "heavy": "بھاری"
+            },
+            "scroll_warning": "اسکرول کی ضرورت ہو سکتی ہے"
+        },
+        "context": {
+            "title": "سیاق و سباق",
+            "select_factory": "فیکٹری منتخب کریں",
+            "select_source": "ذریعہ منتخب کریں",
+            "select_factory_first": "پہلے فیکٹری",
+            "loading_factories": "لوڈ ہو رہا ہے...",
+            "loading_sources": "لوڈ ہو رہا ہے...",
+            "fetching_sources": "لا رہا ہے...",
+            "no_sources_alert": "کوئی ذریعہ نہیں",
+            "select_source_overlay": "ذریعہ منتخب کریں"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "اپ لوڈ",
+            "title_preview": "پیش نظارہ",
+            "subtitle_upload": "اپ لوڈ کریں",
+            "subtitle_preview": "جائزہ",
+            "drop_text": "فائل یہاں گرائیں",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "کامیاب!",
+            "info_preview": "ڈیٹا کا پیش نظارہ",
+            "btn_upload_preview": "اپ لوڈ اور پیش نظارہ",
+            "btn_uploading": "اپ لوڈ ہو رہا ہے...",
+            "errors": {
+                "invalid_extension": "غلط فائل",
+                "duplicate_file": "فائل موجود ہے",
+                "preview_failed": "پیش نظارہ ناکام",
+                "upload_failed": "اپ لوڈ ناکام"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "تنظیم کی ترتیبات",
+        "description": "انتظام",
+        "cards": {
+            "general": {
+                "title": "عام",
+                "description": "پروفائل"
+            },
+            "members": {
+                "title": "ارکان",
+                "description": "رسائی"
+            },
+            "infrastructure": {
+                "title": "انفراسٹرکچر",
+                "description": "فیکٹری"
+            },
+            "security": {
+                "title": "سیکورٹی",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "بلنگ",
+                "description": "انوائس"
+            }
+        },
+        "badges": {
+            "coming_soon": "جلد"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "ترتیبات پر واپس"
+        },
+        "top_nav": {
+            "search_placeholder": "تلاش...",
+            "search_coming_soon": "جلد!",
+            "notifications": {
+                "title": "نوٹیفکیشنز",
+                "mark_read": "پڑھا ہوا",
+                "empty": "خالی"
+            },
+            "user_menu": {
+                "profile": "پروفائل",
+                "logout": "سائن آؤٹ",
+                "default_user": "صارف",
+                "default_role": "ناظر"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "تنظیم",
+            "factories": "فیکٹریاں"
+        },
+        "header": {
+            "title": "فیکٹری کنفیگر",
+            "popover_trigger_label": "معلومات"
+        },
+        "popover": {
+            "title": "کنفیگریشن",
+            "assignment": {
+                "title": "تفویض:",
+                "desc_part1": "تفصیل",
+                "desc_part2": "مینیجر"
+            },
+            "structure": {
+                "title": "ڈھانچہ:",
+                "desc": "حسب ضرورت"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "تفویض",
+            "structure_mode": "ڈھانچہ",
+            "customize_layout": "حسب ضرورت",
+            "done_editing": "مکمل"
+        },
+        "list": {
+            "add_data_source": "ذریعہ شامل کریں",
+            "no_data_sources": "کوئی ذریعہ نہیں"
+        },
+        "bulk_actions": {
+            "selected": "منتخب شدہ",
+            "assign_manager": "مینیجر تفویض کریں"
+        },
+        "messages": {
+            "loading": "لوڈ ہو رہا ہے...",
+            "assignment_failed": "ناکام"
+        }
+    },
+    "roles": {
+        "system_admin": "سسٹم ایڈمن",
+        "owner": "مالک",
+        "admin": "ایڈمن",
+        "viewer": "ناظر",
+        "member": "رکن",
+        "operator": "آپریٹر",
+        "factory_manager": "فیکٹری مینیجر",
+        "line_manager": "لائن مینیجر",
+        "user": "صارف",
+        "manager": "مینیجر"
+    },
+    "org_general": {
+        "title": "عام",
+        "profile": {
+            "logged_in_as": "لاگ ان"
+        },
+        "at_a_glance": "ایک نظر میں",
+        "stats": {
+            "total_managers": "کل مینیجرز",
+            "assigned": "تفویض شدہ",
+            "factories": "فیکٹریاں",
+            "production_lines": "لائنز"
+        },
+        "danger_zone": {
+            "title": "خطرناک زون",
+            "description": "مستقل حذف",
+            "delete_button": "تنظیم حذف کریں"
+        }
+    },
+    "org_members": {
+        "title": "ارکان",
+        "invite_member": "دعوت دیں",
+        "search_placeholder": "تلاش...",
+        "filter": "فلٹر",
+        "table": {
+            "user": "صارف",
+            "global_role": "کردار",
+            "access": "رسائی",
+            "last_active": "آخری فعال",
+            "actions": "ایکشن",
+            "loading": "لوڈ...",
+            "no_members": "کوئی رکن نہیں",
+            "assignments": "اسائنمنٹس",
+            "unassigned": "غیر تفویض شدہ",
+            "never_active": "کبھی نہیں",
+            "view_details": "تفصیلات"
+        },
+        "drawer": {
+            "title": "تفصیلات",
+            "role_label": "کردار",
+            "active_assignments": "فعال",
+            "no_assignments": "نہیں",
+            "current_factory": "فیکٹری",
+            "danger_zone": {
+                "title": "خطرہ",
+                "suspend_button": "معطل"
+            }
+        },
+        "cell": {
+            "unknown_user": "نامعلوم",
+            "active": "فعال",
+            "inactive": "غیر فعال"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "واپس",
+        "back_button": "واپس",
+        "title": "انفراسٹرکچر",
+        "sites_count": "{{count}} سائٹس",
+        "sites": "سائٹس",
+        "add_factory": "فیکٹری شامل کریں",
+        "search_placeholder": "تلاش...",
+        "retry": "دوبارہ",
+        "new_factory": {
+            "title": "نئی فیکٹری",
+            "subtitle": "شامل کریں"
+        },
+        "card": {
+            "data_sources": "ذرائع",
+            "managers": "مینیجرز",
+            "configure_site": "کنفیگر",
+            "edit_details": "ترمیم",
+            "delete_factory": "حذف"
+        },
+        "list": {
+            "name": "نام",
+            "factory": "فیکٹری",
+            "code": "کوڈ",
+            "country": "ملک",
+            "sources": "ذرائع",
+            "managers": "مینیجرز",
+            "actions": "ایکشن"
+        },
+        "no_match": "کوئی میچ نہیں",
+        "confirm_delete": "حذف کریں؟",
+        "delete_fail": "ناکام"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "شامل کریں",
+            "subtitle": "نیا ذریعہ",
+            "name_label": "نام",
+            "name_placeholder": "نام",
+            "code_label": "کوڈ",
+            "code_placeholder": "L-01",
+            "specialty_label": "تخصص",
+            "specialty_placeholder": "اسمبلی",
+            "description_label": "تفصیل",
+            "description_placeholder": "تفصیل...",
+            "use_defaults": "ڈیفالٹ",
+            "inherit_tooltip": "ورثہ",
+            "custom_tooltip": "حسب ضرورت",
+            "inherit_desc": "ورثہ",
+            "custom_desc": "خالی",
+            "source_usage": "استعمال",
+            "quota_reached": "کوٹہ مکمل",
+            "submit_button": "شامل کریں",
+            "submitting": "شامل ہو رہا ہے..."
+        },
+        "create_factory": {
+            "title": "فیکٹری بنائیں",
+            "subtitle": "سیٹ اپ",
+            "quota_reached": "کوٹہ مکمل",
+            "name_label": "نام",
+            "name_placeholder": "نام",
+            "code_label": "کوڈ",
+            "code_placeholder": "کوڈ",
+            "code_desc": "ID",
+            "source_name_label": "ذریعہ",
+            "source_name_placeholder": "ذریعہ",
+            "source_specialty_label": "تخصص",
+            "source_specialty_placeholder": "تخصص",
+            "source_specialty_desc": "قسم",
+            "source_desc_label": "تفصیل",
+            "source_desc_placeholder": "تفصیل",
+            "source_desc_help": "مدد",
+            "submitting_msg": "بن رہا ہے...",
+            "submit_button": "بنائیں",
+            "submitting_button": "بن رہا ہے..."
+        },
+        "edit_factory": {
+            "title": "ترمیم",
+            "name_label": "نام",
+            "code_label": "کوڈ",
+            "submit_button": "محفوظ",
+            "submitting_button": "محفوظ..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "پھر سے نام دیں",
+            "managers_stat": "مینیجر",
+            "efficiency_stat": "کارکردگی",
+            "assigned_team": "ٹیم",
+            "no_managers": "نہیں",
+            "remove_button": "ہٹائیں",
+            "danger_zone": "خطرہ",
+            "delete_button": "حذف",
+            "confirm_remove": "ہٹائیں؟",
+            "remove_fail": "ناکام",
+            "confirm_delete": "حذف؟",
+            "delete_fail": "ناکام",
+            "rename_fail": "ناکام"
+        },
+        "row": {
+            "untitled_source": "بغیر عنوان",
+            "rename_required": "نام مطلوب!",
+            "click_to_view": "دیکھیں",
+            "click_tooltip": "کلک",
+            "confirm_delete": "حذف؟",
+            "rename_prompt": "نام:"
+        },
+        "user_search": {
+            "placeholder": "تلاش...",
+            "no_results": "نہیں ملا",
+            "no_available": "دستیاب نہیں",
+            "available_count": "{{count}} دستیاب"
+        },
+        "user_search_placeholder": "تلاش...",
+        "no_results": "نہیں ملا",
+        "manager_exists": "موجود ہے"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "خوش آمدید",
+            "welcome_subtitle": "لاگ ان",
+            "email_label": "ای میل",
+            "password_label": "پاس ورڈ",
+            "forgot_password": "بھول گئے؟",
+            "sign_in_button": "سائن ان",
+            "no_account": "اکاؤنٹ نہیں؟",
+            "contact_sales": "رابطہ",
+            "back_to_landing": "واپس",
+            "errors": {
+                "network_error": "نیٹ ورک خرابی",
+                "invalid_credentials": "غلط"
+            },
+            "demo_card": {
+                "title": "رپورٹ",
+                "subtitle": "لائیو",
+                "efficiency": "کارکردگی",
+                "efficiency_sub": "ہدف",
+                "output": "آؤٹ پٹ",
+                "output_sub": "ٹریک",
+                "chart_title": "ریٹ",
+                "chart_period": "4 گھنٹے",
+                "chart_current": "موجودہ"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "غلطی",
+            "unknown_error": "نامعلوم",
+            "return_home": "ہوم"
+        },
+        "confirm_dialog": {
+            "confirm": "تصدیق",
+            "cancel": "منسوخ",
+            "please_wait": "انتظار..."
+        },
+        "quota_warning": {
+            "limit_reached": "حد",
+            "near_limit": "قریب",
+            "upgrade_prompt": "اپ گریڈ",
+            "consider_upgrade": "غور کریں",
+            "upgrade_button": "اپ گریڈ",
+            "dismiss_label": "مسترد",
+            "type_factories": "فیکٹری",
+            "type_lines": "لائن"
+        },
+        "date_range_picker": {
+            "start_date": "شروع",
+            "end_date": "ختم",
+            "start_in_timezone": "شروع ({{timezone}})",
+            "end_in_timezone": "ختم ({{timezone}})"
+        },
+        "breadcrumb": {
+            "aria_label": "بریڈ کرمب"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "معیاری",
+            "subtitle": "ڈیفالٹ"
+        },
+        "sections": {
+            "localization": "لوکلائزیشن",
+            "shifts": {
+                "title": "شفٹ",
+                "description": "ورثہ"
+            },
+            "non_working_days": {
+                "title": "چھٹی",
+                "description": "ڈیفالٹ"
+            },
+            "schema_configuration": "اسکیما",
+            "upload_history": "تاریخ",
+            "active_field_mapping": "میپنگ",
+            "field_mapping_description": "میپ"
+        },
+        "fields": {
+            "date_format": "تاریخ",
+            "currency": "کرنسی",
+            "measurement_system": "پیمائش",
+            "preview": "پیش نظارہ"
+        },
+        "shifts": {
+            "add": "شامل کریں",
+            "new_shift": "نیا",
+            "empty": "خالی",
+            "name_label": "نام",
+            "name_placeholder": "نام",
+            "start_time": "شروع",
+            "end_time": "ختم"
+        },
+        "timezone_warning": {
+            "title": "ٹائم زون؟",
+            "message": "اثر",
+            "confirm": "ہاں"
+        },
+        "buttons": {
+            "save": "محفوظ",
+            "saving": "محفوظ..."
+        },
+        "errors": {
+            "save_failed": "ناکام"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "نہیں ملا",
+        "system_node": "نوڈ",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "اسکیما",
+            "upload_history": "تاریخ"
+        },
+        "schema": {
+            "active_field_mapping": "میپنگ",
+            "field_mapping_description": "میپ",
+            "edit_mappings": "ترمیم",
+            "reset_schema": "ری سیٹ",
+            "no_mappings": "نہیں",
+            "system_status": "حالت",
+            "last_updated": "اپ ڈیٹ",
+            "no_config_title": "نہیں",
+            "no_config_description": "نہیں",
+            "no_config_hint": "اپ لوڈ",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "System"
+            }
+        },
+        "uploads": {
+            "processed_files": "پروسیس شدہ",
+            "clear_history": "صاف",
+            "no_files": "نہیں"
+        },
+        "confirm": {
+            "reset_schema": "ری سیٹ؟",
+            "clear_history": "صاف؟"
+        },
+        "errors": {
+            "reset_failed": "ناکام",
+            "clear_failed": "ناکام"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "خالی",
+            "description": "شامل کریں",
+            "action": "ڈیزائنر"
+        }
+    },
+    "file_preview": {
+        "title": "پیش نظارہ",
+        "loading": "لوڈ ہو رہا ہے...",
+        "loading_subtitle": "تجزیہ",
+        "error_title": "غلطی",
+        "error_default": "ناکام",
+        "showing_rows": "دکھایا جا رہا ہے {{count}}",
+        "columns_detected": "{{count}} کالم",
+        "info_note": "نوٹ",
+        "null_value": "نل"
+    },
+    "data_integration": {
+        "title": "انضمام",
+        "subtitle": "انتظام",
+        "upload_data": "اپ لوڈ",
+        "collapse": "بند",
+        "expand": "کھولیں",
+        "tabs": {
+            "schema": "اسکیما",
+            "uploads": "اپ لوڈز"
+        },
+        "empty_sources": "خالی",
+        "configure_new": "کنفیگر",
+        "no_description": "تفصیل نہیں",
+        "schema_version": "v{{version}}",
+        "no_active_schema": "غیر فعال",
+        "edit_config": "ترمیم",
+        "error_update": "ناکام",
+        "modal": {
+            "title": "ترمیم",
+            "source_name": "نام",
+            "time_column": "وقت",
+            "time_column_hint": "ہیڈر",
+            "config_active": "فعال"
+        }
+    },
+    "data_source_config": {
+        "title": "کنفیگریشن",
+        "subtitle": "ID: {{id}}",
+        "loading": "لوڈ ہو رہا ہے...",
+        "not_configured_title": "کنفیگر نہیں",
+        "not_configured_desc": "اپ لوڈ",
+        "close_modal": "بند",
+        "time_column": "وقت",
+        "time_column_placeholder": "وقت",
+        "time_column_hint": "نام",
+        "schema_title": "میپنگ",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "ذریعہ",
+            "target": "ہدف"
+        },
+        "schema_note": "نوٹ",
+        "description": "تفصیل",
+        "description_placeholder": "تفصیل...",
+        "success": "کامیاب",
+        "error_save": "ناکام",
+        "error_load": "ناکام",
+        "save_button": "محفوظ"
+    },
+    "upload_history": {
+        "title": "تاریخ",
+        "loading": "لوڈ ہو رہا ہے...",
+        "empty": "خالی",
+        "error": "ناکام"
+    }
+}
