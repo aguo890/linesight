@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, RotateCcw } from 'lucide-react';
+
 import { z } from 'zod';
 import { getWidgetSchema } from '../registry';
 
@@ -205,7 +206,7 @@ const ZodFieldRenderer: React.FC<{
                         onClick={() => onChange(!value)}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-brand' : 'bg-surface-active'}`}
                     >
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-surface shadow-sm transition-transform ${value ? 'translate-x-6' : 'translate-x-1'}`} />
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-surface shadow-sm transition-transform ${value ? 'ltr:translate-x-6 rtl:translate-x-1' : 'ltr:translate-x-1 rtl:translate-x-6'}`} />
                     </button>
                 </div>
                 {/* Special Logic: Mock Data Warning */}

@@ -26,10 +26,10 @@ export const RightSidebarShell: React.FC<RightSidebarShellProps> = ({
 }) => {
     return (
         <div className={cn(
-            "fixed inset-y-0 right-0 bg-surface shadow-xl border-l border-border flex flex-col transform transition-transform duration-300 ease-in-out",
+            "fixed inset-y-0 end-0 bg-surface shadow-xl border-inline-start border-border flex flex-col transform transition-transform duration-300 ease-in-out",
             width,
             zIndex,
-            isOpen ? "translate-x-0" : "translate-x-full"
+            isOpen ? "translate-x-0" : "ltr:translate-x-full rtl:-translate-x-full"
         )}>
             {/* Header */}
             <div className="p-6 border-b border-border flex justify-between items-center bg-surface-subtle">

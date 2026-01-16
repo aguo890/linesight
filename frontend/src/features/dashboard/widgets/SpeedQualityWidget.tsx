@@ -44,7 +44,10 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
     return (
         <div className="flex-1 min-h-0 w-full relative" style={{ width: '100%', height: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: -10 }}>
+                <ComposedChart data={chartData} margin={document.documentElement.dir === 'rtl'
+                    ? { top: 10, right: -10, bottom: 0, left: 10 }
+                    : { top: 10, right: 10, bottom: 0, left: -10 }
+                }>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                     <XAxis
                         dataKey="date"
@@ -56,7 +59,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     {/* Left Axis: Efficiency */}
                     <YAxis
                         yAxisId="left"
-                        orientation="left"
+                        orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
                         tick={{ fontSize: 10, fill: textMainColor }}
                         axisLine={false}
                         tickLine={false}
@@ -66,7 +69,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     {/* Right Axis: DHU */}
                     <YAxis
                         yAxisId="right"
-                        orientation="right"
+                        orientation={document.documentElement.dir === 'rtl' ? 'left' : 'right'}
                         tick={{ fontSize: 10, fill: '#ef4444' }}
                         axisLine={false}
                         tickLine={false}

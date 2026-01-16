@@ -251,3 +251,46 @@ body {
   flex-wrap: nowrap;
   width: max-content;
 }
+
+/* ============================================
+   RTL LOGICAL OVERRIDES
+   ============================================ */
+
+[dir="rtl"] {
+  /* RTL languages (like Arabic) need more vertical breathing room */
+  line-height: 1.6;
+}
+
+[dir="rtl"] body {
+  /* Avoid Latin-style letter spacing which breaks Arabic script connectivity */
+  letter-spacing: normal;
+}
+
+/* Mirror animations that use physical translations */
+[dir="rtl"] .animate-loading {
+  animation-name: loading-rtl;
+}
+
+@keyframes loading-rtl {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-250%);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+[dir="rtl"] .animate-marquee {
+  animation-name: marquee-rtl;
+}

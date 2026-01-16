@@ -50,6 +50,18 @@ const DashboardPageContent = () => {
     const [lastUpdated] = useState(new Date().toLocaleTimeString());
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
+
+    useEffect(() => {
+        const updateDirection = () => {
+            const dir = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+            setDirection(dir);
+        };
+        updateDirection();
+        const observer = new MutationObserver(updateDirection);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+        return () => observer.disconnect();
+    }, []);
 
 
 
@@ -341,82 +353,84 @@ const DashboardPageContent = () => {
 
 
 
+    if (isLoading) {
+        return <DashboardSkeleton />;
+    }
+
     return (
         <MainLayout disablePadding={true}>
-            {isLoading ? (
-                <DashboardSkeleton />
-            ) : (
-                <div className="min-h-screen bg-canvas flex flex-col relative overflow-hidden">
-                    {/* Global Loading Pulse Bar */}
-                    {fetchingCount > 0 && (
-                        <div className="fixed top-0 left-0 right-0 h-1 bg-brand/20 z-[100] overflow-hidden">
-                            <div className="h-full bg-brand animate-pulse w-full"></div>
-                        </div>
+            <div className="min-h-screen bg-canvas flex flex-col relative overflow-hidden">
+                {/* Global Loading Pulse Bar */}
+                {fetchingCount > 0 && (
+                    <div className="fixed top-0 left-0 right-0 h-1 bg-brand/20 z-[100] overflow-hidden">
+                        <div className="h-full bg-brand animate-pulse w-full"></div>
+                    </div>
+                )}
+
+                {/* Header Section */}
+                <DashboardHeader
+                    dashboardName={activeDashboard?.name}
+                    dataSourceName={activeDashboard?.dataSourceName}
+                    factoryId={factoryId}
+                    factoryName={factoryName}
+                    editMode={editMode}
+                    onEditModeToggle={async () => {
+                        if (editMode) {
+                            // We are exiting - Save data
+                            closePanels();
+                            await saveLayoutToDatabase(widgets);
+                        }
+                        setEditMode(!editMode);
+                    }}
+                    onOpenLibrary={openLibrary}
+                    isSaving={isSaving}
+                    lastUpdated={lastUpdated}
+                    onRefresh={triggerRefresh}
+                    onReset={resetDashboard}
+                />
+
+                {/* Global Filter Bar (Phase 5) - Persisted Logic */}
+                <DashboardFilterBar />
+
+                {/* Sidebar Widget Library */}
+                <WidgetLibrary
+                    isOpen={activePanel === 'add'}
+                    onClose={closePanels}
+                    onAddWidget={handleAddWidget}
+                    availableFields={Array.from(availableFields)}
+                    activeWidgets={widgets.map(w => w.widget)}
+                />
+
+                {/* Dashboard Area */}
+                <main className="flex-1 p-6 relative">
+                    {/* Visual Blueprint Grid (Only in Edit Mode) */}
+                    {editMode && (
+                        <div className="absolute inset-0 opacity-[0.08] pointer-events-none"
+                            style={{ backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)', backgroundSize: '25px 25px' }} />
                     )}
 
-                    {/* Header Section */}
-                    <DashboardHeader
-                        dashboardName={activeDashboard?.name}
-                        dataSourceName={activeDashboard?.dataSourceName}
-                        factoryId={factoryId}
-                        factoryName={factoryName}
-                        editMode={editMode}
-                        onEditModeToggle={async () => {
-                            if (editMode) {
-                                // We are exiting - Save data
-                                closePanels();
-                                await saveLayoutToDatabase(widgets);
-                            }
-                            setEditMode(!editMode);
-                        }}
-                        onOpenLibrary={openLibrary}
-                        isSaving={isSaving}
-                        lastUpdated={lastUpdated}
-                        onRefresh={triggerRefresh}
-                        onReset={resetDashboard}
-                    />
-
-                    {/* Global Filter Bar (Phase 5) - Persisted Logic */}
-                    <DashboardFilterBar />
-
-                    {/* Sidebar Widget Library */}
-                    <WidgetLibrary
-                        isOpen={activePanel === 'add'}
-                        onClose={closePanels}
-                        onAddWidget={handleAddWidget}
-                        availableFields={Array.from(availableFields)}
-                        activeWidgets={widgets.map(w => w.widget)}
-                    />
-
-                    {/* Dashboard Area */}
-                    <main className="flex-1 p-6 relative">
-                        {/* Visual Blueprint Grid (Only in Edit Mode) */}
-                        {editMode && (
-                            <div className="absolute inset-0 opacity-[0.08] pointer-events-none"
-                                style={{ backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)', backgroundSize: '25px 25px' }} />
-                        )}
-
-                        {widgets.length === 0 ? (
-                            <DashboardEmptyState onOpenDesigner={() => setEditMode(true)} />
-                        ) : (
-                            <DashboardGridLayout
-                                widgets={widgets}
-                                editMode={editMode}
-                                onLayoutChange={handleLayoutChange}
-                                renderWidget={(widget) => (
-                                    <WidgetRenderer
-                                        widget={widget}
-                                        editMode={editMode}
-                                        productionLineId={productionLineId}
-                                        dataSourceId={activeDashboard?.dataSourceId}
-                                        onDelete={() => setWidgets(widgets.filter(x => x.i !== widget.i))}
-                                    />
-                                )}
-                            />
-                        )}
-                    </main>
-                </div>
-            )}
+                    {widgets.length === 0 ? (
+                        <DashboardEmptyState onOpenDesigner={() => setEditMode(true)} />
+                    ) : (
+                        <DashboardGridLayout
+                            key={direction}
+                            widgets={widgets}
+                            editMode={editMode}
+                            isRTL={direction === 'rtl'}
+                            onLayoutChange={handleLayoutChange}
+                            renderWidget={(widget) => (
+                                <WidgetRenderer
+                                    widget={widget}
+                                    editMode={editMode}
+                                    productionLineId={productionLineId}
+                                    dataSourceId={activeDashboard?.dataSourceId}
+                                    onDelete={() => setWidgets(widgets.filter(x => x.i !== widget.i))}
+                                />
+                            )}
+                        />
+                    )}
+                </main>
+            </div>
 
             {/* Live Settings Sidebar (V2 Widgets) */}
             <SettingsSidebar />

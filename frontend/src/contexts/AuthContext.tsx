@@ -1,7 +1,9 @@
-import { createContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import api from '../lib/api';
 import { authStorage } from '../lib/authStorage';
 import { updateProfile, type UserUpdate, type UserInfo } from '../lib/authApi';
+import i18n from '../i18n';
+import { toShortLocale, detectBestLocale } from '../utils/localeUtils';
 
 interface AuthState {
     user: UserInfo | null;
@@ -28,6 +30,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             isAuthenticated: !!token,
         };
     });
+
+    // Detect and apply user's preferred language on load or change
+    useEffect(() => {
+        const targetLocale = authState.user?.preferences?.locale || detectBestLocale();
+        const shortLocale = toShortLocale(targetLocale);
+        if (i18n.language !== shortLocale) {
+            i18n.changeLanguage(shortLocale);
+        }
+    }, [authState.user]);
 
     const login = useCallback(async (email: string, password: string) => {
         const response = await api.post('/auth/login', { email, password });

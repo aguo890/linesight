@@ -5,7 +5,8 @@ import {
     Search,
     LogOut,
     User,
-    ChevronDown
+    ChevronDown,
+    Menu
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
@@ -20,16 +21,7 @@ export default function TopNav() {
 
     // MOCK DATA: Notifications (Empty for now to show empty state)
     const notifications: any[] = [];
-    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-        const saved = localStorage.getItem('sidebar-open');
-        return saved !== null ? JSON.parse(saved) : true;
-    });
 
-    useEffect(() => {
-        const handleToggle = (e: CustomEvent) => setIsSidebarOpen(e.detail.isOpen);
-        window.addEventListener('sidebar-toggle', handleToggle as EventListener);
-        return () => window.removeEventListener('sidebar-toggle', handleToggle as EventListener);
-    }, []);
 
     useEffect(() => {
         if (showSearchToast) {
@@ -39,9 +31,20 @@ export default function TopNav() {
     }, [showSearchToast]);
 
     return (
-        <nav className={`h-16 bg-surface border-b border-border flex items-center justify-between px-4 sticky top-0 z-40 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ms-64' : 'ms-[70px]'}`}>
+        <nav className="h-16 bg-surface border-b border-border flex items-center justify-between px-4 sticky top-0 z-40">
             {/* Search/Left Section */}
             <div className="flex items-center gap-4 flex-1">
+                {/* Mobile Menu Toggle */}
+                <button
+                    onClick={() => {
+                        const isOpen = true; // Open it
+                        window.dispatchEvent(new CustomEvent('sidebar-toggle', { detail: { isOpen } }));
+                    }}
+                    className="p-2 md:hidden text-text-muted hover:bg-surface-subtle rounded-lg"
+                >
+                    <Menu className="w-5 h-5" />
+                </button>
+
                 <div className="relative max-w-md w-full hidden md:block">
                     <Search className="w-4 h-4 text-text-muted absolute start-3 top-1/2 -translate-y-1/2" />
                     <input
@@ -122,7 +125,7 @@ export default function TopNav() {
                         <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white text-sm font-bold">
                             {user?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase()}
                         </div>
-                        <div className="hidden md:block text-left">
+                        <div className="hidden md:block text-start">
                             <p className="text-sm font-medium text-text-main leading-tight">{user?.full_name || t('layout.top_nav.user_menu.default_user')}</p>
                             <p className="text-xs text-text-muted leading-tight">{user?.role || t('layout.top_nav.user_menu.default_role')}</p>
                         </div>

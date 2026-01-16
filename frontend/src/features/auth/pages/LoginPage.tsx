@@ -226,6 +226,8 @@ const LoginPage: React.FC = () => {
                             placeholder="name@company.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            dir="ltr"
+                            className="text-left"
                             error={error ? ' ' : undefined} // Highlight border on error
                             required
                         />
@@ -249,6 +251,8 @@ const LoginPage: React.FC = () => {
                                 placeholder="••••••••"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                dir="ltr"
+                                className="text-left"
                                 error={error ? error : undefined}
                                 required
                             />

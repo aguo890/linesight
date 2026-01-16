@@ -46,14 +46,20 @@ const ProductionTimeline: React.FC<SmartWidgetProps<TimelineData, ProductionTime
     return (
         <div className="flex-1 min-h-0 w-full" style={{ width: '100%', height: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -10 }}>
+                <ComposedChart data={chartData} margin={document.documentElement.dir === 'rtl'
+                    ? { top: 5, right: -10, bottom: 0, left: 5 }
+                    : { top: 5, right: 5, bottom: 0, left: -10 }
+                }>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="time" tick={{ fontSize: 10 }} />
-                    <YAxis tick={{ fontSize: 10 }} />
+                    <YAxis
+                        tick={{ fontSize: 10 }}
+                        orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
+                    />
                     <Tooltip labelFormatter={(value) => formatDate(value)} />
                     <Legend iconSize={10} wrapperStyle={{ fontSize: '10px' }} />
 
-                    <Bar dataKey="actual" name={t('widgets.production_timeline.output')} fill="#3b82f6" barSize={20} radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="actual" name={t('widgets.common.actual')} fill="#3b82f6" barSize={20} radius={[4, 4, 0, 0]} />
 
                     {showHourlyTarget && (
                         manualTarget ? (

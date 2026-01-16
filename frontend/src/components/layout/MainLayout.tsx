@@ -1,34 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import TopNav from './TopNav';
 import { Sidebar } from './Sidebar';
-import { useTranslation } from 'react-i18next';
+
 
 export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: boolean }> = ({ children, disablePadding = false }) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-        const saved = localStorage.getItem('sidebar-open');
-        return saved !== null ? JSON.parse(saved) : true;
-    });
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isMobile, setIsMobile] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen((prev) => {
+            const newState = !prev;
+            // Only persist preference if we are in desktop mode
+            if (!isMobile) {
+                localStorage.setItem('sidebar-desktop-preference', JSON.stringify(newState));
+            }
+            return newState;
+        });
+    };
 
     useEffect(() => {
-        const handleToggle = (e: CustomEvent) => setIsSidebarOpen(e.detail.isOpen);
-        window.addEventListener('sidebar-toggle', handleToggle as EventListener);
-        return () => window.removeEventListener('sidebar-toggle', handleToggle as EventListener);
+        const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+        // Initial sync (Hydration safe)
+        const checkInitialState = () => {
+            const mobile = !mediaQuery.matches;
+            setIsMobile(mobile);
+
+            if (mobile) {
+                setIsSidebarOpen(false);
+            } else {
+                const saved = localStorage.getItem('sidebar-desktop-preference');
+                if (saved !== null) {
+                    setIsSidebarOpen(JSON.parse(saved));
+                }
+            }
+        };
+
+        checkInitialState();
+
+        // Handler for breakpoint crossings
+        const handleBreakpointChange = (e: MediaQueryListEvent) => {
+            const mobile = !e.matches;
+            setIsMobile(mobile);
+
+            if (mobile) {
+                // Moving into mobile: always force close
+                setIsSidebarOpen(false);
+            } else {
+                // Moving into desktop: restore saved preference
+                const saved = localStorage.getItem('sidebar-desktop-preference');
+                setIsSidebarOpen(saved !== null ? JSON.parse(saved) : true);
+            }
+        };
+
+        mediaQuery.addEventListener("change", handleBreakpointChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleBreakpointChange);
+        };
     }, []);
 
-    // Handle RTL direction
-    const { i18n } = useTranslation();
-    useEffect(() => {
-        const dir = i18n.dir(i18n.language);
-        document.documentElement.dir = dir;
-        document.documentElement.lang = i18n.language;
-    }, [i18n.language, i18n]);
+    const closeSidebar = () => {
+        setIsSidebarOpen(false);
+    };
+
+
 
     return (
-        <div className="h-screen flex flex-col text-[var(--color-text)] bg-[var(--color-background)]">
-            <Sidebar />
-            <TopNav />
-            <div className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ms-64' : 'ms-[70px]'}`}>
-                <main className={`h-[calc(100vh-4rem)] overflow-y-auto bg-[var(--color-background)] ${disablePadding ? '' : 'p-6'}`}>
+        <div className="h-screen w-full overflow-hidden block md:grid md:grid-cols-[auto_1fr] text-[var(--color-text)] bg-[var(--color-background)] relative">
+            {/* Mobile Backdrop */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 md:hidden animate-in fade-in duration-300"
+                    onClick={closeSidebar}
+                />
+            )}
+            <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
+            <div className="flex flex-col h-screen overflow-hidden">
+                <TopNav />
+                <main className={`flex-1 overflow-y-auto bg-[var(--color-background)] ${disablePadding ? '' : 'p-6'}`}>
                     {children}
                 </main>
             </div>

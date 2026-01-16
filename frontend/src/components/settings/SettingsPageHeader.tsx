@@ -9,6 +9,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { AutoFlipIcon } from '../common/AutoFlipIcon';
 
 interface SettingsPageHeaderProps {
     title: string;
@@ -33,9 +34,10 @@ export const SettingsPageHeader: React.FC<SettingsPageHeaderProps> = ({
                 to={backTo}
                 className="inline-flex items-center text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] mb-4 transition-colors group"
             >
-                <ArrowLeft
+                <AutoFlipIcon
+                    icon={ArrowLeft}
                     size={16}
-                    className="mr-1.5 transition-transform group-hover:-translate-x-0.5"
+                    className="me-1.5 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5"
                 />
                 {label}
             </Link>

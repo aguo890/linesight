@@ -73,7 +73,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                     <span className={`text-2xl font-bold ${isAboveThreshold ? 'text-danger' : 'text-text-main'}`}>
                         {currentDhu.toFixed(2)}%
                     </span>
-                    <span className="text-xs text-text-muted ml-2">{t('widgets.dhu_quality.current_dhu')}</span>
+                    <span className="text-xs text-text-muted ms-2">{t('widgets.dhu_quality.current_dhu')}</span>
                 </div>
                 {isAboveThreshold && (
                     <span className="text-xs font-medium text-danger bg-danger/10 px-2 py-0.5 rounded animate-pulse">
@@ -85,7 +85,10 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
             {/* Trend Chart */}
             <div className="flex-1 min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
+                    <LineChart data={chartData} margin={document.documentElement.dir === 'rtl'
+                        ? { top: 5, right: -20, bottom: 5, left: 5 }
+                        : { top: 5, right: 5, bottom: 5, left: -20 }
+                    }>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                         <XAxis
                             dataKey="date"
@@ -99,6 +102,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                             axisLine={false}
                             unit="%"
                             domain={[0, 'auto']}
+                            orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
                         />
                         <Tooltip
                             contentStyle={{
@@ -116,7 +120,12 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 y={maxAcceptableDHU}
                                 stroke="#f97316"
                                 strokeDasharray="3 3"
-                                label={{ value: t('widgets.common.limit'), position: 'right', fontSize: 9, fill: '#f97316' }}
+                                label={{
+                                    value: t('widgets.common.limit'),
+                                    position: document.documentElement.dir === 'rtl' ? 'left' : 'right',
+                                    fontSize: 9,
+                                    fill: '#f97316'
+                                }}
                             />
                         )}
                         <Line

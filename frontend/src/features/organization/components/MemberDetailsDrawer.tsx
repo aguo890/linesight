@@ -29,12 +29,12 @@ export const MemberDetailsDrawer: React.FC<MemberDetailsDrawerProps> = ({
     // Styles for the container (Positioning)
     const containerClasses = isModal
         ? "fixed inset-0 z-[60] flex items-center justify-center p-4" // Center screen, higher Z-index
-        : "fixed inset-y-0 right-0 z-50 w-full max-w-[480px]"; // Right side with responsive max-width
+        : "fixed inset-y-0 end-0 z-50 w-full max-w-[480px]"; // Right side (end) with responsive max-width
 
     // Styles for the panel (Shape & Animation)
     const panelClasses = isModal
         ? `bg-surface rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col transform transition-all duration-200 scale-100 border border-border`
-        : `w-full bg-surface shadow-2xl h-full flex flex-col transform transition-transform duration-300 ease-in-out border-l border-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`;
+        : `w-full bg-surface shadow-2xl h-full flex flex-col transform transition-transform duration-300 ease-in-out border-inline-start border-border ${isOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`;
 
     // Visibility wrapper
     const visibilityClass = isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none';

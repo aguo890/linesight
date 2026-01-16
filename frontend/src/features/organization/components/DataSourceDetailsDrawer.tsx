@@ -107,11 +107,11 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
             />
 
             {/* Slide-over Panel */}
-            <div className={`fixed inset-y-0 right-0 w-full max-w-md bg-surface shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border-l border-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`fixed inset-y-0 end-0 w-full max-w-md bg-surface shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border-inline-start border-border ${isOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}>
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-                    <div className="flex-1 mr-4">
+                    <div className="flex-1 me-4">
                         {isEditingName ? (
                             <div className="flex items-center gap-2">
                                 <Input

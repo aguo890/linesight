@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'; // [I18N]
 import type { ParseKeys } from 'i18next'; // [I18N]
 import { Logo } from '../common/Logo';
 import { cn } from '../../lib/utils';
+import { AutoFlipIcon } from '../common/AutoFlipIcon';
 
 const INITIAL_DASHBOARD_LIMIT = 5;
 
@@ -37,28 +38,22 @@ const NAV_ITEMS: NavItem[] = [
     }
 ];
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+    isOpen: boolean;
+    onToggle: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     const { t } = useTranslation(); // [I18N]
     const location = useLocation();
     const navigate = useNavigate();
     const [dashboards, setDashboards] = useState<SavedDashboard[]>([]);
     const [showAllDashboards, setShowAllDashboards] = useState(false);
-    const [isDashboardsExpanded, setIsDashboardsExpanded] = useState(true);
+    const [isDashboardsExpanded] = useState(true);
 
-    // Collapsible sidebar state with localStorage persistence
-    const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
-        const saved = localStorage.getItem('sidebar-open');
-        return saved !== null ? JSON.parse(saved) : true;
-    });
-
-    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-    // Persist sidebar state
-    useEffect(() => {
-        localStorage.setItem('sidebar-open', JSON.stringify(isSidebarOpen));
-        // Dispatch custom event for MainLayout to react to
-        window.dispatchEvent(new CustomEvent('sidebar-toggle', { detail: { isOpen: isSidebarOpen } }));
-    }, [isSidebarOpen]);
+    // PERSISTENCE: MainLayout handles the state now.
+    // We could still persist to localStorage if MainLayout initializes from it.
+    // But for now we follow the user's specific request for an implementation plan that uses MainLayout.
 
     // consume context
     const { } = useOrganization();
@@ -109,30 +104,43 @@ export const Sidebar: React.FC = () => {
 
 
 
+    const isRTL = document.dir === 'rtl';
+
     return (
         <>
             <aside className={cn(
-                "fixed top-0 start-0 z-50 h-screen bg-[var(--color-surface-elevated)] border-inline-end border-[var(--color-border)] flex flex-col shrink-0 transition-all duration-300 ease-in-out",
-                isSidebarOpen ? "w-64" : "w-[70px]"
+                "h-screen bg-[var(--color-surface-elevated)] border-inline-end border-[var(--color-border)] flex flex-col shrink-0 transition-all duration-300 ease-in-out z-50",
+                // Mobile: Fixed overlay. Desktop: Relative rail or full width.
+                "fixed inset-y-0 start-0 md:relative md:translate-x-0",
+                isOpen
+                    ? "w-64 translate-x-0"
+                    : cn(
+                        "w-64 md:w-[70px] md:translate-x-0",
+                        isRTL ? "translate-x-full" : "-translate-x-full"
+                    )
             )}>
                 {/* BRAND SECTION */}
                 <div className={cn(
-                    "flex items-center border-[var(--color-border)] transition-all duration-300",
-                    isSidebarOpen
-                        ? "h-16 justify-between px-6 border-b"
-                        : "h-auto flex-col justify-center py-4 gap-4 border-b-0"
+                    "flex items-center border-[var(--color-border)] transition-all duration-300 border-b",
+                    isOpen
+                        ? "h-16 justify-between px-6"
+                        : "h-16 justify-center relative"
                 )}>
                     <button onClick={() => navigate('/')} className="flex items-center group justify-center">
-                        <Logo variant="app" showText={isSidebarOpen} />
+                        <Logo variant="app" showText={isOpen} />
                     </button>
                     <button
-                        onClick={toggleSidebar}
+                        onClick={onToggle}
                         className={cn(
-                            "p-1.5 rounded-md text-[var(--color-text-subtle)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors",
-                            !isSidebarOpen && "hidden"
+                            "p-1.5 rounded-md text-[var(--color-text-subtle)] hover:text-[var(--color-text)] transition-colors",
+                            isOpen
+                                ? "hover:bg-[var(--color-border)]/20"
+                                : "absolute bottom-0 translate-y-1/2 left-1/2 -translate-x-1/2 z-10 bg-[var(--color-surface-elevated)] border border-[var(--color-border)] shadow-sm hidden md:flex items-center justify-center rounded-full hover:bg-[var(--color-surface)]"
                         )}
+                        aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+                        aria-expanded={isOpen}
                     >
-                        <PanelLeft className="w-4 h-4" />
+                        <AutoFlipIcon icon={PanelLeft} className={cn("w-4 h-4 transition-transform", !isOpen && "rotate-180")} />
                     </button>
                 </div>
 
@@ -149,13 +157,13 @@ export const Sidebar: React.FC = () => {
                             return (
                                 <div key={item.path}>
                                     <div
-                                        title={!isSidebarOpen ? t(item.labelKey) : undefined}
+                                        title={!isOpen ? t(item.labelKey) : undefined}
                                         className={cn(
-                                            "w-full flex items-center border-l-4 transition-colors",
+                                            "w-full flex items-center border-s-4 transition-colors",
                                             active || isInDashboardsSection
                                                 ? 'bg-[var(--color-surface)] border-[var(--color-primary)]'
                                                 : 'border-transparent hover:bg-[var(--color-border)]/20',
-                                            isSidebarOpen ? "" : "justify-center border-l-0"
+                                            isOpen ? "" : "justify-center border-s-0"
                                         )}
                                     >
                                         <button
@@ -165,36 +173,36 @@ export const Sidebar: React.FC = () => {
                                                 active || isInDashboardsSection
                                                     ? 'text-[var(--color-text)]'
                                                     : 'text-[var(--color-text-muted)]',
-                                                isSidebarOpen ? "flex-1 px-4" : "justify-center px-0 w-full"
+                                                isOpen ? "flex-1 px-4" : "justify-center px-0 w-full"
                                             )}
                                         >
                                             <item.icon className={cn(
-                                                "w-5 h-5 transition-colors",
-                                                isSidebarOpen ? "me-3" : "me-0",
+                                                "w-5 h-5 flex-shrink-0 transition-colors",
+                                                isOpen ? "me-3" : "me-0",
                                                 active || isInDashboardsSection
                                                     ? 'text-[var(--color-primary)]'
                                                     : 'text-[var(--color-text-subtle)]'
                                             )} />
                                             <span className={cn(
-                                                "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
-                                                isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0 hidden"
+                                                "transition-all duration-300 overflow-hidden whitespace-nowrap text-start flex-1",
+                                                isOpen ? "opacity-100 max-w-[200px]" : "opacity-0 w-0 hidden"
                                             )}>{t(item.labelKey)}</span>
                                         </button>
                                     </div>
 
                                     {/* Subsections - Individual Dashboards */}
                                     {isDashboardsExpanded && visibleDashboards.filter(d => d.id !== 'default').length > 0 && (
-                                        <div className="mt-1 ml-4 space-y-0.5 border-l-2 border-[var(--color-border)]">
+                                        <div className="mt-1 ms-4 space-y-0.5 border-s-2 border-[var(--color-border)]">
                                             {visibleDashboards.filter(d => d.id !== 'default').map((dashboard) => (
                                                 <button
                                                     key={dashboard.id}
                                                     onClick={() => handleDashboardClick(dashboard)}
-                                                    className={`w-full flex items-center pl-4 pr-4 py-2 text-sm transition-colors ${isDashboardActive(dashboard)
+                                                    className={`w-full flex items-center ps-4 pe-4 py-2 text-sm transition-colors ${isDashboardActive(dashboard)
                                                         ? 'bg-[var(--color-surface)] text-[var(--color-primary)] font-medium'
                                                         : 'text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 hover:text-[var(--color-text)]'
                                                         }`}
                                                 >
-                                                    <span className="flex-1 truncate text-left">{dashboard.name}</span>
+                                                    <span className="flex-1 truncate text-start">{dashboard.name}</span>
                                                     <span className="text-xs text-[var(--color-text-subtle)]">
                                                         {dashboard.widgets?.length || 0}
                                                     </span>
@@ -204,10 +212,10 @@ export const Sidebar: React.FC = () => {
                                             {hasMoreDashboards && !showAllDashboards && dashboards.filter(d => d.id !== 'default').length > INITIAL_DASHBOARD_LIMIT && (
                                                 <button
                                                     onClick={() => setShowAllDashboards(true)}
-                                                    className="w-full flex items-center justify-center pl-4 pr-4 py-2 text-xs text-[var(--color-primary)] hover:bg-[var(--color-border)]/20 transition-colors"
+                                                    className="w-full flex items-center justify-center ps-4 pe-4 py-2 text-xs text-[var(--color-primary)] hover:bg-[var(--color-border)]/20 transition-colors"
                                                 >
                                                     <span>{t('navigation.show_more')}</span>
-                                                    <ChevronDown className="w-3 h-3 ml-1" />
+                                                    <ChevronDown className="w-3 h-3 ms-1" />
                                                 </button>
                                             )}
 
@@ -217,7 +225,7 @@ export const Sidebar: React.FC = () => {
                                                     className="w-full flex items-center justify-center px-4 py-2 text-xs text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20 transition-colors"
                                                 >
                                                     <span>{t('navigation.show_less')}</span>
-                                                    <ChevronDown className="w-3 h-3 ml-1 transform rotate-180" />
+                                                    <ChevronDown className="w-3 h-3 ms-1 transform rotate-180" />
                                                 </button>
                                             )}
                                         </div>
@@ -230,29 +238,29 @@ export const Sidebar: React.FC = () => {
                         return (
                             <React.Fragment key={item.path}>
                                 {item.labelKey === 'navigation.organization' && (
-                                    <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isSidebarOpen && "hidden")}>
+                                    <div className={cn("px-4 text-xs font-bold text-[var(--color-text-subtle)] uppercase tracking-wider mb-2 mt-6", !isOpen && "hidden")}>
                                         {t('navigation.organization')}
                                     </div>
                                 )}
                                 <button
                                     onClick={() => navigate(item.path)}
-                                    title={!isSidebarOpen ? t(item.labelKey) : undefined}
+                                    title={!isOpen ? t(item.labelKey) : undefined}
                                     className={cn(
-                                        "w-full flex items-center py-2.5 text-sm font-semibold border-l-4 transition-colors",
+                                        "w-full flex items-center py-2.5 text-sm font-semibold border-s-4 transition-colors",
                                         active
                                             ? 'bg-[var(--color-surface)] border-[var(--color-primary)] text-[var(--color-text)]'
                                             : 'border-transparent text-[var(--color-text-muted)] hover:bg-[var(--color-border)]/20',
-                                        isSidebarOpen ? "px-4" : "justify-center px-0 border-l-0"
+                                        isOpen ? "px-4" : "justify-center px-0 border-s-0"
                                     )}
                                 >
                                     <item.icon className={cn(
                                         "w-5 h-5 flex-shrink-0",
-                                        isSidebarOpen ? "mr-3" : "mr-0",
+                                        isOpen ? "me-3" : "me-0",
                                         active ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-subtle)]'
                                     )} />
                                     <span className={cn(
-                                        "transition-all duration-300 overflow-hidden whitespace-nowrap text-left flex-1",
-                                        isSidebarOpen ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0"
+                                        "transition-all duration-300 overflow-hidden whitespace-nowrap text-start flex-1",
+                                        isOpen ? "opacity-100 max-w-[200px]" : "opacity-0 w-0 hidden"
                                     )}>{t(item.labelKey)}</span>
                                 </button>
                             </React.Fragment>
@@ -261,27 +269,10 @@ export const Sidebar: React.FC = () => {
                 </nav>
 
                 <div className="p-4 border-t border-[var(--color-border)] space-y-3">
-                    {/* Collapsed Mode: Toggle Button in Footer (for mobile or alternate) - user example had it. 
-                        Since we have toggle in header for desktop, let's follow user pattern:
-                        Header toggle is hidden on mobile? User example: "hidden lg:flex" for header toggle, "lg:hidden" for footer.
-                        But I'll just use the header toggle for consistency unless space is issue.
-                        Currently I put header toggle in header.
-                        Let's just handle visibility of content.
-                    */}
-                    {!isSidebarOpen && (
-                        <div className="flex justify-center mb-2">
-                            <button
-                                onClick={toggleSidebar}
-                                className="p-2 rounded-md text-[var(--color-text-subtle)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/20 transition-colors"
-                                title="Expand Sidebar"
-                            >
-                                <PanelLeft className="w-5 h-5" />
-                            </button>
-                        </div>
-                    )}
+                    {/* Footer Section - Cleanup: Removed redundant toggle button */}
 
                     {/* Subscription Plan Badge & AI Insight - Hidden for "Less is More" cleanup
-                    <div className={cn(isSidebarOpen ? "block" : "hidden")}>
+                    <div className={cn(isOpen ? "block" : "hidden")}>
                        ... (Code removed for design simplicity) ...
                     </div>
                     */}
@@ -301,7 +292,7 @@ export const Sidebar: React.FC = () => {
                         [DEBUG] FORCE RESET STORAGE
                     </button> */}
                 </div>
-            </aside >
+            </aside>
         </>
     );
 };

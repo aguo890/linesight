@@ -65,7 +65,10 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
                 data={chartData}
-                margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
+                margin={document.documentElement.dir === 'rtl'
+                    ? { top: 5, right: -20, left: 5, bottom: 0 }
+                    : { top: 5, right: 5, left: -20, bottom: 0 }
+                }
             >
                 <defs>
                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
@@ -90,6 +93,7 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                     axisLine={false}
                     tickLine={false}
                     domain={[0, yAxisMax || 'auto']}
+                    orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
                 />
                 <Tooltip
                     contentStyle={{

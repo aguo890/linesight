@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '../../lib/utils';
 
 interface PopoverProps {
@@ -57,11 +57,11 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHT
 );
 PopoverTrigger.displayName = "PopoverTrigger";
 
-export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' | 'left' | 'right' }>(
+export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end' }>(
     ({ className, children, side = 'bottom', ...props }, ref) => {
         const context = React.useContext(PopoverContext);
         if (!context) throw new Error("PopoverContent must be used within Popover");
-        const popoverRef = useRef<HTMLDivElement>(null);
+
 
         // Handle click outside
 
@@ -87,13 +87,15 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttribu
 
         return (
             <div
-                ref={popoverRef}
+                ref={ref}
                 className={cn(
                     "absolute z-50 mt-2 rounded-md border border-border bg-surface shadow-md outline-none animate-in fade-in-0 zoom-in-95",
                     side === 'top' && "bottom-full mb-2 mt-0",
                     side === 'bottom' && "top-full",
                     side === 'right' && "left-full top-0 ml-2 mt-0",
                     side === 'left' && "right-full top-0 mr-2 mt-0",
+                    side === 'start' && "end-full top-0 me-2 mt-0",
+                    side === 'end' && "start-full top-0 ms-2 mt-0",
                     className
                 )}
                 {...props}

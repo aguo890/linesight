@@ -48,6 +48,12 @@
             "no_results": "No se encontraron países",
             "select_country_first": "Seleccione País Primero",
             "selected": "Seleccionado:"
+        },
+        "unsaved_changes": {
+            "title": "Cambios sin guardar",
+            "message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?",
+            "confirm": "Salir sin guardar",
+            "cancel": "Permanecer"
         }
     },
     "navigation": {
@@ -272,6 +278,17 @@
         "production_chart": {
             "planned": "PLANEADO",
             "actual_output": "SALIDA REAL"
+        },
+        "production_timeline": {
+            "output": "Salida Real",
+            "target": "Objetivo"
+        },
+        "complexity_impact": {
+            "title": "Impacto de Complejidad",
+            "loading_styles": "Cargando estilos...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Complejidad)",
+            "styles": "Estilos"
         },
         "speed_quality": {
             "efficiency": "Eficiencia",

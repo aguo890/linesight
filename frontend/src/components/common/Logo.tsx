@@ -46,7 +46,7 @@ export const Logo: React.FC<LogoProps> = ({
         },
         footer: {
             text: "text-lg font-semibold tracking-tight text-slate-900 dark:text-white transition-colors duration-300",
-            img: "h-8 w-auto mix-blend-multiply dark:mix-blend-normal",
+            img: "h-8 w-8 mix-blend-multiply dark:mix-blend-normal",
             container: "gap-2"
         }
     };

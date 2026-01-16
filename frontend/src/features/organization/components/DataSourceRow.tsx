@@ -151,7 +151,7 @@ export const DataSourceRow = ({
                                     <Plus className="w-4 h-4" />
                                 </button>
                             </PopoverTrigger>
-                            <PopoverContent className="p-0 w-64" side="left">
+                            <PopoverContent className="p-0 w-64" side="start">
                                 <UserSearchCommand
                                     users={allUsers}
                                     onSelect={(uid) => {

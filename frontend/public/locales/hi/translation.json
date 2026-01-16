@@ -1,0 +1,1018 @@
+{
+    "profile": {
+        "title": "उपयोगकर्ता प्रोफ़ाइल",
+        "subtitle": "अपनी खाता सेटिंग और प्राथमिकताएँ प्रबंधित करें",
+        "back": "वापस",
+        "save_btn": "परिवर्तन सहेजें",
+        "success": "प्रोफ़ाइल सफलतापूर्वक अपडेट की गई!",
+        "error_required": "पूरा नाम आवश्यक है",
+        "error_fail": "प्रोफ़ाइल अपडेट करने में विफल। कृपया पुन: प्रयास करें।",
+        "at": "पर",
+        "roles": {
+            "admin": "व्यवस्थापक",
+            "user": "उपयोगकर्ता",
+            "manager": "प्रबंधक"
+        },
+        "sections": {
+            "factories": "आपके कारखाने",
+            "security": "सुरक्षा",
+            "personal_info": "व्यक्तिगत जानकारी",
+            "localization": "स्थानीयकरण और क्षेत्र",
+            "notifications": "सूचना प्राथमिकताएँ (जल्द आ रहा है)"
+        },
+        "security": {
+            "change_password": "पासवर्ड बदलें",
+            "two_factor": "दो-कारक प्रमाणीकरण"
+        },
+        "fields": {
+            "full_name": "पूरा नाम",
+            "email": "ईमेल पता",
+            "email_hint": "ईमेल सीधे नहीं बदला जा सकता है।",
+            "language": "भाषा",
+            "theme": "थीम"
+        },
+        "themes": {
+            "light": "लाइट मोड",
+            "dark": "डार्क मोड",
+            "system": "सिस्टम डिफॉल्ट"
+        },
+        "notifications": {
+            "email": "ईमेल अलर्ट",
+            "push": "पुश नोटिफिकेशन्स",
+            "weekly": "साप्ताहिक डाइजेस्ट"
+        },
+        "location_selector": {
+            "label": "स्थान और समय क्षेत्र",
+            "auto_detect": "स्वत: पता लगाएँ",
+            "search_placeholder": "देश खोजें...",
+            "no_results": "कोई देश नहीं मिला",
+            "select_country_first": "पहले देश चुनें",
+            "selected": "चयनित:"
+        }
+    },
+    "navigation": {
+        "dashboard": "डैशबोर्ड",
+        "my_dashboards": "मेरे डैशबोर्ड",
+        "organization": "संगठन",
+        "show_more": "और दिखाएँ",
+        "show_less": "कम दिखाएँ"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "मेरे डैशबोर्ड",
+            "search_placeholder": "साइट खोजें...",
+            "status": {
+                "loading": "आपकी साइट लोड हो रही हैं...",
+                "none": "कोई सक्रिय उत्पादन साइट नहीं",
+                "available_one": "{{count}} साइट उपलब्ध",
+                "available_other": "{{count}} साइट उपलब्ध"
+            },
+            "table": {
+                "header_name": "साइट का नाम",
+                "header_location": "स्थान",
+                "header_status": "स्थिति",
+                "header_lines": "लाइन्स",
+                "header_actions": "क्रियाएँ",
+                "action_view": "देखें"
+            },
+            "actions": {
+                "new_dashboard": "नया डैशबोर्ड",
+                "configure_sites": "साइट कॉन्फ़िगर करें",
+                "clear_search": "खोज साफ़ करें"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}} कारखाने दिखाए जा रहे हैं",
+                "no_results": "कोई कारखाने नहीं मिले",
+                "no_results_detail": "\"{{query}}\" से कोई कारखाना मेल नहीं खाता। कोई अन्य शब्द आज़माएँ।"
+            },
+            "factory_status": {
+                "at_limit": "सीमा पर",
+                "near_limit": "सीमा के पास",
+                "active": "सक्रिय"
+            },
+            "empty_state": {
+                "title": "कोई सक्रिय साइट नहीं",
+                "description": "आपका डैशबोर्ड खाली है क्योंकि अभी तक कोई कारखाना कॉन्फ़िगर नहीं किया गया है।",
+                "admin_hint": "अपना बुनियादी ढांचा स्थापित करने के लिए संगठन सेटिंग पर जाएँ।",
+                "user_hint": "कृपया बुनियादी ढांचा स्थापित करने के लिए अपने व्यवस्थापक से संपर्क करें।",
+                "cta": "संगठन सेटिंग पर जाएँ"
+            },
+            "view": {
+                "grid": "ग्रिड दृश्य",
+                "list": "सूची दृश्य"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} स्रोत",
+            "edit": "संपादित करें",
+            "delete": "हटाएँ",
+            "open": "खोलें",
+            "edit_title": "कारखाना संपादित करें",
+            "delete_title": "कारखाना हटाएँ"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "होम",
+            "list": "मेरे डैशबोर्ड",
+            "production_sites": "उत्पादन साइट",
+            "sites": "साइट",
+            "not_found": "नहीं मिला"
+        },
+        "sections": {
+            "overview": "अवलोकन",
+            "performance": "प्रदर्शन",
+            "settings": "सेटिंग्स",
+            "dashboards": "डैशबोर्ड",
+            "data_sources": "डेटा स्रोत"
+        },
+        "actions": {
+            "edit": "कॉन्फ़िगरेशन संपादित करें",
+            "delete": "साइट हटाएँ",
+            "save": "परिवर्तन सहेजें",
+            "settings": "सेटिंग्स",
+            "new_dashboard": "नया डैशबोर्ड",
+            "create_dashboard": "डैशबोर्ड बनाएँ",
+            "add_data_source": "डेटा स्रोत जोड़ें",
+            "new_source": "नया स्रोत",
+            "upload_data": "डेटा अपलोड करें",
+            "no_write_access": "इस स्रोत के लिए लिखने की अनुमति नहीं है"
+        },
+        "alerts": {
+            "confirm_delete": "क्या आप वाकई इस कारखाने को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+            "edit_soon": "संपादन कार्यक्षमता जल्द आ रही है",
+            "delete_soon": "हटाने की कार्यक्षमता जल्द आ रही है",
+            "delete_fail": "डैशबोर्ड हटाने में विफल।"
+        },
+        "stats": {
+            "dashboards": "डैशबोर्ड",
+            "active_widgets": "सक्रिय विजेट",
+            "active_sources": "सक्रिय स्रोत",
+            "used_info": "{{current}} / {{max}} उपयोग किया गया"
+        },
+        "not_found": "कारखाना नहीं मिला",
+        "search": {
+            "dashboards_placeholder": "डैशबोर्ड फ़िल्टर करें...",
+            "sources_placeholder": "स्रोत खोजें...",
+            "no_sources_found": "आपकी खोज से मेल खाने वाले कोई स्रोत नहीं मिले।"
+        },
+        "quota": {
+            "limit_reached": "कोटा सीमा पूरी हुई"
+        },
+        "table": {
+            "headers": {
+                "name": "नाम",
+                "status": "स्थिति",
+                "actions": "क्रियाएँ"
+            }
+        },
+        "status": {
+            "active": "सक्रिय",
+            "inactive": "निष्क्रिय"
+        },
+        "confirm": {
+            "delete_source": "क्या आप वाकई इस डेटा स्रोत को हटाना चाहते हैं?",
+            "delete_dashboard": "क्या आप वाकई इस डैशबोर्ड को हटाना चाहते हैं?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "आज",
+            "yesterday": "कल",
+            "last_7_days": "7 दिन",
+            "last_30_days": "30 दिन",
+            "this_month": "इस महीने",
+            "last_month": "पिछले महीने"
+        },
+        "shifts": {
+            "all": "सभी शिफ्ट",
+            "shift_a": "शिफ्ट A (सुबह)",
+            "shift_b": "शिफ्ट B (शाम)",
+            "shift_c": "शिफ्ट C (रात)"
+        },
+        "date_range": "दिनांक सीमा",
+        "to": "से"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "कार्यक्षेत्र",
+            "factory": "कारखाना",
+            "line": "लाइन",
+            "dashboard": "डैशबोर्ड"
+        },
+        "status": {
+            "updated": "अपडेट किया गया {{time}}",
+            "live": "लाइव",
+            "loading": "लोड हो रहा है...",
+            "saving": "सहेजा जा रहा है..."
+        },
+        "actions": {
+            "refresh": "रीफ्रेश",
+            "reset_layout": "लेआउट रीसेट करें",
+            "reset_confirm": "क्या आप वाकई लेआउट को डिफ़ॉल्ट पर रीसेट करना चाहते हैं?",
+            "design_layout": "लेआउट डिज़ाइन करें",
+            "save_layout": "लेआउट सहेजें",
+            "add_widget": "विजेट जोड़ें",
+            "cancel": "रद्द करें"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "विजेट लाइब्रेरी",
+            "subtitle": "अपने डैशबोर्ड लेआउट को अनुकूलित करने के लिए विजेट खींचें और छोड़ें।",
+            "categories": {
+                "all": "सभी",
+                "production": "उत्पादन",
+                "quality": "गुणवत्ता",
+                "efficiency": "दक्षता"
+            }
+        },
+        "selector": {
+            "simulated_data": "सिम्युलेटेड",
+            "ready_to_use": "उपयोग के लिए तैयार",
+            "recommended": "अनुशंसित",
+            "future_capability": "भविष्य की क्षमता",
+            "coming_soon": "जल्द आ रहा है",
+            "near_match": "निकट मेल",
+            "ai_recommendations": "AI सुझाव",
+            "select_all": "सभी चुनें",
+            "selected": "चयनित",
+            "compatible": "संगत",
+            "status_summary": "{{selected}} चयनित • {{compatible}} संगत",
+            "data_req": "डेटा आवश्यक",
+            "needs_mapping": "मैपिंग आवश्यक",
+            "categories": {
+                "Efficiency": "दक्षता",
+                "Quality": "गुणवत्ता",
+                "Workforce": "कर्मचारी",
+                "Operations": "संचालन"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "अनुशंसित",
+                "Operations": "संचालन",
+                "Strategy": "रणनीति"
+            },
+            "efficiency_starter": {
+                "title": "दक्षता किकस्टार्ट",
+                "description": "आउटपुट और प्रति घंटा प्रदर्शन पर नज़र रखने के लिए आवश्यक टूलकिट।"
+            },
+            "quality_auditor": {
+                "title": "गुणवत्ता लेखा परीक्षक",
+                "description": "DHU, दोष और गति-गुणवत्ता ट्रेड-ऑफ पर ध्यान दें।"
+            },
+            "floor_manager": {
+                "title": "फ्लोर मैनेजर दृश्य",
+                "description": "रीयल-टाइम कर्मचारी और उत्पादन दृश्यता।"
+            },
+            "executive_summary": {
+                "title": "कार्यकारी सारांश",
+                "description": "रणनीतिक निर्णय लेने के लिए उच्च-स्तरीय KPI।"
+            }
+        },
+        "common": {
+            "planned": "नियोजित",
+            "actual": "वास्तविक",
+            "target": "लक्ष्य",
+            "efficiency": "दक्षता",
+            "minutes": "मिनट",
+            "limit": "सीमा",
+            "status": "स्थिति",
+            "on_target": "लक्ष्य पर",
+            "below_target": "लक्ष्य से नीचे",
+            "defect_rate": "दोष दर"
+        },
+        "titles": {
+            "production_chart": "उत्पादन आउटपुट",
+            "line_efficiency": "लाइन दक्षता",
+            "earned_minutes": "अर्जित मिनट",
+            "sam_performance": "SAM प्रदर्शन",
+            "dhu_quality": "DHU गुणवत्ता",
+            "speed_quality": "गति बनाम गुणवत्ता",
+            "top_blockers": "शीर्ष अवरोधक",
+            "style_progress": "शैली प्रगति",
+            "daily_target": "दैनिक लक्ष्य",
+            "production_timeline": "उत्पादन समयरेखा",
+            "complexity_impact": "जटिलता प्रभाव",
+            "workforce_attendance": "कर्मचारी उपस्थिति",
+            "kpi_summary": "KPI सारांश"
+        },
+        "descriptions": {
+            "production_chart": "समय के साथ नियोजित बनाम वास्तविक उत्पादन की तुलना करें",
+            "line_efficiency": "लक्ष्य के खिलाफ रीयल-टाइम लाइन दक्षता",
+            "earned_minutes": "मानक अनुमत मिनट (SAM) अर्जित बनाम उपलब्ध",
+            "sam_performance": "मानक मिनटों पर आधारित प्रदर्शन मीट्रिक",
+            "dhu_quality": "प्रति सौ इकाइयों में दोष प्रवृत्ति विश्लेषण",
+            "speed_quality": "उत्पादन गति और गुणवत्ता के बीच सहसंबंध",
+            "top_blockers": "उत्पादन रोकने वाली सबसे आम समस्याएं",
+            "style_progress": "वर्तमान शैलियों की पूर्णता %",
+            "daily_target": "दैनिक उत्पादन लक्ष्य की ओर प्रगति",
+            "production_timeline": "उत्पादन अनुसूची का गैंट दृश्य",
+            "complexity_impact": "आउटपुट पर शैली जटिलता का विश्लेषण",
+            "workforce_attendance": "ऑपरेटर उपस्थिति और लाइन संतुलन",
+            "kpi_summary": "प्रमुख मीट्रिक्स का उच्च-स्तरीय अवलोकन"
+        },
+        "production_chart": {
+            "planned": "नियोजित",
+            "actual_output": "वास्तविक आउटपुट"
+        },
+        "speed_quality": {
+            "efficiency": "दक्षता",
+            "defect_rate": "दोष दर"
+        },
+        "earned_minutes": {
+            "earned": "अर्जित",
+            "available": "उपलब्ध"
+        },
+        "dhu_quality": {
+            "no_data": "कोई DHU डेटा उपलब्ध नहीं",
+            "current_dhu": "वर्तमान DHU",
+            "above_limit": "सीमा से ऊपर"
+        },
+        "blocker_cloud": {
+            "occurrences": "घटनाएँ",
+            "view_all_logs": "सभी लॉग देखें"
+        }
+    },
+    "common": {
+        "back": "वापस",
+        "cancel": "रद्द करें",
+        "error": "त्रुटि",
+        "success": "सफल",
+        "uploading": "अपलोड हो रहा है...",
+        "processing": "प्रोसेसिंग...",
+        "remove": "हटाएं",
+        "ready": "तैयार",
+        "needs_setup": "सेटअप आवश्यक",
+        "date": "दिनांक",
+        "actions": {
+            "save": "सहेजें",
+            "cancel": "रद्द करें",
+            "close": "बंद करें",
+            "delete": "हटाएँ",
+            "edit": "संपादित करें",
+            "search": "खोजें...",
+            "confirm": "पुष्टि करें",
+            "back": "वापस",
+            "create": "बनाएं",
+            "invite": "आमंत्रित करें"
+        },
+        "status": {
+            "active": "सक्रिय",
+            "inactive": "निष्क्रिय",
+            "unknown": "अज्ञात"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "डैशबोर्ड का नाम",
+            "dashboard_name_placeholder": "उदा. लाइन 4 उत्पादन अवलोकन",
+            "name_error_tooltip": "कृपया पहले डैशबोर्ड का नाम दर्ज करें।",
+            "name_error_text": "जारी रखने के लिए कृपया अपने डैशबोर्ड के लिए एक नाम दर्ज करें।",
+            "selection_title": "डेटा स्रोत चयन",
+            "selection_desc": "अपने विजेट को कॉन्फ़िगर करने के लिए पहले से अपलोड की गई फ़ाइल चुनें।",
+            "columns": {
+                "file_name": "फ़ाइल का नाम",
+                "status": "स्थिति",
+                "uploaded": "अपलोड किया गया",
+                "action": "क्रिया"
+            },
+            "btn_configure": "कॉन्फ़िगर करें",
+            "btn_complete_setup": "सेटअप पूरा करें",
+            "note": "नोट: आपके डैशबोर्ड में इस सूची की सभी फ़ाइलों का डेटा शामिल होगा।",
+            "empty_title": "अभी तक कोई डेटा स्रोत नहीं",
+            "empty_desc": "पहले उत्पादन लाइन पृष्ठ से फ़ाइलें अपलोड करें।",
+            "error_load_failed": "मौजूदा डेटा स्रोत कॉन्फ़िगरेशन लोड करने में विफल।"
+        },
+        "step2": {
+            "title": "मैपिंग सत्यापित करें",
+            "subtitle": "समीक्षा करें कि आपके कॉलम डेटाबेस से कैसे मेल खाते हैं।",
+            "stats": {
+                "auto": "स्वत: मैप किया गया",
+                "review": "समीक्षा की आवश्यकता",
+                "attention": "ध्यान दें",
+                "ignored": "अनदेखा किया गया"
+            },
+            "filter": {
+                "all": "सभी",
+                "unmapped": "मैप नहीं किया गया",
+                "conflicts": "विरोध"
+            },
+            "showing_count": "{{total}} कॉलमों में से {{filtered}} दिखाए जा रहे हैं",
+            "table": {
+                "source": "स्रोत कॉलम",
+                "target": "लक्ष्य फ़ील्ड",
+                "status": "स्थिति",
+                "no_match": "कोई कॉलम इस फ़िल्टर से मेल नहीं खाता",
+                "try_different": "एक अलग दृश्य चुनने का प्रयास करें"
+            },
+            "status_labels": {
+                "exact": "सटीक",
+                "exact_tooltip": "सटीक कॉलम नाम मिलान",
+                "fuzzy": "फजी",
+                "fuzzy_tooltip": "समान नाम मिला",
+                "ai": "AI",
+                "ai_tooltip": "AI-सुझाया गया मैपिंग",
+                "manual": "मैनुअल",
+                "manual_tooltip": "मैन्युअल रूप से सौंपा गया",
+                "unset": "अनसेट",
+                "unset_tooltip": "मैपिंग आवश्यक",
+                "duplicate": "डुप्लिकेट"
+            },
+            "field_selector": {
+                "select_placeholder": "लक्ष्य फ़ील्ड चुनें...",
+                "search_placeholder": "फ़ील्ड खोजें...",
+                "suggested": "सुझाया गया",
+                "all_fields": "सभी फ़ील्ड",
+                "no_results": "\"{{term}}\" से कोई फ़ील्ड मेल नहीं खाता",
+                "ignore_action": "इस कॉलम को अनदेखा करें",
+                "restore_action": "अनदेखा किया गया — पुनर्स्थापित करने के लिए क्लिक करें",
+                "in_use": "उपयोग में"
+            },
+            "alerts": {
+                "conflict_count_one": "1 फ़ील्ड में डुप्लिकेट मैपिंग हैं",
+                "conflict_count_other": "{{count}} फ़ील्ड में डुप्लिकेट मैपिंग हैं",
+                "remaining_needed": "शेष फ़ील्ड आवश्यक"
+            },
+            "btn_confirm": "मैपिंग की पुष्टि करें",
+            "processing": {
+                "title": "डेटा प्रोसेसिंग",
+                "subtitle": "सत्यापन और आयात...",
+                "logs": {
+                    "init": "प्रारंभ हो रहा है...",
+                    "schema": "स्कीमा संगतता सत्यापन...",
+                    "mapping": "कॉलम '{{column}}' मैप हो रहा है...",
+                    "req": "अनुरोध प्रोसेस हो रहा है...",
+                    "sending": "डेटा भेजा जा रहा है...",
+                    "success": "सफल।"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "क्विक स्टार्ट ब्लूप्रिंट्स",
+            "divider": "या व्यक्तिगत रूप से अनुकूलित करें",
+            "library_title": "विजेट लाइब्रेरी",
+            "selected_count": "{{count}} चयनित",
+            "btn_create": "डैशबोर्ड बनाएँ",
+            "btn_configuring": "कॉन्फ़िगर हो रहा है..."
+        },
+        "title": "LineSight सेटअप",
+        "steps": {
+            "upload": {
+                "label": "स्रोत डेटा",
+                "desc": "अपलोड या चयन",
+                "desc_alt": "CSV/Excel अपलोड"
+            },
+            "mapping": {
+                "label": "डेटा मैपिंग",
+                "desc": "कॉलम सत्यापन"
+            },
+            "widgets": {
+                "label": "डैशबोर्ड",
+                "desc": "लेआउट कॉन्फ़िगर"
+            }
+        },
+        "mini_map": {
+            "title": "स्थानिक पूर्वावलोकन",
+            "empty_state": "पूर्वावलोकन के लिए विजेट चुनें",
+            "stats": {
+                "widgets_one": "{{count}} विजेट",
+                "widgets_other": "{{count}} विजेट",
+                "screens_one": "~{{count}} स्क्रीन",
+                "screens_other": "~{{count}} स्क्रीन"
+            },
+            "density": {
+                "empty": "खाली",
+                "compact": "कॉम्पैक्ट",
+                "balanced": "संतुलित",
+                "heavy": "भारी"
+            },
+            "scroll_warning": "डैशबोर्ड को स्क्रॉल करने की आवश्यकता हो सकती है"
+        },
+        "context": {
+            "title": "वर्तमान संदर्भ",
+            "select_factory": "कारखाना चुनें",
+            "select_source": "डेटा स्रोत चुनें",
+            "select_factory_first": "पहले कारखाना चुनें",
+            "loading_factories": "कारखाने लोड हो रहे हैं...",
+            "loading_sources": "स्रोत लोड हो रहे हैं...",
+            "fetching_sources": "स्रोत प्राप्त किए जा रहे हैं...",
+            "no_sources_alert": "कोई डेटा स्रोत उपलब्ध नहीं।",
+            "select_source_overlay": "जारी रखने के लिए एक डेटा स्रोत चुनें"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "डेटा अपलोड",
+            "title_preview": "डेटा पूर्वावलोकन",
+            "subtitle_upload": "{{dataSourceName}} पर अपलोड",
+            "subtitle_preview": "समीक्षा करें कि आपका डेटा कैसे आयात किया जाएगा",
+            "drop_text": "अपनी फ़ाइल यहाँ छोड़ें या ब्राउज़ करने के लिए क्लिक करें",
+            "supports_text": "Excel (.xlsx, .xls) और CSV फ़ाइलों का समर्थन करता है",
+            "success_redirect": "अपलोड सफल! मैपिंग पर पुनर्निर्देशित किया जा रहा है...",
+            "info_preview": "अपलोड के बाद, आप कॉलम मैप करने से पहले पूर्वावलोकन की समीक्षा करेंगे।",
+            "btn_upload_preview": "अपलोड और पूर्वावलोकन",
+            "btn_uploading": "अपलोड हो रहा है...",
+            "errors": {
+                "invalid_extension": "कृपया एक्सेल या CSV फ़ाइल चुनें",
+                "duplicate_file": "यह फ़ाइल पहले ही अपलोड की जा चुकी है।",
+                "preview_failed": "डेटा पूर्वावलोकन बनाने में विफल।",
+                "upload_failed": "अपलोड विफल"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "संगठन सेटिंग्स",
+        "description": "अपने कार्यक्षेत्र कॉन्फ़िगरेशन को प्रबंधित करें।",
+        "cards": {
+            "general": {
+                "title": "सामान्य",
+                "description": "संगठन प्रोफ़ाइल, लोगो और पहचानकर्ता।"
+            },
+            "members": {
+                "title": "सदस्य",
+                "description": "टीम एक्सेस, भूमिकाएँ और आमंत्रण प्रबंधित करें।"
+            },
+            "infrastructure": {
+                "title": "बुनियादी ढांचा",
+                "description": "कारखाने, लाइन और ज़ोन कॉन्फ़िगर करें।"
+            },
+            "security": {
+                "title": "सुरक्षा",
+                "description": "SSO, ऑडिट लॉग और पासवर्ड नीतियां।"
+            },
+            "billing": {
+                "title": "बिलिंग",
+                "description": "चालान, उपयोग सीमाएँ और सदस्यता।"
+            }
+        },
+        "badges": {
+            "coming_soon": "जल्द आ रहा है"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "सेटिंग्स पर वापस"
+        },
+        "top_nav": {
+            "search_placeholder": "कारखाने, ऑर्डर खोजें...",
+            "search_coming_soon": "वैश्विक खोज जल्द आ रही है!",
+            "notifications": {
+                "title": "सूचनाएं",
+                "mark_read": "सभी पढ़ा गया चिह्नित करें",
+                "empty": "कोई नई सूचना नहीं"
+            },
+            "user_menu": {
+                "profile": "प्रोफ़ाइल और सेटिंग्स",
+                "logout": "साइन आउट",
+                "default_user": "उपयोगकर्ता",
+                "default_role": "दर्शक"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "संगठन",
+            "factories": "कारखाने"
+        },
+        "header": {
+            "title": "कारखाना कॉन्फ़िगरेशन",
+            "popover_trigger_label": "कारखाना जानकारी"
+        },
+        "popover": {
+            "title": "कॉन्फ़िगरेशन",
+            "assignment": {
+                "title": "असाइनमेंट मोड:",
+                "desc_part1": "डिफ़ॉल्ट दृश्य। विवरण देखने के लिए क्लिक करें या",
+                "desc_part2": "प्रबंधकों को सौंपने के लिए बटन।"
+            },
+            "structure": {
+                "title": "संरचना मोड:",
+                "desc": "स्रोतों को बदलने के लिए लेआउट अनुकूलित करें।"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "असाइनमेंट मोड",
+            "structure_mode": "संरचना मोड",
+            "customize_layout": "लेआउट अनुकूलित करें",
+            "done_editing": "संपादन पूर्ण"
+        },
+        "list": {
+            "add_data_source": "डेटा स्रोत जोड़ें",
+            "no_data_sources": "कोई डेटा स्रोत कॉन्फ़िगर नहीं किया गया।"
+        },
+        "bulk_actions": {
+            "selected": "चयनित",
+            "assign_manager": "प्रबंधक असाइन करें"
+        },
+        "messages": {
+            "loading": "कारखाना लोड हो रहा है...",
+            "assignment_failed": "प्रबंधक असाइन करने में विफल।"
+        }
+    },
+    "roles": {
+        "system_admin": "सिस्टम एडमिन",
+        "owner": "मालिक",
+        "admin": "एडमिन",
+        "viewer": "दर्शक",
+        "member": "सदस्य",
+        "operator": "ऑपरेटर",
+        "factory_manager": "फैक्ट्री मैनेजर",
+        "line_manager": "लाइन मैनेजर",
+        "user": "उपयोगकर्ता",
+        "manager": "प्रबंधक"
+    },
+    "org_general": {
+        "title": "सामान्य",
+        "profile": {
+            "logged_in_as": "हस्ताक्षरित"
+        },
+        "at_a_glance": "एक नज़र में",
+        "stats": {
+            "total_managers": "कुल प्रबंधक",
+            "assigned": "असाइन किया गया",
+            "factories": "कारखाने",
+            "production_lines": "उत्पादन लाइनें"
+        },
+        "danger_zone": {
+            "title": "खतरा क्षेत्र",
+            "description": "संगठन को हटाने से सभी कारखाने, उत्पादन लाइनें और डेटा स्थायी रूप से हटा दिए जाएंगे।",
+            "delete_button": "संगठन हटाएँ (जल्द आ रहा है)"
+        }
+    },
+    "org_members": {
+        "title": "सदस्य",
+        "invite_member": "सदस्य आमंत्रित करें",
+        "search_placeholder": "नाम या ईमेल द्वारा खोजें...",
+        "filter": "फ़िल्टर",
+        "table": {
+            "user": "उपयोगकर्ता",
+            "global_role": "वैश्विक भूमिका",
+            "access": "एक्सेस",
+            "last_active": "अंतिम सक्रिय",
+            "actions": "क्रियाएँ",
+            "loading": "सदस्य लोड हो रहे हैं...",
+            "no_members": "कोई सदस्य नहीं मिला।",
+            "assignments": "{{count}} असाइनमेंट्स",
+            "unassigned": "अनअसाइन किया गया",
+            "never_active": "कभी नहीं",
+            "view_details": "विवरण देखें"
+        },
+        "drawer": {
+            "title": "सदस्य विवरण",
+            "role_label": "भूमिका",
+            "active_assignments": "सक्रिय असाइनमेंट्स",
+            "no_assignments": "कोई असाइनमेंट नहीं।",
+            "current_factory": "वर्तमान कारखाना",
+            "danger_zone": {
+                "title": "खतरा क्षेत्र",
+                "suspend_button": "उपयोगकर्ता निलंबित करें"
+            }
+        },
+        "cell": {
+            "unknown_user": "अज्ञात उपयोगकर्ता",
+            "active": "सक्रिय",
+            "inactive": "निष्क्रिय"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "सेटिंग्स पर वापस",
+        "back_button": "सेटिंग्स पर वापस",
+        "title": "बुनियादी ढांचा",
+        "sites_count": "{{count}} साइट",
+        "sites": "साइट",
+        "add_factory": "कारखाना जोड़ें",
+        "search_placeholder": "खोजें...",
+        "retry": "पुनः प्रयास करें",
+        "new_factory": {
+            "title": "नया कारखाना",
+            "subtitle": "नई विनिर्माण साइट जोड़ें"
+        },
+        "card": {
+            "data_sources": "डेटा स्रोत",
+            "managers": "प्रबंधक",
+            "configure_site": "साइट कॉन्फ़िगर करें",
+            "edit_details": "विवरण संपादित करें",
+            "delete_factory": "कारखाना हटाएँ"
+        },
+        "list": {
+            "name": "नाम",
+            "factory": "कारखाना",
+            "code": "कोड",
+            "country": "देश",
+            "sources": "स्रोत",
+            "managers": "प्रबंधक",
+            "actions": "क्रियाएँ"
+        },
+        "no_match": "\"{{query}}\" से कोई मिलान नहीं",
+        "confirm_delete": "क्या आप वाकई {{name}} को हटाना चाहते हैं?",
+        "delete_fail": "हटाने में विफल: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "डेटा स्रोत जोड़ें",
+            "subtitle": "{{factoryName}} में जोड़ें",
+            "name_label": "नाम",
+            "name_placeholder": "उदा. लाइन 3",
+            "code_label": "कोड",
+            "code_placeholder": "L-03",
+            "specialty_label": "विशेषता",
+            "specialty_placeholder": "उदा. असेंबली",
+            "description_label": "विवरण",
+            "description_placeholder": "संक्षेप में वर्णन करें...",
+            "use_defaults": "फैक्ट्री डिफॉल्ट्स का उपयोग करें",
+            "inherit_tooltip": "शिफ्ट और सप्ताहांत विरासत में मिलता है",
+            "custom_tooltip": "कस्टम कॉन्फ़िगरेशन",
+            "inherit_desc": "यह स्रोत स्वचालित रूप से कारखाने के मानक शिफ्ट पैटर्न को विरासत में लेगा।",
+            "custom_desc": "खाली अनुसूची के साथ शुरुआत",
+            "source_usage": "स्रोत उपयोग",
+            "quota_reached": "इस कारखाने के लिए अधिकतम स्रोत पहुँच गए।",
+            "submit_button": "स्रोत जोड़ें",
+            "submitting": "बनाया जा रहा है..."
+        },
+        "create_factory": {
+            "title": "नया कारखाना बनाएँ",
+            "subtitle": "प्रारंभिक डेटा स्रोत के साथ एक नया कारखाना स्थापित करें",
+            "quota_reached": "कोटा सीमा पूरी हुई",
+            "name_label": "कारखाना नाम",
+            "name_placeholder": "उदा. गिगाफैक्ट्री",
+            "code_label": "कारखाना कोड",
+            "code_placeholder": "उदा. GTX-01",
+            "code_desc": "इस कारखाने के लिए लघु पहचानकर्ता",
+            "source_name_label": "प्रारंभिक डेटा स्रोत",
+            "source_name_placeholder": "उदा. असेंबली लाइन A",
+            "source_specialty_label": "स्रोत विशेषता",
+            "source_specialty_placeholder": "उदा. असेंबली",
+            "source_specialty_desc": "इस स्रोत का प्राथमिक कार्य",
+            "source_desc_label": "स्रोत विवरण",
+            "source_desc_placeholder": "उदा. स्पोर्ट्सवियर के लिए प्राथमिक असेंबली लाइन",
+            "source_desc_help": "इस स्रोत के कार्य का संक्षेप में वर्णन करें",
+            "submitting_msg": "कारखाना और डेटा स्रोत बनाया जा रहा है...",
+            "submit_button": "कारखाना बनाएँ",
+            "submitting_button": "बनाया जा रहा है..."
+        },
+        "edit_factory": {
+            "title": "कारखाना संपादित करें",
+            "name_label": "कारखाना नाम",
+            "code_label": "कारखाना कोड",
+            "submit_button": "परिवर्तन सहेजें",
+            "submitting_button": "सहेजा जा रहा है..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "स्रोत का नाम बदलें",
+            "managers_stat": "प्रबंधक",
+            "efficiency_stat": "दक्षता",
+            "assigned_team": "असाइन की गई टीम",
+            "no_managers": "इस स्रोत के लिए कोई प्रबंधक असाइन नहीं किया गया है।",
+            "remove_button": "हटाएं",
+            "danger_zone": "खतरा क्षेत्र",
+            "delete_button": "डेटा स्रोत हटाएँ",
+            "confirm_remove": "क्या इस प्रबंधक को हटा दें?",
+            "remove_fail": "उपयोगकर्ता को हटाने में विफल।",
+            "confirm_delete": "क्या आप वाकई {{name}} को हटाना चाहते हैं?",
+            "delete_fail": "डेटा स्रोत को नहीं हटाया जा सकता।",
+            "rename_fail": "डेटा स्रोत का नाम बदलने में विफल।"
+        },
+        "row": {
+            "untitled_source": "बिना शीर्षक वाला स्रोत",
+            "rename_required": "नाम बदलना आवश्यक",
+            "click_tooltip": "विवरण देखने और नाम बदलने के लिए क्लिक करें",
+            "confirm_delete": "{{name}} हटाएं?",
+            "rename_prompt": "डेटा स्रोत का नाम बदलें:"
+        },
+        "user_search": {
+            "placeholder": "प्रबंधक खोजें...",
+            "no_results": "कोई मेल खाने वाले प्रबंधक नहीं मिले",
+            "no_available": "कोई उपलब्ध प्रबंधक नहीं",
+            "available_count": "{{count}} उपलब्ध"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "वापसी पर स्वागत है",
+            "welcome_subtitle": "डैशबोर्ड तक पहुंचने के लिए अपना विवरण दर्ज करें।",
+            "email_label": "कार्य ईमेल",
+            "password_label": "पासवर्ड",
+            "forgot_password": "पासवर्ड भूल गए?",
+            "sign_in_button": "साइन इन करें",
+            "no_account": "खाता नहीं है?",
+            "contact_sales": "बिक्री से संपर्क करें",
+            "back_to_landing": "लैंडिंग पर वापस",
+            "errors": {
+                "network_error": "कनेक्शन त्रुटि।",
+                "invalid_credentials": "अमान्य क्रेडेंशियल्स।"
+            },
+            "demo_card": {
+                "title": "शिफ्ट रिपोर्ट",
+                "subtitle": "लाइव • कारखाना 01",
+                "efficiency": "दक्षता",
+                "efficiency_sub": "↑ {{val}}% बनाम लक्ष्य",
+                "output": "आउटपुट",
+                "output_sub": "ट्रैक पर",
+                "chart_title": "प्रति घंटा दर",
+                "chart_period": "पिछले 4 घंटे",
+                "chart_current": "वर्तमान",
+                "quote": "\"{{text}}\"",
+                "quote_author": "संचालन निदेशक"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "अप्रत्याशित एप्लिकेशन त्रुटि",
+            "unknown_error": "अज्ञात त्रुटि हुई।",
+            "return_home": "होम पर वापस"
+        },
+        "confirm_dialog": {
+            "confirm": "पुष्टि करें",
+            "cancel": "रद्द करें",
+            "please_wait": "कृपया प्रतीक्षा करें..."
+        },
+        "quota_warning": {
+            "limit_reached": "आप अपनी {{type}} सीमा तक पहुंच गए हैं ({{max}})",
+            "near_limit": "आप अपनी {{type}} सीमा के करीब पहुंच रहे हैं ({{current}}/{{max}})",
+            "upgrade_prompt": "अधिक {{type}} बनाने के लिए अपनी योजना अपग्रेड करें।",
+            "consider_upgrade": "रुकावटों से बचने के लिए अपग्रेड करने पर विचार करें।",
+            "upgrade_button": "अपग्रेड करें",
+            "dismiss_label": "चेतावनी खारिज करें",
+            "type_factories": "कारखाने",
+            "type_lines": "उत्पादन लाइनें"
+        },
+        "date_range_picker": {
+            "start_date": "आरंभ तिथि",
+            "end_date": "अंतिम तिथि",
+            "start_in_timezone": "{{timezone}} में आरंभ",
+            "end_in_timezone": "{{timezone}} में समाप्ति"
+        },
+        "breadcrumb": {
+            "aria_label": "ब्रेडक्रंब"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "कारखाना मानक और चूक",
+            "subtitle": "{{name}} के लिए वैश्विक चूक कॉन्फ़िगर करें"
+        },
+        "sections": {
+            "localization": "स्थानीयकरण",
+            "shifts": {
+                "title": "डिफ़ॉल्ट शिफ्ट पैटर्न",
+                "description": "नई उत्पादन लाइनें इन शिफ्टों को विरासत में लेगी।"
+            },
+            "non_working_days": {
+                "title": "मानक गैर-कार्य दिवस",
+                "description": "ये दिन डिफ़ॉल्ट रूप से गैर-कार्य दिवस के रूप में चिह्नित होंगे।"
+            },
+            "schema_configuration": "स्कीमा कॉन्फ़िगरेशन",
+            "upload_history": "अपलोड इतिहास",
+            "active_field_mapping": "सक्रिय फ़ील्ड मैपिंग",
+            "field_mapping_description": "Excel हेडर को सिस्टम फ़ील्ड में मैप करता है।"
+        },
+        "fields": {
+            "date_format": "दिनांक प्रारूप",
+            "currency": "मुद्रा",
+            "measurement_system": "मापन प्रणाली",
+            "preview": "पूर्वावलोकन"
+        },
+        "shifts": {
+            "add": "शिफ्ट जोड़ें",
+            "new_shift": "नई शिफ्ट",
+            "empty": "कोई शिफ्ट कॉन्फ़िगर नहीं की गई।",
+            "name_label": "शिफ्ट नाम",
+            "name_placeholder": "उदा. सुबह",
+            "start_time": "प्रारंभ समय",
+            "end_time": "समाप्ति समय"
+        },
+        "timezone_warning": {
+            "title": "समय क्षेत्र बदलें?",
+            "message": "समय क्षेत्र को <strong>{{timezone}}</strong> में बदलने से ऐतिहासिक डेटा रिपोर्टिंग प्रभावित हो सकती है।",
+            "confirm": "हाँ, अपडेट करें"
+        },
+        "buttons": {
+            "save": "सहेजें",
+            "saving": "सहेजा जा रहा है..."
+        },
+        "errors": {
+            "save_failed": "सेटिंग्स सहेजने में विफल।"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "डेटा स्रोत नहीं मिला",
+        "system_node": "सिस्टम नोड",
+        "breadcrumbs": {
+            "workspace": "कार्यक्षेत्र",
+            "factory": "कारखाना",
+            "not_found": "नहीं मिला"
+        },
+        "tabs": {
+            "schema_configuration": "स्कीमा कॉन्फ़िगरेशन",
+            "upload_history": "अपलोड इतिहास"
+        },
+        "schema": {
+            "active_field_mapping": "सक्रिय फ़ील्ड मैपिंग",
+            "field_mapping_description": "Excel हेडर को सिस्टम फ़ील्ड में मैप करता है।",
+            "edit_mappings": "मैपिंग संपादित करें",
+            "reset_schema": "स्कीमा रीसेट करें",
+            "no_mappings": "कोई मैपिंग परिभाषित नहीं।",
+            "system_status": "सिस्टम स्थिति",
+            "last_updated": "अंतिम अपडेट",
+            "no_config_title": "कोई कॉन्फ़िगरेशन नहीं मिला",
+            "no_config_description": "यह डेटा स्रोत अभी तक मैप नहीं किया गया है।",
+            "no_config_hint": "शुरू करने के लिए कारखाने पृष्ठ से एक फ़ाइल अपलोड करें।",
+            "table": {
+                "excel_header": "एक्सेल हेडर",
+                "system_field": "सिस्टम फ़ील्ड"
+            }
+        },
+        "uploads": {
+            "processed_files": "संसाधित फ़ाइलें",
+            "clear_history": "इतिहास साफ़ करें",
+            "no_files": "अभी तक कोई फ़ाइल अपलोड नहीं की गई।"
+        },
+        "confirm": {
+            "reset_schema": "चेतावनी: यह डेटा स्रोत और स्कीमा को हटा देगा। क्या आप सुनिश्चित हैं?",
+            "clear_history": "चेतावनी: यह सभी अपलोड इतिहास को हटा देगा। क्या आप सुनिश्चित हैं?"
+        },
+        "errors": {
+            "reset_failed": "स्कीमा रीसेट करने में विफल।",
+            "clear_failed": "इतिहास साफ़ करने में विफल।"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "आपका डैशबोर्ड खाली है",
+            "description": "डिजाइनर से विजेट जोड़कर शुरुआत करें।",
+            "action": "डिजाइनर खोलें"
+        }
+    },
+    "file_preview": {
+        "title": "फ़ाइल पूर्वावलोकन",
+        "loading": "पूर्वावलोकन लोड हो रहा है...",
+        "loading_subtitle": "फ़ाइल संरचना का विश्लेषण",
+        "error_title": "पूर्वावलोकन त्रुटि",
+        "error_default": "पूर्वावलोकन लोड करने में विफल।",
+        "showing_rows": "पहली {{count}} पंक्तियाँ दिखाई जा रही हैं",
+        "columns_detected": "{{count}} कॉलम पाए गए",
+        "info_note": "नोट: यह आपके डेटा का पूर्वावलोकन है।",
+        "null_value": "शून्य"
+    },
+    "data_integration": {
+        "title": "डेटा एकीकरण संदर्भ",
+        "subtitle": "स्कीमा प्रबंधित करें",
+        "upload_data": "डेटा अपलोड करें",
+        "collapse": "संक्षपित करें",
+        "expand": "विस्तार करें",
+        "tabs": {
+            "schema": "स्कीमा कॉन्फ़िगरेशन",
+            "uploads": "अपलोड इतिहास"
+        },
+        "empty_sources": "कोई डेटा स्रोत कॉन्फ़िगर नहीं किया गया।",
+        "configure_new": "नया डेटा स्रोत कॉन्फ़िगर करें",
+        "no_description": "कोई विवरण प्रदान नहीं किया गया।",
+        "schema_version": "सख्त स्कीमा v{{version}}:",
+        "no_active_schema": "कोई सक्रिय स्कीमा नहीं",
+        "edit_config": "कॉन्फ़िगरेशन संपादित करें",
+        "error_update": "कॉन्फ़िगरेशन अपडेट करने में विफल।",
+        "modal": {
+            "title": "कॉन्फ़िगरेशन संपादित करें",
+            "source_name": "स्रोत का नाम",
+            "time_column": "समय कॉलम (एक्सेल हेडर)",
+            "time_column_hint": "दिनांक/समय कॉलम का सटीक नाम।",
+            "config_active": "कॉन्फ़िगरेशन सक्रिय"
+        }
+    },
+    "data_source_config": {
+        "title": "डेटा स्रोत कॉन्फ़िगरेशन",
+        "subtitle": "उत्पादन लाइन: {{id}}",
+        "loading": "कॉन्फ़िगरेशन लोड हो रहा है...",
+        "not_configured_title": "कोई डेटा स्रोत कॉन्फ़िगर नहीं",
+        "not_configured_desc": "कोई डेटा स्रोत कॉन्फ़िगर नहीं किया गया।",
+        "close_modal": "मोडल बंद करें",
+        "time_column": "समय कॉलम",
+        "time_column_placeholder": "उदा. दिनांक",
+        "time_column_hint": "समय कॉलम का नाम।",
+        "schema_title": "सक्रिय स्कीमा मैपिंग",
+        "schema_version": "संस्करण {{version}}",
+        "table": {
+            "source": "स्रोत कॉलम",
+            "target": "लक्ष्य फ़ील्ड"
+        },
+        "schema_note": "नोट: स्कीमा मैपिंग स्वचालित रूप से सीखी जाती है।",
+        "description": "विवरण",
+        "description_placeholder": "संक्षेप में वर्णन करें...",
+        "success": "कॉन्फ़िगरेशन सफलतापूर्वक अपडेट किया गया!",
+        "error_save": "परिवर्तन सहेजने में विफल।",
+        "error_load": "कॉन्फ़िगरेशन लोड करने में विफल।",
+        "save_button": "कॉन्फ़िगरेशन सहेजें"
+    },
+    "upload_history": {
+        "title": "हाल के अपलोड",
+        "loading": "इतिहास लोड हो रहा है...",
+        "empty": "अभी तक कोई फ़ाइल अपलोड नहीं की गई।",
+        "error": "अपलोड इतिहास लोड करने में विफल।"
+    }
+}
