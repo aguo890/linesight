@@ -28,6 +28,7 @@ help:
 	@echo "    make clean          - Remove cache files (__pycache__, .pytest_cache, etc)"
 	@echo "    make push m=\"msg\"   - Clean, commit with message, push to GitHub"
 	@echo "    make push-quick     - Clean, commit with timestamp, push to GitHub"
+	@echo "    make branch <name>  - Create a new git branch"
 	@echo ""
 	@echo "  Setup:"
 	@echo "    make setup          - Install all dependencies"
@@ -138,3 +139,15 @@ push: clean
 	@echo "🚀 Smart push to GitHub..."
 	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
 
+
+# Create a new branch without argument flags
+# Usage: make branch <name>
+ifeq (branch,$(firstword $(MAKECMDGOALS)))
+  BRANCH_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(BRANCH_ARGS):;@:)
+endif
+
+branch:
+	@if "$(BRANCH_ARGS)"=="" (echo "⚠️  Usage: make branch <name>" & exit /b 1)
+	@echo "🌿 Creating new branch: $(BRANCH_ARGS)"
+	@git checkout -b $(BRANCH_ARGS)
