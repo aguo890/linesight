@@ -19,7 +19,6 @@ from sqlalchemy import (
     Time,
     UniqueConstraint,
 )
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, SoftDeleteMixin, TimestampMixin, UUIDMixin
@@ -43,7 +42,7 @@ class Worker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     # Factory FK
     factory_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -68,7 +67,7 @@ class Worker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     # Assignment (renamed from line_id after migration)
     data_source_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True,
     )
@@ -129,7 +128,7 @@ class WorkerSkill(Base, UUIDMixin, TimestampMixin):
 
     # Worker FK
     worker_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("workers.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -202,7 +201,7 @@ class WorkerAttendance(Base, UUIDMixin, TimestampMixin):
 
     # Worker FK
     worker_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("workers.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -245,13 +244,13 @@ class ProductionOutput(Base, UUIDMixin, TimestampMixin):
 
     # FKs
     worker_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("workers.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
     production_run_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("production_runs.id", ondelete="CASCADE"),
         nullable=False,
         index=True,

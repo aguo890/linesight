@@ -1,7 +1,9 @@
 # LineSight Factory Excel Manager - Project Automation
 BACKEND_VENV_PYTHON = backend\venv\Scripts\python
+COMPOSE_FILE := docker-compose.yml
+SERVICE_NAME := backend
 
-.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick
+.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick migrate branch
 
 # Default: List available commands
 default: help
@@ -11,137 +13,121 @@ help:
 	@echo "  LineSight Factory Manager"
 	@echo "  ========================="
 	@echo ""
-	@echo "  Development:"
-	@echo "    make run            - Sync API types + start frontend only"
-	@echo "    make dev            - Sync API types + start full stack (backend + frontend)"
+	@echo "  Key Workflows:"
+	@echo "    make setup          - FRESH START: Down, Build, Up, Migrate (Data Loss!)"
+	@echo "    make dev            - Daily startup (Docker up + Frontend sync)"
+	@echo "    make migrate        - Generate new Alembic migration (auto)"
 	@echo ""
-	@echo "  API Types:"
-	@echo "    make sync           - Full API sync (extract -> lint -> generate -> typecheck)"
-	@echo "    make sync-check     - Quick sync check (extract + generate, skip lint)"
-	@echo ""
-	@echo "  Quality Assurance:"
-	@echo "    make check          - Run ALL checks (backend + frontend)"
-	@echo "    make check-backend  - Run backend tests and linting"
-	@echo "    make check-frontend - Run frontend type checking and linting"
-	@echo ""
-	@echo "  Git & Deployment:"
-	@echo "    make clean          - Remove cache files (__pycache__, .pytest_cache, etc)"
-	@echo "    make push m=\"msg\"   - Clean, commit with message, push to GitHub"
-	@echo "    make push-quick     - Clean, commit with timestamp, push to GitHub"
-	@echo "    make branch <name>  - Create a new git branch"
-	@echo ""
-	@echo "  Setup:"
-	@echo "    make setup          - Install all dependencies"
+	@echo "  Legacy/Dev:"
+	@echo "    make run            - Frontend only"
+	@echo "    make check          - Run items"
 	@echo ""
 
 # ============================================================================
-# DEVELOPMENT COMMANDS
+# CORE WORKFLOWS (DOCKER FIRST)
 # ============================================================================
 
-# Start frontend only with API sync (most common workflow)
-run: sync-check
+# 1. Setup - The "Fresh Start" command
+# Stops everything, removes volumes (cleans DB), rebuilds, starts, and migrates.
+setup:
 	@echo ""
-	@echo "🚀 Starting Frontend..."
-	cd frontend && npm run dev
+	@echo "🛑 Stopping containers and removing volumes..."
+	docker-compose down -v
+	@echo ""
+	@echo "🏗️  Building containers..."
+	docker-compose build
+	@echo ""
+	@echo "🚀 Starting services..."
+	docker-compose up -d
+	@echo ""
+	@echo "⏳ Waiting for Postgres to be ready (5s)..."
+	@timeout /t 5 /nobreak > nul
+	@echo ""
+	@echo "🔄 Running migrations..."
+	docker-compose exec $(SERVICE_NAME) alembic upgrade head
+	@echo ""
+	@echo "✅ Setup complete! App is running at http://localhost:5173"
 
-# Start full stack development environment with API sync
-dev: sync-check
+# 2. Dev - Standard daily workflow
+# Starts containers, syncs API types, then shows logs
+dev:
 	@echo ""
-	@echo "🚀 Starting Full Stack Development Environment..."
+	@echo "🚀 Starting Docker Containers..."
+	docker-compose up -d
+	@echo ""
+	@echo "⏳ Waiting for API to be ready (3s)..."
+	@timeout /t 3 /nobreak > nul
+	@$(MAKE) sync-check
+	@echo ""
 	@echo "   Backend:  http://localhost:8000"
 	@echo "   Frontend: http://localhost:5173"
 	@echo ""
-	start "LineSight Backend" /d backend cmd /k "venv\Scripts\activate && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
-	@timeout /t 3 /nobreak > nul
-	start "LineSight Frontend" /d frontend cmd /k "npm run dev"
+	@echo "📝 Showing logs (press Ctrl+C to exit logs, containers keep running)..."
+	docker-compose logs -f backend frontend
 
-# ============================================================================
-# API SYNCHRONIZATION
-# ============================================================================
-
-# Full API sync pipeline (Extract -> Lint -> Generate -> TypeCheck)
-# Use this before commits or when you want thorough validation
-sync:
+# 3. Migrate - Generate new migrations
+migrate:
 	@echo ""
-	@echo "🔄 Running Full API Sync Pipeline..."
-	cd frontend && npm run sync-api
-	@echo ""
-	@echo "✅ API sync complete! Types are up to date."
+	@echo "🐘 Generating Migration..."
+	@docker-compose exec $(SERVICE_NAME) alembic revision --autogenerate -m "auto_migration"
+	@echo "✅ Migration created! Check backend/alembic/versions"
 
-# Quick sync check - faster, skips linting (used by run/dev)
-# This extracts schema and regenerates types without full lint pass
-sync-check:
-	@echo ""
-	@echo "🔄 Syncing API types with backend..."
-	@cd frontend && npm run extract-schema 2>nul || (echo "⚠️  Schema extraction failed - is backend code valid?" && exit /b 1)
-	@cd frontend && npm run generate-api 2>nul || (echo "⚠️  API generation failed" && exit /b 1)
-	@echo "✅ API types synchronized!"
-
-# ============================================================================
-# QUALITY ASSURANCE
-# ============================================================================
-
-# Run ALL checks (Backend + Frontend) - use before commits/PRs
-check: check-backend check-frontend
-	@echo ""
-	@echo "✅ All checks passed!"
-
-# Run backend tests and linting
-check-backend:
-	@echo ""
-	@echo "🔍 Checking Backend..."
-	cd backend && venv\Scripts\activate && ruff check . && pytest
-	@echo "✅ Backend checks passed!"
-
-# Run frontend type checking and linting
-check-frontend:
-	@echo ""
-	@echo "🔍 Checking Frontend..."
-	cd frontend && npm run type-check && npm run lint
-	@echo "✅ Frontend checks passed!"
-
-# ============================================================================
-# SETUP
-# ============================================================================
-
-# Install all dependencies for both projects
-setup:
-	@echo ""
-	@echo "📦 Installing Backend Dependencies..."
-	cd backend && pip install -r requirements.txt
-	@echo ""
-	@echo "📦 Installing Frontend Dependencies..."
-	cd frontend && npm install
-	@echo ""
-	@echo "✅ Setup complete! Run 'make dev' to start developing."
-
-# ============================================================================
-# GIT & DEPLOYMENT
-# ============================================================================
-
-# Clean up caches and generated files
+# 4. Clean - Deep clean
 clean:
 	@echo ""
-	@echo "🧹 Cleaning up caches and generated files..."
-	@if exist "backend\__pycache__" rd /s /q "backend\__pycache__" 2>nul
-	@if exist "backend\app\__pycache__" rd /s /q "backend\app\__pycache__" 2>nul
-	@if exist "backend\.pytest_cache" rd /s /q "backend\.pytest_cache" 2>nul
-	@if exist "backend\.ruff_cache" rd /s /q "backend\.ruff_cache" 2>nul
-	@if exist "frontend\node_modules\.cache" rd /s /q "frontend\node_modules\.cache" 2>nul
-	@for /d /r backend %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d" 2>nul
-	@echo "✅ Cleanup complete!"
+	@echo "🧹 Deep cleaning..."
+	docker-compose down -v
+	@echo "✅ Environment cleaned."
+
+# 5. Seed - Populate Database
+seed:
+	@echo "🌱 Seeding database (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) python seed_cli.py
+
+# ============================================================================
+# LEGACY & UTILITY COMMANDS (Kept for compatibility)
+# ============================================================================
+
+# 5. Testing & Quality
+test:
+	@echo "🧪 Running Tests (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) pytest
+
+test-cov:
+	@echo "📊 Running Tests with Coverage (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) pytest --cov=app --cov-report=term-missing
+
+lint:
+	@echo "🎨 Linting (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) ruff check .
+
+lint-fix:
+	@echo "🔧 Fixing Lint Errors (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) ruff check . --fix
+
+format:
+	@echo "✨ Formatting Code (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) ruff format .
+
+check:
+	@echo "✅ Running Full Check (in Docker)..."
+	docker-compose exec $(SERVICE_NAME) sh -c "ruff check . && ruff format . --check && mypy app"
+
+run: sync-check
+	cd frontend && npm run dev
+
+sync-check:
+	@echo "🔄 Syncing API types..."
+	@cd frontend && npm run extract-schema 2>nul || (echo "⚠️ Schema failed" && exit /b 1)
+	@cd frontend && npm run generate-api 2>nul
+	@echo "✅ Types synced."
 
 # Push to GitHub with automatic commit
-
-
-# Quick push with default message
-push: clean
-	@echo "🚀 Smart push to GitHub..."
+push:
+	@echo "🚀 Smart push..."
 	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
 
-
-# Create a new branch without argument flags
-# Usage: make branch <name>
+# Create a new branch
 ifeq (branch,$(firstword $(MAKECMDGOALS)))
   BRANCH_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(BRANCH_ARGS):;@:)
@@ -149,7 +135,6 @@ endif
 
 branch:
 	@if "$(BRANCH_ARGS)"=="" (echo "⚠️  Usage: make branch <name>" & exit /b 1)
-	@echo "🌿 Creating new branch: $(BRANCH_ARGS)"
+	@echo "🌿 Creating branch: $(BRANCH_ARGS)"
 	@git checkout -b $(BRANCH_ARGS)
-	@echo "🚀 Pushing to origin..."
 	@git push --set-upstream origin $(BRANCH_ARGS)

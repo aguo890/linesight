@@ -18,7 +18,6 @@ from sqlalchemy import (
     String,
     Text,
 )
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
@@ -63,7 +62,7 @@ class QualityInspection(Base, UUIDMixin, TimestampMixin):
 
     # Production Run FK
     production_run_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("production_runs.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -71,7 +70,7 @@ class QualityInspection(Base, UUIDMixin, TimestampMixin):
 
     # Inspector
     inspector_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("workers.id", ondelete="SET NULL"),
         nullable=True,
     )
@@ -146,7 +145,7 @@ class Defect(Base, UUIDMixin, TimestampMixin):
 
     # Inspection FK
     inspection_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("quality_inspections.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -154,7 +153,7 @@ class Defect(Base, UUIDMixin, TimestampMixin):
 
     # Worker (Responsible, if known)
     worker_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("workers.id", ondelete="SET NULL"),
         nullable=True,
         index=True,

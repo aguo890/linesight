@@ -7,7 +7,6 @@ import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, String
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 
@@ -62,7 +61,7 @@ class UUIDMixin:
     """Mixin for UUID primary key."""
 
     id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         primary_key=True,
         default=generate_uuid,
     )

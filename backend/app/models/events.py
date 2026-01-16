@@ -12,11 +12,11 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    String,
 )
 from sqlalchemy import (
     Enum as SQLEnum,
 )
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
@@ -55,19 +55,19 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
 
     # Data Source FK (renamed from line_id after migration)
     data_source_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
     order_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("orders.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
     style_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("styles.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -75,7 +75,7 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
 
     # Link to parent Production Run (Day/Shift Summary)
     production_run_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("production_runs.id", ondelete="CASCADE"),
         nullable=True,
         index=True,
@@ -83,7 +83,7 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
 
     # Traceability
     source_import_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("raw_imports.id", ondelete="SET NULL"),
         nullable=True,
         index=True,

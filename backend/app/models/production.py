@@ -21,7 +21,6 @@ from sqlalchemy import (
     UniqueConstraint,
     case,
 )
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -49,7 +48,7 @@ class Style(Base, UUIDMixin, TimestampMixin):
 
     # Factory FK
     factory_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -104,7 +103,7 @@ class Order(Base, UUIDMixin, TimestampMixin):
 
     # Style FK
     style_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("styles.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -194,7 +193,7 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
 
     # Factory FK (Denormalized for performance)
     factory_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("factories.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -202,14 +201,14 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
 
     # Order & Line FKs
     order_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("orders.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
     # Data Source FK (renamed from line_id after migration)
     data_source_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("data_sources.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -218,7 +217,7 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
 
     # Traceability - Link back to the file upload that created this record
     source_import_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("raw_imports.id", ondelete="SET NULL"),
         nullable=True,
         index=True,

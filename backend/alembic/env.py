@@ -33,7 +33,7 @@ target_metadata = Base.metadata
 
 def get_url() -> str:
     """Get database URL from settings."""
-    return settings.DATABASE_URL
+    return settings.SYNC_DATABASE_URL
 
 
 def run_migrations_offline() -> None:
@@ -80,7 +80,7 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         from sqlalchemy import text
-        connection.execute(text("SET FOREIGN_KEY_CHECKS=0"))
+        # connection.execute(text("SET FOREIGN_KEY_CHECKS=0"))
         
         context.configure(
             connection=connection,

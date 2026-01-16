@@ -7,7 +7,6 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
@@ -33,13 +32,13 @@ class RawImport(Base, UUIDMixin, TimestampMixin):
 
     # Ownership
     uploaded_by_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
     )
     factory_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("factories.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
@@ -47,7 +46,7 @@ class RawImport(Base, UUIDMixin, TimestampMixin):
     # Legacy production_line_id - now use data_source_id
     # Kept for backward compatibility but points to data_sources
     production_line_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
@@ -55,7 +54,7 @@ class RawImport(Base, UUIDMixin, TimestampMixin):
 
     # Link to DataSource configuration (set after confirm-mapping)
     data_source_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
@@ -146,7 +145,7 @@ class StagingRecord(Base, UUIDMixin, TimestampMixin):
 
     # Parent import
     raw_import_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("raw_imports.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -187,7 +186,7 @@ class StagingRecord(Base, UUIDMixin, TimestampMixin):
     # Promotion tracking
     promoted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     promoted_to_table: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    promoted_record_id: Mapped[str | None] = mapped_column(CHAR(36), nullable=True)
+    promoted_record_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
 
     # Relationships
     raw_import: Mapped["RawImport"] = relationship(

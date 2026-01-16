@@ -24,14 +24,18 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         setToasts((prev) => prev.filter((t) => t.id !== id));
     }, []);
 
-    const addToast = useCallback((message: string, type: ToastType = 'info', duration: number = 3000) => {
+    const addToast = useCallback((message: string, type: ToastType = 'info', duration?: number) => {
         const id = Date.now(); // Simple ID generation
-        setToasts((prev) => [...prev, { id, message, type, duration }]);
 
-        if (duration > 0) {
+        // Error toasts persist by default (duration = 0), others auto-dismiss after 3 seconds
+        const effectiveDuration = duration ?? (type === 'error' ? 0 : 3000);
+
+        setToasts((prev) => [...prev, { id, message, type, duration: effectiveDuration }]);
+
+        if (effectiveDuration > 0) {
             setTimeout(() => {
                 removeToast(id);
-            }, duration);
+            }, effectiveDuration);
         }
     }, [removeToast]);
 
