@@ -618,7 +618,7 @@ export const FactoryDetailPage: React.FC = () => {
                                                             <Settings className="w-4 h-4" />
                                                         </button>
                                                     )}
-                                                    <ChevronRight className="w-4 h-4 text-text-muted/50 ms-2" />
+                                                    <ChevronRight className="w-4 h-4 text-text-muted/50 ms-2 rtl:rotate-180" />
                                                 </div>
                                             </td>
                                         </tr>

@@ -349,7 +349,8 @@
         },
         "blocker_cloud": {
             "occurrences": "occurrences",
-            "view_all_logs": "View all logs"
+            "view_all_logs": "View all logs",
+            "no_blockers": "No blockers recorded"
         }
     },
     "common": {

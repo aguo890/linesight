@@ -152,9 +152,9 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
                 )}
 
                 {/* Navigate indicator */}
-                <div className="ml-auto flex items-center gap-1 text-xs text-text-muted group-hover:text-brand transition-colors">
+                <div className="ms-auto flex items-center gap-1 text-xs text-text-muted group-hover:text-brand transition-colors">
                     <span>{t('dashboard.factory_card.open')}</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
                 </div>
             </div>
         </div>

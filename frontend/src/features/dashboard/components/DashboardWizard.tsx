@@ -362,7 +362,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 <span className="truncate">{factories.find(f => f.id === selectedFactoryId)?.name || t('wizard.context.select_factory')}</span>
                             </div>
                             <div className="flex items-center text-sm text-text-main">
-                                <ChevronRight className="w-3.5 h-3.5 me-2 text-text-muted" />
+                                <ChevronRight className="w-3.5 h-3.5 me-2 text-text-muted rtl:rotate-180" />
                                 <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || t('wizard.context.select_source')}</span>
                             </div>
                         </div>
