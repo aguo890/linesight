@@ -275,7 +275,7 @@ const LoginPage: React.FC = () => {
                                 <Loader2 className="animate-spin w-5 h-5" />
                             ) : (
                                 <>
-                                    {t('auth.login_page.sign_in_button')} <ArrowRight size={16} />
+                                    {t('auth.login_page.sign_in_button')} <ArrowRight size={16} className="rtl:rotate-180" />
                                 </>
                             )}
                         </motion.button>

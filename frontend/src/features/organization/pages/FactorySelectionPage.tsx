@@ -351,7 +351,7 @@ export const FactorySelectionPage: React.FC = () => {
 
                                 {/* Footer Action */}
                                 <div className="flex items-center text-sm font-medium text-brand opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                                    {t('factory_selection.card.configure_site')} <ChevronRight className="w-4 h-4 ml-1" />
+                                    {t('factory_selection.card.configure_site')} <ChevronRight className="w-4 h-4 ml-1 rtl:rotate-180" />
                                 </div>
                             </div>
                         );

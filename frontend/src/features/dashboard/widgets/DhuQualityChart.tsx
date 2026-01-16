@@ -22,7 +22,9 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     w: _w,
     h: _h
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+
     // Extract settings with defaults
     const maxAcceptableDHU = settings?.maxAcceptableDHU ?? 2.5;
     const showThresholdLine = settings?.showThresholdLine ?? true;
@@ -85,16 +87,19 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
             {/* Trend Chart */}
             <div className="flex-1 min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData} margin={document.documentElement.dir === 'rtl'
-                        ? { top: 5, right: -20, bottom: 5, left: 5 }
-                        : { top: 5, right: 5, bottom: 5, left: -20 }
-                    }>
+                    <LineChart data={chartData} margin={{
+                        top: 5,
+                        right: isRTL ? 5 : 5,
+                        bottom: 5,
+                        left: isRTL ? 5 : -20
+                    }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                         <XAxis
                             dataKey="date"
                             tick={{ fontSize: 10, fill: axisColor }}
                             tickLine={false}
                             axisLine={false}
+                            reversed={isRTL}
                         />
                         <YAxis
                             tick={{ fontSize: 10, fill: axisColor }}
@@ -102,7 +107,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                             axisLine={false}
                             unit="%"
                             domain={[0, 'auto']}
-                            orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
+                            orientation={isRTL ? 'right' : 'left'}
                         />
                         <Tooltip
                             contentStyle={{
@@ -110,9 +115,11 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 border: '1px solid var(--color-border)',
                                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                                 backgroundColor: tooltipBg,
-                                color: 'var(--color-text-main)'
+                                color: 'var(--color-text-main)',
+                                textAlign: isRTL ? 'right' : 'left'
                             }}
                             labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
+                            itemStyle={{ textAlign: isRTL ? 'right' : 'left' }}
                             cursor={{ stroke: gridColor, strokeWidth: 1, strokeDasharray: '5 5' }}
                         />
                         {showThresholdLine && (
@@ -122,7 +129,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 strokeDasharray="3 3"
                                 label={{
                                     value: t('widgets.common.limit'),
-                                    position: document.documentElement.dir === 'rtl' ? 'left' : 'right',
+                                    position: isRTL ? 'left' : 'right',
                                     fontSize: 9,
                                     fill: '#f97316'
                                 }}

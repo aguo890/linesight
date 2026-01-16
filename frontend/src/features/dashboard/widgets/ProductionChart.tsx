@@ -34,7 +34,9 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
     w: _w,
     h: _h
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+
     // 1. Settings Extraction
     const showLegend = settings?.showLegend !== false;
     const yAxisMax = settings?.yAxisMax || 0;
@@ -65,10 +67,12 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
                 data={chartData}
-                margin={document.documentElement.dir === 'rtl'
-                    ? { top: 5, right: -20, left: 5, bottom: 0 }
-                    : { top: 5, right: 5, left: -20, bottom: 0 }
-                }
+                margin={{
+                    top: 5,
+                    right: isRTL ? 5 : 5,
+                    left: isRTL ? 5 : -20,
+                    bottom: 0
+                }}
             >
                 <defs>
                     <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
@@ -87,13 +91,14 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(val) => formatDate(val)}
+                    reversed={isRTL}
                 />
                 <YAxis
                     tick={{ fontSize: 10, fill: axisColor }}
                     axisLine={false}
                     tickLine={false}
                     domain={[0, yAxisMax || 'auto']}
-                    orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
+                    orientation={isRTL ? 'right' : 'left'}
                 />
                 <Tooltip
                     contentStyle={{
@@ -101,15 +106,23 @@ const ProductionChart: React.FC<SmartWidgetProps<DataProps, ProductionSettings>>
                         border: '1px solid var(--color-border)',
                         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
                         backgroundColor: tooltipBg,
-                        color: 'var(--color-text-main)'
+                        color: 'var(--color-text-main)',
+                        textAlign: isRTL ? 'right' : 'left'
                     }}
-                    itemStyle={{ color: 'var(--color-text-main)' }}
+                    itemStyle={{
+                        color: 'var(--color-text-main)',
+                        textAlign: isRTL ? 'right' : 'left'
+                    }}
                     labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', fontWeight: 600 }}
                     labelFormatter={(label) => formatDate(label)}
                 />
                 {showLegend && (
                     <Legend
-                        wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }}
+                        wrapperStyle={{
+                            fontSize: '10px',
+                            paddingTop: '10px',
+                            direction: isRTL ? 'rtl' : 'ltr'
+                        }}
                         iconType="circle"
                     />
                 )}

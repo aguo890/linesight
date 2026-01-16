@@ -307,7 +307,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                                     {columnMap && Object.entries(columnMap).map(([excel, system]) => (
                                                         <tr key={excel} className="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                                             <td className="px-6 py-4 font-mono text-sm text-gray-700 dark:text-gray-300 font-medium">{excel}</td>
-                                                            <td className="text-gray-300 dark:text-gray-600 text-center"><ArrowRight className="w-4 h-4 mx-auto" /></td>
+                                                            <td className="text-gray-300 dark:text-gray-600 text-center"><ArrowRight className="w-4 h-4 mx-auto rtl:rotate-180" /></td>
                                                             <td className="px-6 py-4">
                                                                 <span className="px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-lg font-bold text-sm border border-indigo-100 dark:border-indigo-800/50">
                                                                     {String(system)}

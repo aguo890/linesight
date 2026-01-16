@@ -302,7 +302,7 @@ export const MyDashboardsPage: React.FC = () => {
                                             </span>
                                         </td>
                                         <td className="py-3 px-4 text-end">
-                                            <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-main inline-block" />
+                                            <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-main inline-block rtl:rotate-180" />
                                         </td>
                                     </tr>
                                 );

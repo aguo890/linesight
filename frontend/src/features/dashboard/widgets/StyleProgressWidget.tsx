@@ -2,6 +2,7 @@ import React from 'react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import type { SmartWidgetProps } from '../config';
 import { StyleProgressDataSchema } from '../registry';
 import { z } from 'zod';
@@ -18,6 +19,9 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
     data,
     settings
 }) => {
+    const { i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+
     const showPercentage = settings?.showPercentage ?? true;
     const rawData = data;
 
@@ -46,6 +50,7 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
                         type="number"
                         tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
                         stroke="var(--color-border)"
+                        reversed={isRTL}
                     />
 
                     {/* Y Axis Labels */}
@@ -55,6 +60,7 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
                         width={70}
                         tick={{ fontSize: 10, fontWeight: 500, fill: 'var(--color-text)' }}
                         stroke="var(--color-border)"
+                        orientation={isRTL ? 'right' : 'left'}
                     />
 
                     <Tooltip
@@ -62,9 +68,13 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
                         contentStyle={{
                             backgroundColor: 'var(--color-surface)',
                             borderColor: 'var(--color-border)',
-                            color: 'var(--color-text)'
+                            color: 'var(--color-text)',
+                            textAlign: isRTL ? 'right' : 'left'
                         }}
-                        itemStyle={{ color: 'var(--color-text)' }}
+                        itemStyle={{
+                            color: 'var(--color-text)',
+                            textAlign: isRTL ? 'right' : 'left'
+                        }}
                     />
 
                     {/* Target Bar -> Blue/Brand */}
@@ -75,7 +85,7 @@ const StyleProgressWidget: React.FC<SmartWidgetProps<StyleProgressData, StylePro
                         {showPercentage && (
                             <LabelList
                                 dataKey="actual"
-                                position="right"
+                                position={isRTL ? 'left' : 'right'}
                                 style={{ fontSize: 10, fill: 'var(--color-text)' }}
                                 formatter={(val: any) => val}
                             />

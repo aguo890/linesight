@@ -323,7 +323,7 @@ const LandingPage: React.FC = () => {
                                     onClick={scrollToWaitlist}
                                     className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
                                 >
-                                    Join Waitlist <ArrowRight size={20} />
+                                    Join Waitlist <ArrowRight size={20} className="rtl:rotate-180" />
                                 </motion.button>
                             ) : (
                                 <Link to={ROUTES.REGISTER}>
@@ -332,7 +332,7 @@ const LandingPage: React.FC = () => {
                                         whileTap={{ scale: 0.98 }}
                                         className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
                                     >
-                                        Start Free Trial <ArrowRight size={20} />
+                                        Start Free Trial <ArrowRight size={20} className="rtl:rotate-180" />
                                     </motion.button>
                                 </Link>
                             )}

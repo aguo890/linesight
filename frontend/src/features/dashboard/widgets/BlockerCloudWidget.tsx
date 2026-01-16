@@ -77,7 +77,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
 
             <div className="mt-2 pt-2 border-t border-border">
                 <button className="text-[10px] text-brand font-medium flex items-center hover:underline">
-                    {t('widgets.blocker_cloud.view_all_logs')} <ArrowRight className="w-3 h-3 ms-1" />
+                    {t('widgets.blocker_cloud.view_all_logs')} <ArrowRight className="w-3 h-3 ms-1 rtl:rotate-180" />
                 </button>
             </div>
         </div>

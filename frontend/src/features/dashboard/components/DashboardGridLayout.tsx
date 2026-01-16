@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, forwardRef } from 'react';
 import { Responsive, useContainerWidth } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -11,6 +11,23 @@ export interface DashboardGridLayoutProps {
     renderWidget: (widget: ValidatedWidgetConfig) => React.ReactNode;
     isRTL?: boolean;
 }
+
+// WidgetWrapper to properly handle RGL prop injection
+const WidgetWrapper = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { style?: React.CSSProperties }>(
+    ({ style, className, children, ...props }, ref) => {
+        return (
+            <div
+                ref={ref}
+                style={style}
+                className={`${className} absolute top-0 left-0`}
+                {...props}
+            >
+                {children}
+            </div>
+        );
+    }
+);
+WidgetWrapper.displayName = 'WidgetWrapper';
 
 export const DashboardGridLayout = ({
     widgets,
@@ -60,10 +77,10 @@ export const DashboardGridLayout = ({
             {mounted ? (
                 <Responsive
                     key={isRTL ? 'rtl' : 'ltr'}
-                    className={`layout ${!editMode ? 'transition-all duration-500' : ''}`}
+                    className={`layout relative ${!editMode ? 'transition-all duration-500' : ''}`}
                     layouts={layouts}
                     width={width}
-                    {...({ isRTL } as any)}
+                    isRTL={isRTL}
                     resizeHandles={isRTL ? ['sw', 'se', 'nw'] : ['se', 'sw', 'ne']}
                     breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                     cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
@@ -75,16 +92,16 @@ export const DashboardGridLayout = ({
                     containerPadding={[0, 0]}
                 >
                     {widgets.map((widget) => (
-                        <div
+                        <WidgetWrapper
                             key={widget.i}
                             dir={isRTL ? 'rtl' : 'ltr'}
                             className={`
                 bg-white rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] 
-                overflow-hidden flex flex-col relative group border border-slate-100 transition-shadow hover:shadow-xl
+                overflow-hidden flex flex-col group border border-slate-100 transition-shadow hover:shadow-xl
                 ${editMode ? 'cursor-move ring-2 ring-sky-500/50 scale-[0.99]' : ''}
               `}>
                             {renderWidget(widget)}
-                        </div>
+                        </WidgetWrapper>
                     ))}
                 </Responsive>
             ) : (

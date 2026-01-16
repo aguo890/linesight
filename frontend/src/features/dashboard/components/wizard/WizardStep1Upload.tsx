@@ -156,7 +156,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                                     ) : (
                                                         <>
                                                             {isComplete ? t('wizard.step1.btn_configure') : t('wizard.step1.btn_complete_setup')}
-                                                            <ChevronRight className="w-3 h-3 ms-1" />
+                                                            <ChevronRight className="w-3 h-3 ms-1 rtl:rotate-180" />
                                                         </>
                                                     )}
                                                 </button>
