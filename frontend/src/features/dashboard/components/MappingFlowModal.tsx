@@ -65,7 +65,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
         } catch (err: any) {
             console.error('Mapping flow initialization failed:', err);
-            addToast(err.response?.data?.detail || 'Failed to initialize mapping flow', 'error');
+            addToast(err.response?.data?.detail || 'Failed to initialize mapping flow', 'error', 0);
             onClose();
         } finally {
             setLoading(false);
@@ -74,7 +74,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
     const handleConfirmMapping = async (confirmedMappings: any[]) => {
         if (!rawImportId || !dataSourceId) {
-            addToast('Missing import or data source ID', 'error');
+            addToast('Missing import or data source ID', 'error', 0);
             return;
         }
 
@@ -117,7 +117,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
         } catch (err: any) {
             console.error('Failed to confirm mapping:', err);
-            addToast(err.response?.data?.detail || 'Failed to save mappings', 'error');
+            addToast(err.response?.data?.detail || 'Failed to save mappings', 'error', 0);
         } finally {
             setConfirming(false);
         }

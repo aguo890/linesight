@@ -3,7 +3,7 @@ Event-driven production models.
 Supports granular tracking of scanning events, IoT inputs, and micro-batches.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum as PyEnum
 from typing import TYPE_CHECKING
 
@@ -44,7 +44,7 @@ class ProductionEvent(Base, UUIDMixin, TimestampMixin):
 
     # Event Details
     timestamp: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, index=True
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True
     )
     event_type: Mapped[EventType] = mapped_column(
         SQLEnum(EventType, native_enum=False), default=EventType.SCAN

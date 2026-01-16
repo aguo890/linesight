@@ -25,10 +25,14 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }, []);
 
     const addToast = useCallback((message: string, type: ToastType = 'info', duration?: number) => {
-        const id = Date.now(); // Simple ID generation
+        const id = Date.now() + Math.random(); // Ensure unique ID
 
-        // Error toasts persist by default (duration = 0), others auto-dismiss after 3 seconds
-        const effectiveDuration = duration ?? (type === 'error' ? 0 : 3000);
+        let effectiveDuration = 3000;
+        if (typeof duration === 'number') {
+            effectiveDuration = duration;
+        } else if (type === 'error') {
+            effectiveDuration = 0;
+        }
 
         setToasts((prev) => [...prev, { id, message, type, duration: effectiveDuration }]);
 
