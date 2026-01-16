@@ -5,6 +5,7 @@ import './index.css'
 import './i18n'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { ThemeProvider } from './context/ThemeContext.tsx'
+import { ToastProvider } from './contexts/ToastContext.tsx' // [NEW]
 import App from './App.tsx'
 
 const queryClient = new QueryClient();
@@ -35,9 +36,11 @@ enableMocking().then(() => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
-            <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
-              <App />
-            </Suspense>
+            <ToastProvider>
+              <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+                <App />
+              </Suspense>
+            </ToastProvider>
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

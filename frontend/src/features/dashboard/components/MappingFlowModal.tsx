@@ -10,6 +10,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import api from '../../../lib/api';
+import { useToast } from '../../../contexts/ToastContext';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 
 interface MappingFlowModalProps {
@@ -28,12 +29,12 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
     onSuccess
 }) => {
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [mappings, setMappings] = useState<any[]>([]);
     const [availableFields, setAvailableFields] = useState<any[]>([]);
     const [filename, setFilename] = useState<string>('');
     // Processing logic state
     const [confirming, setConfirming] = useState(false);
+    const { addToast } = useToast();
 
     useEffect(() => {
         if (isOpen && rawImportId) {
@@ -41,14 +42,12 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
         } else {
             // Reset state when closed
             setLoading(true);
-            setError(null);
             setMappings([]);
         }
     }, [isOpen, rawImportId]);
 
     const initializeFlow = async (id: string) => {
         setLoading(true);
-        setError(null);
 
         try {
             // 1. Fetch available fields
@@ -66,7 +65,8 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
         } catch (err: any) {
             console.error('Mapping flow initialization failed:', err);
-            setError(err.response?.data?.detail || 'Failed to initialize mapping flow');
+            addToast(err.response?.data?.detail || 'Failed to initialize mapping flow', 'error');
+            onClose();
         } finally {
             setLoading(false);
         }
@@ -74,7 +74,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
 
     const handleConfirmMapping = async (confirmedMappings: any[]) => {
         if (!rawImportId || !dataSourceId) {
-            setError('Missing import or data source ID');
+            addToast('Missing import or data source ID', 'error');
             return;
         }
 
@@ -107,12 +107,17 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
             // NEW: Promote data to production tables so it shows in widgets
             await api.post(`/ingestion/promote/${rawImportId}`);
 
+            addToast("Data source created and mapped successfully!", "success");
             onSuccess();
-            onClose();
+
+            // DELAY: Ensure toast propagates before unmount
+            setTimeout(() => {
+                onClose();
+            }, 50);
 
         } catch (err: any) {
             console.error('Failed to confirm mapping:', err);
-            setError(err.response?.data?.detail || 'Failed to save mappings');
+            addToast(err.response?.data?.detail || 'Failed to save mappings', 'error');
         } finally {
             setConfirming(false);
         }
@@ -138,14 +143,6 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
                         <div className="flex flex-col items-center justify-center py-12 space-y-4">
                             <Loader2 className="w-8 h-8 text-brand animate-spin" />
                             <p className="text-text-muted">Analyzing file structure...</p>
-                        </div>
-                    ) : error ? (
-                        <div className="bg-error/10 border border-error/20 rounded-lg p-4 text-center">
-                            <p className="text-error mb-2 font-medium">Processing Failed</p>
-                            <p className="text-error/80 text-sm">{error}</p>
-                            <button onClick={() => rawImportId && initializeFlow(rawImportId)} className="mt-4 px-4 py-2 bg-surface border border-error/20 text-error rounded-lg hover:bg-error/10 text-sm">
-                                Retry
-                            </button>
                         </div>
                     ) : (
                         <WizardStep2Mapping

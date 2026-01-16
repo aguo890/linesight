@@ -14,6 +14,9 @@ interface UserSearchCommandProps {
     inline?: boolean;
     style?: React.CSSProperties;
     triggerRef?: React.RefObject<HTMLElement>;
+    onLayoutUpdate?: (height: number) => void;
+    portalTarget?: HTMLElement | null;
+    zIndex?: number;
 }
 
 export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
@@ -24,17 +27,43 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
     position,
     inline,
     style,
-    triggerRef
+    triggerRef,
+    onLayoutUpdate,
+    portalTarget,
+    zIndex
 }) => {
     const [query, setQuery] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const { t } = useTranslation();
 
-    // Focus input on mount
+    const filteredUsers = useMemo(() => {
+        return users
+            .filter(u => !excludeUserIds.includes(u.id))
+            .filter(u => {
+                if (!query) return true;
+                const searchStr = query.toLowerCase();
+                return (
+                    (u.full_name?.toLowerCase().includes(searchStr)) ||
+                    (u.email.toLowerCase().includes(searchStr))
+                );
+            });
+    }, [users, excludeUserIds, query]);
+
+
+
+    // Monitor height changes for dynamic positioning
     useEffect(() => {
-        inputRef.current?.focus();
-    }, []);
+        if (!inline && containerRef.current && onLayoutUpdate) {
+            const observer = new ResizeObserver((entries) => {
+                if (entries[0]) {
+                    onLayoutUpdate(entries[0].contentRect.height);
+                }
+            });
+            observer.observe(containerRef.current);
+            return () => observer.disconnect();
+        }
+    }, [inline, onLayoutUpdate]);
 
     // Handle outside click
     useEffect(() => {
@@ -51,28 +80,56 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [onClose, inline, triggerRef]);
 
-    const filteredUsers = useMemo(() => {
-        return users
-            .filter(u => !excludeUserIds.includes(u.id))
-            .filter(u => {
-                if (!query) return true;
-                const searchStr = query.toLowerCase();
-                return (
-                    (u.full_name?.toLowerCase().includes(searchStr)) ||
-                    (u.email.toLowerCase().includes(searchStr))
-                );
-            });
-    }, [users, excludeUserIds, query]);
+    // Focus Trap Logic & Auto-focus
+    useEffect(() => {
+        if (inline) return;
+
+        // Auto-focus the input on open
+        const timeoutId = setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+
+            const focusable = containerRef.current?.querySelectorAll(
+                'input, button, [role="option"], [tabindex="0"]'
+            );
+            if (!focusable || focusable.length === 0) return;
+
+            const first = focusable[0] as HTMLElement;
+            const last = focusable[focusable.length - 1] as HTMLElement;
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        };
+
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => {
+            if (container) {
+                container.removeEventListener('keydown', handleKeyDown);
+            }
+            clearTimeout(timeoutId);
+        };
+    }, [inline, filteredUsers]); // Re-run when results change to update 'lastElement'
 
     const contentStyle: React.CSSProperties = (position && !inline) ? {
         position: 'fixed',
         top: position.top,
         insetInlineStart: position.left,
-        zIndex: 50,
         maxHeight: '300px'
     } : {};
 
-    const finalStyle = !inline ? { zIndex: 1000, ...contentStyle, ...style } : {};
+    const finalStyle = !inline ? { zIndex: zIndex ?? 1000, ...contentStyle, ...style } : {};
 
     const content = (
         <div
@@ -135,5 +192,11 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
         return content;
     }
 
-    return createPortal(content, document.body);
+    // Use configurable access for portal target with fallback to body
+    // Ensure we handle potential SSR/window undefined scenarios safely if needed
+    const target = portalTarget || (typeof document !== 'undefined' ? document.body : null);
+
+    if (!target) return null;
+
+    return createPortal(content, target);
 };

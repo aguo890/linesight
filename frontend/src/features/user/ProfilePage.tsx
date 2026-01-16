@@ -10,6 +10,7 @@ import LocationSelector from '../../features/dashboard/components/LocationSelect
 import { getPrefs } from './utils';
 import api from '../../lib/api';
 import { listFactories } from '../../lib/factoryApi';
+import { useToast } from '../../contexts/ToastContext';
 
 // Organization type for display
 interface OrgInfo {
@@ -38,10 +39,9 @@ export default function ProfilePage() {
     const { t, i18n } = useTranslation();
     const { user, updateUser } = useAuth();
     const { setTheme, systemTheme } = useTheme();
+    const { addToast } = useToast();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
 
     // Organization and factory context
     const [organization, setOrganization] = useState<OrgInfo | null>(null);
@@ -162,13 +162,11 @@ export default function ProfilePage() {
     const handleSave = async () => {
         if (!user) return;
         if (!formData.full_name.trim()) {
-            setErrorMessage(t('profile.error_required'));
+            addToast(t('profile.error_required'), 'error');
             return;
         }
 
         setIsLoading(true);
-        setSuccessMessage('');
-        setErrorMessage('');
 
         // LOCK: Prevent cleanup revert while we process save
         isSaveOperation.current = true;
@@ -201,11 +199,10 @@ export default function ProfilePage() {
             // UNLOCK: Reset so if they edit *again* without saving, revert works
             isSaveOperation.current = false;
 
-            setSuccessMessage(t('profile.success'));
-            setTimeout(() => setSuccessMessage(''), 3000);
+            addToast(t('profile.success'), 'success');
         } catch (error) {
             console.error("Failed to update profile", error);
-            setErrorMessage(t('profile.error_fail'));
+            addToast(t('profile.error_fail'), 'error');
             // FAILURE: Release lock so revert protection is active again
             isSaveOperation.current = false;
         } finally {
@@ -245,20 +242,6 @@ export default function ProfilePage() {
                     {t('profile.save_btn')}
                 </button>
             </div>
-
-            {successMessage && (
-                <div className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 px-4 py-2 rounded-lg text-sm border border-emerald-100 dark:border-emerald-800 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                    {successMessage}
-                </div>
-            )}
-
-            {errorMessage && (
-                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-2 rounded-lg text-sm border border-red-100 dark:border-red-800 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-red-500" />
-                    {errorMessage}
-                </div>
-            )}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 

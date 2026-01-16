@@ -357,6 +357,9 @@
         "back": "Back",
         "cancel": "Cancel",
         "error": "Error",
+        "errors": {
+            "generic": "An error occurred. Please try again."
+        },
         "success": "Success",
         "uploading": "Uploading...",
         "processing": "Processing...",
