@@ -1,12 +1,26 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest';
 import { DashboardWizard } from './DashboardWizard';
-import { createFactory, createProductionLine, listFactories, listFactoryLines } from '../../../lib/factoryApi';
+import { listFactories, listDataSources } from '../../../lib/factoryApi';
 import { getAvailableFields } from '../../../lib/ingestionApi';
 
 // Mock dependencies
 vi.mock('../../../lib/factoryApi');
 vi.mock('../../../lib/ingestionApi');
+vi.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string) => key,
+        i18n: {
+            changeLanguage: () => new Promise(() => { }),
+            dir: () => 'ltr',
+        },
+    }),
+    initReactI18next: {
+        type: '3rdParty',
+        init: () => { },
+    },
+}));
+
 vi.mock('../storage', () => ({
     dashboardStorage: {
         createDashboard: vi.fn(() => ({ id: 'new-dashboard-id' }))
@@ -61,7 +75,7 @@ describe('DashboardWizard', () => {
     it('renders correctly in Create Mode', async () => {
         (getAvailableFields as Mock).mockResolvedValue([]);
         (listFactories as Mock).mockResolvedValue([{ id: 'f1', name: 'Test Factory' }]);
-        (listFactoryLines as Mock).mockResolvedValue([{ id: 'l1', name: 'Test Line' }]);
+        (listDataSources as Mock).mockResolvedValue([{ id: 'l1', name: 'Test Line', factory_id: 'f1', code: 'L1', is_active: true }]);
 
         render(<DashboardWizard isOpen={true} onClose={mockOnClose} onComplete={mockOnComplete} mode="create" />);
 
@@ -79,8 +93,8 @@ describe('DashboardWizard', () => {
             { id: 'f1', name: 'Factory 1' },
             { id: 'f2', name: 'Factory 2' }
         ]);
-        (listFactoryLines as Mock).mockResolvedValue([
-            { id: 'l1', name: 'Line 1' }
+        (listDataSources as Mock).mockResolvedValue([
+            { id: 'l1', name: 'Line 1', factory_id: 'f1', code: 'L1', is_active: true }
         ]);
 
         render(<DashboardWizard isOpen={true} onClose={mockOnClose} onComplete={mockOnComplete} mode="create" />);

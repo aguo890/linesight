@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Settings, LayoutGrid, Users, X, Plus, Info } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
@@ -21,7 +21,6 @@ import type { DataSourceRead as DataSource } from '../../../api/model';
 
 export const FactoryConfigurationPage: React.FC = () => {
     const { factoryId } = useParams<{ factoryId: string }>();
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const { quotaStatus, refreshQuota } = useOrganization();
 

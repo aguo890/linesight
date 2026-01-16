@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import ProfilePage from '../ProfilePage';
 
@@ -8,7 +8,7 @@ const mockSetTheme = vi.fn();
 const mockChangeLanguage = vi.fn();
 const mockNavigate = vi.fn();
 
-vi.mock('../../hooks/useAuth', () => ({
+vi.mock('../../../hooks/useAuth', () => ({
     useAuth: () => ({
         user: {
             full_name: 'Test User',
@@ -19,12 +19,22 @@ vi.mock('../../hooks/useAuth', () => ({
     })
 }));
 
-vi.mock('../../context/ThemeContext', () => ({
+vi.mock('../../../context/ThemeContext', () => ({
     useTheme: () => ({
         theme: 'light',
         systemTheme: 'light',
         setTheme: mockSetTheme
     })
+}));
+
+vi.mock('../../../lib/api', () => ({
+    default: {
+        get: vi.fn().mockResolvedValue({ data: { id: 'org-1', name: 'Test Org' } }),
+    }
+}));
+
+vi.mock('../../../lib/factoryApi', () => ({
+    listFactories: vi.fn().mockResolvedValue([])
 }));
 
 vi.mock('react-i18next', () => ({
@@ -34,7 +44,11 @@ vi.mock('react-i18next', () => ({
             language: 'en',
             changeLanguage: mockChangeLanguage
         }
-    })
+    }),
+    initReactI18next: {
+        type: '3rdParty',
+        init: vi.fn()
+    }
 }));
 
 vi.mock('react-router-dom', () => ({
@@ -56,7 +70,7 @@ vi.mock('../../components/common/LanguageSelector', () => ({
 }));
 
 vi.mock('../../features/dashboard/components/LocationSelector', () => ({
-    default: ({ onChange }: any) => (
+    default: () => (
         <div data-testid="location-selector" />
     )
 }));

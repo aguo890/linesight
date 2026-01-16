@@ -433,7 +433,7 @@ export const FactorySelectionPage: React.FC = () => {
                             {filteredFactories.length === 0 && (
                                 <tr>
                                     <td colSpan={5} className="py-8 text-center text-text-muted">
-                                        {t('factory_selection.list.no_match', { query: searchQuery })}
+                                        {t('factory_selection.list.no_match', 'No factories found matching "{{query}}"', { query: searchQuery })}
                                     </td>
                                 </tr>
                             )}

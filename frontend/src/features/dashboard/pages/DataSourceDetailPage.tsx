@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
     Settings, Database, Server, RefreshCw,
-    FileText, Trash2, ArrowRight, X
+    FileText, Trash2, ArrowRight
 } from 'lucide-react';
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 import { MainLayout } from '../../../components/layout/MainLayout';
@@ -12,7 +12,6 @@ import {
     deleteDataSource,
     getUploads,
     deleteUploads,
-    updateDataSource,
     type LineDataSource,
     type UploadRecord
 } from '../api/lineApi'; // TODO: Update this API file or move functions to factoryApi
@@ -21,7 +20,6 @@ import {
 } from '../../../api/endpoints/factories/factories';
 
 // Using new hooks/APIs where possible
-import { useFactory } from '@/hooks/useFactory';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { FilePreviewModal } from '../../../components/FilePreviewModal';
 import { MappingEditModal } from '../components/MappingEditModal';
