@@ -1,15 +1,15 @@
 {
     "profile": {
         "title": "ملف المستخدم",
-        "subtitle": "إدارة إعدادات حسابك وتفضيلاتك",
-        "back": "خلف",
+        "subtitle": "إدارة إعدادات وتفضيلات الحساب",
+        "back": "رجوع",
         "save_btn": "حفظ التغييرات",
         "success": "تم تحديث الملف الشخصي بنجاح!",
         "error_required": "الاسم الكامل مطلوب",
         "error_fail": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
         "at": "في",
         "roles": {
-            "admin": "مسؤول",
+            "admin": "مشرف",
             "user": "مستخدم",
             "manager": "مدير"
         },
@@ -17,8 +17,8 @@
             "factories": "مصانعك",
             "security": "الأمان",
             "personal_info": "المعلومات الشخصية",
-            "localization": "الترجمة والمنطقة",
-            "notifications": "تفضيلات الإشعارات (قريبًا)"
+            "localization": "اللغة والمنطقة",
+            "notifications": "تفضيلات الإشعارات (قريباً)"
         },
         "security": {
             "change_password": "تغيير كلمة المرور",
@@ -26,257 +26,993 @@
         },
         "fields": {
             "full_name": "الاسم الكامل",
-            "email": "عنوان البريد الإلكتروني",
+            "email": "البريد الإلكتروني",
             "email_hint": "لا يمكن تغيير البريد الإلكتروني مباشرة.",
             "language": "اللغة",
-            "theme": "الموضوع"
+            "theme": "المظهر"
         },
         "themes": {
-            "light": "وضع الضوء",
+            "light": "الوضع الفاتح",
             "dark": "الوضع الداكن",
-            "system": "النظام الافتراضي"
+            "system": "افتراضي النظام"
         },
         "notifications": {
             "email": "تنبيهات البريد الإلكتروني",
-            "push": "دفع الإخطارات",
+            "push": "إشعارات الدفع",
             "weekly": "الملخص الأسبوعي"
+        },
+        "location_selector": {
+            "label": "الموقع والمنطقة الزمنية",
+            "auto_detect": "كشف تلقائي",
+            "search_placeholder": "بحث عن دولة...",
+            "no_results": "لم يتم العثور على دول",
+            "select_country_first": "اختر الدولة أولاً",
+            "selected": "المحدد:"
         }
     },
     "navigation": {
-        "dashboard": "[MOCK] Dashboard",
-        "my_dashboards": "[MOCK] My Dashboards",
-        "organization": "[MOCK] Organization",
-        "show_more": "[MOCK] Show More",
-        "show_less": "[MOCK] Show Less"
+        "dashboard": "لوحة القيادة",
+        "my_dashboards": "لوحاتي",
+        "organization": "المنظمة",
+        "show_more": "عرض المزيد",
+        "show_less": "عرض أقل"
     },
     "dashboard": {
         "my_dashboards": {
-            "title": "[MOCK] لوحات المعلومات الخاصة بي",
-            "search_placeholder": "[MOCK] البحث في المواقع...",
+            "title": "لوحاتي",
+            "search_placeholder": "بحث في المواقع...",
             "status": {
-                "loading": "[MOCK] Loading your sites...",
-                "none": "[MOCK] No active production sites",
-                "available_one": "[MOCK] {{count}} موقع متاح",
-                "available_other": "[MOCK] {{count}} مواقع متاحة"
+                "loading": "جاري تحميل مواقعك...",
+                "none": "لا توجد مواقع إنتاج نشطة",
+                "available_one": "{{count}} موقع متاح",
+                "available_other": "{{count}} مواقع متاحة"
             },
             "table": {
-                "header_name": "[MOCK] اسم الموقع",
-                "header_location": "[MOCK] الموقع",
-                "header_status": "[MOCK] الحالة",
-                "header_lines": "[MOCK] Lines",
-                "header_actions": "[MOCK] Actions",
-                "action_view": "[MOCK] عرض"
+                "header_name": "اسم الموقع",
+                "header_location": "الموقع",
+                "header_status": "الحالة",
+                "header_lines": "الخطوط",
+                "header_actions": "الإجراءات",
+                "action_view": "عرض"
             },
             "actions": {
-                "new_dashboard": "[MOCK] New Dashboard",
-                "configure_sites": "[MOCK] Configure Sites",
-                "clear_search": "[MOCK] Clear search"
+                "new_dashboard": "لوحة قيادة جديدة",
+                "configure_sites": "إعداد المواقع",
+                "clear_search": "مسح البحث"
             },
             "search": {
-                "results_info": "[MOCK] Showing {{count}} of {{total}} factories",
-                "no_results": "[MOCK] No factories found",
-                "no_results_detail": "[MOCK] No factories match \"{{query}}\". Try a different search term."
+                "results_info": "عرض {{count}} من {{total}} مصانع",
+                "no_results": "لم يتم العثور على مصانع",
+                "no_results_detail": "لا توجد مصانع تطابق \"{{query}}\". حاول استخدام مصطلح بحث آخر."
             },
             "factory_status": {
-                "at_limit": "[MOCK] At Limit",
-                "near_limit": "[MOCK] Near Limit",
-                "active": "[MOCK] Active"
+                "at_limit": "في الحد الأقصى",
+                "near_limit": "قريب من الحد",
+                "active": "نشط"
             },
             "empty_state": {
-                "title": "[MOCK] No active sites",
-                "description": "[MOCK] Your dashboard is empty because no factories have been configured yet.",
-                "admin_hint": "[MOCK] Head over to Organization Settings to set up your infrastructure.",
-                "user_hint": "[MOCK] Please contact your administrator to set up the infrastructure.",
-                "cta": "[MOCK] Go to Organization Settings"
+                "title": "لا توجد مواقع نشطة",
+                "description": "لوحة القيادة فارغة لأنه لم يتم إعداد أي مصانع بعد.",
+                "admin_hint": "توجّه إلى إعدادات المنظمة لتهيئة البنية التحتية.",
+                "user_hint": "يرجى التواصل مع المشرف لإعداد البنية التحتية.",
+                "cta": "الذهاب إلى إعدادات المنظمة"
             },
             "view": {
-                "grid": "[MOCK] Grid view",
-                "list": "[MOCK] List view"
+                "grid": "عرض الشبكة",
+                "list": "عرض القائمة"
             }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} مصادر",
+            "edit": "تعديل",
+            "delete": "حذف",
+            "open": "فتح",
+            "edit_title": "تعديل المصنع",
+            "delete_title": "حذف المصنع"
         }
     },
     "factory_detail": {
         "breadcrumbs": {
-            "home": "[MOCK] الصفحة الرئيسية",
-            "list": "[MOCK] لوحات المعلومات الخاصة بي",
-            "production_sites": "[MOCK] Production Sites",
-            "sites": "[MOCK] Sites",
-            "not_found": "[MOCK] Not Found"
+            "home": "الرئيسية",
+            "list": "لوحاتي",
+            "production_sites": "مواقع الإنتاج",
+            "sites": "المواقع",
+            "not_found": "غير موجود"
         },
         "sections": {
-            "overview": "[MOCK] نظرة عامة",
-            "performance": "[MOCK] الأداء",
-            "settings": "[MOCK] الإعدادات",
-            "dashboards": "[MOCK] Dashboards",
-            "data_sources": "[MOCK] Data Sources"
+            "overview": "نظرة عامة",
+            "performance": "الأداء",
+            "settings": "الإعدادات",
+            "dashboards": "لوحات القيادة",
+            "data_sources": "مصادر البيانات"
         },
         "actions": {
-            "edit": "[MOCK] تعديل التكوين",
-            "delete": "[MOCK] حذف الموقع",
-            "save": "[MOCK] حفظ التغييرات",
-            "settings": "[MOCK] Settings",
-            "new_dashboard": "[MOCK] New Dashboard",
-            "create_dashboard": "[MOCK] Create Dashboard",
-            "add_data_source": "[MOCK] Add Data Source",
-            "new_source": "[MOCK] New Source",
-            "upload_data": "[MOCK] Upload data",
-            "no_write_access": "[MOCK] No write access to this source"
+            "edit": "تعديل التكوين",
+            "delete": "حذف الموقع",
+            "save": "حفظ التغييرات",
+            "settings": "الإعدادات",
+            "new_dashboard": "لوحة قيادة جديدة",
+            "create_dashboard": "إنشاء لوحة قيادة",
+            "add_data_source": "إضافة مصدر بيانات",
+            "new_source": "مصدر جديد",
+            "upload_data": "رفع البيانات",
+            "no_write_access": "لا يوجد وصول للكتابة لهذا المصدر"
         },
         "alerts": {
-            "confirm_delete": "[MOCK] هل أنت متأكد أنك تريد حذف هذا المصنع؟ لا يمكن التراجع عن هذا الإجراء.",
-            "edit_soon": "[MOCK] Edit functionality coming soon",
-            "delete_soon": "[MOCK] Delete functionality coming soon",
-            "delete_fail": "[MOCK] Failed to delete dashboard."
+            "confirm_delete": "هل أنت متأكد من أنك تريد حذف هذا المصنع؟ لا يمكن التراجع عن هذا الإجراء.",
+            "edit_soon": "ميزة التعديل قريباً",
+            "delete_soon": "ميزة الحذف قريباً",
+            "delete_fail": "فشل حذف لوحة القيادة."
         },
         "stats": {
-            "dashboards": "[MOCK] Dashboards",
-            "active_widgets": "[MOCK] Active Widgets",
-            "active_sources": "[MOCK] Active Sources",
-            "used_info": "[MOCK] {{current}} / {{max}} Used"
+            "dashboards": "لوحات القيادة",
+            "active_widgets": "الأدوات النشطة",
+            "active_sources": "المصادر النشطة",
+            "used_info": "{{current}} / {{max}} مستخدم"
         },
-        "not_found": "[MOCK] Factory not found",
+        "not_found": "المصنع غير موجود",
         "search": {
-            "dashboards_placeholder": "[MOCK] Filter dashboards...",
-            "sources_placeholder": "[MOCK] Search sources...",
-            "no_sources_found": "[MOCK] No sources found matching your search."
+            "dashboards_placeholder": "تصفية اللوحات...",
+            "sources_placeholder": "بحث في المصادر...",
+            "no_sources_found": "لم يتم العثور على مصادر تطابق بحثك."
         },
         "quota": {
-            "limit_reached": "[MOCK] Quota limit reached"
+            "limit_reached": "تم الوصول إلى حد الحصة"
         },
         "table": {
             "headers": {
-                "name": "[MOCK] Name",
-                "status": "[MOCK] Status",
-                "actions": "[MOCK] Actions"
+                "name": "الاسم",
+                "status": "الحالة",
+                "actions": "الإجراءات"
             }
         },
         "status": {
-            "active": "[MOCK] Active",
-            "inactive": "[MOCK] Inactive"
+            "active": "نشط",
+            "inactive": "غير نشط"
         },
         "confirm": {
-            "delete_source": "[MOCK] Are you sure you want to delete this data source?",
-            "delete_dashboard": "[MOCK] Are you sure you want to delete this dashboard?"
+            "delete_source": "هل أنت متأكد من حذف مصدر البيانات هذا؟",
+            "delete_dashboard": "هل أنت متأكد من حذف لوحة القيادة هذه؟"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "اليوم",
+            "yesterday": "أمس",
+            "last_7_days": "7 أيام",
+            "last_30_days": "30 يوم",
+            "this_month": "هذا الشهر",
+            "last_month": "الشهر الماضي"
+        },
+        "shifts": {
+            "all": "كل الورديات",
+            "shift_a": "الوردية أ (صباح)",
+            "shift_b": "الوردية ب (مساء)",
+            "shift_c": "الوردية ج (ليل)"
+        },
+        "date_range": "نطاق التاريخ",
+        "to": "إلى"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "مساحة العمل",
+            "factory": "المصنع",
+            "line": "الخط",
+            "dashboard": "لوحة القيادة"
+        },
+        "status": {
+            "updated": "تم التحديث {{time}}",
+            "live": "مباشر",
+            "loading": "جاري التحميل...",
+            "saving": "جاري الحفظ..."
+        },
+        "actions": {
+            "refresh": "تحديث",
+            "reset_layout": "إعادة تعيين التخطيط",
+            "reset_confirm": "هل أنت متأكد من إعادة تعيين التخطيط إلى الافتراضي؟",
+            "design_layout": "تصميم التخطيط",
+            "save_layout": "حفظ التخطيط",
+            "add_widget": "إضافة أداة",
+            "cancel": "إلغاء"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "مكتبة الأدوات",
+            "subtitle": "اسحب وأفلت الأدوات لتخصيص تخطيط لوحتك.",
+            "categories": {
+                "all": "الكل",
+                "production": "الإنتاج",
+                "quality": "الجودة",
+                "efficiency": "الكفاءة"
+            }
+        },
+        "selector": {
+            "simulated_data": "محاكاة",
+            "ready_to_use": "جاهز للاستخدام",
+            "recommended": "موصى به",
+            "future_capability": "قدرة مستقبلية",
+            "coming_soon": "قريبا",
+            "near_match": "تطابق قريب",
+            "ai_recommendations": "توصيات الذكاء الاصطناعي",
+            "select_all": "تحديد الكل",
+            "selected": "محدد",
+            "compatible": "متوافق",
+            "status_summary": "{{selected}} محدد • {{compatible}} متوافق",
+            "data_req": "البيانات مطلوبة",
+            "needs_mapping": "يحتاج إلى ربط",
+            "categories": {
+                "Efficiency": "الكفاءة",
+                "Quality": "الجودة",
+                "Workforce": "القوى العاملة",
+                "Operations": "العمليات"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "موصى به",
+                "Operations": "العمليات",
+                "Strategy": "الاستراتيجية"
+            },
+            "efficiency_starter": {
+                "title": "بداية الكفاءة",
+                "description": "مجموعة أدوات أساسية لتتبع الناتج والأداء الساعي."
+            },
+            "quality_auditor": {
+                "title": "مدقق الجودة",
+                "description": "التركيز على DHU والعيوب ومقايضة السرعة والجودة."
+            },
+            "floor_manager": {
+                "title": "عرض مدير الطابق",
+                "description": "رؤية القوى العاملة والإنتاج في الوقت الفعلي."
+            },
+            "executive_summary": {
+                "title": "الملخص التنفيذي",
+                "description": "مؤشرات أداء رئيسية عالية المستوى لاتخاذ القرارات الاستراتيجية."
+            }
+        },
+        "common": {
+            "planned": "مخطط",
+            "actual": "فعلي",
+            "target": "هدف",
+            "efficiency": "كفاءة",
+            "minutes": "دقيقة",
+            "limit": "الحد",
+            "status": "الحالة",
+            "on_target": "على الهدف",
+            "below_target": "أقل من الهدف",
+            "defect_rate": "معدل العيوب"
+        },
+        "titles": {
+            "production_chart": "ناتج الإنتاج",
+            "line_efficiency": "كفاءة الخط",
+            "earned_minutes": "الدقائق المكتسبة",
+            "sam_performance": "أداء SAM",
+            "dhu_quality": "جودة DHU",
+            "speed_quality": "السرعة مقابل الجودة",
+            "top_blockers": "أهم المعوقات",
+            "style_progress": "تقدم النمط",
+            "daily_target": "الهدف اليومي",
+            "production_timeline": "الجدول الزمني للإنتاج",
+            "complexity_impact": "تأثير التعقيد",
+            "workforce_attendance": "حضور القوى العاملة",
+            "kpi_summary": "ملخص مؤشرات الأداء"
+        },
+        "descriptions": {
+            "production_chart": "مقارنة الإنتاج المخطط له بالفعلي بمرور الوقت",
+            "line_efficiency": "كفاءة الخط في الوقت الفعلي مقابل الهدف",
+            "earned_minutes": "الدقائق القياسية المسموح بها (SAM) المكتسبة مقابل المتاحة",
+            "sam_performance": "مقياس الأداء بناءً على الدقائق القياسية",
+            "dhu_quality": "تحليل اتجاه العيوب لكل مائة وحدة",
+            "speed_quality": "العلاقة بين سرعة الإنتاج والجودة",
+            "top_blockers": "أكثر المشكلات شيوعًا التي توقف الإنتاج",
+            "style_progress": "تتبع النسبة المئوية لإكمال الأنماط الحالية",
+            "daily_target": "التقدم نحو هدف الإنتاج اليومي",
+            "production_timeline": "عرض غانت لجدول الإنتاج",
+            "complexity_impact": "تحليل تعقيد النمط على الناتج",
+            "workforce_attendance": "حضور المشغلين وتوازن الخط",
+            "kpi_summary": "نظرة عامة عالية المستوى على المقاييس الرئيسية"
+        },
+        "production_chart": {
+            "planned": "مخطط",
+            "actual_output": "الناتج الفعلي"
+        },
+        "speed_quality": {
+            "efficiency": "الكفاءة",
+            "defect_rate": "معدل العيوب"
+        },
+        "earned_minutes": {
+            "earned": "مكتسب",
+            "available": "متاح"
+        },
+        "dhu_quality": {
+            "no_data": "لا توجد بيانات DHU متاحة",
+            "current_dhu": "DHU الحالي",
+            "above_limit": "فوق الحد"
+        },
+        "blocker_cloud": {
+            "occurrences": "تكرارات",
+            "view_all_logs": "عرض كل السجلات"
         }
     },
     "common": {
-        "back": "[MOCK] Back",
-        "cancel": "[MOCK] Cancel",
-        "error": "[MOCK] Error",
-        "success": "[MOCK] Success",
-        "uploading": "[MOCK] Uploading...",
-        "processing": "[MOCK] Processing...",
-        "remove": "[MOCK] Remove",
-        "ready": "[MOCK] Ready",
-        "needs_setup": "[MOCK] Needs Setup",
-        "actions": "[MOCK] Action",
-        "date": "[MOCK] Date"
+        "back": "رجوع",
+        "cancel": "إلغاء",
+        "error": "خطأ",
+        "success": "نجاح",
+        "uploading": "جاري الرفع...",
+        "processing": "جاري المعالجة...",
+        "remove": "إزالة",
+        "ready": "جاهز",
+        "needs_setup": "يحتاج إعداد",
+        "date": "التاريخ",
+        "actions": {
+            "save": "حفظ",
+            "cancel": "إلغاء",
+            "close": "إغلاق",
+            "delete": "حذف",
+            "edit": "تعديل",
+            "search": "بحث...",
+            "confirm": "تأكيد",
+            "back": "رجوع",
+            "create": "إنشاء",
+            "invite": "دعوة"
+        },
+        "status": {
+            "active": "نشط",
+            "inactive": "غير نشط",
+            "unknown": "مجهول"
+        }
     },
     "wizard": {
         "step1": {
-            "dashboard_name_label": "[MOCK] Dashboard Name",
-            "dashboard_name_placeholder": "[MOCK] e.g. Line 4 Production Overview",
-            "name_error_tooltip": "[MOCK] Please enter a Dashboard Name first.",
-            "name_error_text": "[MOCK] Please enter a name for your dashboard to continue.",
-            "selection_title": "[MOCK] Data Source Selection",
-            "selection_desc": "[MOCK] Select a previously uploaded file.",
+            "dashboard_name_label": "اسم لوحة القيادة",
+            "dashboard_name_placeholder": "مثل: نظرة عامة لخط الإنتاج 4",
+            "name_error_tooltip": "يرجى إدخال اسم لوحة القيادة أولاً.",
+            "name_error_text": "يرجى إدخال اسم للوحتك للمتابعة.",
+            "selection_title": "تحديد مصدر البيانات",
+            "selection_desc": "اختر ملفاً تم تحميله مسبقاً لإعداد أدوات لوحتك.",
             "columns": {
-                "file_name": "[MOCK] File Name",
-                "status": "[MOCK] Status",
-                "uploaded": "[MOCK] Uploaded",
-                "action": "[MOCK] Action"
+                "file_name": "اسم الملف",
+                "status": "الحالة",
+                "uploaded": "تم الرفع",
+                "action": "إجراء"
             },
-            "btn_configure": "[MOCK] Configure",
-            "btn_complete_setup": "[MOCK] Complete Setup",
-            "note": "[MOCK] Note: Your dashboard will include data from ALL files.",
-            "empty_title": "[MOCK] No Data Sources Yet",
-            "empty_desc": "[MOCK] Upload files from the Production Line page first.",
-            "error_load_failed": "[MOCK] Failed to load configuration."
+            "btn_configure": "إعداد",
+            "btn_complete_setup": "إكمال الإعداد",
+            "note": "ملاحظة: ستتضمن لوحتك بيانات من كل الملفات في هذه القائمة.",
+            "empty_title": "لا توجد مصادر بيانات بعد",
+            "empty_desc": "ارفع ملفات من صفحة خط الإنتاج أولاً، ثم عد هنا لإنشاء لوحة.",
+            "error_load_failed": "فشل تحميل إعدادات مصدر البيانات الحالي."
         },
         "step2": {
-            "title": "[MOCK] Validate Mapping",
-            "subtitle": "[MOCK] Review how your columns match the database.",
+            "title": "التحقق من التعيين",
+            "subtitle": "راجع كيفية مطابقة أعمدتك مع قاعدة البيانات.",
             "stats": {
-                "auto": "[MOCK] Auto-mapped",
-                "review": "[MOCK] Need Review",
-                "attention": "[MOCK] Attention",
-                "ignored": "[MOCK] Ignored"
+                "auto": "تعيين تلقائي",
+                "review": "يحتاج مراجعة",
+                "attention": "انتباه",
+                "ignored": "تم تجاهله"
             },
             "filter": {
-                "all": "[MOCK] All",
-                "unmapped": "[MOCK] Unmapped",
-                "conflicts": "[MOCK] Conflicts"
+                "all": "الكل",
+                "unmapped": "غير معين",
+                "conflicts": "تعارضات"
             },
-            "showing_count": "[MOCK] Showing {{filtered}} of {{total}} columns",
+            "showing_count": "عرض {{filtered}} من {{total}} عمود",
             "table": {
-                "source": "[MOCK] Source Column",
-                "target": "[MOCK] Target Field",
-                "status": "[MOCK] Status",
-                "no_match": "[MOCK] No columns match this filter",
-                "try_different": "[MOCK] Try selecting a different view"
+                "source": "العمود المصدر",
+                "target": "الحقل الهدف",
+                "status": "الحالة",
+                "no_match": "لا توجد أعمدة تطابق هذا الفلتر",
+                "try_different": "حاول اختيار عرض مختلف"
             },
             "status_labels": {
-                "exact": "[MOCK] Exact",
-                "exact_tooltip": "[MOCK] Exact column name match",
-                "fuzzy": "[MOCK] Fuzzy",
-                "fuzzy_tooltip": "[MOCK] Similar name matched",
-                "ai": "[MOCK] AI",
-                "ai_tooltip": "[MOCK] AI-suggested mapping",
-                "manual": "[MOCK] Manual",
-                "manual_tooltip": "[MOCK] Manually assigned",
-                "unset": "[MOCK] Unset",
-                "unset_tooltip": "[MOCK] Needs mapping",
-                "duplicate": "[MOCK] Duplicate"
+                "exact": "تام",
+                "exact_tooltip": "تطابق تام لاسم العمود",
+                "fuzzy": "تقريبي",
+                "fuzzy_tooltip": "تم العثور على اسم مشابه",
+                "ai": "ذكاء اصطناعي",
+                "ai_tooltip": "تعيين مقترح بالذكاء الاصطناعي",
+                "manual": "يدوي",
+                "manual_tooltip": "تم التعيين يدوياً",
+                "unset": "غير معين",
+                "unset_tooltip": "يحتاج تعيين",
+                "duplicate": "مكرر"
             },
             "field_selector": {
-                "select_placeholder": "[MOCK] Select target field...",
-                "search_placeholder": "[MOCK] Search fields...",
-                "suggested": "[MOCK] Suggested",
-                "all_fields": "[MOCK] All Fields",
-                "no_results": "[MOCK] No fields match \"{{term}}\"",
-                "ignore_action": "[MOCK] Ignore this column",
-                "restore_action": "[MOCK] Ignored — click to restore",
-                "in_use": "[MOCK] in use"
+                "select_placeholder": "اختر الحقل الهدف...",
+                "search_placeholder": "بحث في الحقول...",
+                "suggested": "موقترح",
+                "all_fields": "كل الحقول",
+                "no_results": "لا توجد حقول تطابق \"{{term}}\"",
+                "ignore_action": "تجاهل هذا العمود",
+                "restore_action": "تم تجاهله — انقر للاستعادة",
+                "in_use": "قيد الاستخدام"
             },
             "alerts": {
-                "conflict_count_one": "[MOCK] 1 field has duplicate mappings",
-                "conflict_count_other": "[MOCK] {{count}} fields have duplicate mappings",
-                "remaining_needed": "[MOCK] Remaining fields needed"
+                "conflict_count_one": "حقل واحد لديه تعيينات مكررة",
+                "conflict_count_other": "{{count}} حقول لديها تعيينات مكررة",
+                "remaining_needed": "الحقول المتبقية المطلوبة"
             },
-            "btn_confirm": "[MOCK] Confirm Mapping",
+            "btn_confirm": "تأكيد التعيين",
             "processing": {
-                "title": "[MOCK] Processing Data",
-                "subtitle": "[MOCK] Validating and importing...",
+                "title": "معالجة البيانات",
+                "subtitle": "التحقق والاستيراد إلى خط الإنتاج...",
                 "logs": {
-                    "init": "[MOCK] Initializing engine...",
-                    "schema": "[MOCK] Verifying schema...",
-                    "mapping": "[MOCK] Mapping column '{{column}}'...",
-                    "req": "[MOCK] Processing request...",
-                    "sending": "[MOCK] Sending data...",
-                    "success": "[MOCK] Ingestion successful."
+                    "init": "تهيئة محرك التحويل...",
+                    "schema": "التحقق من توافق المخطط...",
+                    "mapping": "تعيين العمود '{{column}}'...",
+                    "req": "معالجة طلب الاستيعاب...",
+                    "sending": "إرسال البيانات إلى LineSight Core...",
+                    "success": "تم الاستيعاب بنجاح. إنهاء..."
                 }
             }
         },
         "step3": {
-            "blueprints_title": "[MOCK] Quick Start Blueprints",
-            "divider": "[MOCK] or customize individually",
-            "library_title": "[MOCK] Widget Library",
-            "selected_count": "[MOCK] {{count}} selected",
-            "btn_create": "[MOCK] Create Dashboard",
-            "btn_configuring": "[MOCK] Configuring..."
+            "blueprints_title": "مخططات البدء السريع",
+            "divider": "أو تخصيص بشكل فردي",
+            "library_title": "مكتبة الأدوات",
+            "selected_count": "{{count}} محدد",
+            "btn_create": "إنشاء لوحة القيادة",
+            "btn_configuring": "جاري الإعداد..."
+        },
+        "title": "إعداد LineSight",
+        "steps": {
+            "upload": {
+                "label": "البيانات المصدر",
+                "desc": "رفع أو اختيار المصدر",
+                "desc_alt": "رفع CSV/Excel"
+            },
+            "mapping": {
+                "label": "تعيين البيانات",
+                "desc": "التحقق من الأعمدة"
+            },
+            "widgets": {
+                "label": "لوحة القيادة",
+                "desc": "تكوين التخطيط"
+            }
+        },
+        "mini_map": {
+            "title": "معاينة مكانية",
+            "empty_state": "اختر أدوات لمعاينة التخطيط",
+            "stats": {
+                "widgets_one": "{{count}} أداة",
+                "widgets_other": "{{count}} أدوات",
+                "screens_one": "~{{count}} شاشة",
+                "screens_other": "~{{count}} شاشات"
+            },
+            "density": {
+                "empty": "فارغ",
+                "compact": "مضغوط",
+                "balanced": "متوازن",
+                "heavy": "مزدحم"
+            },
+            "scroll_warning": "قد تتطلب اللوحة التمرير"
+        },
+        "context": {
+            "title": "السياق الحالي",
+            "select_factory": "اختر المصنع",
+            "select_source": "اختر مصدر البيانات",
+            "select_factory_first": "اختر المصنع أولاً",
+            "loading_factories": "تحميل المصانع...",
+            "loading_sources": "تحميل المصادر...",
+            "fetching_sources": "جلب المصادر...",
+            "no_sources_alert": "لا توجد مصادر بيانات متاحة. قم بإعداد المصادر من صفحة إعدادات المصنع أولاً.",
+            "select_source_overlay": "اختر مصدر بيانات للمتابعة"
         }
     },
     "modals": {
         "upload": {
-            "title_upload": "[MOCK] Upload Data",
-            "title_preview": "[MOCK] Preview Data",
-            "subtitle_upload": "[MOCK] Upload data to {{dataSourceName}}",
-            "subtitle_preview": "[MOCK] Review how your data will be imported",
-            "drop_text": "[MOCK] Drop your file here or click to browse",
-            "supports_text": "[MOCK] Supports Excel (.xlsx, .xls) and CSV files",
-            "success_redirect": "[MOCK] Upload successful! Redirecting...",
-            "info_preview": "[MOCK] After upload, you'll review a preview.",
-            "btn_upload_preview": "[MOCK] Upload & Preview"
+            "title_upload": "رفع البيانات",
+            "title_preview": "معاينة البيانات",
+            "subtitle_upload": "رفع بيانات إلى {{dataSourceName}}",
+            "subtitle_preview": "مراجعة كيفية استيراد بياناتك",
+            "drop_text": "أسقط ملفك هنا أو انقر للتصفح",
+            "supports_text": "يدعم ملفات Excel (.xlsx, .xls) و CSV",
+            "success_redirect": "تم الرفع بنجاح! جاري التوجيه إلى التعيين...",
+            "info_preview": "بعد الرفع، ستراجع معاينة قبل تعيين الأعمدة.",
+            "btn_upload_preview": "رفع ومعاينة",
+            "btn_uploading": "جاري الرفع...",
+            "errors": {
+                "invalid_extension": "يرجى اختيار ملف Excel (.xlsx, .xls) أو CSV",
+                "duplicate_file": "تم رفع هذا الملف مسبقاً. يرجى اختيار ملف آخر أو حذف الرفع الحالي.",
+                "preview_failed": "فشل إنشاء المعاينة.",
+                "upload_failed": "فشل الرفع"
+            }
         }
+    },
+    "organization_settings": {
+        "title": "إعدادات المنظمة",
+        "description": "إدارة تكوين مساحة العمل وتفضيلاتها.",
+        "cards": {
+            "general": {
+                "title": "عام",
+                "description": "ملف المنظمة، الشعار، والمعرفات."
+            },
+            "members": {
+                "title": "الأعضاء",
+                "description": "إدارة وصول الفريق، الأدوار، والدعوات."
+            },
+            "infrastructure": {
+                "title": "البنية التحتية",
+                "description": "إعداد المصانع، الخطوط، والمناطق."
+            },
+            "security": {
+                "title": "الأمان",
+                "description": "الدخول الموحد (SSO)، سجلات التدقيق، وسياسات كلمات المرور."
+            },
+            "billing": {
+                "title": "الفوترة",
+                "description": "الفواتير، حدود الاستخدام، والاشتراك."
+            }
+        },
+        "badges": {
+            "coming_soon": "قريباً"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "العودة للإعدادات"
+        },
+        "top_nav": {
+            "search_placeholder": "بحث عن مصانع، طلبات...",
+            "search_coming_soon": "البحث الشامل قادم قريباً!",
+            "notifications": {
+                "title": "الإشعارات",
+                "mark_read": "تحديد الكل كمقروء",
+                "empty": "لا إشعارات جديدة"
+            },
+            "user_menu": {
+                "profile": "الملف والإعدادات",
+                "logout": "تسجيل الخروج",
+                "default_user": "مستخدم",
+                "default_role": "مشاهد"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "المنظمة",
+            "factories": "المصانع"
+        },
+        "header": {
+            "title": "إعداد المصنع",
+            "popover_trigger_label": "معلومات المصنع"
+        },
+        "popover": {
+            "title": "إعداد المصنع",
+            "assignment": {
+                "title": "وضع التعيين:",
+                "desc_part1": "العرض الافتراضي. انقر على الوجوه لرؤية التفاصيل أو الزر",
+                "desc_part2": "لتعيين مدراء لمصادر البيانات."
+            },
+            "structure": {
+                "title": "وضع الهيكل:",
+                "desc": "انقر \"تخصيص التخطيط\" لإعادة تسمية أو حذف أو إضافة مصادر بيانات جديدة لهذا المصنع."
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "وضع التعيين",
+            "structure_mode": "وضع الهيكل",
+            "customize_layout": "تخصيص التخطيط",
+            "done_editing": "تم التعديل"
+        },
+        "list": {
+            "add_data_source": "إضافة مصدر بيانات",
+            "no_data_sources": "لا توجد مصادر بيانات مكوّنة. انتقل إلى وضع التعديل لإضافة واحد."
+        },
+        "bulk_actions": {
+            "selected": "محدد",
+            "assign_manager": "تعيين مدير"
+        },
+        "messages": {
+            "loading": "جاري تحميل المصنع...",
+            "assignment_failed": "فشل تعيين المدير."
+        }
+    },
+    "roles": {
+        "system_admin": "مسؤول النظام",
+        "owner": "المالك",
+        "admin": "مسؤول",
+        "viewer": "مشاهد",
+        "member": "عضو",
+        "operator": "مشغل",
+        "factory_manager": "مدير المصنع",
+        "line_manager": "مدير الخط",
+        "user": "مستخدم",
+        "manager": "مدير"
+    },
+    "org_general": {
+        "title": "عام",
+        "profile": {
+            "logged_in_as": "مسجل الدخول باسم"
+        },
+        "at_a_glance": "لمحة سريعة",
+        "stats": {
+            "total_managers": "إجمالي المدراء",
+            "assigned": "معينون",
+            "factories": "المصانع",
+            "production_lines": "خطوط الإنتاج"
+        },
+        "danger_zone": {
+            "title": "منطقة الخطر",
+            "description": "حذف المنظمة سيؤدي لإزالة جميع المصانع وخطوط الإنتاج والبيانات بشكل دائم.",
+            "delete_button": "حذف المنظمة (قريباً)"
+        }
+    },
+    "org_members": {
+        "title": "الأعضاء",
+        "invite_member": "دعوة عضو",
+        "search_placeholder": "بحث بالاسم أو البريد...",
+        "filter": "تصفية",
+        "table": {
+            "user": "المستخدم",
+            "global_role": "الدور العالمي",
+            "access": "الوصول",
+            "last_active": "آخر نشاط",
+            "actions": "إجراءات",
+            "loading": "جاري تحميل الأعضاء...",
+            "no_members": "لم يتم العثور على أعضاء.",
+            "assignments": "{{count}} تعيينات",
+            "unassigned": "غير معين",
+            "never_active": "أبداً",
+            "view_details": "عرض التفاصيل"
+        },
+        "drawer": {
+            "title": "تفاصل العضو",
+            "role_label": "الدور",
+            "active_assignments": "التعيينات النشطة",
+            "no_assignments": "لا توجد تعيينات.",
+            "current_factory": "المصنع الحالي",
+            "danger_zone": {
+                "title": "منطقة الخطر",
+                "suspend_button": "تعليق المستخدم"
+            }
+        },
+        "cell": {
+            "unknown_user": "مستخدم مجهول",
+            "active": "نشط",
+            "inactive": "غير نشط"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "العودة للإعدادات",
+        "back_button": "العودة للإعدادات",
+        "title": "البنية التحتية",
+        "sites_count": "{{count}} مواقع",
+        "sites": "المواقع",
+        "add_factory": "إضافة مصنع",
+        "search_placeholder": "بحث مصانع...",
+        "retry": "إعادة المحاولة",
+        "new_factory": {
+            "title": "مصنع جديد",
+            "subtitle": "إضافة موقع تصنيع جديد"
+        },
+        "card": {
+            "data_sources": "مصادر البيانات",
+            "managers": "المدراء",
+            "configure_site": "إعداد الموقع",
+            "edit_details": "تعديل التفاصيل",
+            "delete_factory": "حذف المصنع"
+        },
+        "list": {
+            "name": "الاسم",
+            "factory": "المصنع",
+            "code": "الرمز",
+            "country": "الدولة",
+            "sources": "المصادر",
+            "managers": "المدراء",
+            "actions": "الإجراءات"
+        },
+        "no_match": "لا توجد مصانع تطابق \"{{query}}\"",
+        "confirm_delete": "هل أنت متأكد من حذف {{name}}؟ لا يمكن التراجع عن هذا.",
+        "delete_fail": "فشل حذف المصنع: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "إضافة مصدر بيانات",
+            "subtitle": "إضافة مصدر جديد لـ {{factoryName}}",
+            "name_label": "الاسم",
+            "name_placeholder": "مثل: خط 3 / طاولة قص أ",
+            "code_label": "الرمز",
+            "code_placeholder": "L-03",
+            "specialty_label": "التخصص",
+            "specialty_placeholder": "مثل: تجميع",
+            "description_label": "الوصف",
+            "description_placeholder": "صف مصدر البيانات هذا بإيجاز...",
+            "use_defaults": "استخدام افتراضات المصنع",
+            "inherit_tooltip": "يرث الورديات وعطلات نهاية الأسبوع",
+            "custom_tooltip": "إعداد مخصص",
+            "inherit_desc": "سيرث هذا المصدر تلقائياً نمط الورديات القياسي للمصنع.",
+            "custom_desc": "البدء بجدول زمني فارغ",
+            "source_usage": "استخدام المصدر",
+            "quota_reached": "تم الوصول للحد الأقصى للمصادر لهذا المصنع.",
+            "submit_button": "إضافة مصدر",
+            "submitting": "جاري الإنشاء..."
+        },
+        "create_factory": {
+            "title": "إنشاء مصنع جديد",
+            "subtitle": "إعداد مصنع جديد مع مصدر بيانات أولي",
+            "quota_reached": "تم الوصول للحصة",
+            "name_label": "اسم المصنع",
+            "name_placeholder": "مثل: مصنع الرياض",
+            "code_label": "رمز المصنع",
+            "code_placeholder": "مثل: RUH-01",
+            "code_desc": "معرف قصير لهذا المصنع",
+            "source_name_label": "مصدر البيانات الأولي",
+            "source_name_placeholder": "مثل: خط التجميع أ",
+            "source_specialty_label": "تخصص المصدر",
+            "source_specialty_placeholder": "مثل: تجميع، اختبار، تغليف",
+            "source_specialty_desc": "الوظيفة الأساسية أو نوع هذا المصدر",
+            "source_desc_label": "وصف المصدر",
+            "source_desc_placeholder": "مثل: خط التجميع الرئيسي للملابس الرياضية",
+            "source_desc_help": "صف بإيجاز وظيفة هذا المصدر",
+            "submitting_msg": "جاري إنشاء المصنع ومصدر البيانات...",
+            "submit_button": "إنشاء مصنع",
+            "submitting_button": "جاري الإنشاء..."
+        },
+        "edit_factory": {
+            "title": "تعديل المصنع",
+            "name_label": "اسم المصنع",
+            "code_label": "رمز المصنع",
+            "submit_button": "حفظ التغييرات",
+            "submitting_button": "جاري الحفظ..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "المعرف: {{id}}",
+            "rename_tooltip": "إعادة تسمية المصدر",
+            "managers_stat": "المدراء",
+            "efficiency_stat": "الكفاءة",
+            "assigned_team": "الفريق المعين",
+            "no_managers": "لا مدراء معينين لهذا المصدر.",
+            "remove_button": "إزالة",
+            "danger_zone": "منطقة الخطر",
+            "delete_button": "حذف مصدر البيانات",
+            "confirm_remove": "إزالة هذا المدير من مصدر البيانات؟",
+            "remove_fail": "فشل إزالة المستخدم.",
+            "confirm_delete": "هل أنت متأكد من حذف {{name}}؟ لا يمكن التراجع عن هذا.",
+            "delete_fail": "لا يمكن حذف المصدر. قد يكون لديه تعيينات نشطة أو بيانات.",
+            "rename_fail": "فشل إعادة تسمية مصدر البيانات."
+        },
+        "row": {
+            "untitled_source": "مصدر بلا عنوان",
+            "rename_required": "إعادة التسمية مطلوبة",
+            "click_tooltip": "انقر للتفاصيل وإعادة التسمية",
+            "confirm_delete": "حذف {{name}}؟",
+            "rename_prompt": "إعادة تسمية مصدر البيانات:"
+        },
+        "user_search": {
+            "placeholder": "بحث عن مدراء...",
+            "no_results": "لم يتم العثور على مدراء مطابقين",
+            "no_available": "لا يوجد مدراء متاحين",
+            "available_count": "{{count}} متاح"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "أهلاً بعودتك",
+            "welcome_subtitle": "أدخل تفاصيلك للوصول إلى لوحة المصنع.",
+            "email_label": "بريد العمل",
+            "password_label": "كلمة المرور",
+            "forgot_password": "نسيت كلمة المرور؟",
+            "sign_in_button": "تسجيل الدخول",
+            "no_account": "ليس لديك حساب؟",
+            "contact_sales": "تواصل مع المبيعات",
+            "back_to_landing": "العودة للرئيسية",
+            "errors": {
+                "network_error": "خطأ في الاتصال. حاول مرة أخرى أو استخدم بيانات تجريبية.",
+                "invalid_credentials": "بيانات غير صالحة. حاول مرة أخرى."
+            },
+            "demo_card": {
+                "title": "تقرير الوردية",
+                "subtitle": "مباشر • مصنع 01",
+                "efficiency": "الكفاءة",
+                "efficiency_sub": "↑ {{val}}% مقابل الهدف",
+                "output": "الناتج (وحدات)",
+                "output_sub": "على المسار",
+                "chart_title": "المعدل الساعي",
+                "chart_period": "آخر 4 ساعات",
+                "chart_current": "الحالي",
+                "quote": "\"{{text}}\"",
+                "quote_author": "مدير العمليات، شركة النسيج"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "خطأ غير متوقع في التطبيق",
+            "unknown_error": "حدث خطأ غير معروف.",
+            "return_home": "العودة للرئيسية"
+        },
+        "confirm_dialog": {
+            "confirm": "تأكيد",
+            "cancel": "إلغاء",
+            "please_wait": "يرجى الانتظار..."
+        },
+        "quota_warning": {
+            "limit_reached": "لقد وصلت إلى الحد الخاص بك لـ {{type}} ({{max}})",
+            "near_limit": "أنت تقترب من الحد الخاص بك لـ {{type}} ({{current}}/{{max}})",
+            "upgrade_prompt": "قم بترقية خطتك لإنشاء المزيد من {{type}}.",
+            "consider_upgrade": "فكر في الترقية لتجنب الانقطاع.",
+            "upgrade_button": "ترقية",
+            "dismiss_label": "تجاهل التحذير",
+            "type_factories": "مصانع",
+            "type_lines": "خطوط إنتاج"
+        },
+        "date_range_picker": {
+            "start_date": "تاريخ البدء",
+            "end_date": "تاريخ الانتهاء",
+            "start_in_timezone": "تاريخ البدء في {{timezone}}",
+            "end_in_timezone": "تاريخ الانتهاء في {{timezone}}"
+        },
+        "breadcrumb": {
+            "aria_label": "مسار التنقل"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "معايير وافتراضات المصنع",
+            "subtitle": "تكوين الافتراضات العالمية لـ {{name}}"
+        },
+        "sections": {
+            "localization": "الموقع والتنسيقات",
+            "shifts": {
+                "title": "نمط الورديات الافتراضي",
+                "description": "سترث خطوط الإنتاج الجديدة هذه الورديات."
+            },
+            "non_working_days": {
+                "title": "أيام عدم العمل القياسية",
+                "description": "سيتم تعليم هذه الأيام كأيام راحة افتراضياً. يمكن للخطوط الفردية تجاوز ذلك."
+            },
+            "schema_configuration": "تكوين المخطط",
+            "upload_history": "سجل الرفع",
+            "active_field_mapping": "تعيين الحقول النشط",
+            "field_mapping_description": "يربط عناوين ملف Excel بحقول قاعدة بيانات النظام."
+        },
+        "fields": {
+            "date_format": "تنسيق التاريخ",
+            "currency": "العملة",
+            "measurement_system": "نظام القياس",
+            "preview": "معاينة"
+        },
+        "shifts": {
+            "add": "إضافة وردية",
+            "new_shift": "وردية جديدة",
+            "empty": "لا توجد ورديات. أضف وردية لتعيين الجدول اليومي الافتراضي.",
+            "name_label": "اسم الوردية",
+            "name_placeholder": "مثل: صباحية",
+            "start_time": "وقت البدء",
+            "end_time": "وقت الانتهاء"
+        },
+        "timezone_warning": {
+            "title": "تغيير المنطقة الزمنية؟",
+            "message": "تغيير المنطقة الزمنية إلى <strong>{{timezone}}</strong> قد يؤثر على تقارير البيانات التاريخية وجداول الورديات النشطة.",
+            "confirm": "نعم، تحديث المنطقة الزمنية"
+        },
+        "buttons": {
+            "save": "حفظ التغييرات",
+            "saving": "جاري الحفظ..."
+        },
+        "errors": {
+            "save_failed": "فشل حفظ الإعدادات. حاول مرة أخرى."
+        }
+    },
+    "data_source_detail": {
+        "not_found": "مصدر البيانات غير موجود",
+        "system_node": "عقدة النظام",
+        "breadcrumbs": {
+            "workspace": "مساحة العمل",
+            "factory": "المصنع",
+            "not_found": "غير موجود"
+        },
+        "tabs": {
+            "schema_configuration": "تكوين المخطط",
+            "upload_history": "سجل الرفع"
+        },
+        "schema": {
+            "active_field_mapping": "تعيين الحقول النشط",
+            "field_mapping_description": "يربط عناوين ملف Excel بحقول قاعدة بيانات النظام.",
+            "edit_mappings": "تعديل التعيينات",
+            "reset_schema": "إعادة تعيين المخطط",
+            "no_mappings": "لا توجد تعيينات معروفة.",
+            "system_status": "حالة النظام",
+            "last_updated": "آخر تحديث",
+            "no_config_title": "لم يتم العثور على تكوين",
+            "no_config_description": "لم يتم تعيين مصدر البيانات هذا بعد.",
+            "no_config_hint": "ارفع ملفاً من صفحة المصنع للبدء.",
+            "table": {
+                "excel_header": "عنوان Excel",
+                "system_field": "حقل النظام"
+            }
+        },
+        "uploads": {
+            "processed_files": "الملفات المعالجة",
+            "clear_history": "مسح السجل",
+            "no_files": "لم يتم رفع أي ملفات لهذا المصدر بعد."
+        },
+        "confirm": {
+            "reset_schema": "تحذير: سيؤدي هذا إلى حذف مصدر البيانات وجميع تكوينات المخطط. لا يمكن التراجع عن هذا. هل أنت متأكد؟",
+            "clear_history": "تحذير: سيؤدي هذا إلى حذف كل سجل الرفع والملفات الفعلية. هذا إجراء مدمر. هل أنت متأكد؟"
+        },
+        "errors": {
+            "reset_failed": "فشل إعادة تعيين المخطط.",
+            "clear_failed": "فشل مسح سجل الإخراج."
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "لوحتك فارغة",
+            "description": "ابدأ ببناء مركز التحكم الخاص بك بإضافة أدوات من المصمم.",
+            "action": "فتح المصمم"
+        }
+    },
+    "file_preview": {
+        "title": "معاينة الملف",
+        "loading": "جاري تحميل المعاينة...",
+        "loading_subtitle": "جاري تحليل هيكل الملف",
+        "error_title": "خطأ في المعاينة",
+        "error_default": "فشل تحميل المعاينة. تأكد من أن الملف هو مستند Excel أو CSV صالح.",
+        "showing_rows": "عرض أول {{count}} صفوف",
+        "columns_detected": "{{count}} أعمدة مكتشفة",
+        "info_note": "ملاحظة: هذه معاينة لبياناتك. راجع الأعمدة والقيم للتأكد من رفع الملف بشكل صحيح.",
+        "null_value": "فارغ"
+    },
+    "data_integration": {
+        "title": "سياق تكامل البيانات",
+        "subtitle": "إدارة المخططات ومراقبة تدفق البيانات",
+        "upload_data": "رفع البيانات",
+        "collapse": "طي",
+        "expand": "توسيع",
+        "tabs": {
+            "schema": "تكوين المخطط",
+            "uploads": "سجل الرفع"
+        },
+        "empty_sources": "لا توجد مصادر بيانات مكوّنة بعد.",
+        "configure_new": "تكوين مصدر بيانات جديد",
+        "no_description": "لم يتم تقديم وصف.",
+        "schema_version": "مخطط صارم v{{version}}:",
+        "no_active_schema": "لا يوجد مخطط نشط",
+        "edit_config": "تعديل التكوين",
+        "error_update": "فشل تحديث التكوين.",
+        "modal": {
+            "title": "تعديل التكوين",
+            "source_name": "اسم المصدر",
+            "time_column": "عمود الوقت (عنوان Excel)",
+            "time_column_hint": "اسم العنوان الدقيق لعمود التاريخ/الوقت.",
+            "config_active": "التكوين نشط"
+        }
+    },
+    "data_source_config": {
+        "title": "تكوين مصدر البيانات",
+        "subtitle": "خط الإنتاج: {{id}}",
+        "loading": "تحميل التكوين...",
+        "not_configured_title": "لا يوجد مصدر بيانات مكوّن",
+        "not_configured_desc": "لم يتم تكوين مصدر بيانات لهذا الخط. تحتاج إلى رفع البيانات أولاً لإنشاء واحد.",
+        "close_modal": "إغلاق النافذة",
+        "time_column": "عمود الوقت",
+        "time_column_placeholder": "مثل: Timestamp, Date, Time",
+        "time_column_hint": "اسم العمود في ملفات Excel/CSV المستخدم لتحليل السلاسل الزمنية.",
+        "schema_title": "تعيين المخطط النشط",
+        "schema_version": "إصدار {{version}}",
+        "table": {
+            "source": "العمود المصدر",
+            "target": "الحقل الهدف"
+        },
+        "schema_note": "ملاحظة: يتم تعلم تعيينات المخطط تلقائياً. لتغيير التعيينات، ارفع نسخة جديدة من الملف.",
+        "description": "الوصف",
+        "description_placeholder": "صف مصدر البيانات هذا بإيجاز...",
+        "success": "تم تحديث التكوين بنجاح!",
+        "error_save": "فشل حفظ التغييرات.",
+        "error_load": "فشل تحميل التكوين.",
+        "save_button": "حفظ التكوين"
+    },
+    "upload_history": {
+        "title": "عمليات الرفع الأخيرة",
+        "loading": "تحميل السجل...",
+        "empty": "لم يتم رفع أي ملفات بعد.",
+        "error": "فشل تحميل سجل الرفع."
     }
 }

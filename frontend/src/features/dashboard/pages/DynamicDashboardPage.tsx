@@ -7,6 +7,7 @@ import { MainLayout } from '../../../components/layout/MainLayout';
 import { dashboardStorage } from '../storage';
 import { WidgetLibrary } from '../components/WidgetLibrary';
 import { DashboardSkeleton } from '../components/DashboardSkeleton';
+import { DashboardEmptyState } from '../components/DashboardEmptyState';
 
 import { DashboardFilterBar } from '../components/DashboardFilterBar';
 import { DashboardHeader } from '../components/DashboardHeader';
@@ -396,18 +397,7 @@ const DashboardPageContent = () => {
                         )}
 
                         {widgets.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center space-y-4 border-2 border-dashed border-border rounded-3xl m-10">
-                                <div className="p-6 bg-surface-subtle rounded-full">
-                                    <svg className="w-12 h-12 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-text-main">Your Dashboard is Empty</h3>
-                                    <p className="text-text-muted max-w-xs">Start building your command center by adding widgets from the designer.</p>
-                                </div>
-                                <button onClick={() => setEditMode(true)} className="text-brand font-bold hover:underline">Open Designer</button>
-                            </div>
+                            <DashboardEmptyState onOpenDesigner={() => setEditMode(true)} />
                         ) : (
                             <DashboardGridLayout
                                 widgets={widgets}

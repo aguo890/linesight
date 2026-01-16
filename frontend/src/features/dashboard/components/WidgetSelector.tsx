@@ -162,7 +162,7 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
                     </button>
                 </div>
                 <div className="text-xs text-text-muted">
-                    {selectedWidgets.length} {t('widgets.selector.selected')} • {allSupportedIds.length} {t('widgets.selector.compatible')}
+                    {t('widgets.selector.status_summary', { selected: selectedWidgets.length, compatible: allSupportedIds.length })}
                 </div>
             </div>
 
@@ -213,7 +213,7 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

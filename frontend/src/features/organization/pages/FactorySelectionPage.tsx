@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
     Search,
@@ -29,6 +30,7 @@ type ViewMode = 'grid' | 'list';
 
 export const FactorySelectionPage: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // State
     const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -108,7 +110,7 @@ export const FactorySelectionPage: React.FC = () => {
     };
 
     const handleDelete = async (factoryId: string, factoryName: string) => {
-        if (!confirm(`Are you sure you want to delete ${factoryName}? This action cannot be undone.`)) {
+        if (!confirm(t('factory_selection.confirm_delete', { name: factoryName }))) {
             return;
         }
 
@@ -117,7 +119,7 @@ export const FactorySelectionPage: React.FC = () => {
             fetchData();
             refreshQuota();
         } catch (err: any) {
-            alert('Failed to delete factory: ' + (err.response?.data?.detail || err.message));
+            alert(t('factory_selection.delete_fail', { error: err.response?.data?.detail || err.message }));
         }
     };
 
@@ -165,23 +167,23 @@ export const FactorySelectionPage: React.FC = () => {
                         className="flex items-center gap-2 text-sm text-text-muted hover:text-text-main mb-2 transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        Back to Settings
+                        {t('factory_selection.back_to_settings')}
                     </button>
-                    <h1 className="text-2xl font-bold text-text-main">Infrastructure</h1>
+                    <h1 className="text-2xl font-bold text-text-main">{t('factory_selection.title')}</h1>
                 </div>
 
                 <div className="flex items-center gap-3">
                     {/* Stats Pills - Simplified for Header */}
                     <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-surface-subtle rounded-lg border border-border text-xs font-medium text-text-muted">
                         <FactoryIcon className="w-3.5 h-3.5" />
-                        {factories.length} Sites
+                        {factories.length} {t('factory_selection.sites')}
                     </div>
                     <button
                         onClick={() => setIsCreateModalOpen(true)}
                         className="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg font-medium transition-all shadow-sm active:scale-[0.98]"
                     >
                         <Plus className="w-4 h-4" />
-                        Add Factory
+                        {t('factory_selection.add_factory')}
                     </button>
                 </div>
             </div>
@@ -193,7 +195,7 @@ export const FactorySelectionPage: React.FC = () => {
                     <input
                         id="org-factory-search"
                         type="text"
-                        placeholder="Search factories..."
+                        placeholder={t('factory_selection.search_placeholder')}
                         className="w-full pl-10 pr-16 py-2 bg-surface text-text-main placeholder:text-text-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -225,7 +227,7 @@ export const FactorySelectionPage: React.FC = () => {
             {error && (
                 <div className="mb-6 bg-danger/10 text-danger p-4 rounded-xl border border-danger/20 flex items-center justify-between">
                     <span>{error}</span>
-                    <button onClick={fetchData} className="text-sm font-medium hover:underline">Retry</button>
+                    <button onClick={fetchData} className="text-sm font-medium hover:underline">{t('factory_selection.retry')}</button>
                 </div>
             )}
 
@@ -242,8 +244,8 @@ export const FactorySelectionPage: React.FC = () => {
                             <Plus className="w-6 h-6 text-text-muted group-hover:text-brand" />
                         </div>
                         <div className="text-center">
-                            <p className="font-medium text-text-main group-hover:text-brand-dark dark:group-hover:text-brand-light">New Factory</p>
-                            <p className="text-xs text-text-muted mt-1">Add a new production site</p>
+                            <p className="font-medium text-text-main group-hover:text-brand-dark dark:group-hover:text-brand-light">{t('factory_selection.new_factory.title')}</p>
+                            <p className="text-xs text-text-muted mt-1">{t('factory_selection.new_factory.subtitle')}</p>
                         </div>
                     </button>
 
@@ -315,7 +317,7 @@ export const FactorySelectionPage: React.FC = () => {
                                                     }}
                                                     className="w-full text-left px-4 py-2 text-sm text-text-main hover:bg-surface-subtle flex items-center gap-2"
                                                 >
-                                                    <Pencil className="w-4 h-4" /> Edit Details
+                                                    <Pencil className="w-4 h-4" /> {t('factory_selection.card.edit_details')}
                                                 </button>
                                                 <button
                                                     onClick={() => {
@@ -324,7 +326,7 @@ export const FactorySelectionPage: React.FC = () => {
                                                     }}
                                                     className="w-full text-left px-4 py-2 text-sm text-danger hover:bg-danger/10 flex items-center gap-2"
                                                 >
-                                                    <Trash2 className="w-4 h-4" /> Delete Factory
+                                                    <Trash2 className="w-4 h-4" /> {t('factory_selection.card.delete_factory')}
                                                 </button>
                                             </div>
                                         )}
@@ -335,13 +337,13 @@ export const FactorySelectionPage: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-3 mb-4">
                                     <div className="bg-surface-subtle rounded-lg p-3 border border-border">
                                         <div className="text-xs text-text-muted flex items-center gap-1 mb-1">
-                                            <Layers className="w-3 h-3" /> Data Sources
+                                            <Layers className="w-3 h-3" /> {t('factory_selection.card.data_sources')}
                                         </div>
                                         <div className="font-semibold text-text-main">{sourceCount}</div>
                                     </div>
                                     <div className="bg-surface-subtle rounded-lg p-3 border border-border">
                                         <div className="text-xs text-text-muted flex items-center gap-1 mb-1">
-                                            <Users className="w-3 h-3" /> Managers
+                                            <Users className="w-3 h-3" /> {t('factory_selection.card.managers')}
                                         </div>
                                         <div className="font-semibold text-text-main">{managerCount}</div>
                                     </div>
@@ -349,7 +351,7 @@ export const FactorySelectionPage: React.FC = () => {
 
                                 {/* Footer Action */}
                                 <div className="flex items-center text-sm font-medium text-brand opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-                                    Configure Site <ChevronRight className="w-4 h-4 ml-1" />
+                                    {t('factory_selection.card.configure_site')} <ChevronRight className="w-4 h-4 ml-1" />
                                 </div>
                             </div>
                         );
@@ -363,11 +365,11 @@ export const FactorySelectionPage: React.FC = () => {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-surface-subtle border-b border-border">
                             <tr>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">Name</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">Code</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">Sources</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">Managers</th>
-                                <th className="py-3 px-4 text-right text-xs font-semibold text-text-muted uppercase">Actions</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">{t('factory_selection.list.name')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">{t('factory_selection.list.code')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">{t('factory_selection.list.sources')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase">{t('factory_selection.list.managers')}</th>
+                                <th className="py-3 px-4 text-right text-xs font-semibold text-text-muted uppercase">{t('factory_selection.list.actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -411,7 +413,7 @@ export const FactorySelectionPage: React.FC = () => {
                                                         }}
                                                         className="w-full text-left px-4 py-2 text-sm text-text-main hover:bg-surface-subtle flex items-center gap-2"
                                                     >
-                                                        <Pencil className="w-4 h-4" /> Edit Details
+                                                        <Pencil className="w-4 h-4" /> {t('factory_selection.card.edit_details')}
                                                     </button>
                                                     <button
                                                         onClick={() => {
@@ -420,7 +422,7 @@ export const FactorySelectionPage: React.FC = () => {
                                                         }}
                                                         className="w-full text-left px-4 py-2 text-sm text-danger hover:bg-danger/10 flex items-center gap-2"
                                                     >
-                                                        <Trash2 className="w-4 h-4" /> Delete Factory
+                                                        <Trash2 className="w-4 h-4" /> {t('factory_selection.card.delete_factory')}
                                                     </button>
                                                 </div>
                                             )}
@@ -431,7 +433,7 @@ export const FactorySelectionPage: React.FC = () => {
                             {filteredFactories.length === 0 && (
                                 <tr>
                                     <td colSpan={5} className="py-8 text-center text-text-muted">
-                                        No factories found matching "{searchQuery}"
+                                        {t('factory_selection.list.no_match', { query: searchQuery })}
                                     </td>
                                 </tr>
                             )}

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import * as ct from 'countries-and-timezones';
 import { getTimezoneOffset } from 'date-fns-tz';
 import { MapPin, Globe, Loader2, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface LocationSelectorProps {
     countryCode?: string;
@@ -10,6 +11,7 @@ interface LocationSelectorProps {
 }
 
 export default function LocationSelector({ countryCode, timezone, onChange }: LocationSelectorProps) {
+    const { t } = useTranslation();
     const [inputValue, setInputValue] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isAutoDetecting, setIsAutoDetecting] = useState(false);
@@ -153,14 +155,14 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
 
             {/* Auto-detect header */}
             <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-text-muted">Location & Timezone</label>
+                <label className="text-xs font-medium text-text-muted">{t('profile.location_selector.label')}</label>
                 <button
                     onClick={handleAutoDetect}
                     disabled={isAutoDetecting}
                     className="text-xs text-brand hover:text-brand-dark font-medium flex items-center gap-1 transition-colors"
                 >
                     {isAutoDetecting ? <Loader2 className="w-3 h-3 animate-spin" /> : <MapPin className="w-3 h-3" />}
-                    Auto-Detect
+                    {t('profile.location_selector.auto_detect')}
                 </button>
             </div>
 
@@ -180,7 +182,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                                 e.target.select();
                                 setIsDropdownOpen(true);
                             }}
-                            placeholder="Search Country..."
+                            placeholder={t('profile.location_selector.search_placeholder')}
                             className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all"
                         />
                         <Globe className="w-4 h-4 text-text-muted absolute left-3 top-2.5" />
@@ -189,7 +191,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                     {isDropdownOpen && (
                         <div className="absolute z-50 mt-1 w-full bg-surface rounded-lg shadow-lg border border-border max-h-60 overflow-y-auto">
                             {filteredCountries.length === 0 ? (
-                                <div className="p-3 text-sm text-text-muted text-center">No countries found</div>
+                                <div className="p-3 text-sm text-text-muted text-center">{t('profile.location_selector.no_results')}</div>
                             ) : (
                                 filteredCountries.map((c: ct.Country) => (
                                     <button
@@ -215,7 +217,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                         className="w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none appearance-none disabled:bg-surface-subtle disabled:text-text-muted"
                     >
                         {!countryCode ? (
-                            <option>Select Country First</option>
+                            <option>{t('profile.location_selector.select_country_first')}</option>
                         ) : (
                             availableTimezones.map((tz: { id: string; name: string }) => (
                                 <option key={tz.id} value={tz.id}>{tz.name}</option>
@@ -233,7 +235,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
             {timezone && (
                 <p className="text-xs text-text-muted flex items-center gap-1">
                     <Check className="w-3 h-3" />
-                    Selected: <span className="font-medium text-text-main">{timezone}</span>
+                    {t('profile.location_selector.selected')} <span className="font-medium text-text-main">{timezone}</span>
                 </p>
             )}
         </div>

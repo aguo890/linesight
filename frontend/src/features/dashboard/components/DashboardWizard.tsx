@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Upload, CheckCircle, Layout, Factory, ChevronRight, Settings, AlertCircle, Loader2 } from 'lucide-react';
 // Note: useNavigate and canManageInfrastructure removed - no longer navigating to add line from wizard
+import { useTranslation } from 'react-i18next';
 import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
@@ -28,6 +29,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     preselectedDataSourceId,
     mode = 'create'
 }) => {
+    const { t } = useTranslation();
     // --- Hooks ---
     // Note: canManageInfrastructure removed - not used after removing 'add line' option
 
@@ -56,12 +58,12 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
     // Steps Configuration
     const steps = mode === 'create' ? [
-        { id: 'upload', label: 'Source Data', description: 'Upload or Select Source', icon: Upload },
-        { id: 'mapping', label: 'Data Mapping', description: 'Validate Columns', icon: CheckCircle },
-        { id: 'widgets', label: 'Dashboard', description: 'Configure Layout', icon: Layout },
+        { id: 'upload', label: t('wizard.steps.upload.label'), description: t('wizard.steps.upload.desc'), icon: Upload },
+        { id: 'mapping', label: t('wizard.steps.mapping.label'), description: t('wizard.steps.mapping.desc'), icon: CheckCircle },
+        { id: 'widgets', label: t('wizard.steps.widgets.label'), description: t('wizard.steps.widgets.desc'), icon: Layout },
     ] : [
-        { id: 'upload', label: 'Source Data', description: 'Upload CSV/Excel', icon: Upload },
-        { id: 'mapping', label: 'Data Mapping', description: 'Validate Columns', icon: CheckCircle },
+        { id: 'upload', label: t('wizard.steps.upload.label'), description: t('wizard.steps.upload.desc_alt'), icon: Upload },
+        { id: 'mapping', label: t('wizard.steps.mapping.label'), description: t('wizard.steps.mapping.desc'), icon: CheckCircle },
     ];
 
     // --- Effects (Kept existing logic) ---
@@ -304,7 +306,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                             <div className="p-2 bg-brand/10 rounded-lg">
                                 <Settings className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-text-main tracking-tight">LineSight Setup</span>
+                            <span className="font-bold text-text-main tracking-tight">{t('wizard.title')}</span>
                         </div>
 
                         {/* Steps Timeline */}
@@ -353,15 +355,15 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                     {/* Sidebar Footer (Context Summary) */}
                     <div className="mt-auto p-4 border-t border-border bg-surface-subtle/50">
-                        <div className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">Current Context</div>
+                        <div className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">{t('wizard.context.title')}</div>
                         <div className="bg-surface p-3 rounded-lg border border-border shadow-sm space-y-2">
                             <div className="flex items-center text-sm text-text-main">
                                 <Factory className="w-3.5 h-3.5 mr-2 text-text-muted" />
-                                <span className="truncate">{factories.find(f => f.id === selectedFactoryId)?.name || 'Select Factory'}</span>
+                                <span className="truncate">{factories.find(f => f.id === selectedFactoryId)?.name || t('wizard.context.select_factory')}</span>
                             </div>
                             <div className="flex items-center text-sm text-text-main">
                                 <ChevronRight className="w-3.5 h-3.5 mr-2 text-text-muted" />
-                                <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || 'Select Data Source'}</span>
+                                <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || t('wizard.context.select_source')}</span>
                             </div>
                         </div>
                     </div>
@@ -431,7 +433,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             {isLoadingSources && (
                                                 <span className="flex items-center text-xs text-brand animate-pulse">
                                                     <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                                                    Fetching sources...
+                                                    {t('wizard.context.fetching_sources')}
                                                 </span>
                                             )}
                                         </div>
@@ -444,10 +446,10 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             >
                                                 <option value="">
                                                     {!selectedFactoryId
-                                                        ? 'Select Factory First'
+                                                        ? t('wizard.context.select_factory_first')
                                                         : isLoadingSources
-                                                            ? 'Loading Sources...'
-                                                            : 'Select Data Source...'}
+                                                            ? t('wizard.context.loading_sources')
+                                                            : t('wizard.context.select_source') + '...'}
                                                 </option>
                                                 {dataSources.map(ds => (
                                                     <option key={ds.id} value={ds.id}>{ds.name} ({ds.code})</option>
@@ -461,7 +463,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 {selectedFactoryId && dataSources.length === 0 && !isLoadingSources && (
                                     <div className="bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 px-4 py-3 rounded-lg text-sm flex items-center">
                                         <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
-                                        <span>No data sources available. Configure sources from the Factory settings page first.</span>
+                                        <span>{t('wizard.context.no_sources_alert')}</span>
                                     </div>
                                 )}
 
@@ -487,7 +489,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         {!isSelectionComplete && !isLoadingContext && !isLoadingSources && (
                                             <div className="absolute inset-0 flex items-center justify-center z-10">
                                                 <div className="bg-surface/80 px-4 py-2 rounded-full shadow-sm text-sm text-text-muted font-medium">
-                                                    Select a Data Source to continue
+                                                    {t('wizard.context.select_source_overlay')}
                                                 </div>
                                             </div>
                                         )}

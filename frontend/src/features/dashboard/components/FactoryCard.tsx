@@ -7,6 +7,7 @@
  * - Modern hover effects
  */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Factory, Edit2, Trash2, ChevronRight } from 'lucide-react';
 
 interface FactoryCardProps {
@@ -42,6 +43,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
     onDelete,
     onClick
 }) => {
+    const { t } = useTranslation();
     // Calculate quota percentage for color coding
     const quotaPercentage = (factory.lineCount / factory.maxLines) * 100;
 
@@ -110,7 +112,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
             <div className="flex items-end justify-between mt-6 pt-4 border-t border-border">
                 <div>
                     <span className="text-2xl font-bold text-text-main">{factory.lineCount}</span>
-                    <span className="text-sm text-text-muted ml-1">/ {factory.maxLines} sources</span>
+                    <span className="text-sm text-text-muted ml-1">{t('dashboard.factory_card.sources_suffix', { max: factory.maxLines })}</span>
                 </div>
 
                 {/* Decorative Sparkline */}
@@ -131,27 +133,27 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
                     <button
                         onClick={handleEdit}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-brand hover:bg-brand/10 rounded-md transition-colors"
-                        title="Edit factory"
+                        title={t('dashboard.factory_card.edit_title')}
                     >
                         <Edit2 className="w-3.5 h-3.5" />
-                        <span>Edit</span>
+                        <span>{t('dashboard.factory_card.edit')}</span>
                     </button>
                 )}
                 {onDelete && (
                     <button
                         onClick={handleDelete}
                         className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-text-muted hover:text-danger hover:bg-danger/10 rounded-md transition-colors"
-                        title="Delete factory"
+                        title={t('dashboard.factory_card.delete_title')}
                         data-testid={`delete-factory-btn-${factory.id}`}
                     >
                         <Trash2 className="w-3.5 h-3.5" />
-                        <span>Delete</span>
+                        <span>{t('dashboard.factory_card.delete')}</span>
                     </button>
                 )}
 
                 {/* Navigate indicator */}
                 <div className="ml-auto flex items-center gap-1 text-xs text-text-muted group-hover:text-brand transition-colors">
-                    <span>Open</span>
+                    <span>{t('dashboard.factory_card.open')}</span>
                     <ChevronRight className="w-3.5 h-3.5" />
                 </div>
             </div>

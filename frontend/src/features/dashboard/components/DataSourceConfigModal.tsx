@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, Clock, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getDataSourceByLine, updateDataSource, type DataSource } from '../../../lib/datasourceApi';
 
 interface DataSourceConfigModalProps {
@@ -13,6 +14,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
     onClose,
     lineId
 }) => {
+    const { t } = useTranslation();
     const [dataSource, setDataSource] = useState<DataSource | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -44,7 +46,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
             }
         } catch (err) {
             console.error('Failed to fetch datasource config:', err);
-            setError('Failed to load configuration.');
+            setError(t('data_source_config.error_load'));
         } finally {
             setLoading(false);
         }
@@ -68,7 +70,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
             }, 3000);
         } catch (err) {
             console.error('Failed to update datasource:', err);
-            setError('Failed to save changes.');
+            setError(t('data_source_config.error_save'));
         } finally {
             setSaving(false);
         }
@@ -86,8 +88,8 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                             <Settings className="w-5 h-5" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-bold text-text-main dark:text-white">Data Source Configuration</h3>
-                            <p className="text-xs text-text-muted dark:text-slate-400">Production Line: {lineId}</p>
+                            <h3 className="text-lg font-bold text-text-main dark:text-white">{t('data_source_config.title')}</h3>
+                            <p className="text-xs text-text-muted dark:text-slate-400">{t('data_source_config.subtitle', { id: lineId })}</p>
                         </div>
                     </div>
                     <button
@@ -103,7 +105,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                     {loading ? (
                         <div className="py-12 flex flex-col items-center justify-center space-y-3">
                             <Clock className="w-10 h-10 text-brand animate-spin" />
-                            <p className="text-sm font-medium text-text-muted">Loading configuration...</p>
+                            <p className="text-sm font-medium text-text-muted">{t('data_source_config.loading')}</p>
                         </div>
                     ) : !dataSource ? (
                         <div className="py-8 flex flex-col items-center justify-center text-center space-y-4">
@@ -111,16 +113,16 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                 <Database className="w-12 h-12" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">No Data Source Configured</h4>
+                                <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{t('data_source_config.not_configured_title')}</h4>
                                 <p className="text-sm text-gray-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
-                                    No Data Source configured for this line. You need to upload data first to create one.
+                                    {t('data_source_config.not_configured_desc')}
                                 </p>
                             </div>
                             <button
                                 onClick={onClose}
                                 className="px-6 py-2 bg-gray-900 dark:bg-slate-700 text-white rounded-lg text-sm font-medium hover:bg-gray-800 dark:hover:bg-slate-600 transition-colors"
                             >
-                                Close Modal
+                                {t('data_source_config.close_modal')}
                             </button>
                         </div>
                     ) : (
@@ -135,34 +137,34 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                             {success && (
                                 <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-300 text-sm">
                                     <CheckCircle2 className="w-4 h-4" />
-                                    Configuration updated successfully!
+                                    {t('data_source_config.success')}
                                 </div>
                             )}
 
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-text-main dark:text-white mb-1.5 flex items-center gap-1.5">
-                                        Time Column
+                                        {t('data_source_config.time_column')}
                                         <span className="text-error">*</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={timeColumn}
                                         onChange={(e) => setTimeColumn(e.target.value)}
-                                        placeholder="e.g. Timestamp, Date, Time"
+                                        placeholder={t('data_source_config.time_column_placeholder')}
                                         required
                                         className="w-full px-4 py-2.5 bg-surface-subtle dark:bg-slate-800 border border-border dark:border-slate-700 rounded-lg text-text-main dark:text-white focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm"
                                     />
                                     <p className="mt-1.5 text-xs text-text-muted">
-                                        The name of the column in your Excel/CSV files used for time-series analysis.
+                                        {t('data_source_config.time_column_hint')}
                                     </p>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-semibold text-text-main dark:text-white mb-2 flex items-center justify-between">
-                                        Active Schema Mapping
+                                        {t('data_source_config.schema_title')}
                                         <span className="text-[10px] bg-brand/10 text-brand px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
-                                            Version {dataSource.schema_mappings.find(m => m.is_active)?.version || 1}
+                                            {t('data_source_config.schema_version', { version: dataSource.schema_mappings.find(m => m.is_active)?.version || 1 })}
                                         </span>
                                     </label>
                                     <div className="border border-border dark:border-slate-700 rounded-lg overflow-hidden bg-surface-subtle/30 dark:bg-slate-800/30">
@@ -170,8 +172,8 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                             <table className="w-full text-left border-collapse">
                                                 <thead>
                                                     <tr className="bg-surface-subtle dark:bg-slate-800 border-b border-border dark:border-slate-700">
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">Source Column</th>
-                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">Target Field</th>
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">{t('data_source_config.table.source')}</th>
+                                                        <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">{t('data_source_config.table.target')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-border dark:divide-slate-800">
@@ -194,18 +196,18 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                         </div>
                                     </div>
                                     <p className="mt-2 text-xs text-text-muted italic">
-                                        Note: Schema mappings are learned automatically. To change mappings, upload a new version of the file.
+                                        {t('data_source_config.schema_note')}
                                     </p>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-semibold text-text-main dark:text-white mb-1.5">
-                                        Description
+                                        {t('data_source_config.description')}
                                     </label>
                                     <textarea
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
-                                        placeholder="Briefly describe this data source..."
+                                        placeholder={t('data_source_config.description_placeholder')}
                                         rows={2}
                                         className="w-full px-4 py-2.5 bg-surface-subtle dark:bg-slate-800 border border-border dark:border-slate-700 rounded-lg text-text-main dark:text-white focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all text-sm resize-none"
                                     />
@@ -218,7 +220,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                     onClick={onClose}
                                     className="px-5 py-2.5 text-sm font-semibold text-text-muted hover:text-text-main dark:hover:text-white hover:bg-surface-active dark:hover:bg-slate-800 rounded-lg transition-colors"
                                 >
-                                    Cancel
+                                    {t('common.actions.cancel')}
                                 </button>
                                 <button
                                     type="submit"
@@ -228,12 +230,12 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                     {saving ? (
                                         <>
                                             <Clock className="w-4 h-4 animate-spin" />
-                                            Saving...
+                                            {t('common.processing')}
                                         </>
                                     ) : (
                                         <>
                                             <Save className="w-4 h-4" />
-                                            Save Configuration
+                                            {t('data_source_config.save_button')}
                                         </>
                                     )}
                                 </button>
@@ -266,3 +268,4 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
 };
 
 export default DataSourceConfigModal;
+

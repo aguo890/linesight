@@ -39,6 +39,13 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, setTheme, theme]);
 
+  // Handle RTL/LTR direction based on language
+  useEffect(() => {
+    const dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = dir;
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language]);
+
   return (
     <FactoryProvider>
       <DashboardProvider>

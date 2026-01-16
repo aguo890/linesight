@@ -7,9 +7,11 @@ import {
     User,
     ChevronDown
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function TopNav() {
+    const { t } = useTranslation();
     const { user, logout } = useAuth();
     const [searchQuery, setSearchQuery] = useState('');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -51,13 +53,13 @@ export default function TopNav() {
                                 setShowSearchToast(true);
                             }
                         }}
-                        placeholder="Search factories, orders..."
+                        placeholder={t('layout.top_nav.search_placeholder')}
                         className="w-full ps-10 pe-4 py-2 bg-surface-subtle border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all"
                     />
                     {/* Toast Notification */}
                     {showSearchToast && (
                         <div className="absolute top-full start-0 mt-2 px-4 py-2 bg-surface-elevated text-text-main text-sm rounded-lg shadow-lg border border-border flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
-                            <span>Global search is coming soon!</span>
+                            <span>{t('layout.top_nav.search_coming_soon')}</span>
                         </div>
                     )}
                 </div>
@@ -86,9 +88,9 @@ export default function TopNav() {
                             <div className="fixed inset-0 z-50 cursor-default" onClick={() => setIsNotificationsOpen(false)}></div>
                             <div className="absolute end-0 mt-2 w-80 bg-surface border border-border rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in duration-100">
                                 <div className="px-4 py-3 border-b border-border-subtle flex justify-between items-center">
-                                    <h3 className="text-sm font-semibold text-text-main">Notifications</h3>
+                                    <h3 className="text-sm font-semibold text-text-main">{t('layout.top_nav.notifications.title')}</h3>
                                     {notifications.length > 0 && (
-                                        <button className="text-xs text-brand hover:text-brand-dark font-medium">Mark all read</button>
+                                        <button className="text-xs text-brand hover:text-brand-dark font-medium">{t('layout.top_nav.notifications.mark_read')}</button>
                                     )}
                                 </div>
 
@@ -96,7 +98,7 @@ export default function TopNav() {
                                     {notifications.length === 0 ? (
                                         <div className="px-4 py-8 text-center text-text-muted">
                                             <Bell className="w-8 h-8 mx-auto mb-2 text-text-subtle" />
-                                            <p className="text-sm">No new notifications</p>
+                                            <p className="text-sm">{t('layout.top_nav.notifications.empty')}</p>
                                         </div>
                                     ) : (
                                         <div className="divide-y divide-border-subtle">
@@ -121,8 +123,8 @@ export default function TopNav() {
                             {user?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase()}
                         </div>
                         <div className="hidden md:block text-left">
-                            <p className="text-sm font-medium text-text-main leading-tight">{user?.full_name || 'User'}</p>
-                            <p className="text-xs text-text-muted leading-tight">{user?.role || 'Viewer'}</p>
+                            <p className="text-sm font-medium text-text-main leading-tight">{user?.full_name || t('layout.top_nav.user_menu.default_user')}</p>
+                            <p className="text-xs text-text-muted leading-tight">{user?.role || t('layout.top_nav.user_menu.default_role')}</p>
                         </div>
                         <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
@@ -147,7 +149,7 @@ export default function TopNav() {
                                         className="flex items-center gap-3 px-3 py-2 text-sm text-text-main hover:bg-brand/10 hover:text-brand rounded-lg transition-colors"
                                     >
                                         <User className="w-4 h-4" />
-                                        <span>Profile & Settings</span>
+                                        <span>{t('layout.top_nav.user_menu.profile')}</span>
                                     </Link>
 
                                     {/* Optional: Add other user-specific links here */}
@@ -162,7 +164,7 @@ export default function TopNav() {
                                         className="w-full flex items-center gap-3 px-3 py-2 text-sm text-danger hover:bg-danger/10 rounded-lg transition-colors"
                                     >
                                         <LogOut className="w-4 h-4" />
-                                        <span>Sign out</span>
+                                        <span>{t('layout.top_nav.user_menu.logout')}</span>
                                     </button>
                                 </div>
                             </div>

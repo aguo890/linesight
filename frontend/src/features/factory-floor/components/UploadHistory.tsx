@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileSpreadsheet, Clock, AlertCircle, CheckCircle2, History, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { listFilesByProductionLine, listFiles, getImportPreview, type FileListItem } from '../../../lib/fileApi';
 import { DataPreviewModal } from './DataPreviewModal';
 
@@ -10,6 +11,7 @@ interface UploadHistoryProps {
 }
 
 export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }) => {
+    const { t } = useTranslation();
     const { formatDate } = useDateFormatter();
     const [uploads, setUploads] = useState<FileListItem[]>([]);
     const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
             setUploads(res.files);
         } catch (err) {
             console.error('Failed to fetch uploads', err);
-            setError('Failed to load upload history.');
+            setError(t('upload_history.error'));
         } finally {
             setLoading(false);
         }
@@ -73,7 +75,7 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
         return (
             <div className="flex justify-center items-center py-10 text-slate-400">
                 <Loader2 className="w-6 h-6 animate-spin mr-2" />
-                Loading history...
+                {t('upload_history.loading')}
             </div>
         );
     }
@@ -92,14 +94,14 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
             <div className="p-4 border-b border-slate-800 bg-slate-900/50">
                 <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
                     <Clock className="w-4 h-4 text-sky-400" />
-                    Recent Uploads
+                    {t('upload_history.title')}
                 </h3>
             </div>
 
             <div className="divide-y divide-slate-800">
                 {uploads.length === 0 ? (
                     <div className="p-8 text-center text-slate-500 text-sm">
-                        No files uploaded yet.
+                        {t('upload_history.empty')}
                     </div>
                 ) : (
                     uploads.map((upload) => (
@@ -150,3 +152,4 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
         </div>
     );
 };
+

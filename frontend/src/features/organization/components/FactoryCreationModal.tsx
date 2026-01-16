@@ -5,6 +5,7 @@
  * Extracted from DashboardWizard to provide dedicated factory management.
  */
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Factory as FactoryIcon, AlertCircle, CheckCircle } from 'lucide-react';
 import { createFactory, createDataSource } from '../../../lib/factoryApi';
 import type { QuotaStatus } from '../../../lib/quotaApi';
@@ -33,6 +34,8 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
         factoryName?: string;
         sourceName?: string;
     }>({});
+
+    const { t } = useTranslation();
 
     // Reset form when modal opens/closes
     useEffect(() => {
@@ -123,9 +126,9 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             <FactoryIcon className="w-6 h-6 text-brand" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-text-main">Create New Factory</h2>
+                            <h2 className="text-xl font-bold text-text-main">{t('org_modals.create_factory.title')}</h2>
                             <p className="text-sm text-text-muted mt-0.5">
-                                Set up a new factory with an initial data source
+                                {t('org_modals.create_factory.subtitle')}
                             </p>
                         </div>
                     </div>
@@ -157,7 +160,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                                     </span>
                                 </div>
                                 {!canCreate && (
-                                    <span className="text-xs text-warning font-medium">Quota Reached</span>
+                                    <span className="text-xs text-warning font-medium">{t('org_modals.create_factory.quota_reached')}</span>
                                 )}
                             </div>
                         </div>
@@ -169,7 +172,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             {/* Factory Name */}
                             <div>
                                 <label htmlFor="factoryName" className="block text-sm font-medium text-text-main mb-2">
-                                    Factory Name <span className="text-danger">*</span>
+                                    {t('org_modals.create_factory.name_label')} <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     id="factoryName"
@@ -177,7 +180,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                                     type="text"
                                     value={factoryName}
                                     onChange={(e) => setFactoryName(e.target.value)}
-                                    placeholder="e.g. Gigafactory Texas"
+                                    placeholder={t('org_modals.create_factory.name_placeholder')}
                                     className={`w-full px-3 py-2 bg-surface border rounded-md shadow-sm focus:ring-2 focus:ring-brand/20 focus:border-brand text-text-main placeholder:text-text-muted ${validationErrors.factoryName ? 'border-danger' : 'border-border'
                                         }`}
                                     disabled={isSubmitting || !canCreate}
@@ -190,7 +193,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             {/* Factory Code (Optional) */}
                             <div>
                                 <label htmlFor="factoryCode" className="block text-sm font-medium text-text-main mb-2">
-                                    Factory Code <span className="text-text-muted text-xs">(optional)</span>
+                                    {t('org_modals.create_factory.code_label')} <span className="text-text-muted text-xs">({t('common.optional', { defaultValue: 'optional' })})</span>
                                 </label>
                                 <input
                                     id="factoryCode"
@@ -198,18 +201,18 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                                     type="text"
                                     value={factoryCode}
                                     onChange={(e) => setFactoryCode(e.target.value)}
-                                    placeholder="e.g. GTX-01"
+                                    placeholder={t('org_modals.create_factory.code_placeholder')}
                                     maxLength={10}
                                     className="w-full px-3 py-2 bg-surface border border-border rounded-md shadow-sm focus:ring-2 focus:ring-brand/20 focus:border-brand font-mono text-text-main placeholder:text-text-muted"
                                     disabled={isSubmitting || !canCreate}
                                 />
-                                <p className="mt-1 text-xs text-text-muted">Short identifier for this factory</p>
+                                <p className="mt-1 text-xs text-text-muted">{t('org_modals.create_factory.code_desc')}</p>
                             </div>
 
                             {/* Data Source Name */}
                             <div>
                                 <label htmlFor="sourceName" className="block text-sm font-medium text-text-main mb-2">
-                                    Initial Data Source <span className="text-danger">*</span>
+                                    {t('org_modals.create_factory.source_name_label')} <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     id="sourceName"
@@ -217,7 +220,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                                     type="text"
                                     value={sourceName}
                                     onChange={(e) => setSourceName(e.target.value)}
-                                    placeholder="e.g. Assembly Line A"
+                                    placeholder={t('org_modals.create_factory.source_name_placeholder')}
                                     className={`w-full px-3 py-2 bg-surface border rounded-md shadow-sm focus:ring-2 focus:ring-brand/20 focus:border-brand text-text-main placeholder:text-text-muted ${validationErrors.sourceName ? 'border-danger' : 'border-border'
                                         }`}
                                     disabled={isSubmitting || !canCreate}
@@ -230,38 +233,38 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             {/* Data Source Specialty */}
                             <div>
                                 <label htmlFor="sourceSpecialty" className="block text-sm font-medium text-text-main mb-2">
-                                    Source Specialty <span className="text-text-muted text-xs">(optional)</span>
+                                    {t('org_modals.create_factory.source_specialty_label')} <span className="text-text-muted text-xs">({t('common.optional', { defaultValue: 'optional' })})</span>
                                 </label>
                                 <input
                                     id="sourceSpecialty"
                                     type="text"
                                     value={sourceSpecialty}
                                     onChange={(e) => setSourceSpecialty(e.target.value)}
-                                    placeholder="e.g. Assembly, Testing, Packaging"
+                                    placeholder={t('org_modals.create_factory.source_specialty_placeholder')}
                                     className="w-full px-3 py-2 bg-surface border border-border rounded-md shadow-sm focus:ring-2 focus:ring-brand/20 focus:border-brand text-text-main placeholder:text-text-muted"
                                     disabled={isSubmitting || !canCreate}
                                 />
                                 <p className="mt-1 text-xs text-text-muted">
-                                    Primary function or type of this source
+                                    {t('org_modals.create_factory.source_specialty_desc')}
                                 </p>
                             </div>
 
                             {/* Data Source Description */}
                             <div>
                                 <label htmlFor="sourceDescription" className="block text-sm font-medium text-text-main mb-2">
-                                    Source Description <span className="text-text-muted text-xs">(optional)</span>
+                                    {t('org_modals.create_factory.source_desc_label')} <span className="text-text-muted text-xs">({t('common.optional', { defaultValue: 'optional' })})</span>
                                 </label>
                                 <textarea
                                     id="sourceDescription"
                                     value={sourceDescription}
                                     onChange={(e) => setSourceDescription(e.target.value)}
-                                    placeholder="e.g. Primary assembly line for sportswear"
+                                    placeholder={t('org_modals.create_factory.source_desc_placeholder')}
                                     rows={2}
                                     className="w-full px-3 py-2 bg-surface border border-border rounded-md shadow-sm focus:ring-2 focus:ring-brand/20 focus:border-brand text-text-main placeholder:text-text-muted"
                                     disabled={isSubmitting || !canCreate}
                                 />
                                 <p className="mt-1 text-xs text-text-muted">
-                                    Briefly describe the function of this source
+                                    {t('org_modals.create_factory.source_desc_help')}
                                 </p>
                             </div>
 
@@ -277,7 +280,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                             {isSubmitting && (
                                 <div className="flex items-center gap-2 p-3 bg-brand/10 border border-brand/20 rounded-md">
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand" />
-                                    <p className="text-sm text-brand">Creating factory and data source...</p>
+                                    <p className="text-sm text-brand">{t('org_modals.create_factory.submitting_msg')}</p>
                                 </div>
                             )}
                         </div>
@@ -293,7 +296,7 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                         className="px-4 py-2 text-sm font-medium text-text-main hover:bg-surface-subtle rounded-md transition-colors"
                         disabled={isSubmitting}
                     >
-                        Cancel
+                        {t('common.actions.cancel')}
                     </button>
                     <button
                         type="submit"
@@ -305,12 +308,12 @@ export const FactoryCreationModal: React.FC<FactoryCreationModalProps> = ({
                         {isSubmitting ? (
                             <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                                <span>Creating...</span>
+                                <span>{t('org_modals.create_factory.submitting_button')}</span>
                             </>
                         ) : (
                             <>
                                 <CheckCircle className="w-4 h-4" />
-                                <span>Create Factory</span>
+                                <span>{t('org_modals.create_factory.submit_button')}</span>
                             </>
                         )}
                     </button>

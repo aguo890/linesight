@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
     Settings, Database, Server, RefreshCw,
     FileText, Trash2, ArrowRight, X
@@ -31,6 +32,7 @@ import { updateSchemaMapping, getAvailableFields, type AvailableField } from '..
  * Previously ProductionLinePage
  */
 export const DataSourceDetailPage: React.FC = () => {
+    const { t } = useTranslation();
     const { formatDate } = useFactoryFormat();
     const { factoryId, lineId } = useParams<{ factoryId: string, lineId: string }>();
     // Note: URL param is still 'lineId' for now to match router, but semantically it's dataSourceId
@@ -127,7 +129,7 @@ export const DataSourceDetailPage: React.FC = () => {
     const handleResetSchema = async () => {
         if (!dataSource || !dataSourceId) return;
 
-        if (confirm('WARNING: This will delete the Data Source and all Schema Configurations. This action cannot be undone. Are you sure?')) {
+        if (confirm(t('data_source_detail.confirm.reset_schema'))) {
             setActionLoading(true);
             try {
                 await deleteDataSource(dataSource.id);
@@ -138,7 +140,7 @@ export const DataSourceDetailPage: React.FC = () => {
                 navigate(`/dashboard/factories/${factoryId}`);
             } catch (error) {
                 console.error('Failed to reset schema:', error);
-                alert('Failed to reset schema.');
+                alert(t('data_source_detail.errors.reset_failed'));
             } finally {
                 setActionLoading(false);
             }
@@ -148,14 +150,14 @@ export const DataSourceDetailPage: React.FC = () => {
     const handleClearHistory = async () => {
         if (!dataSourceId) return;
 
-        if (confirm('WARNING: This will delete ALL upload history and physical files. This is a destructive action. Are you sure?')) {
+        if (confirm(t('data_source_detail.confirm.clear_history'))) {
             setActionLoading(true);
             try {
                 await deleteUploads(dataSourceId);
                 await loadDataSourceData(dataSourceId);
             } catch (error) {
                 console.error('Failed to clear history:', error);
-                alert('Failed to clear output history.');
+                alert(t('data_source_detail.errors.clear_failed'));
             } finally {
                 setActionLoading(false);
             }
@@ -191,12 +193,12 @@ export const DataSourceDetailPage: React.FC = () => {
         return (
             <MainLayout>
                 <div className="text-center py-12">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Data Source not found</h2>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('data_source_detail.not_found')}</h2>
                     <Breadcrumb
                         items={[
-                            { label: 'Workspace', href: '/dashboard/factories' },
-                            { label: factory?.name || 'Factory', href: `/dashboard/factories/${factoryId}` },
-                            { label: 'Not Found' }
+                            { label: t('data_source_detail.breadcrumbs.workspace'), href: '/dashboard/factories' },
+                            { label: factory?.name || t('data_source_detail.breadcrumbs.factory'), href: `/dashboard/factories/${factoryId}` },
+                            { label: t('data_source_detail.breadcrumbs.not_found') }
                         ]}
                         className="mt-4 justify-center"
                     />
@@ -211,8 +213,8 @@ export const DataSourceDetailPage: React.FC = () => {
                 <div>
                     <Breadcrumb
                         items={[
-                            { label: 'Workspace', href: '/dashboard/factories' },
-                            { label: factory?.name || 'Factory', href: `/dashboard/factories/${factoryId}` },
+                            { label: t('data_source_detail.breadcrumbs.workspace'), href: '/dashboard/factories' },
+                            { label: factory?.name || t('data_source_detail.breadcrumbs.factory'), href: `/dashboard/factories/${factoryId}` },
                             { label: dataSource.source_name }
                         ]}
                         className="mb-4"
@@ -223,7 +225,7 @@ export const DataSourceDetailPage: React.FC = () => {
                         </div>
                         <div>
                             <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">{dataSource.source_name}</h1>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">System Node: <span className="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">{dataSource.id?.split('-')[0]}...</span></p>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{t('data_source_detail.system_node')}: <span className="font-mono text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">{dataSource.id?.split('-')[0]}...</span></p>
                         </div>
                     </div>
                 </div>
@@ -241,7 +243,7 @@ export const DataSourceDetailPage: React.FC = () => {
                             } `}
                     >
                         <Database className="w-4 h-4" />
-                        Schema Configuration
+                        {t('data_source_detail.tabs.schema_configuration')}
                     </button>
                     <button
                         onClick={() => setActiveTab('uploads')}
@@ -251,7 +253,7 @@ export const DataSourceDetailPage: React.FC = () => {
                             } `}
                     >
                         <Server className="w-4 h-4" />
-                        Upload History
+                        {t('data_source_detail.tabs.upload_history')}
                         {uploads.length > 0 && (
                             <span className="ml-1 px-2 py-0.5 bg-gray-200 text-gray-700 rounded-full text-[10px]">
                                 {uploads.length}
@@ -268,9 +270,9 @@ export const DataSourceDetailPage: React.FC = () => {
                                     <div className="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
                                         <div className="flex justify-between items-center mb-6">
                                             <div>
-                                                <h4 className="font-bold text-slate-900 dark:text-white text-lg">Active Field Mapping</h4>
+                                                <h4 className="font-bold text-slate-900 dark:text-white text-lg">{t('data_source_detail.schema.active_field_mapping')}</h4>
                                                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                                                    Maps your Excel file headers to system database fields.
+                                                    {t('data_source_detail.schema.field_mapping_description')}
                                                 </p>
                                             </div>
                                             <div className="flex gap-3">
@@ -279,7 +281,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                                     className="px-4 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2"
                                                 >
                                                     <Settings className="w-4 h-4" />
-                                                    Edit Mappings
+                                                    {t('data_source_detail.schema.edit_mappings')}
                                                 </button>
                                                 <button
                                                     onClick={handleResetSchema}
@@ -287,7 +289,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                                     className="px-4 py-2 text-sm font-bold text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/30 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
                                                 >
                                                     <RefreshCw className={`w-4 h-4 ${actionLoading ? 'animate-spin' : ''} `} />
-                                                    Reset Schema
+                                                    {t('data_source_detail.schema.reset_schema')}
                                                 </button>
                                             </div>
                                         </div>
@@ -296,9 +298,9 @@ export const DataSourceDetailPage: React.FC = () => {
                                             <table className="w-full text-left">
                                                 <thead className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
                                                     <tr>
-                                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider w-1/2">Excel Header</th>
+                                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider w-1/2">{t('data_source_detail.schema.table.excel_header')}</th>
                                                         <th className="px-2 w-10"></th>
-                                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider w-1/2">System Field</th>
+                                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider w-1/2">{t('data_source_detail.schema.table.system_field')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody className="divide-y divide-gray-50 dark:divide-slate-800">
@@ -316,7 +318,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                                     {(!columnMap || Object.keys(columnMap).length === 0) && (
                                                         <tr>
                                                             <td colSpan={3} className="px-6 py-12 text-center text-gray-400 dark:text-gray-500 italic">
-                                                                No mappings defined.
+                                                                {t('data_source_detail.schema.no_mappings')}
                                                             </td>
                                                         </tr>
                                                     )}
@@ -326,19 +328,19 @@ export const DataSourceDetailPage: React.FC = () => {
 
                                         <div className="mt-4 flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
                                             <div className={`w-2 h-2 rounded-full ${dataSource.is_active ? 'bg-green-500' : 'bg-slate-400'}`} />
-                                            <span>System Status: {dataSource.is_active ? 'Active' : 'Inactive'}</span>
+                                            <span>{t('data_source_detail.schema.system_status')}: {dataSource.is_active ? t('common.status.active') : t('common.status.inactive')}</span>
                                             <span className="mx-2">•</span>
-                                            <span>Last updated: {dataSource.updated_at ? new Date(dataSource.updated_at).toLocaleDateString() : 'N/A'}</span>
+                                            <span>{t('data_source_detail.schema.last_updated')}: {dataSource.updated_at ? new Date(dataSource.updated_at).toLocaleDateString() : 'N/A'}</span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
                                 <div className="text-center py-20 border-2 border-dashed border-gray-100 dark:border-slate-800 rounded-2xl">
                                     <Database className="w-12 h-12 text-gray-200 dark:text-slate-700 mx-auto mb-4" />
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">No Configuration Found</h3>
-                                    <p className="text-gray-500 dark:text-gray-400 mb-2">This data source hasn't been mapped yet.</p>
+                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('data_source_detail.schema.no_config_title')}</h3>
+                                    <p className="text-gray-500 dark:text-gray-400 mb-2">{t('data_source_detail.schema.no_config_description')}</p>
                                     <p className="text-sm text-gray-400 dark:text-gray-600">
-                                        Upload a file from the Factory page to get started.
+                                        {t('data_source_detail.schema.no_config_hint')}
                                     </p>
                                 </div>
                             )}
@@ -348,7 +350,7 @@ export const DataSourceDetailPage: React.FC = () => {
                     {activeTab === 'uploads' && (
                         <div className="animate-in fade-in duration-300">
                             <div className="flex justify-between items-center mb-6">
-                                <h3 className="font-bold text-gray-900 dark:text-white">Processed Files</h3>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{t('data_source_detail.uploads.processed_files')}</h3>
                                 {uploads.length > 0 && (
                                     <button
                                         onClick={handleClearHistory}
@@ -356,7 +358,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                         className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1.5"
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
-                                        Clear History
+                                        {t('data_source_detail.uploads.clear_history')}
                                     </button>
                                 )}
                             </div>
@@ -398,7 +400,7 @@ export const DataSourceDetailPage: React.FC = () => {
                             ) : (
                                 <div className="text-center py-20 bg-gray-50/50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-gray-200 dark:border-slate-800">
                                     <Server className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                                    <p className="text-gray-500 dark:text-gray-400 font-medium">No files have been uploaded for this source yet.</p>
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium">{t('data_source_detail.uploads.no_files')}</p>
                                 </div>
                             )}
                         </div>

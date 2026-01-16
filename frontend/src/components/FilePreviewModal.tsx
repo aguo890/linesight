@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { X, Eye, Loader2, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { getFilePreview, processFile } from '../lib/ingestionApi';
+import { X, Eye, Loader2, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { getFilePreview } from '../lib/ingestionApi';
 import type { FilePreview } from '../types/ingestion';
 
 interface FilePreviewModalProps {
@@ -9,7 +9,6 @@ interface FilePreviewModalProps {
     filename: string;
     isOpen: boolean;
     onClose: () => void;
-    onProceedToAnalysis?: () => void;
 }
 
 export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
@@ -18,16 +17,10 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
     isOpen,
     onClose,
 }) => {
-    const navigate = useNavigate();
+    const { t } = useTranslation();
     const [data, setData] = useState<FilePreview | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    // Processing states
-    const [processing, setProcessing] = useState(false);
-    const [processingSuccess, setProcessingSuccess] = useState(false);
-    const [processingError, setProcessingError] = useState<string | null>(null);
-    const [processingMessage, setProcessingMessage] = useState('');
 
     useEffect(() => {
         if (fileId && isOpen) {
@@ -45,44 +38,10 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
             console.error('Preview failed:', err);
             setError(
                 err.response?.data?.detail ||
-                'Failed to load preview. Please ensure the file is a valid CSV or Excel document.'
+                t('file_preview.error_default')
             );
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleProceedToAnalysis = async () => {
-        if (!fileId) return;
-
-        setProcessing(true);
-        setProcessingError(null);
-        setProcessingMessage('Analyzing file structure...');
-
-        try {
-            // Call the processing API
-            await processFile(fileId, {
-                llmEnabled: false // Use rule-based parser by default
-            });
-
-            setProcessingMessage('Processing complete!');
-            setProcessingSuccess(true);
-
-            // Show success for 1.5 seconds, then close and redirect
-            setTimeout(() => {
-                onClose();
-                // Navigate to analytics dashboard or wizard
-                navigate('/dashboard');
-            }, 1500);
-
-        } catch (err: any) {
-            console.error('Processing failed:', err);
-            setProcessingError(
-                err.response?.data?.detail ||
-                'Processing failed. Please try again or contact support.'
-            );
-        } finally {
-            setProcessing(false);
         }
     };
 
@@ -99,7 +58,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                             <Eye className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">File Preview</h3>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('file_preview.title')}</h3>
                             <p className="text-sm text-gray-600 dark:text-slate-400">{filename}</p>
                         </div>
                     </div>
@@ -117,8 +76,8 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                     {loading && (
                         <div className="flex flex-col items-center justify-center py-20">
                             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-                            <p className="text-gray-600 dark:text-slate-300 font-medium">Loading preview...</p>
-                            <p className="text-sm text-gray-500 dark:text-slate-500 mt-1">Analyzing file structure</p>
+                            <p className="text-gray-600 dark:text-slate-300 font-medium">{t('file_preview.loading')}</p>
+                            <p className="text-sm text-gray-500 dark:text-slate-500 mt-1">{t('file_preview.loading_subtitle')}</p>
                         </div>
                     )}
 
@@ -126,52 +85,24 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                         <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 rounded-lg">
                             <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                             <div>
-                                <p className="text-sm font-medium text-red-900 dark:text-red-200">Preview Error</p>
+                                <p className="text-sm font-medium text-red-900 dark:text-red-200">{t('file_preview.error_title')}</p>
                                 <p className="text-sm text-red-700 dark:text-red-300 mt-1">{error}</p>
                             </div>
                         </div>
                     )}
 
-                    {processing && (
-                        <div className="flex flex-col items-center justify-center py-20">
-                            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-                            <p className="text-gray-900 dark:text-white font-medium text-lg">{processingMessage}</p>
-                            <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">This may take a moment...</p>
-                        </div>
-                    )}
-
-                    {processingSuccess && (
-                        <div className="flex flex-col items-center justify-center py-20">
-                            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                                <CheckCircle2 className="w-10 h-10 text-green-600" />
-                            </div>
-                            <p className="text-gray-900 dark:text-white font-semibold text-lg">Processing Complete!</p>
-                            <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">Redirecting to dashboard...</p>
-                        </div>
-                    )}
-
-                    {processingError && (
-                        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg mt-4">
-                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <p className="text-sm font-medium text-red-900 dark:text-red-200">Processing Error</p>
-                                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{processingError}</p>
-                            </div>
-                        </div>
-                    )}
-
-                    {data && !loading && !error && !processing && !processingSuccess && (
+                    {data && !loading && !error && (
                         <div className="space-y-4">
                             {/* Preview Badge */}
                             <div className="flex items-center justify-between">
                                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 rounded-md">
                                     <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
-                                        Showing first {data.sample_rows.length} rows
+                                        {t('file_preview.showing_rows', { count: data.sample_rows.length })}
                                     </span>
                                 </div>
                                 <div className="text-sm text-gray-500 dark:text-slate-400">
-                                    {(data.headers?.length || 0)} columns detected
+                                    {t('file_preview.columns_detected', { count: data.headers?.length || 0 })}
                                 </div>
                             </div>
 
@@ -201,7 +132,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                                                         >
                                                             {row[colIdx] !== null && row[colIdx] !== undefined
                                                                 ? String(row[colIdx])
-                                                                : <span className="text-gray-400 italic">null</span>}
+                                                                : <span className="text-gray-400 italic">{t('file_preview.null_value')}</span>}
                                                         </td>
                                                     ))}
                                                 </tr>
@@ -214,8 +145,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                             {/* Info Message */}
                             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 rounded-lg p-4">
                                 <p className="text-sm text-blue-900 dark:text-blue-200">
-                                    <strong>Note:</strong> This is a preview of your data. Review the columns and values
-                                    to ensure the file uploaded correctly. When ready, proceed to analysis.
+                                    {t('file_preview.info_note')}
                                 </p>
                             </div>
                         </div>
@@ -223,35 +153,16 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
+                <div className="px-6 py-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50 flex justify-end">
                     <button
                         onClick={onClose}
                         className="px-4 py-2 text-gray-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-md hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors font-medium"
-                        disabled={processing}
                     >
-                        Close
+                        {t('common.actions.close')}
                     </button>
-                    {data && !processingSuccess && (
-                        <button
-                            onClick={handleProceedToAnalysis}
-                            disabled={processing}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {processing ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                    Processing...
-                                </>
-                            ) : (
-                                <>
-                                    Proceed to Analysis
-                                    <ArrowRight className="w-4 h-4" />
-                                </>
-                            )}
-                        </button>
-                    )}
                 </div>
             </div>
         </div>
     );
 };
+

@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, Crown, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface QuotaWarningProps {
     type: 'factory' | 'line';
@@ -16,20 +17,28 @@ export const QuotaWarning: React.FC<QuotaWarningProps> = ({
     onUpgrade,
     onDismiss
 }) => {
+    const { t } = useTranslation();
     const isAtLimit = current >= max;
     const isNearLimit = current >= max * 0.8 && !isAtLimit;
 
     if (!isNearLimit && !isAtLimit) return null;
 
-    const typeLabel = type === 'factory' ? 'factories' : 'production lines';
+    const typeLabel = type === 'factory'
+        ? t('components.quota_warning.type_factories')
+        : t('components.quota_warning.type_lines');
+
     const message = isAtLimit
-        ? `You've reached your ${typeLabel} limit (${max})`
-        : `You're approaching your ${typeLabel} limit (${current}/${max})`;
+        ? t('components.quota_warning.limit_reached', { type: typeLabel, max })
+        : t('components.quota_warning.near_limit', { type: typeLabel, current, max });
+
+    const description = isAtLimit
+        ? t('components.quota_warning.upgrade_prompt', { type: typeLabel })
+        : t('components.quota_warning.consider_upgrade');
 
     return (
         <div className={`rounded-lg p-4 ${isAtLimit
-                ? 'bg-red-50 border-2 border-red-200'
-                : 'bg-yellow-50 border-2 border-yellow-200'
+            ? 'bg-red-50 border-2 border-red-200'
+            : 'bg-yellow-50 border-2 border-yellow-200'
             } relative`}>
             <div className="flex items-start gap-3">
                 <AlertTriangle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isAtLimit ? 'text-red-600' : 'text-yellow-600'
@@ -41,10 +50,7 @@ export const QuotaWarning: React.FC<QuotaWarningProps> = ({
                     </p>
                     <p className={`text-sm mt-1 ${isAtLimit ? 'text-red-700' : 'text-yellow-700'
                         }`}>
-                        {isAtLimit
-                            ? `Upgrade your plan to create more ${typeLabel}.`
-                            : `Consider upgrading to avoid interruptions.`
-                        }
+                        {description}
                     </p>
                 </div>
 
@@ -55,14 +61,14 @@ export const QuotaWarning: React.FC<QuotaWarningProps> = ({
                             className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all shadow-sm text-sm font-medium"
                         >
                             <Crown className="w-4 h-4" />
-                            <span>Upgrade</span>
+                            <span>{t('components.quota_warning.upgrade_button')}</span>
                         </button>
                     )}
                     {onDismiss && !isAtLimit && (
                         <button
                             onClick={onDismiss}
                             className="p-1.5 hover:bg-yellow-100 rounded transition-colors"
-                            aria-label="Dismiss warning"
+                            aria-label={t('components.quota_warning.dismiss_label')}
                         >
                             <X className="w-4 h-4 text-yellow-600" />
                         </button>

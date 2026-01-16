@@ -139,10 +139,10 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
     }, [layout]);
 
     const densityStatus = {
-        empty: { label: 'Empty', color: 'text-text-muted', bg: 'bg-surface-subtle' },
-        light: { label: 'Compact', color: 'text-success', bg: 'bg-success/10' },
-        normal: { label: 'Balanced', color: 'text-brand', bg: 'bg-brand/10' },
-        heavy: { label: 'Heavy', color: 'text-warning', bg: 'bg-warning/10' },
+        empty: { label: t('wizard.mini_map.density.empty'), color: 'text-text-muted', bg: 'bg-surface-subtle' },
+        light: { label: t('wizard.mini_map.density.compact'), color: 'text-success', bg: 'bg-success/10' },
+        normal: { label: t('wizard.mini_map.density.balanced'), color: 'text-brand', bg: 'bg-brand/10' },
+        heavy: { label: t('wizard.mini_map.density.heavy'), color: 'text-warning', bg: 'bg-warning/10' },
     };
 
     const status = densityStatus[density];
@@ -155,7 +155,7 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                     <div className="flex items-center gap-1.5">
                         <Layout className="w-3 h-3 text-text-muted" />
                         <span className="text-[9px] uppercase font-bold text-text-muted tracking-wide">
-                            Spatial Preview
+                            {t('wizard.mini_map.title')}
                         </span>
                     </div>
                     {selectedWidgetIds.length > 0 && (
@@ -170,7 +170,7 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
             <div className="p-1.5">
                 {selectedWidgetIds.length === 0 ? (
                     <div className="h-24 flex items-center justify-center text-[10px] text-text-muted italic text-center px-4">
-                        Select widgets to preview layout
+                        {t('wizard.mini_map.empty_state')}
                     </div>
                 ) : (
                     <div className="relative bg-surface-subtle rounded border border-border p-0.5 overflow-hidden" style={{ height: '140px' }}>
@@ -252,10 +252,10 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                 <div className="px-3 py-2 bg-surface-subtle border-t border-border">
                     <div className="flex items-center justify-between text-[10px]">
                         <span className="text-text-muted">
-                            {selectedWidgetIds.length} widget{selectedWidgetIds.length !== 1 ? 's' : ''}
+                            {t('wizard.mini_map.stats.widgets', { count: selectedWidgetIds.length })}
                         </span>
                         <span className="text-text-muted/70">
-                            ~{Math.ceil(totalRows / 16)} screen{Math.ceil(totalRows / 16) !== 1 ? 's' : ''}
+                            {t('wizard.mini_map.stats.screens', { count: Math.ceil(totalRows / 16) })}
                         </span>
                     </div>
 
@@ -263,7 +263,7 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                     {density === 'heavy' && (
                         <div className="mt-1.5 flex items-center gap-1 text-[9px] text-warning font-medium">
                             <AlertTriangle className="w-2.5 h-2.5" />
-                            <span>Dashboard may require scrolling</span>
+                            <span>{t('wizard.mini_map.scroll_warning')}</span>
                         </div>
                     )}
                 </div>

@@ -1,33 +1,44 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@/test/utils';
 import { FilePreviewModal } from '../FilePreviewModal';
-import * as fileApi from '../../lib/fileApi';
+import * as ingestionApi from '../../lib/ingestionApi';
 
-// Mock the fileAPI module
-vi.mock('../../lib/fileApi', () => ({
+// Mock the ingestionApi module
+vi.mock('../../lib/ingestionApi', () => ({
     getFilePreview: vi.fn(),
-    processFile: vi.fn(),
 }));
 
-// Mock react-router-dom
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useNavigate: () => mockNavigate,
-    };
-});
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+    useTranslation: () => ({
+        t: (key: string, options?: any) => {
+            const translations: Record<string, string> = {
+                'file_preview.title': 'File Preview',
+                'file_preview.loading': 'Loading preview...',
+                'file_preview.error_title': 'Preview Error',
+                'common.actions.close': 'Close',
+                'file_preview.null_value': 'null'
+            };
+            if (key === 'file_preview.showing_rows') return `Showing first ${options?.count} rows`;
+            if (key === 'file_preview.columns_detected') return `${options?.count} columns detected`;
+            return translations[key] || key;
+        },
+    }),
+}));
 
 describe('FilePreview Modal Component', () => {
     const mockFileData = {
+        raw_import_id: 'test-import-id',
+        file_id: 'test-123',
         filename: 'test.xlsx',
-        preview_rows: 5,
+        status: 'pending',
+        uploaded_at: '2024-01-01',
         total_rows: 100,
-        columns: ['Date', 'Line', 'Target', 'Actual'],
-        data: [
-            { Date: '2024-12-20', Line: 'Line 1', Target: '1000', Actual: '950' },
-            { Date: '2024-12-21', Line: 'Line 1', Target: '1000', Actual: '1020' },
+        total_columns: 4,
+        headers: ['Date', 'Line', 'Target', 'Actual'],
+        sample_rows: [
+            ['2024-12-20', 'Line 1', '1000', '950'],
+            ['2024-12-21', 'Line 1', '1000', '1020'],
         ],
     };
 
@@ -48,7 +59,7 @@ describe('FilePreview Modal Component', () => {
     });
 
     it('renders modal when isOpen is true', () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
+        vi.mocked(ingestionApi.getFilePreview).mockResolvedValue(mockFileData);
 
         render(
             <FilePreviewModal
@@ -64,7 +75,7 @@ describe('FilePreview Modal Component', () => {
     });
 
     it('shows loading state while fetching preview', () => {
-        vi.mocked(fileApi.getFilePreview).mockImplementation(
+        vi.mocked(ingestionApi.getFilePreview).mockImplementation(
             () => new Promise(() => { }) // Never resolves
         );
 
@@ -81,7 +92,7 @@ describe('FilePreview Modal Component', () => {
     });
 
     it('displays preview data when loaded successfully', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
+        vi.mocked(ingestionApi.getFilePreview).mockResolvedValue(mockFileData);
 
         render(
             <FilePreviewModal
@@ -93,7 +104,7 @@ describe('FilePreview Modal Component', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByText(/showing first 5 rows/i)).toBeInTheDocument();
+            expect(screen.getByText(/showing first 2 rows/i)).toBeInTheDocument();
         });
 
         expect(screen.getByText(/4 columns detected/i)).toBeInTheDocument();
@@ -103,7 +114,7 @@ describe('FilePreview Modal Component', () => {
     });
 
     it('displays error message when preview fails', async () => {
-        vi.mocked(fileApi.getFilePreview).mockRejectedValue({
+        vi.mocked(ingestionApi.getFilePreview).mockRejectedValue({
             response: { data: { detail: 'File not found' } },
         });
 
@@ -123,7 +134,7 @@ describe('FilePreview Modal Component', () => {
     });
 
     it('calls onClose when close button is clicked', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
+        vi.mocked(ingestionApi.getFilePreview).mockResolvedValue(mockFileData);
         const handleClose = vi.fn();
 
         render(
@@ -135,18 +146,23 @@ describe('FilePreview Modal Component', () => {
             />
         );
 
+        // Wait for loading to finish and content to appear
         await waitFor(() => {
-            expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+            // There are two buttons: one X icon (aria-label="Close") and one footer button (text "Close")
+            // Use getAllByRole to ensure they exist
+            expect(screen.getAllByRole('button', { name: /close/i }).length).toBeGreaterThan(0);
         });
 
-        const closeButton = screen.getByRole('button', { name: /close/i });
+        // Click the footer button by finding its text content
+        // This distinguishes it from the X icon button which has no text content
+        const closeButton = screen.getByText(/close|common\.actions\.close/i);
         closeButton.click();
 
         expect(handleClose).toHaveBeenCalledTimes(1);
     });
 
-    it('shows Proceed to Analysis button when data is loaded', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
+    it('shows Close button in footer when data is loaded', async () => {
+        vi.mocked(ingestionApi.getFilePreview).mockResolvedValue(mockFileData);
 
         render(
             <FilePreviewModal
@@ -158,91 +174,8 @@ describe('FilePreview Modal Component', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByRole('button', { name: /proceed to analysis/i })).toBeInTheDocument();
-        });
-    });
-
-    it('handles file processing when Proceed to Analysis is clicked', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
-        vi.mocked(fileApi.processFile).mockResolvedValue({
-            job_id: 'job-123',
-            status: 'completed',
-            message: 'Processing complete',
-        });
-
-        render(
-            <FilePreviewModal
-                fileId="test-123"
-                filename="test.xlsx"
-                isOpen={true}
-                onClose={vi.fn()}
-            />
-        );
-
-        await waitFor(() => {
-            expect(screen.getByRole('button', { name: /proceed to analysis/i })).toBeInTheDocument();
-        });
-
-        const proceedButton = screen.getByRole('button', { name: /proceed to analysis/i });
-        proceedButton.click();
-
-        await waitFor(() => {
-            expect(fileApi.processFile).toHaveBeenCalledWith('test-123', { use_ai_agent: false });
-        });
-    });
-
-    it('displays processing state when analyzing file', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
-        vi.mocked(fileApi.processFile).mockImplementation(
-            () => new Promise(() => { }) // Never resolves
-        );
-
-        render(
-            <FilePreviewModal
-                fileId="test-123"
-                filename="test.xlsx"
-                isOpen={true}
-                onClose={vi.fn()}
-            />
-        );
-
-        await waitFor(() => {
-            expect(screen.getByRole('button', { name: /proceed to analysis/i })).toBeInTheDocument();
-        });
-
-        const proceedButton = screen.getByRole('button', { name: /proceed to analysis/i });
-        proceedButton.click();
-
-        await waitFor(() => {
-            expect(screen.getByText(/analyzing file structure/i)).toBeInTheDocument();
-        });
-    });
-
-    it('disables buttons during processing', async () => {
-        vi.mocked(fileApi.getFilePreview).mockResolvedValue(mockFileData);
-        vi.mocked(fileApi.processFile).mockImplementation(
-            () => new Promise(() => { })
-        );
-
-        render(
-            <FilePreviewModal
-                fileId="test-123"
-                filename="test.xlsx"
-                isOpen={true}
-                onClose={vi.fn()}
-            />
-        );
-
-        await waitFor(() => {
-            expect(screen.getByRole('button', { name: /proceed to analysis/i })).toBeInTheDocument();
-        });
-
-        const proceedButton = screen.getByRole('button', { name: /proceed to analysis/i });
-        proceedButton.click();
-
-        await waitFor(() => {
-            const closeButton = screen.getByRole('button', { name: /close/i });
-            expect(closeButton).toBeDisabled();
+            // Verify the footer button exists by its text
+            expect(screen.getByText(/close|common\.actions\.close/i)).toBeInTheDocument();
         });
     });
 });

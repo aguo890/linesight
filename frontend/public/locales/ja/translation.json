@@ -1,0 +1,1015 @@
+{
+    "profile": {
+        "title": "ユーザープロファイル",
+        "subtitle": "アカウント設定と個人設定の管理",
+        "back": "戻る",
+        "save_btn": "変更を保存",
+        "success": "プロファイルが正常に更新されました！",
+        "error_required": "氏名は必須です",
+        "error_fail": "プロファイルの更新に失敗しました。もう一度お試しください。",
+        "at": "at",
+        "roles": {
+            "admin": "管理者",
+            "user": "ユーザー",
+            "manager": "マネージャー"
+        },
+        "sections": {
+            "factories": "あなたの工場",
+            "security": "セキュリティ",
+            "personal_info": "個人情報",
+            "localization": "地域と言語",
+            "notifications": "通知設定（近日公開）"
+        },
+        "security": {
+            "change_password": "パスワード変更",
+            "two_factor": "二要素認証"
+        },
+        "fields": {
+            "full_name": "氏名",
+            "email": "メールアドレス",
+            "email_hint": "メールアドレスは直接変更できません。",
+            "language": "言語",
+            "theme": "テーマ"
+        },
+        "themes": {
+            "light": "ライトモード",
+            "dark": "ダークモード",
+            "system": "システム設定"
+        },
+        "notifications": {
+            "email": "メール通知",
+            "push": "プッシュ通知",
+            "weekly": "週次ダイジェスト"
+        },
+        "location_selector": {
+            "label": "場所とタイムゾーン",
+            "auto_detect": "自動検出",
+            "search_placeholder": "国を検索...",
+            "no_results": "国が見つかりません",
+            "select_country_first": "国を選択してください",
+            "selected": "選択中:"
+        }
+    },
+    "navigation": {
+        "dashboard": "ダッシュボード",
+        "my_dashboards": "マイダッシュボード",
+        "organization": "組織",
+        "show_more": "もっと見る",
+        "show_less": "表示を減らす"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "マイダッシュボード",
+            "search_placeholder": "サイトを検索...",
+            "status": {
+                "loading": "サイトを読み込み中...",
+                "none": "アクティブな生産サイトはありません",
+                "available_one": "{{count}} サイト利用可能",
+                "available_other": "{{count}} サイト利用可能"
+            },
+            "table": {
+                "header_name": "サイト名",
+                "header_location": "場所",
+                "header_status": "ステータス",
+                "header_lines": "ライン",
+                "header_actions": "アクション",
+                "action_view": "表示"
+            },
+            "actions": {
+                "new_dashboard": "新規ダッシュボード",
+                "configure_sites": "サイト設定",
+                "clear_search": "検索をクリア"
+            },
+            "search": {
+                "results_info": "{{total}} 工場中 {{count}} 件を表示",
+                "no_results": "工場が見つかりません",
+                "no_results_detail": "\"{{query}}\" に一致する工場はありません。別の検索語をお試しください。"
+            },
+            "factory_status": {
+                "at_limit": "制限上限",
+                "near_limit": "制限間近",
+                "active": "アクティブ"
+            },
+            "empty_state": {
+                "title": "アクティブなサイトがありません",
+                "description": "工場がまだ設定されていないため、ダッシュボードは空です。",
+                "admin_hint": "インフラストラクチャを設定するには、組織設定に移動してください。",
+                "user_hint": "インフラストラクチャの設定については管理者に連絡してください。",
+                "cta": "組織設定へ移動"
+            },
+            "view": {
+                "grid": "グリッド表示",
+                "list": "リスト表示"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} ソース",
+            "edit": "編集",
+            "delete": "削除",
+            "open": "開く",
+            "edit_title": "工場を編集",
+            "delete_title": "工場を削除"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "ホーム",
+            "list": "マイダッシュボード",
+            "production_sites": "生産サイト",
+            "sites": "サイト",
+            "not_found": "見つかりません"
+        },
+        "sections": {
+            "overview": "概要",
+            "performance": "パフォーマンス",
+            "settings": "設定",
+            "dashboards": "ダッシュボード",
+            "data_sources": "データソース"
+        },
+        "actions": {
+            "edit": "設定を編集",
+            "delete": "サイトを削除",
+            "save": "変更を保存",
+            "settings": "設定",
+            "new_dashboard": "新規ダッシュボード",
+            "create_dashboard": "ダッシュボード作成",
+            "add_data_source": "データソース追加",
+            "new_source": "新規ソース",
+            "upload_data": "データアップロード",
+            "no_write_access": "書き込み権限がありません"
+        },
+        "alerts": {
+            "confirm_delete": "本当にこの工場を削除しますか？この操作は取り消せません。",
+            "edit_soon": "編集機能は近日公開予定",
+            "delete_soon": "削除機能は近日公開予定",
+            "delete_fail": "ダッシュボードの削除に失敗しました。"
+        },
+        "stats": {
+            "dashboards": "ダッシュボード",
+            "active_widgets": "アクティブなウィジェット",
+            "active_sources": "アクティブなソース",
+            "used_info": "{{current}} / {{max}} 使用中"
+        },
+        "not_found": "工場が見つかりません",
+        "search": {
+            "dashboards_placeholder": "ダッシュボードをフィルタ...",
+            "sources_placeholder": "ソースを検索...",
+            "no_sources_found": "一致するソースが見つかりません。"
+        },
+        "quota": {
+            "limit_reached": "クォータ制限に達しました"
+        },
+        "table": {
+            "headers": {
+                "name": "名前",
+                "status": "ステータス",
+                "actions": "アクション"
+            }
+        },
+        "status": {
+            "active": "アクティブ",
+            "inactive": "非アクティブ"
+        },
+        "confirm": {
+            "delete_source": "本当にこのデータソースを削除しますか？",
+            "delete_dashboard": "本当にこのダッシュボードを削除しますか？"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "今日",
+            "yesterday": "昨日",
+            "last_7_days": "過去7日間",
+            "last_30_days": "過去30日間",
+            "this_month": "今月",
+            "last_month": "先月"
+        },
+        "shifts": {
+            "all": "全シフト",
+            "shift_a": "シフトA (朝)",
+            "shift_b": "シフトB (夕)",
+            "shift_c": "シフトC (夜)"
+        },
+        "date_range": "日付範囲",
+        "to": "〜"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "ワークスペース",
+            "factory": "工場",
+            "line": "ライン",
+            "dashboard": "ダッシュボード"
+        },
+        "status": {
+            "updated": "更新 {{time}}",
+            "live": "ライブ",
+            "loading": "読み込み中...",
+            "saving": "保存中..."
+        },
+        "actions": {
+            "refresh": "更新",
+            "reset_layout": "レイアウトをリセット",
+            "reset_confirm": "レイアウトをデフォルトにリセットしてもよろしいですか？",
+            "design_layout": "レイアウト設計",
+            "save_layout": "レイアウト保存",
+            "add_widget": "ウィジェット追加",
+            "cancel": "キャンセル"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "ウィジェットライブラリ",
+            "subtitle": "ドラッグ＆ドロップでダッシュボードをカスタマイズ。",
+            "categories": {
+                "all": "すべて",
+                "production": "生産",
+                "quality": "品質",
+                "efficiency": "効率"
+            }
+        },
+        "selector": {
+            "simulated_data": "シミュレーション",
+            "ready_to_use": "使用可能",
+            "recommended": "推奨",
+            "future_capability": "将来機能",
+            "coming_soon": "近日公開",
+            "near_match": "近似一致",
+            "ai_recommendations": "AI推奨",
+            "select_all": "すべて選択",
+            "selected": "選択済み",
+            "compatible": "互換性あり",
+            "status_summary": "{{selected}} 選択中 • {{compatible}} 互換",
+            "data_req": "必要データ",
+            "needs_mapping": "マッピング必要",
+            "categories": {
+                "Efficiency": "効率",
+                "Quality": "品質",
+                "Workforce": "労働力",
+                "Operations": "オペレーション"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "推奨",
+                "Operations": "オペレーション",
+                "Strategy": "戦略"
+            },
+            "efficiency_starter": {
+                "title": "効率キックスタート",
+                "description": "生産高と時間パフォーマンスを追跡する必須ツールキット。"
+            },
+            "quality_auditor": {
+                "title": "品質監査",
+                "description": "DHU、欠陥、速度対品質のトレードオフに重点。"
+            },
+            "floor_manager": {
+                "title": "フロアマネージャービュー",
+                "description": "労働力と生産のリアルタイム可視化。"
+            },
+            "executive_summary": {
+                "title": "エグゼクティブサマリー",
+                "description": "戦略的意思決定のためのハイレベルKPI。"
+            }
+        },
+        "common": {
+            "planned": "計画",
+            "actual": "実績",
+            "target": "目標",
+            "efficiency": "効率",
+            "minutes": "分",
+            "limit": "制限",
+            "status": "ステータス",
+            "on_target": "目標達成",
+            "below_target": "目標未達",
+            "defect_rate": "欠陥率"
+        },
+        "titles": {
+            "production_chart": "生産高",
+            "line_efficiency": "ライン効率",
+            "earned_minutes": "獲得分数",
+            "sam_performance": "SAMパフォーマンス",
+            "dhu_quality": "DHU品質",
+            "speed_quality": "速度 vs 品質",
+            "top_blockers": "主な阻害要因",
+            "style_progress": "スタイル進捗",
+            "daily_target": "日次目標",
+            "production_timeline": "生産タイムライン",
+            "complexity_impact": "複雑性の影響",
+            "workforce_attendance": "従業員出席",
+            "kpi_summary": "KPIサマリー"
+        },
+        "descriptions": {
+            "production_chart": "計画と実績の経時比較",
+            "line_efficiency": "目標に対するリアルタイムのライン効率",
+            "earned_minutes": "獲得標準時間 (SAM) vs 利用可能時間",
+            "sam_performance": "標準時間に基づくパフォーマンス指標",
+            "dhu_quality": "100ユニットあたりの欠陥傾向分析",
+            "speed_quality": "生産速度と品質の相関関係",
+            "top_blockers": "生産停止の最も頻繁な原因",
+            "style_progress": "現在のスタイルの完了率",
+            "daily_target": "日次生産目標への進捗",
+            "production_timeline": "生産スケジュールのガントチャート",
+            "complexity_impact": "スタイル複雑性が生産高に与える影響の分析",
+            "workforce_attendance": "オペレーターの出席とラインバランス",
+            "kpi_summary": "主要指標のハイレベル概要"
+        },
+        "production_chart": {
+            "planned": "計画",
+            "actual_output": "実績出力"
+        },
+        "speed_quality": {
+            "efficiency": "効率",
+            "defect_rate": "欠陥率"
+        },
+        "earned_minutes": {
+            "earned": "獲得",
+            "available": "利用可能"
+        },
+        "dhu_quality": {
+            "no_data": "DHUデータなし",
+            "current_dhu": "現在のDHU",
+            "above_limit": "制限超過"
+        },
+        "blocker_cloud": {
+            "occurrences": "発生回数",
+            "view_all_logs": "全ログ表示"
+        }
+    },
+    "common": {
+        "back": "戻る",
+        "cancel": "キャンセル",
+        "error": "エラー",
+        "success": "成功",
+        "uploading": "アップロード中...",
+        "processing": "処理中...",
+        "remove": "削除",
+        "ready": "準備完了",
+        "needs_setup": "設定が必要",
+        "date": "日付",
+        "actions": {
+            "save": "保存",
+            "cancel": "キャンセル",
+            "close": "閉じる",
+            "delete": "削除",
+            "edit": "編集",
+            "search": "検索...",
+            "confirm": "確認",
+            "back": "戻る",
+            "create": "作成",
+            "invite": "招待"
+        },
+        "status": {
+            "active": "アクティブ",
+            "inactive": "非アクティブ",
+            "unknown": "不明"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "ダッシュボード名",
+            "dashboard_name_placeholder": "例: ライン4生産概要",
+            "name_error_tooltip": "ダッシュボード名を先に入力してください。",
+            "name_error_text": "続行するにはダッシュボード名を入力してください。",
+            "selection_title": "データソース選択",
+            "selection_desc": "以前にアップロードされたファイルを選択してください。",
+            "columns": {
+                "file_name": "ファイル名",
+                "status": "ステータス",
+                "uploaded": "アップロード日時",
+                "action": "アクション"
+            },
+            "btn_configure": "設定",
+            "btn_complete_setup": "設定完了",
+            "note": "注: ダッシュボードにはこのリストの全データが含まれます。",
+            "empty_title": "データソースがまだありません",
+            "empty_desc": "生産ラインページからファイルをアップロードしてください。",
+            "error_load_failed": "既存のデータソース設定の読み込みに失敗しました。"
+        },
+        "step2": {
+            "title": "マッピング検証",
+            "subtitle": "列がデータベースと一致するか確認してください。",
+            "stats": {
+                "auto": "自動マップ",
+                "review": "要確認",
+                "attention": "注意",
+                "ignored": "無視"
+            },
+            "filter": {
+                "all": "すべて",
+                "unmapped": "未マップ",
+                "conflicts": "競合"
+            },
+            "showing_count": "{{total}} 列中 {{filtered}} 表示",
+            "table": {
+                "source": "ソース列",
+                "target": "ターゲットフィールド",
+                "status": "ステータス",
+                "no_match": "一致する列がありません",
+                "try_different": "別のビューを選択してください"
+            },
+            "status_labels": {
+                "exact": "完全一致",
+                "exact_tooltip": "列名が完全一致",
+                "fuzzy": "あいまい",
+                "fuzzy_tooltip": "類似名",
+                "ai": "AI",
+                "ai_tooltip": "AI推奨マッピング",
+                "manual": "手動",
+                "manual_tooltip": "手動割り当て",
+                "unset": "未設定",
+                "unset_tooltip": "マッピングが必要",
+                "duplicate": "重複"
+            },
+            "field_selector": {
+                "select_placeholder": "ターゲット選択...",
+                "search_placeholder": "フィールド検索...",
+                "suggested": "推奨",
+                "all_fields": "全フィールド",
+                "no_results": "\"{{term}}\" に一致なし",
+                "ignore_action": "この列を無視",
+                "restore_action": "無視済み — クリックで復元",
+                "in_use": "使用中"
+            },
+            "alerts": {
+                "conflict_count_one": "1つのフィールドに重複マッピングがあります",
+                "conflict_count_other": "{{count}} フィールドに重複マッピングがあります",
+                "remaining_needed": "残りフィールドが必要"
+            },
+            "btn_confirm": "マッピング確定",
+            "processing": {
+                "title": "データ処理中",
+                "subtitle": "検証とインポート中...",
+                "logs": {
+                    "init": "初期化中...",
+                    "schema": "スキーマ互換性確認中...",
+                    "mapping": "列 '{{column}}' をマッピング中...",
+                    "req": "リクエスト処理中...",
+                    "sending": "データ送信中...",
+                    "success": "成功。"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "クイックスタート設計図",
+            "divider": "または個別にカスタマイズ",
+            "library_title": "ウィジェットライブラリ",
+            "selected_count": "{{count}} 選択済み",
+            "btn_create": "ダッシュボード作成",
+            "btn_configuring": "設定中..."
+        },
+        "title": "LineSight セットアップ",
+        "steps": {
+            "upload": {
+                "label": "ソースデータ",
+                "desc": "アップロード/選択",
+                "desc_alt": "CSV/Excelアップロード"
+            },
+            "mapping": {
+                "label": "データマッピング",
+                "desc": "列検証"
+            },
+            "widgets": {
+                "label": "ダッシュボード",
+                "desc": "レイアウト設定"
+            }
+        },
+        "mini_map": {
+            "title": "プレビュー",
+            "empty_state": "ウィジェットを選択",
+            "stats": {
+                "widgets_one": "{{count}} ウィジェット",
+                "widgets_other": "{{count}} ウィジェット",
+                "screens_one": "~{{count}} 画面",
+                "screens_other": "~{{count}} 画面"
+            },
+            "density": {
+                "empty": "空",
+                "compact": "コンパクト",
+                "balanced": "バランス",
+                "heavy": "高密度"
+            },
+            "scroll_warning": "スクロールが必要になる可能性があります"
+        },
+        "context": {
+            "title": "現在のコンテキスト",
+            "select_factory": "工場を選択",
+            "select_source": "データソースを選択",
+            "select_factory_first": "先に工場を選択",
+            "loading_factories": "工場読込中...",
+            "loading_sources": "ソース読込中...",
+            "fetching_sources": "ソース取得中...",
+            "no_sources_alert": "データソースがありません。",
+            "select_source_overlay": "続行するにはデータソースを選択"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "データアップロード",
+            "title_preview": "データプレビュー",
+            "subtitle_upload": "{{dataSourceName}} へアップロード",
+            "subtitle_preview": "インポート内容の確認",
+            "drop_text": "ここにファイルをドロップまたはクリック",
+            "supports_text": "Excel (.xlsx, .xls) および CSV 対応",
+            "success_redirect": "アップロード成功！マッピングへ...",
+            "info_preview": "アップロード後にプレビューが表示されます。",
+            "btn_upload_preview": "アップロード & プレビュー",
+            "btn_uploading": "アップロード中...",
+            "errors": {
+                "invalid_extension": "ExcelまたはCSVを選択してください",
+                "duplicate_file": "既にアップロード済みです。",
+                "preview_failed": "プレビュー生成失敗。",
+                "upload_failed": "アップロード失敗"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "組織設定",
+        "description": "ワークスペースの設定と管理。",
+        "cards": {
+            "general": {
+                "title": "一般",
+                "description": "組織プロファイル、ロゴ。"
+            },
+            "members": {
+                "title": "メンバー",
+                "description": "アクセス権、役割、招待。"
+            },
+            "infrastructure": {
+                "title": "インフラストラクチャ",
+                "description": "工場、ライン、ゾーン設定。"
+            },
+            "security": {
+                "title": "セキュリティ",
+                "description": "SSO、監査ログ。"
+            },
+            "billing": {
+                "title": "請求",
+                "description": "請求書、使用制限。"
+            }
+        },
+        "badges": {
+            "coming_soon": "近日公開"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "設定に戻る"
+        },
+        "top_nav": {
+            "search_placeholder": "工場、注文を検索...",
+            "search_coming_soon": "グローバル検索は近日公開！",
+            "notifications": {
+                "title": "通知",
+                "mark_read": "すべて既読にする",
+                "empty": "新しい通知はありません"
+            },
+            "user_menu": {
+                "profile": "プロファイルと設定",
+                "logout": "サインアウト",
+                "default_user": "ユーザー",
+                "default_role": "閲覧者"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "組織",
+            "factories": "工場"
+        },
+        "header": {
+            "title": "工場設定",
+            "popover_trigger_label": "工場情報"
+        },
+        "popover": {
+            "title": "設定",
+            "assignment": {
+                "title": "割り当てモード:",
+                "desc_part1": "デフォルトビュー。詳細表示または",
+                "desc_part2": "ボタンでマネージャーを割り当て。"
+            },
+            "structure": {
+                "title": "構造モード:",
+                "desc": "レイアウトをカスタマイズしてソースを変更。"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "割り当て",
+            "structure_mode": "構造",
+            "customize_layout": "レイアウト編集",
+            "done_editing": "編集完了"
+        },
+        "list": {
+            "add_data_source": "ソース追加",
+            "no_data_sources": "ソースがありません。編集モードで追加してください。"
+        },
+        "bulk_actions": {
+            "selected": "選択済み",
+            "assign_manager": "マネージャー割当"
+        },
+        "messages": {
+            "loading": "工場読込中...",
+            "assignment_failed": "割り当て失敗。"
+        }
+    },
+    "roles": {
+        "system_admin": "システム管理者",
+        "owner": "所有者",
+        "admin": "管理者",
+        "viewer": "閲覧者",
+        "member": "メンバー",
+        "operator": "オペレーター",
+        "factory_manager": "工場長",
+        "line_manager": "ライン長",
+        "user": "ユーザー",
+        "manager": "マネージャー"
+    },
+    "org_general": {
+        "title": "一般",
+        "profile": {
+            "logged_in_as": "ログイン中:"
+        },
+        "at_a_glance": "概要",
+        "stats": {
+            "total_managers": "全マネージャー",
+            "assigned": "割り当て済み",
+            "factories": "工場数",
+            "production_lines": "生産ライン"
+        },
+        "danger_zone": {
+            "title": "危険ゾーン",
+            "description": "組織を削除すると、すべてのデータが完全に削除されます。",
+            "delete_button": "組織を削除 (近日公開)"
+        }
+    },
+    "org_members": {
+        "title": "メンバー",
+        "invite_member": "メンバー招待",
+        "search_placeholder": "名前またはメールで検索...",
+        "filter": "フィルタ",
+        "table": {
+            "user": "ユーザー",
+            "global_role": "グローバルロール",
+            "access": "アクセス",
+            "last_active": "最終アクティブ",
+            "actions": "アクション",
+            "loading": "メンバー読込中...",
+            "no_members": "メンバーが見つかりません。",
+            "assignments": "{{count}} 割り当て",
+            "unassigned": "未割り当て",
+            "never_active": "なし",
+            "view_details": "詳細を見る"
+        },
+        "drawer": {
+            "title": "メンバー詳細",
+            "role_label": "役割",
+            "active_assignments": "現在のア割り当て",
+            "no_assignments": "割り当てなし。",
+            "current_factory": "現在の工場",
+            "danger_zone": {
+                "title": "危険ゾーン",
+                "suspend_button": "ユーザー停止"
+            }
+        },
+        "cell": {
+            "unknown_user": "不明なユーザー",
+            "active": "アクティブ",
+            "inactive": "非アクティブ"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "設定に戻る",
+        "back_button": "設定に戻る",
+        "title": "インフラストラクチャ",
+        "sites_count": "{{count}} サイト",
+        "sites": "サイト",
+        "add_factory": "工場追加",
+        "search_placeholder": "検索...",
+        "retry": "再試行",
+        "new_factory": {
+            "title": "新規工場",
+            "subtitle": "新しい製造サイトを追加"
+        },
+        "card": {
+            "data_sources": "データソース",
+            "managers": "マネージャー",
+            "configure_site": "サイト設定",
+            "edit_details": "詳細編集",
+            "delete_factory": "工場削除"
+        },
+        "list": {
+            "name": "名前",
+            "factory": "工場",
+            "code": "コード",
+            "country": "国",
+            "sources": "ソース",
+            "managers": "マネージャー",
+            "actions": "アクション"
+        },
+        "no_match": "\"{{query}}\" に一致なし",
+        "confirm_delete": "{{name}} を削除しますか？取り消せません。",
+        "delete_fail": "削除失敗: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "データソース追加",
+            "subtitle": "{{factoryName}} に追加",
+            "name_label": "名前",
+            "name_placeholder": "例: ライン3",
+            "code_label": "コード",
+            "code_placeholder": "L-03",
+            "specialty_label": "専門",
+            "specialty_placeholder": "例: 組立",
+            "description_label": "説明",
+            "description_placeholder": "説明...",
+            "use_defaults": "工場デフォルト使用",
+            "inherit_tooltip": "シフト等を継承",
+            "custom_tooltip": "カスタム設定",
+            "inherit_desc": "工場の標準シフトパターンを継承します。",
+            "custom_desc": "空のスケジュールで開始",
+            "source_usage": "ソース使用状況",
+            "quota_reached": "上限到達。",
+            "submit_button": "追加",
+            "submitting": "作成中..."
+        },
+        "create_factory": {
+            "title": "新規工場作成",
+            "subtitle": "初期データソースと共に設定",
+            "quota_reached": "クォータ到達",
+            "name_label": "工場名",
+            "name_placeholder": "例: 東京工場",
+            "code_label": "工場コード",
+            "code_placeholder": "例: TYO-01",
+            "code_desc": "識別子",
+            "source_name_label": "初期データソース",
+            "source_name_placeholder": "例: ラインA",
+            "source_specialty_label": "ソース専門",
+            "source_specialty_placeholder": "例: 組立",
+            "source_specialty_desc": "主な機能",
+            "source_desc_label": "ソース説明",
+            "source_desc_placeholder": "例: スポーツウェア用ライン",
+            "source_desc_help": "機能を簡単に説明",
+            "submitting_msg": "工場を作成中...",
+            "submit_button": "工場作成",
+            "submitting_button": "作成中..."
+        },
+        "edit_factory": {
+            "title": "工場編集",
+            "name_label": "名前",
+            "code_label": "コード",
+            "submit_button": "保存",
+            "submitting_button": "保存中..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "名前変更",
+            "managers_stat": "マネージャー",
+            "efficiency_stat": "効率",
+            "assigned_team": "担当チーム",
+            "no_managers": "マネージャーなし。",
+            "remove_button": "削除",
+            "danger_zone": "危険ゾーン",
+            "delete_button": "データソース削除",
+            "confirm_remove": "マネージャーを削除しますか？",
+            "remove_fail": "削除失敗。",
+            "confirm_delete": "本当に {{name}} を削除しますか？取り消せません。",
+            "delete_fail": "削除できません（アクティブまたはデータあり）。",
+            "rename_fail": "名前変更失敗。"
+        },
+        "row": {
+            "untitled_source": "無題のソース",
+            "rename_required": "名前変更必須",
+            "click_tooltip": "詳細表示＆名前変更",
+            "confirm_delete": "{{name}} を削除？",
+            "rename_prompt": "ソース名変更:"
+        },
+        "user_search": {
+            "placeholder": "マネージャー検索...",
+            "no_results": "見つかりません",
+            "no_available": "利用不可",
+            "available_count": "{{count}} 利用可能"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "お帰りなさい",
+            "welcome_subtitle": "詳細を入力してログイン。",
+            "email_label": "仕事用メール",
+            "password_label": "パスワード",
+            "forgot_password": "パスワードをお忘れですか？",
+            "sign_in_button": "サインイン",
+            "no_account": "アカウントをお持ちでないですか？",
+            "contact_sales": "営業に連絡",
+            "back_to_landing": "トップへ戻る",
+            "errors": {
+                "network_error": "接続エラー。",
+                "invalid_credentials": "無効な資格情報です。"
+            },
+            "demo_card": {
+                "title": "シフトレポート",
+                "subtitle": "ライブ • 第1工場",
+                "efficiency": "効率",
+                "efficiency_sub": "↑ {{val}}% 目標比",
+                "output": "生産高",
+                "output_sub": "順調",
+                "chart_title": "時間当たりレート",
+                "chart_period": "過去4時間",
+                "chart_current": "現在",
+                "quote": "\"{{text}}\"",
+                "quote_author": "運営ディレクター"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "予期せぬエラー",
+            "unknown_error": "不明なエラーが発生しました。",
+            "return_home": "ホームに戻る"
+        },
+        "confirm_dialog": {
+            "confirm": "確認",
+            "cancel": "キャンセル",
+            "please_wait": "お待ちください..."
+        },
+        "quota_warning": {
+            "limit_reached": "{{type}} の制限に達しました ({{max}})",
+            "near_limit": "{{type}} の制限に近づいています ({{current}}/{{max}})",
+            "upgrade_prompt": "プランをアップグレードしてください。",
+            "consider_upgrade": "アップグレードをご検討ください。",
+            "upgrade_button": "アップグレード",
+            "dismiss_label": "閉じる",
+            "type_factories": "工場",
+            "type_lines": "生産ライン"
+        },
+        "date_range_picker": {
+            "start_date": "開始日",
+            "end_date": "終了日",
+            "start_in_timezone": "開始 ({{timezone}})",
+            "end_in_timezone": "終了 ({{timezone}})"
+        },
+        "breadcrumb": {
+            "aria_label": "パンくずリスト"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "工場標準設定",
+            "subtitle": "{{name}} のデフォルト設定"
+        },
+        "sections": {
+            "localization": "ローカリゼーション",
+            "shifts": "デフォルトシフト",
+            "non_working_days": {
+                "title": "標準非稼働日",
+                "description": "デフォルトで非稼働となります。"
+            },
+            "schema_configuration": "スキーマ設定",
+            "upload_history": "アップロード履歴",
+            "active_field_mapping": "アクティブマッピング",
+            "field_mapping_description": "Excelヘッダーとシステムの対応付け。"
+        },
+        "fields": {
+            "date_format": "日付形式",
+            "currency": "通貨",
+            "measurement_system": "単位系",
+            "preview": "プレビュー"
+        },
+        "shifts": {
+            "add": "シフト追加",
+            "new_shift": "新規シフト",
+            "empty": "シフトがありません。",
+            "name_label": "名前",
+            "name_placeholder": "例: モーニング",
+            "start_time": "開始時間",
+            "end_time": "終了時間"
+        },
+        "timezone_warning": {
+            "title": "タイムゾーン変更？",
+            "message": "<strong>{{timezone}}</strong> への変更は履歴データに影響する可能性があります。",
+            "confirm": "はい、更新します"
+        },
+        "buttons": {
+            "save": "保存",
+            "saving": "保存中..."
+        },
+        "errors": {
+            "save_failed": "保存失敗。"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "ソース未検出",
+        "system_node": "システムノード",
+        "breadcrumbs": {
+            "workspace": "ワークスペース",
+            "factory": "工場",
+            "not_found": "未検出"
+        },
+        "tabs": {
+            "schema_configuration": "スキーマ",
+            "upload_history": "履歴"
+        },
+        "schema": {
+            "active_field_mapping": "アクティブマップ",
+            "field_mapping_description": "Excelとシステムの対応。",
+            "edit_mappings": "編集",
+            "reset_schema": "リセット",
+            "no_mappings": "マッピングなし。",
+            "system_status": "システム状態",
+            "last_updated": "最終更新",
+            "no_config_title": "設定なし",
+            "no_config_description": "マッピングされていません。",
+            "no_config_hint": "ファイルをアップロードしてください。",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "システム"
+            }
+        },
+        "uploads": {
+            "processed_files": "処理済みファイル",
+            "clear_history": "履歴消去",
+            "no_files": "ファイルなし。"
+        },
+        "confirm": {
+            "reset_schema": "警告: ソースとスキーマを削除します。よろしいですか？",
+            "clear_history": "警告: 全履歴を削除します。よろしいですか？"
+        },
+        "errors": {
+            "reset_failed": "リセット失敗。",
+            "clear_failed": "削除失敗。"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "ダッシュボードは空です",
+            "description": "ウィジェットを追加してください。",
+            "action": "デザイナーを開く"
+        }
+    },
+    "file_preview": {
+        "title": "プレビュー",
+        "loading": "読込中...",
+        "loading_subtitle": "解析中",
+        "error_title": "エラー",
+        "error_default": "プレビュー失敗。",
+        "showing_rows": "先頭 {{count}} 行",
+        "columns_detected": "{{count}} 列",
+        "info_note": "データプレビュー。",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "データ統合",
+        "subtitle": "スキーマとフロー管理",
+        "upload_data": "アップロード",
+        "collapse": "折りたたむ",
+        "expand": "展開",
+        "tabs": {
+            "schema": "スキーマ",
+            "uploads": "履歴"
+        },
+        "empty_sources": "ソースなし。",
+        "configure_new": "新規設定",
+        "no_description": "説明なし。",
+        "schema_version": "スキーマ v{{version}}:",
+        "no_active_schema": "アクティブスキーマなし",
+        "edit_config": "設定編集",
+        "error_update": "更新失敗。",
+        "modal": {
+            "title": "設定編集",
+            "source_name": "ソース名",
+            "time_column": "時間列 (Excelヘッダー)",
+            "time_column_hint": "日時列の正確な名前。",
+            "config_active": "設定アクティブ"
+        }
+    },
+    "data_source_config": {
+        "title": "ソース構成",
+        "subtitle": "ライン: {{id}}",
+        "loading": "読込中...",
+        "not_configured_title": "未設定",
+        "not_configured_desc": "ソース未設定。",
+        "close_modal": "閉じる",
+        "time_column": "時間列",
+        "time_column_placeholder": "例: Date",
+        "time_column_hint": "時間列の名前。",
+        "schema_title": "アクティブマップ",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "ソース",
+            "target": "ターゲット"
+        },
+        "schema_note": "自動学習。",
+        "description": "説明",
+        "description_placeholder": "説明...",
+        "success": "成功！",
+        "error_save": "保存失敗。",
+        "error_load": "読込失敗。",
+        "save_button": "設定保存"
+    },
+    "upload_history": {
+        "title": "最近のアップロード",
+        "loading": "読込中...",
+        "empty": "空です。",
+        "error": "エラー。"
+    }
+}

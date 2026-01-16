@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import type { MemberRead } from '../../../api/endpoints/team/teamApi';
@@ -24,6 +25,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
     const [query, setQuery] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const { t } = useTranslation();
 
     // Focus input on mount
     useEffect(() => {
@@ -80,7 +82,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                 <input
                     ref={inputRef}
                     className="flex-1 outline-none text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 bg-transparent text-slate-900 dark:text-slate-100"
-                    placeholder="Search managers..."
+                    placeholder={t('data_source_list.user_search.placeholder')}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
@@ -89,7 +91,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
             <div className="overflow-y-auto max-h-[240px] py-1">
                 {filteredUsers.length === 0 ? (
                     <div className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400 text-center italic">
-                        {query ? 'No matching managers found' : 'No available managers'}
+                        {query ? t('data_source_list.user_search.no_results') : t('data_source_list.user_search.no_available')}
                     </div>
                 ) : (
                     filteredUsers.map(user => (
@@ -105,7 +107,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
                             </div>
                             <div className="flex flex-col min-w-0">
                                 <span className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate group-hover:text-indigo-900 dark:group-hover:text-indigo-100">
-                                    {user.full_name || 'Unknown'}
+                                    {user.full_name || t('common.status.unknown')}
                                 </span>
                                 <span className="text-xs text-slate-400 dark:text-slate-500 truncate group-hover:text-indigo-500 dark:group-hover:text-indigo-300">
                                     {user.email}
@@ -117,7 +119,7 @@ export const UserSearchCommand: React.FC<UserSearchCommandProps> = ({
             </div>
 
             <div className="bg-slate-50 dark:bg-slate-800/50 px-3 py-2 border-t border-slate-100 dark:border-slate-700 text-[10px] text-slate-400 dark:text-slate-500 text-right">
-                {filteredUsers.length} available
+                {t('data_source_list.user_search.available_count', { count: filteredUsers.length })}
             </div>
         </div>
     );

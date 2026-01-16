@@ -1,13 +1,13 @@
 {
     "profile": {
         "title": "用户资料",
-        "subtitle": "管理您的账户设置和首选项",
+        "subtitle": "管理您的账户设置和偏好",
         "back": "返回",
         "save_btn": "保存更改",
-        "success": "个人资料更新成功！",
+        "success": "资料更新成功！",
         "error_required": "全名是必填项",
-        "error_fail": "更新个人资料失败。请重试。",
-        "at": "在",
+        "error_fail": "更新资料失败。请重试。",
+        "at": "于",
         "roles": {
             "admin": "管理员",
             "user": "用户",
@@ -17,16 +17,16 @@
             "factories": "您的工厂",
             "security": "安全",
             "personal_info": "个人信息",
-            "localization": "本地化和区域",
-            "notifications": "通知首选项 (即将推出)"
+            "localization": "本地化与区域",
+            "notifications": "通知偏好（即将推出）"
         },
         "security": {
             "change_password": "更改密码",
-            "two_factor": "双重身份验证"
+            "two_factor": "双重认证"
         },
         "fields": {
             "full_name": "全名",
-            "email": "电子邮件地址",
+            "email": "电子邮件",
             "email_hint": "电子邮件无法直接更改。",
             "language": "语言",
             "theme": "主题"
@@ -37,246 +37,982 @@
             "system": "系统默认"
         },
         "notifications": {
-            "email": "电子邮件提醒",
+            "email": "邮件提醒",
             "push": "推送通知",
             "weekly": "每周摘要"
+        },
+        "location_selector": {
+            "label": "地区与时区",
+            "auto_detect": "自动检测",
+            "search_placeholder": "搜索国家...",
+            "no_results": "未找到国家",
+            "select_country_first": "请先选择国家",
+            "selected": "已选择："
         }
     },
     "navigation": {
-        "dashboard": "[MOCK] Dashboard",
-        "my_dashboards": "[MOCK] My Dashboards",
-        "organization": "[MOCK] Organization",
-        "show_more": "[MOCK] Show More",
-        "show_less": "[MOCK] Show Less"
+        "dashboard": "仪表板",
+        "my_dashboards": "我的仪表板",
+        "organization": "组织",
+        "show_more": "显示更多",
+        "show_less": "显示更少"
     },
     "dashboard": {
         "my_dashboards": {
-            "title": "[MOCK] 我的仪表板",
-            "search_placeholder": "[MOCK] 搜索站点...",
+            "title": "我的仪表板",
+            "search_placeholder": "搜索站点...",
             "status": {
-                "loading": "[MOCK] Loading your sites...",
-                "none": "[MOCK] No active production sites",
-                "available_one": "[MOCK] {{count}} 个站点可用",
-                "available_other": "[MOCK] {{count}} 个站点可用"
+                "loading": "正在加载站点...",
+                "none": "无活跃生产站点",
+                "available_one": "{{count}} 个可用站点",
+                "available_other": "{{count}} 个可用站点"
             },
             "table": {
-                "header_name": "[MOCK] 站点名称",
-                "header_location": "[MOCK] 地点",
-                "header_status": "[MOCK] 状态",
-                "header_lines": "[MOCK] Lines",
-                "header_actions": "[MOCK] Actions",
-                "action_view": "[MOCK] 查看"
+                "header_name": "站点名称",
+                "header_location": "位置",
+                "header_status": "状态",
+                "header_lines": "生产线",
+                "header_actions": "操作",
+                "action_view": "查看"
             },
             "actions": {
-                "new_dashboard": "[MOCK] New Dashboard",
-                "configure_sites": "[MOCK] Configure Sites",
-                "clear_search": "[MOCK] Clear search"
+                "new_dashboard": "新建仪表板",
+                "configure_sites": "配置站点",
+                "clear_search": "清除搜索"
             },
             "search": {
-                "results_info": "[MOCK] Showing {{count}} of {{total}} factories",
-                "no_results": "[MOCK] No factories found",
-                "no_results_detail": "[MOCK] No factories match \"{{query}}\". Try a different search term."
+                "results_info": "显示 {{total}} 个工厂中的 {{count}} 个",
+                "no_results": "未找到工厂",
+                "no_results_detail": "没有工厂匹配 \"{{query}}\"。请尝试其他搜索词。"
             },
             "factory_status": {
-                "at_limit": "[MOCK] At Limit",
-                "near_limit": "[MOCK] Near Limit",
-                "active": "[MOCK] Active"
+                "at_limit": "达到上限",
+                "near_limit": "接近上限",
+                "active": "活跃"
             },
             "empty_state": {
-                "title": "[MOCK] No active sites",
-                "description": "[MOCK] Your dashboard is empty because no factories have been configured yet.",
-                "admin_hint": "[MOCK] Head over to Organization Settings to set up your infrastructure.",
-                "user_hint": "[MOCK] Please contact your administrator to set up the infrastructure.",
-                "cta": "[MOCK] Go to Organization Settings"
+                "title": "无活跃站点",
+                "description": "您的仪表板为空，因为尚未配置任何工厂。",
+                "admin_hint": "请前往组织设置以配置基础设施。",
+                "user_hint": "请联系管理员配置基础设施。",
+                "cta": "前往组织设置"
             },
             "view": {
-                "grid": "[MOCK] Grid view",
-                "list": "[MOCK] List view"
+                "grid": "网格视图",
+                "list": "列表视图"
             }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} 个来源",
+            "edit": "编辑",
+            "delete": "删除",
+            "open": "打开",
+            "edit_title": "编辑工厂",
+            "delete_title": "删除工厂"
         }
     },
     "factory_detail": {
         "breadcrumbs": {
-            "home": "[MOCK] 首页",
-            "list": "[MOCK] 我的仪表板",
-            "production_sites": "[MOCK] Production Sites",
-            "sites": "[MOCK] Sites",
-            "not_found": "[MOCK] Not Found"
+            "home": "首页",
+            "list": "我的仪表板",
+            "production_sites": "生产站点",
+            "sites": "站点",
+            "not_found": "未找到"
         },
         "sections": {
-            "overview": "[MOCK] 概览",
-            "performance": "[MOCK] 性能",
-            "settings": "[MOCK] 设置",
-            "dashboards": "[MOCK] Dashboards",
-            "data_sources": "[MOCK] Data Sources"
+            "overview": "概览",
+            "performance": "性能",
+            "settings": "设置",
+            "dashboards": "仪表板",
+            "data_sources": "数据源"
         },
         "actions": {
-            "edit": "[MOCK] 编辑配置",
-            "delete": "[MOCK] 删除站点",
-            "save": "[MOCK] 保存更改",
-            "settings": "[MOCK] Settings",
-            "new_dashboard": "[MOCK] New Dashboard",
-            "create_dashboard": "[MOCK] Create Dashboard",
-            "add_data_source": "[MOCK] Add Data Source",
-            "new_source": "[MOCK] New Source",
-            "upload_data": "[MOCK] Upload data",
-            "no_write_access": "[MOCK] No write access to this source"
+            "edit": "编辑配置",
+            "delete": "删除站点",
+            "save": "保存更改",
+            "settings": "设置",
+            "new_dashboard": "新建仪表板",
+            "create_dashboard": "创建仪表板",
+            "add_data_source": "添加数据源",
+            "new_source": "新来源",
+            "upload_data": "上传数据",
+            "no_write_access": "无该来源的写入权限"
         },
         "alerts": {
-            "confirm_delete": "[MOCK] 您确定要删除此工厂吗？此操作无法撤消。",
-            "edit_soon": "[MOCK] Edit functionality coming soon",
-            "delete_soon": "[MOCK] Delete functionality coming soon",
-            "delete_fail": "[MOCK] Failed to delete dashboard."
+            "confirm_delete": "您确定要删除此工厂吗？此操作无法撤销。",
+            "edit_soon": "编辑功能即将推出",
+            "delete_soon": "删除功能即将推出",
+            "delete_fail": "删除仪表板失败。"
         },
         "stats": {
-            "dashboards": "[MOCK] Dashboards",
-            "active_widgets": "[MOCK] Active Widgets",
-            "active_sources": "[MOCK] Active Sources",
-            "used_info": "[MOCK] {{current}} / {{max}} Used"
+            "dashboards": "仪表板",
+            "active_widgets": "活跃小组件",
+            "active_sources": "活跃来源",
+            "used_info": "{{current}} / {{max}} 已使用"
         },
-        "not_found": "[MOCK] Factory not found",
+        "not_found": "未找到工厂",
         "search": {
-            "dashboards_placeholder": "[MOCK] Filter dashboards...",
-            "sources_placeholder": "[MOCK] Search sources...",
-            "no_sources_found": "[MOCK] No sources found matching your search."
+            "dashboards_placeholder": "筛选仪表板...",
+            "sources_placeholder": "搜索来源...",
+            "no_sources_found": "未找到匹配的数据源。"
         },
         "quota": {
-            "limit_reached": "[MOCK] Quota limit reached"
+            "limit_reached": "已达到配额限制"
         },
         "table": {
             "headers": {
-                "name": "[MOCK] Name",
-                "status": "[MOCK] Status",
-                "actions": "[MOCK] Actions"
+                "name": "名称",
+                "status": "状态",
+                "actions": "操作"
             }
         },
         "status": {
-            "active": "[MOCK] Active",
-            "inactive": "[MOCK] Inactive"
+            "active": "活跃",
+            "inactive": "非活跃"
         },
         "confirm": {
-            "delete_source": "[MOCK] Are you sure you want to delete this data source?",
-            "delete_dashboard": "[MOCK] Are you sure you want to delete this dashboard?"
+            "delete_source": "您确定要删除此数据源吗？",
+            "delete_dashboard": "您确定要删除此仪表板吗？"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "今天",
+            "yesterday": "昨天",
+            "last_7_days": "最近7天",
+            "last_30_days": "最近30天",
+            "this_month": "本月",
+            "last_month": "上月"
+        },
+        "shifts": {
+            "all": "所有班次",
+            "shift_a": "A班 (早班)",
+            "shift_b": "B班 (晚班)",
+            "shift_c": "C班 (夜班)"
+        },
+        "date_range": "日期范围",
+        "to": "至"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "工作区",
+            "factory": "工厂",
+            "line": "生产线",
+            "dashboard": "仪表板"
+        },
+        "status": {
+            "updated": "更新于 {{time}}",
+            "live": "实时",
+            "loading": "加载中...",
+            "saving": "保存中..."
+        },
+        "actions": {
+            "refresh": "刷新",
+            "reset_layout": "重置布局",
+            "reset_confirm": "您确定要将布局重置为默认吗？",
+            "design_layout": "设计布局",
+            "save_layout": "保存布局",
+            "add_widget": "添加小组件",
+            "cancel": "取消"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "小组件库",
+            "subtitle": "拖放小组件以自定义仪表板布局。",
+            "categories": {
+                "all": "全部",
+                "production": "生产",
+                "quality": "质量",
+                "efficiency": "效率"
+            }
+        },
+        "selector": {
+            "simulated_data": "模拟数据",
+            "ready_to_use": "即可使用",
+            "recommended": "推荐",
+            "future_capability": "未来功能",
+            "coming_soon": "即将推出",
+            "near_match": "近似匹配",
+            "ai_recommendations": "AI 推荐",
+            "select_all": "全选",
+            "selected": "已选",
+            "compatible": "兼容",
+            "status_summary": "{{selected}} 已选 • {{compatible}} 兼容",
+            "data_req": "需要数据",
+            "needs_mapping": "需要映射",
+            "categories": {
+                "Efficiency": "效率",
+                "Quality": "质量",
+                "Workforce": "人力",
+                "Operations": "运营"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "推荐",
+                "Operations": "运营",
+                "Strategy": "战略"
+            },
+            "efficiency_starter": {
+                "title": "效率启动包",
+                "description": "用于跟踪产量和小时绩效的基本工具包。"
+            },
+            "quality_auditor": {
+                "title": "质量审计员",
+                "description": "关注 DHU、缺陷以及速度与质量的平衡。"
+            },
+            "floor_manager": {
+                "title": "车间经理视图",
+                "description": "实时查看人力和生产情况。"
+            },
+            "executive_summary": {
+                "title": "执行摘要",
+                "description": "用于战略决策的高级 KPI。"
+            }
+        },
+        "common": {
+            "planned": "计划",
+            "actual": "实际",
+            "target": "目标",
+            "efficiency": "效率",
+            "minutes": "分钟",
+            "limit": "限制",
+            "status": "状态",
+            "on_target": "达标",
+            "below_target": "未达标",
+            "defect_rate": "缺陷率"
+        },
+        "titles": {
+            "production_chart": "生产产出",
+            "line_efficiency": "生产线效率",
+            "earned_minutes": "赢得分钟数",
+            "sam_performance": "SAM 绩效",
+            "dhu_quality": "DHU 质量",
+            "speed_quality": "速度与质量",
+            "top_blockers": "主要阻碍",
+            "style_progress": "款式进度",
+            "daily_target": "每日目标",
+            "production_timeline": "生产时间表",
+            "complexity_impact": "复杂度影响",
+            "workforce_attendance": "员工出勤",
+            "kpi_summary": "KPI 摘要"
+        },
+        "descriptions": {
+            "production_chart": "比较计划与实际生产随时间的变化",
+            "line_efficiency": "实时生产线效率对标目标",
+            "earned_minutes": "赢得的标准分钟 (SAM) 与可用时间对比",
+            "sam_performance": "基于标准分钟的绩效指标",
+            "dhu_quality": "每百单位缺陷数趋势分析",
+            "speed_quality": "生产速度与质量的相关性",
+            "top_blockers": "阻碍生产的最常见问题",
+            "style_progress": "当前款式完成百分比跟踪",
+            "daily_target": "每日生产目标进度",
+            "production_timeline": "生产计划的甘特图视图",
+            "complexity_impact": "款式复杂度对产出的影响分析",
+            "workforce_attendance": "操作员出勤与生产线平衡",
+            "kpi_summary": "关键指标的高级概览"
+        },
+        "production_chart": {
+            "planned": "计划",
+            "actual_output": "实际产出"
+        },
+        "speed_quality": {
+            "efficiency": "效率",
+            "defect_rate": "缺陷率"
+        },
+        "earned_minutes": {
+            "earned": "已赢得",
+            "available": "可用"
+        },
+        "dhu_quality": {
+            "no_data": "无 DHU 数据",
+            "current_dhu": "当前 DHU",
+            "above_limit": "超限"
+        },
+        "blocker_cloud": {
+            "occurrences": "次",
+            "view_all_logs": "查看所有日志"
         }
     },
     "common": {
-        "back": "[MOCK] Back",
-        "cancel": "[MOCK] Cancel",
-        "error": "[MOCK] Error",
-        "success": "[MOCK] Success",
-        "uploading": "[MOCK] Uploading...",
-        "processing": "[MOCK] Processing...",
-        "remove": "[MOCK] Remove",
-        "ready": "[MOCK] Ready",
-        "needs_setup": "[MOCK] Needs Setup",
-        "actions": "[MOCK] Action",
-        "date": "[MOCK] Date"
+        "back": "返回",
+        "cancel": "取消",
+        "error": "错误",
+        "success": "成功",
+        "uploading": "上传中...",
+        "processing": "处理中...",
+        "remove": "移除",
+        "ready": "就绪",
+        "needs_setup": "需要设置",
+        "date": "日期",
+        "actions": {
+            "save": "保存",
+            "cancel": "取消",
+            "close": "关闭",
+            "delete": "删除",
+            "edit": "编辑",
+            "search": "搜索...",
+            "confirm": "确认",
+            "back": "返回",
+            "create": "创建",
+            "invite": "邀请"
+        },
+        "status": {
+            "active": "活跃",
+            "inactive": "非活跃",
+            "unknown": "未知"
+        }
     },
     "wizard": {
         "step1": {
-            "dashboard_name_label": "[MOCK] Dashboard Name",
-            "dashboard_name_placeholder": "[MOCK] e.g. Line 4 Production Overview",
-            "name_error_tooltip": "[MOCK] Please enter a Dashboard Name first.",
-            "name_error_text": "[MOCK] Please enter a name for your dashboard to continue.",
-            "selection_title": "[MOCK] Data Source Selection",
-            "selection_desc": "[MOCK] Select a previously uploaded file.",
+            "dashboard_name_label": "仪表板名称",
+            "dashboard_name_placeholder": "例如：4号线生产概览",
+            "name_error_tooltip": "请先输入仪表板名称。",
+            "name_error_text": "请输入仪表板名称以继续。",
+            "selection_title": "数据源选择",
+            "selection_desc": "选择先前上传的文件来配置您的仪表板小组件。",
             "columns": {
-                "file_name": "[MOCK] File Name",
-                "status": "[MOCK] Status",
-                "uploaded": "[MOCK] Uploaded",
-                "action": "[MOCK] Action"
+                "file_name": "文件名",
+                "status": "状态",
+                "uploaded": "已上传",
+                "action": "操作"
             },
-            "btn_configure": "[MOCK] Configure",
-            "btn_complete_setup": "[MOCK] Complete Setup",
-            "note": "[MOCK] Note: Your dashboard will include data from ALL files.",
-            "empty_title": "[MOCK] No Data Sources Yet",
-            "empty_desc": "[MOCK] Upload files from the Production Line page first.",
-            "error_load_failed": "[MOCK] Failed to load configuration."
+            "btn_configure": "配置",
+            "btn_complete_setup": "完成设置",
+            "note": "注意：您的仪表板将包含此列表中所有文件的数据。",
+            "empty_title": "尚无数据源",
+            "empty_desc": "首先从生产线页面上传文件，然后返回此处创建仪表板。",
+            "error_load_failed": "加载现​​有数据源配置失败。"
         },
         "step2": {
-            "title": "[MOCK] Validate Mapping",
-            "subtitle": "[MOCK] Review how your columns match the database.",
+            "title": "验证映射",
+            "subtitle": "检查您的列如何与数据库匹配。",
             "stats": {
-                "auto": "[MOCK] Auto-mapped",
-                "review": "[MOCK] Need Review",
-                "attention": "[MOCK] Attention",
-                "ignored": "[MOCK] Ignored"
+                "auto": "自动映射",
+                "review": "需审阅",
+                "attention": "注意",
+                "ignored": "已忽略"
             },
             "filter": {
-                "all": "[MOCK] All",
-                "unmapped": "[MOCK] Unmapped",
-                "conflicts": "[MOCK] Conflicts"
+                "all": "全部",
+                "unmapped": "未映射",
+                "conflicts": "冲突"
             },
-            "showing_count": "[MOCK] Showing {{filtered}} of {{total}} columns",
+            "showing_count": "显示 {{total}} 个列中的 {{filtered}} 个",
             "table": {
-                "source": "[MOCK] Source Column",
-                "target": "[MOCK] Target Field",
-                "status": "[MOCK] Status",
-                "no_match": "[MOCK] No columns match this filter",
-                "try_different": "[MOCK] Try selecting a different view"
+                "source": "源列",
+                "target": "目标字段",
+                "status": "状态",
+                "no_match": "无列匹配此筛选器",
+                "try_different": "尝试选择不同的视图"
             },
             "status_labels": {
-                "exact": "[MOCK] Exact",
-                "exact_tooltip": "[MOCK] Exact column name match",
-                "fuzzy": "[MOCK] Fuzzy",
-                "fuzzy_tooltip": "[MOCK] Similar name matched",
-                "ai": "[MOCK] AI",
-                "ai_tooltip": "[MOCK] AI-suggested mapping",
-                "manual": "[MOCK] Manual",
-                "manual_tooltip": "[MOCK] Manually assigned",
-                "unset": "[MOCK] Unset",
-                "unset_tooltip": "[MOCK] Needs mapping",
-                "duplicate": "[MOCK] Duplicate"
+                "exact": "精确",
+                "exact_tooltip": "列名精确匹配",
+                "fuzzy": "模糊",
+                "fuzzy_tooltip": "找到相似名称",
+                "ai": "AI",
+                "ai_tooltip": "AI 建议的映射",
+                "manual": "手动",
+                "manual_tooltip": "手动分配",
+                "unset": "未设置",
+                "unset_tooltip": "需要映射",
+                "duplicate": "重复"
             },
             "field_selector": {
-                "select_placeholder": "[MOCK] Select target field...",
-                "search_placeholder": "[MOCK] Search fields...",
-                "suggested": "[MOCK] Suggested",
-                "all_fields": "[MOCK] All Fields",
-                "no_results": "[MOCK] No fields match \"{{term}}\"",
-                "ignore_action": "[MOCK] Ignore this column",
-                "restore_action": "[MOCK] Ignored — click to restore",
-                "in_use": "[MOCK] in use"
+                "select_placeholder": "选择目标字段...",
+                "search_placeholder": "搜索字段...",
+                "suggested": "建议",
+                "all_fields": "所有字段",
+                "no_results": "无字段匹配 \"{{term}}\"",
+                "ignore_action": "忽略此列",
+                "restore_action": "已忽略 — 点击恢复",
+                "in_use": "使用中"
             },
             "alerts": {
-                "conflict_count_one": "[MOCK] 1 field has duplicate mappings",
-                "conflict_count_other": "[MOCK] {{count}} fields have duplicate mappings",
-                "remaining_needed": "[MOCK] Remaining fields needed"
+                "conflict_count_one": "1 个字段有重复映射",
+                "conflict_count_other": "{{count}} 个字段有重复映射",
+                "remaining_needed": "还需要剩余字段"
             },
-            "btn_confirm": "[MOCK] Confirm Mapping",
+            "btn_confirm": "确认映射",
             "processing": {
-                "title": "[MOCK] Processing Data",
-                "subtitle": "[MOCK] Validating and importing...",
+                "title": "处理数据",
+                "subtitle": "正在验证并导入到生产线...",
                 "logs": {
-                    "init": "[MOCK] Initializing engine...",
-                    "schema": "[MOCK] Verifying schema...",
-                    "mapping": "[MOCK] Mapping column '{{column}}'...",
-                    "req": "[MOCK] Processing request...",
-                    "sending": "[MOCK] Sending data...",
-                    "success": "[MOCK] Ingestion successful."
+                    "init": "初始化转换引擎...",
+                    "schema": "验证架构兼容性...",
+                    "mapping": "正在映射列 '{{column}}'...",
+                    "req": "正在处理摄取请求...",
+                    "sending": "正在发送数据到 LineSight Core...",
+                    "success": "摄取成功。正在完成..."
                 }
             }
         },
         "step3": {
-            "blueprints_title": "[MOCK] Quick Start Blueprints",
-            "divider": "[MOCK] or customize individually",
-            "library_title": "[MOCK] Widget Library",
-            "selected_count": "[MOCK] {{count}} selected",
-            "btn_create": "[MOCK] Create Dashboard",
-            "btn_configuring": "[MOCK] Configuring..."
+            "blueprints_title": "快速入门蓝图",
+            "divider": "或单独自定义",
+            "library_title": "小组件库",
+            "selected_count": "{{count}} 已选",
+            "btn_create": "创建仪表板",
+            "btn_configuring": "配置中..."
+        },
+        "title": "LineSight 设置",
+        "steps": {
+            "upload": {
+                "label": "源数据",
+                "desc": "上传或选择来源",
+                "desc_alt": "上传 CSV/Excel"
+            },
+            "mapping": {
+                "label": "数据映射",
+                "desc": "验证列"
+            },
+            "widgets": {
+                "label": "仪表板",
+                "desc": "配置布局"
+            }
+        },
+        "mini_map": {
+            "title": "空间预览",
+            "empty_state": "选择小组件以预览布局",
+            "stats": {
+                "widgets_one": "{{count}} 个小组件",
+                "widgets_other": "{{count}} 个小组件",
+                "screens_one": "~{{count}} 屏",
+                "screens_other": "~{{count}} 屏"
+            },
+            "density": {
+                "empty": "空",
+                "compact": "紧凑",
+                "balanced": "平衡",
+                "heavy": "密集"
+            },
+            "scroll_warning": "仪表板可能需要滚动"
+        },
+        "context": {
+            "title": "当前上下文",
+            "select_factory": "选择工厂",
+            "select_source": "选择数据源",
+            "select_factory_first": "请先选择工厂",
+            "loading_factories": "加载工厂...",
+            "loading_sources": "加载来源...",
+            "fetching_sources": "正在获取来源...",
+            "no_sources_alert": "无可用数据源。请先从工厂设置页面配置来源。",
+            "select_source_overlay": "选择数据源以继续"
         }
     },
     "modals": {
         "upload": {
-            "title_upload": "[MOCK] Upload Data",
-            "title_preview": "[MOCK] Preview Data",
-            "subtitle_upload": "[MOCK] Upload data to {{dataSourceName}}",
-            "subtitle_preview": "[MOCK] Review how your data will be imported",
-            "drop_text": "[MOCK] Drop your file here or click to browse",
-            "supports_text": "[MOCK] Supports Excel (.xlsx, .xls) and CSV files",
-            "success_redirect": "[MOCK] Upload successful! Redirecting...",
-            "info_preview": "[MOCK] After upload, you'll review a preview.",
-            "btn_upload_preview": "[MOCK] Upload & Preview"
+            "title_upload": "上传数据",
+            "title_preview": "预览数据",
+            "subtitle_upload": "上传数据到 {{dataSourceName}}",
+            "subtitle_preview": "查看您的数据将如何导入",
+            "drop_text": "将文件拖至此处或点击浏览",
+            "supports_text": "支持 Excel (.xlsx, .xls) 和 CSV 文件",
+            "success_redirect": "上传成功！正在重定向到映射...",
+            "info_preview": "上传后，您将在映射列之前查看预览。",
+            "btn_upload_preview": "上传并预览",
+            "btn_uploading": "上传中...",
+            "errors": {
+                "invalid_extension": "请选择 Excel (.xlsx, .xls) 或 CSV 文件",
+                "duplicate_file": "此文件已上传。请选择其他文件或先删除现有上传。",
+                "preview_failed": "生成数据预览失败。",
+                "upload_failed": "上传失败"
+            }
         }
+    },
+    "organization_settings": {
+        "title": "组织设置",
+        "description": "管理您的工作区配置和首选项。",
+        "cards": {
+            "general": {
+                "title": "通用",
+                "description": "组织资料、徽标和标识符。"
+            },
+            "members": {
+                "title": "成员",
+                "description": "管理团队访问权限、角色和邀请。"
+            },
+            "infrastructure": {
+                "title": "基础设施",
+                "description": "配置工厂、生产线和区域。"
+            },
+            "security": {
+                "title": "安全",
+                "description": "SSO、审计日志和密码策略。"
+            },
+            "billing": {
+                "title": "账单",
+                "description": "发票、使用限制和订阅。"
+            }
+        },
+        "badges": {
+            "coming_soon": "即将推出"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "返回设置"
+        },
+        "top_nav": {
+            "search_placeholder": "搜索工厂、订单...",
+            "search_coming_soon": "全局搜索即将推出！",
+            "notifications": {
+                "title": "通知",
+                "mark_read": "全部标记为已读",
+                "empty": "无新通知"
+            },
+            "user_menu": {
+                "profile": "资料与设置",
+                "logout": "注销",
+                "default_user": "用户",
+                "default_role": "查看者"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "组织",
+            "factories": "工厂"
+        },
+        "header": {
+            "title": "工厂配置",
+            "popover_trigger_label": "工厂信息"
+        },
+        "popover": {
+            "title": "工厂配置",
+            "assignment": {
+                "title": "分配模式：",
+                "desc_part1": "默认视图。点击头像查看详情或点击",
+                "desc_part2": "按钮将经理分配给数据源。"
+            },
+            "structure": {
+                "title": "结构模式：",
+                "desc": "点击“自定义布局”以重命名、删除或为此工厂添加新数据源。"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "分配模式",
+            "structure_mode": "结构模式",
+            "customize_layout": "自定义布局",
+            "done_editing": "完成编辑"
+        },
+        "list": {
+            "add_data_source": "添加数据源",
+            "no_data_sources": "未配置数据源。切换到编辑模式添加一个。"
+        },
+        "bulk_actions": {
+            "selected": "已选",
+            "assign_manager": "分配经理"
+        },
+        "messages": {
+            "loading": "加载工厂...",
+            "assignment_failed": "分配经理失败。"
+        }
+    },
+    "roles": {
+        "system_admin": "系统管理员",
+        "owner": "所有者",
+        "admin": "管理员",
+        "viewer": "查看者",
+        "member": "成员",
+        "operator": "操作员",
+        "factory_manager": "工厂经理",
+        "line_manager": "生产线经理",
+        "user": "用户",
+        "manager": "经理"
+    },
+    "org_general": {
+        "title": "通用",
+        "profile": {
+            "logged_in_as": "登录身份"
+        },
+        "at_a_glance": "概览",
+        "stats": {
+            "total_managers": "经理总数",
+            "assigned": "已分配",
+            "factories": "工厂",
+            "production_lines": "生产线"
+        },
+        "danger_zone": {
+            "title": "危险区域",
+            "description": "删除组织将永久删除所有工厂、生产线和数据。",
+            "delete_button": "删除组织（即将推出）"
+        }
+    },
+    "org_members": {
+        "title": "成员",
+        "invite_member": "邀请成员",
+        "search_placeholder": "按姓名或邮箱搜索...",
+        "filter": "筛选",
+        "table": {
+            "user": "用户",
+            "global_role": "全局角色",
+            "access": "访问权限",
+            "last_active": "最后活跃",
+            "actions": "操作",
+            "loading": "加载成员...",
+            "no_members": "未找到成员。",
+            "assignments": "{{count}} 个分配",
+            "unassigned": "未分配",
+            "never_active": "从不",
+            "view_details": "查看详情"
+        },
+        "drawer": {
+            "title": "成员详情",
+            "role_label": "角色",
+            "active_assignments": "活跃分配",
+            "no_assignments": "无分配。",
+            "current_factory": "当前工厂",
+            "danger_zone": {
+                "title": "危险区域",
+                "suspend_button": "挂起用户"
+            }
+        },
+        "cell": {
+            "unknown_user": "未知用户",
+            "active": "活跃",
+            "inactive": "非活跃"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "返回设置",
+        "back_button": "返回设置",
+        "title": "基础设施",
+        "sites_count": "{{count}} 个站点",
+        "sites": "站点",
+        "add_factory": "添加工厂",
+        "search_placeholder": "搜索工厂...",
+        "retry": "重试",
+        "new_factory": {
+            "title": "新工厂",
+            "subtitle": "添加新的制造站点"
+        },
+        "card": {
+            "data_sources": "数据源",
+            "managers": "经理",
+            "configure_site": "配置站点",
+            "edit_details": "编辑详情",
+            "delete_factory": "删除工厂"
+        },
+        "list": {
+            "name": "名称",
+            "factory": "工厂",
+            "code": "代码",
+            "country": "国家",
+            "sources": "来源",
+            "managers": "经理",
+            "actions": "操作"
+        },
+        "no_match": "没有工厂匹配 \"{{query}}\"",
+        "confirm_delete": "您确定要删除 {{name}} 吗？此操作无法撤销。",
+        "delete_fail": "删除工厂失败：{{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "添加数据源",
+            "subtitle": "向 {{factoryName}} 添加新来源",
+            "name_label": "名称",
+            "name_placeholder": "例如：3号线 / 切割台 A",
+            "code_label": "代码",
+            "code_placeholder": "L-03",
+            "specialty_label": "专长",
+            "specialty_placeholder": "例如：组装",
+            "description_label": "描述",
+            "description_placeholder": "简要描述此数据源...",
+            "use_defaults": "使用工厂默认值",
+            "inherit_tooltip": "继承班次和周末",
+            "custom_tooltip": "自定义配置",
+            "inherit_desc": "此来源将自动继承工厂的标准班次模式。",
+            "custom_desc": "从空时间表开始",
+            "source_usage": "来源使用情况",
+            "quota_reached": "此工厂已达到最大来源数。",
+            "submit_button": "添加来源",
+            "submitting": "创建中..."
+        },
+        "create_factory": {
+            "title": "创建新工厂",
+            "subtitle": "使用初始数据源设置新工厂",
+            "quota_reached": "已达配额",
+            "name_label": "工厂名称",
+            "name_placeholder": "例如：德克萨斯超级工厂",
+            "code_label": "工厂代码",
+            "code_placeholder": "例如：GTX-01",
+            "code_desc": "此工厂的简短标识符",
+            "source_name_label": "初始数据源",
+            "source_name_placeholder": "例如：组装线 A",
+            "source_specialty_label": "来源专长",
+            "source_specialty_placeholder": "例如：组装、测试、包装",
+            "source_specialty_desc": "此来源的主要功能或类型",
+            "source_desc_label": "来源描述",
+            "source_desc_placeholder": "例如：运动服装的主要组装线",
+            "source_desc_help": "简要描述此来源的功能",
+            "submitting_msg": "正在创建工厂和数据源...",
+            "submit_button": "创建工厂",
+            "submitting_button": "创建中..."
+        },
+        "edit_factory": {
+            "title": "编辑工厂",
+            "name_label": "工厂名称",
+            "code_label": "工厂代码",
+            "submit_button": "保存更改",
+            "submitting_button": "保存中..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "重命名来源",
+            "managers_stat": "经理",
+            "efficiency_stat": "效率",
+            "assigned_team": "已分配团队",
+            "no_managers": "无经理分配到此来源。",
+            "remove_button": "移除",
+            "danger_zone": "危险区域",
+            "delete_button": "删除数据源",
+            "confirm_remove": "是否从此数据源移除此经理？",
+            "remove_fail": "移除用户失败。",
+            "confirm_delete": "您确定要删除 {{name}} 吗？此操作无法撤销。",
+            "delete_fail": "无法删除数据源。它可能有活跃分配或数据。",
+            "rename_fail": "重命名数据源失败。"
+        },
+        "row": {
+            "untitled_source": "无标题来源",
+            "rename_required": "需要重命名",
+            "click_tooltip": "点击查看详情并重命名",
+            "confirm_delete": "删除 {{name}}？",
+            "rename_prompt": "重命名数据源："
+        },
+        "user_search": {
+            "placeholder": "搜索经理...",
+            "no_results": "未找到匹配的经理",
+            "no_available": "无可用经理",
+            "available_count": "{{count}} 个可用"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "欢迎回来",
+            "welcome_subtitle": "输入您的详细信息以访问工厂仪表板。",
+            "email_label": "工作邮箱",
+            "password_label": "密码",
+            "forgot_password": "忘记密码？",
+            "sign_in_button": "登录",
+            "no_account": "没有账户？",
+            "contact_sales": "联系销售",
+            "back_to_landing": "返回首页",
+            "errors": {
+                "network_error": "连接错误。请重试或使用演示凭据。",
+                "invalid_credentials": "凭据无效。请重试。"
+            },
+            "demo_card": {
+                "title": "班次报告",
+                "subtitle": "实时 • 工厂 01",
+                "efficiency": "效率",
+                "efficiency_sub": "↑ {{val}}% 较目标",
+                "output": "产出 (单位)",
+                "output_sub": "正常",
+                "chart_title": "每小时速率",
+                "chart_period": "过去 4 小时",
+                "chart_current": "当前",
+                "quote": "\"{{text}}\"",
+                "quote_author": "运营总监，Textile Co."
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "意外的应用程序错误",
+            "unknown_error": "发生未知错误。",
+            "return_home": "返回首页"
+        },
+        "confirm_dialog": {
+            "confirm": "确认",
+            "cancel": "取消",
+            "please_wait": "请稍候..."
+        },
+        "quota_warning": {
+            "limit_reached": "您已达到 {{type}} 限额 ({{max}})",
+            "near_limit": "您即将达到 {{type}} 限额 ({{current}}/{{max}})",
+            "upgrade_prompt": "升级您的计划以创建更多 {{type}}。",
+            "consider_upgrade": "考虑升级以避免中断。",
+            "upgrade_button": "升级",
+            "dismiss_label": "忽略警告",
+            "type_factories": "工厂",
+            "type_lines": "生产线"
+        },
+        "date_range_picker": {
+            "start_date": "开始日期",
+            "end_date": "结束日期",
+            "start_in_timezone": "{{timezone}} 的开始日期",
+            "end_in_timezone": "{{timezone}} 的结束日期"
+        },
+        "breadcrumb": {
+            "aria_label": "面包屑"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "工厂标准与默认值",
+            "subtitle": "配置 {{name}} 的全局默认值"
+        },
+        "sections": {
+            "localization": "本地化与格式",
+            "shifts": {
+                "title": "默认班次模式",
+                "description": "新生产线将继承这些班次。"
+            },
+            "non_working_days": {
+                "title": "标准非工作日",
+                "description": "这些天将默认标记为非工作日。单个生产线可以覆盖此设置。"
+            },
+            "schema_configuration": "架构配置",
+            "upload_history": "上传历史",
+            "active_field_mapping": "活跃字段映射",
+            "field_mapping_description": "将 Excel 文件标题映射到系统数据库字段。"
+        },
+        "fields": {
+            "date_format": "日期格式",
+            "currency": "货币",
+            "measurement_system": "测量系统",
+            "preview": "预览"
+        },
+        "shifts": {
+            "add": "添加班次",
+            "new_shift": "新班次",
+            "empty": "无已配置的班次。添加班次以设置默认每日时间表。",
+            "name_label": "班次名称",
+            "name_placeholder": "例如：早班",
+            "start_time": "开始时间",
+            "end_time": "结束时间"
+        },
+        "timezone_warning": {
+            "title": "更改时区？",
+            "message": "将时区更改为 <strong>{{timezone}}</strong> 可能会影响历史数据报告和活跃班次时间表。",
+            "confirm": "是，更新时区"
+        },
+        "buttons": {
+            "save": "保存更改",
+            "saving": "保存中..."
+        },
+        "errors": {
+            "save_failed": "保存设置失败。请重试。"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "未找到数据源",
+        "system_node": "系统节点",
+        "breadcrumbs": {
+            "workspace": "工作区",
+            "factory": "工厂",
+            "not_found": "未找到"
+        },
+        "tabs": {
+            "schema_configuration": "架构配置",
+            "upload_history": "上传历史"
+        },
+        "schema": {
+            "active_field_mapping": "活跃字段映射",
+            "field_mapping_description": "将 Excel 文件标题映射到系统数据库字段。",
+            "edit_mappings": "编辑映射",
+            "reset_schema": "重置架构",
+            "no_mappings": "未定义映射。",
+            "system_status": "系统状态",
+            "last_updated": "最后更新",
+            "no_config_title": "未找到配置",
+            "no_config_description": "此数据源尚未映射。",
+            "no_config_hint": "从工厂页面上传文件以开始。",
+            "table": {
+                "excel_header": "Excel 标题",
+                "system_field": "系统字段"
+            }
+        },
+        "uploads": {
+            "processed_files": "已处理文件",
+            "clear_history": "清除历史",
+            "no_files": "尚未为此来源上传任何文件。"
+        },
+        "confirm": {
+            "reset_schema": "警告：这将删除数据源和所有架构配置。此操作无法撤销。您确定吗？",
+            "clear_history": "警告：这将删除所有上传历史和物理文件。这是一个破坏性操作。您确定吗？"
+        },
+        "errors": {
+            "reset_failed": "重置架构失败。",
+            "clear_failed": "清除输出历史失败。"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "您的仪表板是空的",
+            "description": "从设计器添加小组件以开始构建您的指挥中心。",
+            "action": "打开设计器"
+        }
+    },
+    "file_preview": {
+        "title": "文件预览",
+        "loading": "加载预览中...",
+        "loading_subtitle": "分析文件结构",
+        "error_title": "预览错误",
+        "error_default": "加载预览失败。请确保文件是有效的 CSV 或 Excel 文档。",
+        "showing_rows": "显示前 {{count}} 行",
+        "columns_detected": "检测到 {{count}} 列",
+        "info_note": "注意：这是您数据的预览。检查列和值以确保文件上传正确。",
+        "null_value": "空"
+    },
+    "data_integration": {
+        "title": "数据集成上下文",
+        "subtitle": "管理架构并监控数据流",
+        "upload_data": "上传数据",
+        "collapse": "折叠",
+        "expand": "展开",
+        "tabs": {
+            "schema": "架构配置",
+            "uploads": "上传历史"
+        },
+        "empty_sources": "尚未配置数据源。",
+        "configure_new": "配置新数据源",
+        "no_description": "未提供描述。",
+        "schema_version": "严格架构 v{{version}}:",
+        "no_active_schema": "无活跃架构",
+        "edit_config": "编辑配置",
+        "error_update": "更新配置失败。",
+        "modal": {
+            "title": "编辑配置",
+            "source_name": "来源名称",
+            "time_column": "时间列 (Excel 标题)",
+            "time_column_hint": "日期/时间列的确切标题名称。",
+            "config_active": "配置活跃"
+        }
+    },
+    "data_source_config": {
+        "title": "数据源配置",
+        "subtitle": "生产线：{{id}}",
+        "loading": "加载配置...",
+        "not_configured_title": "未配置数据源",
+        "not_configured_desc": "此生产线未配置数据源。您需要先上传数据以创建一个。",
+        "close_modal": "关闭模态框",
+        "time_column": "时间列",
+        "time_column_placeholder": "例如：时间戳、日期、时间",
+        "time_column_hint": "Excel/CSV 文件中用于时间序列分析的列名。",
+        "schema_title": "活跃架构映射",
+        "schema_version": "版本 {{version}}",
+        "table": {
+            "source": "源列",
+            "target": "目标字段"
+        },
+        "schema_note": "注意：架构映射是自动学习的。要更改映射，请上传文件的新版本。",
+        "description": "描述",
+        "description_placeholder": "简要描述此数据源...",
+        "success": "配置更新成功！",
+        "error_save": "保存更改失败。",
+        "error_load": "加载配置失败。",
+        "save_button": "保存配置"
+    },
+    "upload_history": {
+        "title": "近期上传",
+        "loading": "加载历史中...",
+        "empty": "尚未上传文件。",
+        "error": "加载上传历史失败。"
     }
 }

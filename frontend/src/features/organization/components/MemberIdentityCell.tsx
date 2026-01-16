@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface MemberIdentityCellProps {
@@ -11,7 +12,8 @@ interface MemberIdentityCellProps {
 }
 
 export const MemberIdentityCell: React.FC<MemberIdentityCellProps> = ({ member }) => {
-    const name = member.full_name || 'Unknown User';
+    const { t } = useTranslation();
+    const name = member.full_name || t('org_members.cell.unknown_user');
     const email = member.email;
     const initials = name.slice(0, 2).toUpperCase();
     const isActive = member.is_active ?? true; // Default to true if undefined for now
@@ -27,7 +29,7 @@ export const MemberIdentityCell: React.FC<MemberIdentityCellProps> = ({ member }
                 </Avatar>
                 <span
                     className={`absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-slate-800 ${isActive ? 'bg-emerald-500' : 'bg-amber-500'}`}
-                    title={isActive ? "Active" : "Inactive"}
+                    title={isActive ? t('common.status.active') : t('common.status.inactive')}
                 />
             </div>
             <div className="flex flex-col max-w-[180px]">

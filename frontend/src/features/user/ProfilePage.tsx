@@ -28,7 +28,7 @@ import { LanguageSelector } from '../../components/common/LanguageSelector';
 export default function ProfilePage() {
     const { t } = useTranslation();
     const { user, updateUser } = useAuth();
-    const { setTheme } = useTheme();
+    const { setTheme, systemTheme } = useTheme();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -319,7 +319,9 @@ export default function ProfilePage() {
                                     >
                                         <option value="light">{t('profile.themes.light')}</option>
                                         <option value="dark">{t('profile.themes.dark')}</option>
-                                        <option value="system">{t('profile.themes.system')}</option>
+                                        <option value="system">
+                                            {t('profile.themes.system')} ({systemTheme === 'dark' ? t('profile.themes.dark') : t('profile.themes.light')})
+                                        </option>
                                     </select>
                                 </div>
                             </div>

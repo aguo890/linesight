@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Zap, ShieldCheck, Users, TrendingUp, ChevronRight } from 'lucide-react';
 import type { WidgetBundle, BundleReadiness } from '../registry';
 
@@ -21,6 +22,7 @@ export const BlueprintCard: React.FC<BlueprintCardProps> = ({
     readiness,
     onApply
 }) => {
+    const { t } = useTranslation();
     const Icon = ICON_MAP[bundle.icon] || Zap;
     const isFullyReady = readiness.isReady;
     const isPartiallyReady = readiness.percentage > 0 && !isFullyReady;
@@ -60,13 +62,13 @@ export const BlueprintCard: React.FC<BlueprintCardProps> = ({
                         <Icon className="w-5 h-5" />
                     </div>
                     <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${colors.badge}`}>
-                        {bundle.displayCategory}
+                        {t(`widgets.bundles.categories.${bundle.displayCategory}` as any)}
                     </span>
                 </div>
 
-                <h3 className="text-lg font-bold mb-1">{bundle.title}</h3>
+                <h3 className="text-lg font-bold mb-1">{t(bundle.title as any)}</h3>
                 <p className="text-sm text-white/80 mb-4 line-clamp-2">
-                    {bundle.description}
+                    {t(bundle.description as any)}
                 </p>
 
                 {/* Readiness Indicator */}
