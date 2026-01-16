@@ -60,12 +60,12 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                         }}
                         placeholder={t('wizard.step1.dashboard_name_placeholder')}
                         className={`block w-full rounded-md shadow-sm sm:text-sm p-2 border transition-all bg-surface text-text-main ${isNameError
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500 pr-10 dark:border-red-600'
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500 pe-10 dark:border-red-600'
                             : 'border-border focus:border-brand focus:ring-brand'
                             }`}
                     />
                     {isNameError && (
-                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 end-0 pe-3 flex items-center pointer-events-none">
                             <AlertCircle className="h-5 w-5 text-status-error" />
                         </div>
                     )}
@@ -94,10 +94,10 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                         <table className="min-w-full divide-y divide-border">
                             <thead className="bg-surface-subtle sticky top-0">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.file_name')}</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.status')}</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.uploaded')}</th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.action')}</th>
+                                    <th className="px-6 py-3 text-start text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.file_name')}</th>
+                                    <th className="px-6 py-3 text-start text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.status')}</th>
+                                    <th className="px-6 py-3 text-start text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.uploaded')}</th>
+                                    <th className="px-6 py-3 text-end text-xs font-medium text-text-muted uppercase">{t('wizard.step1.columns.action')}</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-surface divide-y divide-border">
@@ -107,7 +107,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                         <tr key={`${source.raw_import_id}-${index}`} className="hover:bg-brand/5 transition-colors group">
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
-                                                    <FileText className="w-4 h-4 text-text-muted mr-3" />
+                                                    <FileText className="w-4 h-4 text-text-muted me-3" />
                                                     <span className="text-sm font-medium text-text-main">{source.filename}</span>
                                                 </div>
                                             </td>
@@ -124,11 +124,11 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-text-muted">
                                                 <div className="flex items-center">
-                                                    <Clock className="w-3 h-3 mr-1.5" />
+                                                    <Clock className="w-3 h-3 me-1.5" />
                                                     {formatDate(source.uploaded_at)}
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right">
+                                            <td className="px-6 py-4 whitespace-nowrap text-end">
                                                 <button
                                                     onClick={async () => {
                                                         if (!dashboardName.trim()) {
@@ -152,11 +152,11 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                                                         }`}
                                                 >
                                                     {isProcessing ? (
-                                                        <Loader2 className="w-3 h-3 animate-spin mr-1 text-brand" />
+                                                        <Loader2 className="w-3 h-3 animate-spin me-1 text-brand" />
                                                     ) : (
                                                         <>
                                                             {isComplete ? t('wizard.step1.btn_configure') : t('wizard.step1.btn_complete_setup')}
-                                                            <ChevronRight className="w-3 h-3 ml-1" />
+                                                            <ChevronRight className="w-3 h-3 ms-1" />
                                                         </>
                                                     )}
                                                 </button>
@@ -168,7 +168,7 @@ export const WizardStep1Upload: React.FC<WizardStep1UploadProps> = ({
                         </table>
                     </div>
                     <div className="p-3 bg-surface-subtle border-t border-border text-xs text-text-muted flex items-center justify-center">
-                        <Database className="w-3 h-3 mr-1.5" />
+                        <Database className="w-3 h-3 me-1.5" />
                         {t('wizard.step1.note')}
                     </div>
                 </div>

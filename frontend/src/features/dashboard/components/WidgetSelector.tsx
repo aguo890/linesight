@@ -186,7 +186,7 @@ export const WidgetSelector: React.FC<WidgetSelectorProps> = ({
                             `}
                         >
                             <span>{t(`widgets.selector.categories.${cat}` as any)}</span>
-                            <span className={`ml-1.5 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
+                            <span className={`ms-1.5 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
                                 ({counts.supported}/{counts.total})
                             </span>
                         </button>
@@ -348,7 +348,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                         )}
                     </div>
                     <div className="min-w-0">
-                        <p className="text-sm font-semibold leading-tight truncate pr-2 text-text-main">
+                        <p className="text-sm font-semibold leading-tight truncate pe-2 text-text-main">
                             {t(widget.title as any) || widget.title}
                         </p>
                         <p className="text-[11px] text-text-muted mt-0.5 line-clamp-2 leading-relaxed">
@@ -358,7 +358,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                 </div>
 
                 {/* Action Icon */}
-                <div className="flex-shrink-0 ml-2">
+                <div className="flex-shrink-0 ms-2">
                     {variant === 'sidebar' ? (
                         <div className={`
                             w-6 h-6 rounded-full flex items-center justify-center transition-all
@@ -405,9 +405,9 @@ const WidgetCard: React.FC<WidgetCardProps> = ({
                             isSupported={isSupported}
                         />
                         {/* Simulated Data Badge */}
-                        <div className="absolute top-0 right-0 opacity-0 group-hover/chart:opacity-100 transition-opacity">
+                        <div className="absolute top-0 end-0 opacity-0 group-hover/chart:opacity-100 transition-opacity">
                             <span className="text-[7px] text-text-muted font-bold uppercase bg-surface/90 px-1 py-0.5 rounded border border-border tracking-tighter shadow-sm whitespace-nowrap">
-                                <span className="inline-block w-1 h-1 bg-success rounded-full animate-pulse mr-1" />
+                                <span className="inline-block w-1 h-1 bg-success rounded-full animate-pulse me-1" />
                                 {t('widgets.selector.simulated_data')}
                             </span>
                         </div>

@@ -131,23 +131,10 @@ clean:
 	@echo "✅ Cleanup complete!"
 
 # Push to GitHub with automatic commit
-# Usage: make push m="Your commit message"
-# If no message provided, uses a timestamp
-push: clean
-	@echo ""
-	@echo "🚀 Preparing to push to GitHub..."
-	@git add -A
-	@if "$(m)"=="" ( \
-		git commit -m "Update: %date% %time%" \
-	) else ( \
-		git commit -m "$(m)" \
-	)
-	@git push
-	@echo ""
-	@echo "✅ Successfully pushed to GitHub!"
+
 
 # Quick push with default message
-push-quick: clean
+push: clean
 	@echo "🚀 Smart push to GitHub..."
 	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
 

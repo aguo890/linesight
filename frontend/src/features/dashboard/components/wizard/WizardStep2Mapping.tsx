@@ -70,7 +70,7 @@ const STATUS_CONFIG: Record<TierType, {
         color: 'text-purple-600 dark:text-purple-400',
         bgColor: 'bg-purple-50 dark:bg-purple-900/20',
         borderColor: 'border-purple-200 dark:border-purple-800',
-        accentColor: 'border-l-purple-500',
+        accentColor: 'border-s-purple-500',
         labelKey: 'wizard.step2.status_labels.exact',
         tooltipKey: 'wizard.step2.status_labels.exact_tooltip'
     },
@@ -79,7 +79,7 @@ const STATUS_CONFIG: Record<TierType, {
         color: 'text-blue-600 dark:text-blue-400',
         bgColor: 'bg-blue-50 dark:bg-blue-900/20',
         borderColor: 'border-blue-200 dark:border-blue-800',
-        accentColor: 'border-l-blue-500',
+        accentColor: 'border-s-blue-500',
         labelKey: 'wizard.step2.status_labels.fuzzy',
         tooltipKey: 'wizard.step2.status_labels.fuzzy_tooltip'
     },
@@ -88,7 +88,7 @@ const STATUS_CONFIG: Record<TierType, {
         color: 'text-indigo-600 dark:text-indigo-400',
         bgColor: 'bg-indigo-50 dark:bg-indigo-900/20',
         borderColor: 'border-indigo-200 dark:border-indigo-800',
-        accentColor: 'border-l-indigo-500',
+        accentColor: 'border-s-indigo-500',
         labelKey: 'wizard.step2.status_labels.ai',
         tooltipKey: 'wizard.step2.status_labels.ai_tooltip'
     },
@@ -97,7 +97,7 @@ const STATUS_CONFIG: Record<TierType, {
         color: 'text-text-muted',
         bgColor: 'bg-surface-subtle',
         borderColor: 'border-border',
-        accentColor: 'border-l-border',
+        accentColor: 'border-s-border',
         labelKey: 'wizard.step2.status_labels.manual',
         tooltipKey: 'wizard.step2.status_labels.manual_tooltip'
     },
@@ -106,7 +106,7 @@ const STATUS_CONFIG: Record<TierType, {
         color: 'text-amber-600 dark:text-amber-400',
         bgColor: 'bg-amber-50 dark:bg-amber-900/20',
         borderColor: 'border-amber-200 dark:border-amber-800',
-        accentColor: 'border-l-transparent',
+        accentColor: 'border-s-transparent',
         labelKey: 'wizard.step2.status_labels.unset',
         tooltipKey: 'wizard.step2.status_labels.unset_tooltip'
     }
@@ -219,12 +219,12 @@ const AIProcessingView: React.FC<{
                     <div className="relative z-10 bg-surface p-4 rounded-xl shadow-md border border-border">
                         <FileText className="w-8 h-8 text-text-muted" />
                     </div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-0.5 bg-border">
+                    <div className="absolute top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-0.5 bg-border">
                         <div className="absolute inset-0 bg-brand w-1/3 animate-[shimmer_1.5s_infinite]" />
                     </div>
                     <div className="relative z-10 bg-surface p-4 rounded-xl shadow-md border border-brand/30">
                         <Database className="w-8 h-8 text-brand" />
-                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                        <div className="absolute -top-1 -end-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
                     </div>
                 </div>
 
@@ -250,7 +250,7 @@ const AIProcessingView: React.FC<{
                             <span>{log}</span>
                         </div>
                     ))}
-                    <div className="animate-pulse text-brand ml-3">_</div>
+                    <div className="animate-pulse text-brand ms-3">_</div>
                 </div>
             </div>
         </div>
@@ -289,12 +289,12 @@ const StatusIndicator: React.FC<{
 
             {/* Tooltip */}
             {showTooltip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50">
+                <div className="absolute bottom-full start-1/2 -translate-x-1/2 mb-2 z-50">
                     <div className="bg-gray-900 dark:bg-gray-800 text-white text-xs px-3 py-2 rounded-lg shadow-lg max-w-xs whitespace-normal">
                         <div className="font-medium mb-0.5">{t(config.labelKey as any)} Match</div>
                         <div className="text-gray-300">{tooltipText}</div>
                     </div>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                    <div className="absolute top-full start-1/2 -translate-x-1/2 -mt-1">
                         <div className="border-4 border-transparent border-t-gray-900" />
                     </div>
                 </div>
@@ -440,9 +440,9 @@ const FieldSelector: React.FC<{
                     relative w-full flex flex-col justify-center px-3 py-2 text-sm rounded-lg
                     transition-all duration-150 ease-in-out
                     focus:outline-none focus:ring-2 focus:ring-brand/50
-                    border-l-[3px] min-h-[56px]
+                    border-s-[3px] min-h-[56px]
                     ${isUnmapped
-                        ? 'border border-dashed border-border bg-surface-subtle/50 hover:bg-surface-subtle hover:border-border border-l-transparent'
+                        ? 'border border-dashed border-border bg-surface-subtle/50 hover:bg-surface-subtle hover:border-border border-s-transparent'
                         : `border border-border bg-surface hover:border-brand/50 shadow-sm hover:shadow ${config.accentColor}`
                     }
                 `}
@@ -451,10 +451,10 @@ const FieldSelector: React.FC<{
                     <>
                         <div className="flex items-center justify-between w-full">
                             <span className="font-semibold text-text-main truncate">{selectedOption.field}</span>
-                            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform flex-shrink-0 ml-2 ${isOpen ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform flex-shrink-0 ms-2 ${isOpen ? 'rotate-180' : ''}`} />
                         </div>
                         {selectedOption.description && (
-                            <span className="text-xs text-text-muted line-clamp-1 text-left mt-0.5">
+                            <span className="text-xs text-text-muted line-clamp-1 text-start mt-0.5">
                                 {selectedOption.description}
                             </span>
                         )}
@@ -474,13 +474,13 @@ const FieldSelector: React.FC<{
                         {/* Search */}
                         <div className="p-3 border-b border-border shrink-0 bg-surface-subtle/80">
                             <div className="relative">
-                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                                <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                                 <input
                                     type="text"
                                     placeholder={t('wizard.step2.field_selector.search_placeholder')}
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full pl-8 pr-3 py-2 text-sm border border-border rounded-lg bg-surface text-text-main focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
+                                    className="w-full ps-8 pe-3 py-2 text-sm border border-border rounded-lg bg-surface text-text-main focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand"
                                     autoFocus
                                 />
                             </div>
@@ -581,7 +581,7 @@ const FieldOption: React.FC<{
         <button
             onClick={onClick}
             className={`
-                w-full px-3 py-2.5 text-left text-sm hover:bg-brand/5 flex flex-col gap-0.5
+                w-full px-3 py-2.5 text-start text-sm hover:bg-brand/5 flex flex-col gap-0.5
                 transition-colors duration-100
                 ${isSelected ? 'bg-brand/5' : ''}
                 ${isUsed ? 'opacity-60' : ''}
@@ -903,7 +903,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                                 <Icon className={`w-5 h-5 ${stat.color}`} />
                                 <div>
                                     <span className={`text-2xl font-bold ${stat.color}`}>{stat.count}</span>
-                                    <span className="text-xs font-medium text-gray-600 ml-1.5">{stat.label}</span>
+                                    <span className="text-xs font-medium text-gray-600 ms-1.5">{stat.label}</span>
                                 </div>
                             </div>
                         );
@@ -933,7 +933,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         <div className="col-span-4 text-xs font-semibold text-text-muted uppercase tracking-wide">
                             {t('wizard.step2.table.target')}
                         </div>
-                        <div className="col-span-3 text-xs font-semibold text-text-muted uppercase tracking-wide text-right">
+                        <div className="col-span-3 text-xs font-semibold text-text-muted uppercase tracking-wide text-end">
                             {t('wizard.step2.table.status')}
                         </div>
                     </div>
@@ -984,7 +984,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                         onClick={onBack}
                         className="flex items-center px-4 py-2.5 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand/20 transition-all"
                     >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        <ArrowLeft className="w-4 h-4 me-2" />
                         {t('common.back')}
                     </button>
 
@@ -1016,7 +1016,7 @@ export const WizardStep2Mapping: React.FC<WizardStep2MappingProps> = ({
                             `}
                         >
                             {t('wizard.step2.btn_confirm')}
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                            <ArrowRight className="w-4 h-4 ms-2" />
                         </button>
                     </div>
                 </div>

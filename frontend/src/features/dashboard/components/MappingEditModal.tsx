@@ -94,20 +94,20 @@ export const MappingEditModal: React.FC<MappingEditModalProps> = ({
 
                         {error && (
                             <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-300 text-sm animate-shake">
-                                <AlertCircle className="w-4 h-4 ml-1" />
+                                <AlertCircle className="w-4 h-4 ms-1" />
                                 {error}
                             </div>
                         )}
 
                         {success && (
                             <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-900/30 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-300 text-sm">
-                                <CheckCircle2 className="w-4 h-4 ml-1" />
+                                <CheckCircle2 className="w-4 h-4 ms-1" />
                                 Mappings saved successfully!
                             </div>
                         )}
 
                         <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden bg-white dark:bg-slate-800">
-                            <table className="w-full text-left">
+                            <table className="w-full text-start">
                                 <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
                                     <tr>
                                         <th className="px-5 py-3 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider w-[45%]">Excel Header</th>

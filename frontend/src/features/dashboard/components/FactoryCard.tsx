@@ -112,7 +112,7 @@ export const FactoryCard: React.FC<FactoryCardProps> = ({
             <div className="flex items-end justify-between mt-6 pt-4 border-t border-border">
                 <div>
                     <span className="text-2xl font-bold text-text-main">{factory.lineCount}</span>
-                    <span className="text-sm text-text-muted ml-1">{t('dashboard.factory_card.sources_suffix', { max: factory.maxLines })}</span>
+                    <span className="text-sm text-text-muted ms-1">{t('dashboard.factory_card.sources_suffix', { max: factory.maxLines })}</span>
                 </div>
 
                 {/* Decorative Sparkline */}

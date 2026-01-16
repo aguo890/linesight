@@ -362,7 +362,7 @@ const DashboardPageContent = () => {
             <div className="min-h-screen bg-canvas flex flex-col relative overflow-hidden">
                 {/* Global Loading Pulse Bar */}
                 {fetchingCount > 0 && (
-                    <div className="fixed top-0 left-0 right-0 h-1 bg-brand/20 z-[100] overflow-hidden">
+                    <div className="fixed top-0 start-0 end-0 h-1 bg-brand/20 z-[100] overflow-hidden">
                         <div className="h-full bg-brand animate-pulse w-full"></div>
                     </div>
                 )}

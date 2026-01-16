@@ -81,7 +81,7 @@ export const SampleDataSelector: React.FC<SampleDataSelectorProps> = ({ onFileSe
                         key={file.filename}
                         onClick={() => handleDownloadAndSelect(file.filename)}
                         disabled={downloading !== null}
-                        className="w-full flex items-start space-x-3 p-3 border border-border rounded-lg hover:border-brand hover:bg-brand/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-left"
+                        className="w-full flex items-start space-x-3 p-3 border border-border rounded-lg hover:border-brand hover:bg-brand/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-start"
                     >
                         <FileSpreadsheet className="w-5 h-5 text-brand flex-shrink-0 mt-0.5" />
                         <div className="flex-1 min-w-0">

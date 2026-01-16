@@ -169,7 +169,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                     </label>
                                     <div className="border border-border dark:border-slate-700 rounded-lg overflow-hidden bg-surface-subtle/30 dark:bg-slate-800/30">
                                         <div className="max-h-60 overflow-y-auto">
-                                            <table className="w-full text-left border-collapse">
+                                            <table className="w-full text-start border-collapse">
                                                 <thead>
                                                     <tr className="bg-surface-subtle dark:bg-slate-800 border-b border-border dark:border-slate-700">
                                                         <th className="px-4 py-2.5 text-xs font-bold text-text-muted dark:text-slate-400 uppercase tracking-tight">{t('data_source_config.table.source')}</th>

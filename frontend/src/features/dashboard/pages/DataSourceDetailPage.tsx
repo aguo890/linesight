@@ -255,7 +255,7 @@ export const DataSourceDetailPage: React.FC = () => {
                         <Server className="w-4 h-4" />
                         {t('data_source_detail.tabs.upload_history')}
                         {uploads.length > 0 && (
-                            <span className="ml-1 px-2 py-0.5 bg-gray-200 text-gray-700 rounded-full text-[10px]">
+                            <span className="ms-1 px-2 py-0.5 bg-gray-200 text-gray-700 rounded-full text-[10px]">
                                 {uploads.length}
                             </span>
                         )}
@@ -295,7 +295,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                         </div>
 
                                         <div className="border border-gray-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
-                                            <table className="w-full text-left">
+                                            <table className="w-full text-start">
                                                 <thead className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
                                                     <tr>
                                                         <th className="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider w-1/2">{t('data_source_detail.schema.table.excel_header')}</th>
@@ -390,7 +390,7 @@ export const DataSourceDetailPage: React.FC = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
+                                            <div className="text-end">
                                                 <p className="text-xs font-bold text-gray-900 dark:text-gray-300">{formatDate(upload.created_at)}</p>
                                                 <p className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">{formatDate(upload.created_at, 'pp')}</p>
                                             </div>

@@ -294,3 +294,13 @@ body {
 [dir="rtl"] .animate-marquee {
   animation-name: marquee-rtl;
 }
+
+/* Force all grid items to inherit the main 'dir' attribute */
+.react-grid-item {
+  direction: inherit !important;
+}
+
+/* Ensure icons flip if they are directional (like arrows) */
+[dir="rtl"] .icon-directional {
+  transform: scaleX(-1);
+}

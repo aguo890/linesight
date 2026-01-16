@@ -38,7 +38,7 @@ const ComplexityImpactWidget: React.FC<WidgetProps> = ({
                 density={density}
             >
                 <div className="h-full flex items-center justify-center text-gray-400 text-xs">
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" /> {t('widgets.complexity_impact.loading_styles')}
+                    <Loader2 className="w-4 h-4 animate-spin me-2" /> {t('widgets.complexity_impact.loading_styles')}
                 </div>
             </WidgetWrapper>
         );

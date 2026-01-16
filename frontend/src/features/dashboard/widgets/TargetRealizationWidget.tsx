@@ -61,7 +61,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
         <div className="flex-1 w-full min-h-0 flex flex-col justify-between h-full relative">
             {/* Status Badge (Moved from Header Action to Content Overlay) */}
             {showVariance && (
-                <div className="absolute top-0 right-0 z-10">
+                <div className="absolute top-0 end-0 z-10">
                     <div className={`px-2 py-1 rounded text-xs font-bold ${displayPercentage >= 100 ? 'bg-success/10 text-success' : 'bg-surface-subtle text-text-muted'}`}>
                         {displayPercentage}%
                     </div>
@@ -99,7 +99,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                         <span className="text-[10px] text-text-subtle">{t('widgets.common.actual')}</span>
                         <div className="text-3xl font-bold text-text-main">{actual ? actual.toLocaleString() : '0'}</div>
                     </div>
-                    <div className="flex flex-col text-right">
+                    <div className="flex flex-col text-end">
                         <span className="text-[10px] text-text-subtle">{t('widgets.common.target')}</span>
                         <div className="text-sm font-medium text-text-muted">{t('widgets.common.target')}: {target ? target.toLocaleString() : '0'}</div>
                     </div>

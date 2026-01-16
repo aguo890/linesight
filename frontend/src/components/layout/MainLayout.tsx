@@ -53,10 +53,18 @@ export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: 
             }
         };
 
+        // Handler for sidebar toggle event from hamburger menu
+        const handleSidebarToggle = (e: Event) => {
+            const customEvent = e as CustomEvent<{ isOpen: boolean }>;
+            setIsSidebarOpen(customEvent.detail.isOpen);
+        };
+
         mediaQuery.addEventListener("change", handleBreakpointChange);
+        window.addEventListener('sidebar-toggle', handleSidebarToggle);
 
         return () => {
             mediaQuery.removeEventListener("change", handleBreakpointChange);
+            window.removeEventListener('sidebar-toggle', handleSidebarToggle);
         };
     }, []);
 

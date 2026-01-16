@@ -35,7 +35,7 @@ const DashboardPage: React.FC = () => {
                     <p className="text-sm text-[var(--color-text-muted)]">Data compiled from 12 uploaded sheets. Last updated 15 mins ago.</p>
                 </div>
                 {/* <button className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-sm text-sm font-medium shadow-sm transition flex items-center">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                     Upload Excel Sheet
@@ -62,7 +62,7 @@ const DashboardPage: React.FC = () => {
                         <span className={`${parseFloat(stats.efficiency_change_pct) >= 0 ? 'text-[var(--color-success)] bg-[var(--color-success-bg)]' : 'text-[var(--color-danger)] bg-[var(--color-danger-bg)]'} px-2 py-0.5 rounded text-xs font-bold`}>{parseFloat(stats.efficiency_change_pct) >= 0 ? '+' : ''}{stats.efficiency_change_pct}%</span>
                     </div>
                 </div>
-                <div className="bg-[var(--color-surface)] p-4 rounded-sm border border-[var(--color-border)] border-l-4 border-l-[var(--color-warning)] shadow-sm">
+                <div className="bg-[var(--color-surface)] p-4 rounded-sm border border-[var(--color-border)] border-s-4 border-s-[var(--color-warning)] shadow-sm">
                     <div className="flex justify-between items-start">
                         <div>
                             <p className="text-xs font-semibold text-[var(--color-text-muted)] uppercase">Discrepancies</p>
@@ -114,7 +114,7 @@ const DashboardPage: React.FC = () => {
                             <h3 className="font-semibold text-[var(--color-text)] text-sm">Detected Discrepancies (AI Analysis)</h3>
                             <button className="text-xs text-[var(--color-primary)] hover:underline">View All</button>
                         </div>
-                        <table className="w-full text-sm text-left">
+                        <table className="w-full text-sm text-start">
                             <thead className="text-xs text-[var(--color-text-muted)] uppercase bg-[var(--color-surface-elevated)] border-b border-[var(--color-border)]">
                                 <tr>
                                     <th className="px-5 py-3">Severity</th>

@@ -63,21 +63,21 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 {/* Overlay icon with tooltip */}
                 {icon && (
                     <div
-                        className="absolute top-2 right-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
+                        className="absolute top-2 end-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
                         title={t(title as any) || title}
                     >
                         <div className="w-3.5 h-3.5 text-text-muted">
                             {icon}
                         </div>
                         {/* Tooltip on hover - expands to the left */}
-                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-1 px-2 py-1 bg-surface-elevated text-text-main text-[10px] rounded whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none border border-border shadow-lg">
+                        <div className="absolute right-full top-1/2 -translate-y-1/2 me-1 px-2 py-1 bg-surface-elevated text-text-main text-[10px] rounded whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none border border-border shadow-lg">
                             {t(title as any) || title}
                         </div>
                     </div>
                 )}
                 {/* Action Group - Top Left (Minimal) */}
                 {canSettings && (
-                    <div className="absolute top-2 left-2 flex items-center gap-1 z-10 opacity-0 group-hover:opacity-100 transition-all">
+                    <div className="absolute top-2 start-2 flex items-center gap-1 z-10 opacity-0 group-hover:opacity-100 transition-all">
                         <button
                             onClick={() => id && handleOpenSettings(id)}
                             className="p-1 hover:bg-surface-subtle rounded text-text-muted hover:text-text-main"

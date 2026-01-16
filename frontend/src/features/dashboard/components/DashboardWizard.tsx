@@ -300,7 +300,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
             <div className="bg-surface rounded-2xl shadow-2xl w-[95vw] max-w-[1400px] h-[90vh] flex overflow-hidden ring-1 ring-black/5 dark:ring-white/10">
 
                 {/* --- Sidebar (Navigation & Status) --- */}
-                <div className="w-72 bg-surface-subtle border-r border-border flex flex-col hidden md:flex">
+                <div className="w-72 bg-surface-subtle border-e border-border flex flex-col hidden md:flex">
                     <div className="p-5">
                         <div className="flex items-center space-x-2 text-brand mb-5">
                             <div className="p-2 bg-brand/10 rounded-lg">
@@ -312,7 +312,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                         {/* Steps Timeline */}
                         <div className="space-y-0 relative">
                             {/* Connector Line */}
-                            <div className="absolute left-4 top-4 bottom-4 w-0.5 bg-border" />
+                            <div className="absolute start-4 top-4 bottom-4 w-0.5 bg-border" />
 
                             {steps.map((step, index) => {
                                 const Icon = step.icon;
@@ -334,7 +334,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                         >
                                             <Icon className="w-4 h-4" />
                                         </div>
-                                        <div className="ml-4 mt-1">
+                                        <div className="ms-4 mt-1">
                                             <p className={`text-sm font-semibold transition-colors ${isActive ? 'text-text-main' : 'text-text-muted'}`}>
                                                 {step.label}
                                             </p>
@@ -348,7 +348,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                     {/* Spatial Preview (Mini Map) - Only visible during Widget selection */}
                     {currentStep === 'widgets' && (
-                        <div className="px-4 mb-6 animate-in fade-in slide-in-from-left-4 duration-500">
+                        <div className="px-4 mb-6 animate-in fade-in slide-in-from-start-4 duration-500">
                             <LayoutMiniMap selectedWidgetIds={selectedWidgets} />
                         </div>
                     )}
@@ -358,11 +358,11 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                         <div className="text-xs font-medium text-text-muted uppercase tracking-wider mb-3">{t('wizard.context.title')}</div>
                         <div className="bg-surface p-3 rounded-lg border border-border shadow-sm space-y-2">
                             <div className="flex items-center text-sm text-text-main">
-                                <Factory className="w-3.5 h-3.5 mr-2 text-text-muted" />
+                                <Factory className="w-3.5 h-3.5 me-2 text-text-muted" />
                                 <span className="truncate">{factories.find(f => f.id === selectedFactoryId)?.name || t('wizard.context.select_factory')}</span>
                             </div>
                             <div className="flex items-center text-sm text-text-main">
-                                <ChevronRight className="w-3.5 h-3.5 mr-2 text-text-muted" />
+                                <ChevronRight className="w-3.5 h-3.5 me-2 text-text-muted" />
                                 <span className="truncate font-medium">{dataSources.find(ds => ds.id === selectedDataSourceId)?.name || t('wizard.context.select_source')}</span>
                             </div>
                         </div>
@@ -374,7 +374,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                     {/* Floating Close Button */}
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 z-20 p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-lg transition-colors"
+                        className="absolute top-4 end-4 z-20 p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-lg transition-colors"
                         aria-label="Close wizard"
                     >
                         <X className="w-5 h-5" />
@@ -396,14 +396,14 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             <label className="block text-sm font-medium text-text-main">Factory</label>
                                             {isLoadingContext && (
                                                 <span className="flex items-center text-xs text-brand animate-pulse">
-                                                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                                                    <Loader2 className="w-3 h-3 me-1 animate-spin" />
                                                     Loading...
                                                 </span>
                                             )}
                                         </div>
                                         {preselectedFactoryId ? (
                                             // Read-only display when factory is preselected (user is already in that factory)
-                                            <div className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg text-sm text-text-main">
+                                            <div className="block w-full ps-3 pe-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg text-sm text-text-main">
                                                 {factories.find(f => f.id === preselectedFactoryId)?.name || 'Loading...'}
                                             </div>
                                         ) : (
@@ -412,7 +412,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                                 <select
                                                     value={selectedFactoryId}
                                                     onChange={(e) => setSelectedFactoryId(e.target.value)}
-                                                    className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
+                                                    className="block w-full ps-3 pe-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
                                                     disabled={isLoadingContext}
                                                 >
                                                     <option value="">
@@ -432,7 +432,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             <label className="block text-sm font-medium text-text-main">Data Source</label>
                                             {isLoadingSources && (
                                                 <span className="flex items-center text-xs text-brand animate-pulse">
-                                                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                                                    <Loader2 className="w-3 h-3 me-1 animate-spin" />
                                                     {t('wizard.context.fetching_sources')}
                                                 </span>
                                             )}
@@ -441,7 +441,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             <select
                                                 value={selectedDataSourceId}
                                                 onChange={(e) => setSelectedDataSourceId(e.target.value)}
-                                                className="block w-full pl-3 pr-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
+                                                className="block w-full ps-3 pe-10 py-2.5 bg-surface-subtle border-0 ring-1 ring-border rounded-lg focus:ring-2 focus:ring-brand/50 text-sm text-text-main transition-shadow disabled:bg-surface-subtle disabled:text-text-muted disabled:cursor-not-allowed"
                                                 disabled={!selectedFactoryId || isLoadingSources || isLoadingContext}
                                             >
                                                 <option value="">
@@ -462,7 +462,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 {/* Warning when no sources exist */}
                                 {selectedFactoryId && dataSources.length === 0 && !isLoadingSources && (
                                     <div className="bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 px-4 py-3 rounded-lg text-sm flex items-center">
-                                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0" />
+                                        <AlertCircle className="w-4 h-4 me-2 flex-shrink-0" />
                                         <span>{t('wizard.context.no_sources_alert')}</span>
                                     </div>
                                 )}
@@ -500,7 +500,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                         {/* Step 2: Mapping */}
                         {currentStep === 'mapping' && (
-                            <div className="h-full animate-in fade-in slide-in-from-right-4 duration-300">
+                            <div className="h-full animate-in fade-in slide-in-from-end-4 duration-300">
                                 <WizardStep2Mapping
                                     mappings={columnMappings}
                                     availableFields={availableFields}
@@ -514,7 +514,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
                         {/* Step 3: Widgets */}
                         {currentStep === 'widgets' && (
-                            <div className="h-full animate-in fade-in slide-in-from-right-4 duration-300">
+                            <div className="h-full animate-in fade-in slide-in-from-end-4 duration-300">
                                 <WizardStep3Widgets
                                     mapping={validatedMappings}
                                     selectedWidgets={selectedWidgets}
@@ -548,7 +548,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                     </div>
 
                     {/* Dev Actions (Hidden nicely) */}
-                    <div className="absolute bottom-2 left-8 opacity-0 hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-2 start-8 opacity-0 hover:opacity-100 transition-opacity">
                         <button
                             onClick={async () => {
                                 if (window.confirm('Reset System?')) {

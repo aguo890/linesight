@@ -51,7 +51,7 @@ const SimpleTooltip = ({ children, content }: { children: React.ReactNode, conte
                 >
                     {content}
                     {/* Tiny CSS Arrow */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
+                    <div className="absolute top-full start-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900" />
                 </div>,
                 document.body
             )}
@@ -220,7 +220,7 @@ export const LayoutMiniMap: React.FC<LayoutMiniMapProps> = ({
                                             cursor-default
                                         `}
                                     >
-                                        <SimpleTooltip content={<>{t(item.titleKey as any)} <span className="opacity-50 ml-1">({item.w}x{item.h})</span></>}>
+                                        <SimpleTooltip content={<>{t(item.titleKey as any)} <span className="opacity-50 ms-1">({item.w}x{item.h})</span></>}>
                                             <div className="w-full h-full flex items-center justify-center overflow-hidden">
 
                                                 {/* VISUAL: Icon for Large Items */}

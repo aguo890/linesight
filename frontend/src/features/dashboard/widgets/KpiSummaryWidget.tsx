@@ -27,7 +27,7 @@ const KpiCard: React.FC<{
                     <span className={trend >= 0 ? "text-success" : "text-danger"}>
                         {trend > 0 ? '+' : ''}{trend}%
                     </span>
-                    <span className="text-text-muted ml-1">{t('widgets.kpi_summary.vs_last_period')}</span>
+                    <span className="text-text-muted ms-1">{t('widgets.kpi_summary.vs_last_period')}</span>
                 </div>
             </div>
             {subtext && <div className="text-xs text-text-muted mt-1">{subtext}</div>}

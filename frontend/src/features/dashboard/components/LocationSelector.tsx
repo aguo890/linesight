@@ -183,9 +183,9 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                                 setIsDropdownOpen(true);
                             }}
                             placeholder={t('profile.location_selector.search_placeholder')}
-                            className="w-full pl-9 pr-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all"
+                            className="w-full ps-9 pe-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all"
                         />
-                        <Globe className="w-4 h-4 text-text-muted absolute left-3 top-2.5" />
+                        <Globe className="w-4 h-4 text-text-muted absolute start-3 top-2.5" />
                     </div>
 
                     {isDropdownOpen && (
@@ -197,7 +197,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                                     <button
                                         key={c.id}
                                         onClick={() => handleCountrySelect(c)}
-                                        className={`w-full text-left px-3 py-2 text-sm hover:bg-brand/10 flex items-center justify-between ${countryCode === c.id ? 'bg-brand/10 text-brand' : 'text-text-main'}`}
+                                        className={`w-full text-start px-3 py-2 text-sm hover:bg-brand/10 flex items-center justify-between ${countryCode === c.id ? 'bg-brand/10 text-brand' : 'text-text-main'}`}
                                     >
                                         <span className="truncate">{c.name}</span>
                                         {countryCode === c.id && <Check className="w-3 h-3 text-brand" />}
@@ -224,7 +224,7 @@ export default function LocationSelector({ countryCode, timezone, onChange }: Lo
                             ))
                         )}
                     </select>
-                    <div className="absolute right-3 top-2.5 pointer-events-none text-text-muted">
+                    <div className="absolute end-3 top-2.5 pointer-events-none text-text-muted">
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                 </div>

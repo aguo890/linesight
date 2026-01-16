@@ -104,7 +104,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                             e.stopPropagation();
                             setIsWizardOpen(true);
                         }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-blue-600 text-xs font-medium border border-blue-200 rounded-md hover:bg-blue-50 hover:border-blue-300 transition-colors mr-2"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-blue-600 text-xs font-medium border border-blue-200 rounded-md hover:bg-blue-50 hover:border-blue-300 transition-colors me-2"
                     >
                         <FileSpreadsheet className="w-3.5 h-3.5" />
                         {t('data_integration.upload_data')}
@@ -151,12 +151,12 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                     <div className="p-4 bg-white min-h-[200px]">
                         {loading ? (
                             <div className="flex justify-center items-center h-full py-8 text-gray-400">
-                                <Clock className="w-6 h-6 animate-spin mr-2" />
+                                <Clock className="w-6 h-6 animate-spin me-2" />
                                 {t('common.processing')}
                             </div>
                         ) : error ? (
                             <div className="flex justify-center items-center h-full py-8 text-red-500">
-                                <AlertCircle className="w-5 h-5 mr-2" />
+                                <AlertCircle className="w-5 h-5 me-2" />
                                 {error}
                             </div>
                         ) : (
@@ -200,7 +200,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                                                 </div>
                                                             ) : (
                                                                 <div className="bg-yellow-50 p-2 rounded text-xs text-yellow-700 flex items-center">
-                                                                    <AlertCircle className="w-3 h-3 mr-1" />
+                                                                    <AlertCircle className="w-3 h-3 me-1" />
                                                                     {t('data_integration.no_active_schema')}
                                                                 </div>
                                                             )}

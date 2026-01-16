@@ -430,13 +430,13 @@ export const FactoryDetailPage: React.FC = () => {
                     {/* Control Bar - Dashboards */}
                     <div className="flex items-center gap-3 mb-6 p-1">
                         <div className="relative flex-1 max-w-sm group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
+                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                             <input
                                 type="text"
                                 placeholder={t('factory_detail.search.dashboards_placeholder')}
                                 value={dashboardSearch}
                                 onChange={(e) => setDashboardSearch(e.target.value)}
-                                className="w-full pl-9 pr-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
+                                className="w-full ps-9 pe-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                             />
                         </div>
                         <div className="flex-1"></div>
@@ -497,13 +497,13 @@ export const FactoryDetailPage: React.FC = () => {
                     {/* Control Bar - Data Sources */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 top-0 z-10 bg-surface-subtle/90 backdrop-blur-sm py-1 rounded-lg">
                         <div className="relative w-full sm:max-w-xs group">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
+                            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                             <input
                                 type="text"
                                 placeholder={t('factory_detail.search.sources_placeholder')}
                                 value={sourceSearch}
                                 onChange={(e) => setSourceSearch(e.target.value)}
-                                className="w-full pl-9 pr-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
+                                className="w-full ps-9 pe-4 py-2 bg-surface border border-border rounded-lg text-sm text-text-main placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm"
                             />
                         </div>
 
@@ -571,12 +571,12 @@ export const FactoryDetailPage: React.FC = () => {
                     {/* Content - List View */}
                     {sourceViewMode === 'list' && (
                         <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm">
-                            <table className="w-full text-left border-collapse">
+                            <table className="w-full text-start border-collapse">
                                 <thead className="bg-surface-subtle border-b border-border">
                                     <tr>
                                         <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('factory_detail.table.headers.name')}</th>
                                         <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('factory_detail.table.headers.status')}</th>
-                                        <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-right">{t('factory_detail.table.headers.actions')}</th>
+                                        <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-end">{t('factory_detail.table.headers.actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
@@ -602,7 +602,7 @@ export const FactoryDetailPage: React.FC = () => {
                                                     {source.is_active ? t('factory_detail.status.active') : t('factory_detail.status.inactive')}
                                                 </span>
                                             </td>
-                                            <td className="py-3 px-4 text-right">
+                                            <td className="py-3 px-4 text-end">
                                                 <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
                                                     {/* Upload button - permission aware */}
                                                     {canUploadAny && (
@@ -618,7 +618,7 @@ export const FactoryDetailPage: React.FC = () => {
                                                             <Settings className="w-4 h-4" />
                                                         </button>
                                                     )}
-                                                    <ChevronRight className="w-4 h-4 text-text-muted/50 ml-2" />
+                                                    <ChevronRight className="w-4 h-4 text-text-muted/50 ms-2" />
                                                 </div>
                                             </td>
                                         </tr>

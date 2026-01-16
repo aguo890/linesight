@@ -143,16 +143,16 @@ export const MyDashboardsPage: React.FC = () => {
                 <div className="flex items-center justify-between mb-6 sticky top-0 z-10 bg-surface-subtle/80 backdrop-blur-sm py-3 -mx-4 px-4 rounded-lg">
                     {/* Search Input */}
                     <div className="relative group w-full max-w-sm">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
+                        <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-brand transition-colors" />
                         <input
                             id="factory-search"
                             type="text"
                             placeholder={t('dashboard.my_dashboards.search_placeholder')}
-                            className="w-full pl-10 pr-16 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm placeholder-text-muted"
+                            className="w-full ps-10 pe-16 py-2 bg-surface border border-border rounded-lg text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all shadow-sm placeholder-text-muted"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                        <div className="absolute end-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
                             <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-border bg-surface-subtle px-1.5 font-mono text-[10px] font-medium text-text-muted">
                                 <span className="text-xs">Ctrl/⌘ +</span>K
                             </kbd>
@@ -160,7 +160,7 @@ export const MyDashboardsPage: React.FC = () => {
                     </div>
 
                     {/* View Toggles */}
-                    <div className="flex items-center p-1 bg-surface border border-border rounded-lg shadow-sm ml-4">
+                    <div className="flex items-center p-1 bg-surface border border-border rounded-lg shadow-sm ms-4">
                         <button
                             onClick={() => setViewMode('grid')}
                             className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-surface-subtle text-brand shadow-sm' : 'text-text-muted hover:text-text-main'}`}
@@ -245,14 +245,14 @@ export const MyDashboardsPage: React.FC = () => {
             {/* Content Area - List View */}
             {viewMode === 'list' && !isLoadingFactories && filteredFactories.length > 0 && (
                 <div className="bg-surface rounded-xl border border-border overflow-hidden shadow-sm" data-testid="factories-list">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-start border-collapse">
                         <thead className="bg-surface-subtle border-b border-border">
                             <tr>
                                 <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_name')}</th>
                                 <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_location')}</th>
                                 <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_lines')}</th>
                                 <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider">{t('dashboard.my_dashboards.table.header_status')}</th>
-                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-right">{t('dashboard.my_dashboards.table.header_actions')}</th>
+                                <th className="py-3 px-4 text-xs font-semibold text-text-muted uppercase tracking-wider text-end">{t('dashboard.my_dashboards.table.header_actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -301,7 +301,7 @@ export const MyDashboardsPage: React.FC = () => {
                                                 {getStatusText()}
                                             </span>
                                         </td>
-                                        <td className="py-3 px-4 text-right">
+                                        <td className="py-3 px-4 text-end">
                                             <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-text-main inline-block" />
                                         </td>
                                     </tr>
