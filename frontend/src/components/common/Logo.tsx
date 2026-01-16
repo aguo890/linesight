@@ -1,7 +1,7 @@
 import React from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.svg?url';
 
 // Helper for Tailwind class merging
 function cn(...inputs: ClassValue[]) {
@@ -36,7 +36,7 @@ export const Logo: React.FC<LogoProps> = ({
         },
         app: {
             text: "text-base font-semibold tracking-tight text-[var(--color-text)]",
-            img: "h-6 w-auto mix-blend-multiply dark:mix-blend-normal dark:invert",
+            img: "h-6 w-auto mix-blend-multiply dark:mix-blend-normal dark:",
             container: "gap-2"
         },
         auth: {
@@ -46,7 +46,7 @@ export const Logo: React.FC<LogoProps> = ({
         },
         footer: {
             text: "text-lg font-semibold tracking-tight text-slate-900 dark:text-white transition-colors duration-300",
-            img: "h-8 w-auto mix-blend-multiply dark:mix-blend-normal",
+            img: "h-8 w-8 mix-blend-multiply dark:mix-blend-normal",
             container: "gap-2"
         }
     };

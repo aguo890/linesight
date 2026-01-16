@@ -6,7 +6,7 @@ import {
     Calendar,
     ChevronRight
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { AutoFlipIcon } from '../../../components/common/AutoFlipIcon';
 import { useGetDataSourceApiV1DataSourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
 import { Skeleton } from '../../../components/ui/Skeleton';
 import type { Dashboard } from '../types';
@@ -26,7 +26,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, onDelet
     const lastModified = dashboard.updated_at ? formatDate(dashboard.updated_at) : 'Never';
 
     // Fetch Data Source Name if ID exists
-    const { data: dataSource, isLoading: isDataSourceLoading, isError } = useGetDataSourceApiV1DataSourcesDataSourceIdGet(
+    const { data: dataSource, isLoading: isDataSourceLoading } = useGetDataSourceApiV1DataSourcesDataSourceIdGet(
         dashboard.data_source_id!,
         {
             query: {
@@ -80,7 +80,10 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, onDelet
                         {dataSourceName}
                     </span>
                 )}
-                <ChevronRight className="w-4 h-4 text-text-muted/50 group-hover:translate-x-1 transition-transform" />
+                <AutoFlipIcon
+                    icon={ChevronRight}
+                    className="w-4 h-4 text-text-muted/50 group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+                />
             </div>
         </div>
     );

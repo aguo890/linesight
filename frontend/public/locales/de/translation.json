@@ -1,0 +1,1018 @@
+{
+    "profile": {
+        "title": "Benutzerprofil",
+        "subtitle": "Verwalten Sie Ihre Kontoeinstellungen und Präferenzen",
+        "back": "Zurück",
+        "save_btn": "Änderungen speichern",
+        "success": "Profil erfolgreich aktualisiert!",
+        "error_required": "Vollständiger Name ist erforderlich",
+        "error_fail": "Fehler beim Aktualisieren des Profils. Bitte versuchen Sie es erneut.",
+        "at": "um",
+        "roles": {
+            "admin": "Admin",
+            "user": "Benutzer",
+            "manager": "Manager"
+        },
+        "sections": {
+            "factories": "Ihre Fabriken",
+            "security": "Sicherheit",
+            "personal_info": "Persönliche Informationen",
+            "localization": "Standort & Region",
+            "notifications": "Benachrichtigungseinstellungen (Bald verfügbar)"
+        },
+        "security": {
+            "change_password": "Passwort ändern",
+            "two_factor": "Zwei-Faktor-Authentifizierung"
+        },
+        "fields": {
+            "full_name": "Vollständiger Name",
+            "email": "E-Mail-Adresse",
+            "email_hint": "E-Mail kann nicht direkt geändert werden.",
+            "language": "Sprache",
+            "theme": "Design"
+        },
+        "themes": {
+            "light": "Heller Modus",
+            "dark": "Dunkler Modus",
+            "system": "Systemstandard"
+        },
+        "notifications": {
+            "email": "E-Mail-Benachrichtigungen",
+            "push": "Push-Benachrichtigungen",
+            "weekly": "Wöchentliche Zusammenfassung"
+        },
+        "location_selector": {
+            "label": "Standort & Zeitzone",
+            "auto_detect": "Automatisch erkennen",
+            "search_placeholder": "Land suchen...",
+            "no_results": "Keine Länder gefunden",
+            "select_country_first": "Wählen Sie zuerst ein Land aus",
+            "selected": "Ausgewählt:"
+        }
+    },
+    "navigation": {
+        "dashboard": "Dashboard",
+        "my_dashboards": "Meine Dashboards",
+        "organization": "Organisation",
+        "show_more": "Mehr anzeigen",
+        "show_less": "Weniger anzeigen"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Meine Dashboards",
+            "search_placeholder": "Standorte suchen...",
+            "status": {
+                "loading": "Lade Ihre Standorte...",
+                "none": "Keine aktiven Produktionsstätten",
+                "available_one": "{{count}} Standort verfügbar",
+                "available_other": "{{count}} Standorte verfügbar"
+            },
+            "table": {
+                "header_name": "Standortname",
+                "header_location": "Standort",
+                "header_status": "Status",
+                "header_lines": "Linien",
+                "header_actions": "Aktionen",
+                "action_view": "Ansehen"
+            },
+            "actions": {
+                "new_dashboard": "Neues Dashboard",
+                "configure_sites": "Standorte konfigurieren",
+                "clear_search": "Suche löschen"
+            },
+            "search": {
+                "results_info": "Zeige {{count}} von {{total}} Fabriken",
+                "no_results": "Keine Fabriken gefunden",
+                "no_results_detail": "Keine Fabriken entsprechen \"{{query}}\". Versuchen Sie einen anderen Suchbegriff."
+            },
+            "factory_status": {
+                "at_limit": "Am Limit",
+                "near_limit": "Nahe am Limit",
+                "active": "Aktiv"
+            },
+            "empty_state": {
+                "title": "Keine aktiven Standorte",
+                "description": "Ihr Dashboard ist leer, da noch keine Fabriken konfiguriert wurden.",
+                "admin_hint": "Gehen Sie zu den Organisationseinstellungen, um Ihre Infrastruktur einzurichten.",
+                "user_hint": "Bitte wenden Sie sich an Ihren Administrator, um die Infrastruktur einzurichten.",
+                "cta": "Zu den Organisationseinstellungen"
+            },
+            "view": {
+                "grid": "Rasteransicht",
+                "list": "Listenansicht"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} Quellen",
+            "edit": "Bearbeiten",
+            "delete": "Löschen",
+            "open": "Öffnen",
+            "edit_title": "Fabrik bearbeiten",
+            "delete_title": "Fabrik löschen"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Startseite",
+            "list": "Meine Dashboards",
+            "production_sites": "Produktionsstätten",
+            "sites": "Standorte",
+            "not_found": "Nicht gefunden"
+        },
+        "sections": {
+            "overview": "Übersicht",
+            "performance": "Leistung",
+            "settings": "Einstellungen",
+            "dashboards": "Dashboards",
+            "data_sources": "Datenquellen"
+        },
+        "actions": {
+            "edit": "Konfiguration bearbeiten",
+            "delete": "Standort löschen",
+            "save": "Änderungen speichern",
+            "settings": "Einstellungen",
+            "new_dashboard": "Neues Dashboard",
+            "create_dashboard": "Dashboard erstellen",
+            "add_data_source": "Datenquelle hinzufügen",
+            "new_source": "Neue Quelle",
+            "upload_data": "Daten hochladen",
+            "no_write_access": "Kein Schreibzugriff auf diese Quelle"
+        },
+        "alerts": {
+            "confirm_delete": "Sind Sie sicher, dass Sie diese Fabrik löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "edit_soon": "Bearbeitungsfunktion bald verfügbar",
+            "delete_soon": "Löschfunktion bald verfügbar",
+            "delete_fail": "Fehler beim Löschen des Dashboards."
+        },
+        "stats": {
+            "dashboards": "Dashboards",
+            "active_widgets": "Aktive Widgets",
+            "active_sources": "Aktive Quellen",
+            "used_info": "{{current}} / {{max}} Verwendet"
+        },
+        "not_found": "Fabrik nicht gefunden",
+        "search": {
+            "dashboards_placeholder": "Dashboards filtern...",
+            "sources_placeholder": "Quellen suchen...",
+            "no_sources_found": "Keine Quellen gefunden, die Ihrer Suche entsprechen."
+        },
+        "quota": {
+            "limit_reached": "Quotenlimit erreicht"
+        },
+        "table": {
+            "headers": {
+                "name": "Name",
+                "status": "Status",
+                "actions": "Aktionen"
+            }
+        },
+        "status": {
+            "active": "Aktiv",
+            "inactive": "Inaktiv"
+        },
+        "confirm": {
+            "delete_source": "Sind Sie sicher, dass Sie diese Datenquelle löschen möchten?",
+            "delete_dashboard": "Sind Sie sicher, dass Sie dieses Dashboard löschen möchten?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Heute",
+            "yesterday": "Gestern",
+            "last_7_days": "7 Tage",
+            "last_30_days": "30 Tage",
+            "this_month": "Diesen Monat",
+            "last_month": "Letzten Monat"
+        },
+        "shifts": {
+            "all": "Alle Schichten",
+            "shift_a": "Schicht A (Morgen)",
+            "shift_b": "Schicht B (Abend)",
+            "shift_c": "Schicht C (Nacht)"
+        },
+        "date_range": "Datumsbereich",
+        "to": "bis"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Arbeitsbereich",
+            "factory": "Fabrik",
+            "line": "Linie",
+            "dashboard": "Dashboard"
+        },
+        "status": {
+            "updated": "Aktualisiert {{time}}",
+            "live": "Live",
+            "loading": "Laden...",
+            "saving": "Speichern..."
+        },
+        "actions": {
+            "refresh": "Aktualisieren",
+            "reset_layout": "Layout zurücksetzen",
+            "reset_confirm": "Sind Sie sicher, dass Sie das Layout auf Standard zurücksetzen möchten?",
+            "design_layout": "Layout entwerfen",
+            "save_layout": "Layout speichern",
+            "add_widget": "Widget hinzufügen",
+            "cancel": "Abbrechen"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Widget-Bibliothek",
+            "subtitle": "Ziehen Sie Widgets per Drag & Drop, um Ihr Dashboard-Layout anzupassen.",
+            "categories": {
+                "all": "Alle",
+                "production": "Produktion",
+                "quality": "Qualität",
+                "efficiency": "Effizienz"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simuliert",
+            "ready_to_use": "Einsatzbereit",
+            "recommended": "Empfohlen",
+            "future_capability": "Zukünftige Funktion",
+            "coming_soon": "Demnächst",
+            "near_match": "Nahe Treffer",
+            "ai_recommendations": "KI-Empfehlungen",
+            "select_all": "Alles auswählen",
+            "selected": "ausgewählt",
+            "compatible": "kompatibel",
+            "status_summary": "{{selected}} ausgewählt • {{compatible}} kompatibel",
+            "data_req": "Daten erforderlich",
+            "needs_mapping": "Benötigt Zuordnung",
+            "categories": {
+                "Efficiency": "Effizienz",
+                "Quality": "Qualität",
+                "Workforce": "Belegschaft",
+                "Operations": "Betrieb"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Empfohlen",
+                "Operations": "Betrieb",
+                "Strategy": "Strategie"
+            },
+            "efficiency_starter": {
+                "title": "Effizienz-Kickstart",
+                "description": "Wesentliches Toolkit zur Verfolgung von Output und Stundenleistung."
+            },
+            "quality_auditor": {
+                "title": "Qualitätsprüfer",
+                "description": "Fokus auf DHU, Fehler und Geschwindigkeit-Qualität-Abwägung."
+            },
+            "floor_manager": {
+                "title": "Hallenleiter-Ansicht",
+                "description": "Echtzeit-Sichtbarkeit von Belegschaft und Produktion."
+            },
+            "executive_summary": {
+                "title": "Management-Zusammenfassung",
+                "description": "High-Level-KPIs für strategische Entscheidungen."
+            }
+        },
+        "common": {
+            "planned": "GEPLANT",
+            "actual": "IST",
+            "target": "ZIEL",
+            "efficiency": "Effizienz",
+            "minutes": "Min",
+            "limit": "Limit",
+            "status": "Status",
+            "on_target": "IM ZIEL",
+            "below_target": "UNTER ZIEL",
+            "defect_rate": "Fehlerrate"
+        },
+        "titles": {
+            "production_chart": "Produktionsoutput",
+            "line_efficiency": "Linien-Effizienz",
+            "earned_minutes": "Verdiente Minuten",
+            "sam_performance": "SAM-Leistung",
+            "dhu_quality": "DHU-Qualität",
+            "speed_quality": "Geschw. vs Qualität",
+            "top_blockers": "Hauptblocker",
+            "style_progress": "Style-Fortschritt",
+            "daily_target": "Tagesziel",
+            "production_timeline": "Produktionszeitplan",
+            "complexity_impact": "Komplexitäts-Einfluss",
+            "workforce_attendance": "Mitarbeiter-Anwesenheit",
+            "kpi_summary": "KPI-Zusammenfassung"
+        },
+        "descriptions": {
+            "production_chart": "Vergleich geplant vs. tatsächlich über Zeit",
+            "line_efficiency": "Echtzeit-Effizienz gegen Ziel",
+            "earned_minutes": "Standardminuten (SAM) verdient vs. verfügbar",
+            "sam_performance": "Leistungskennzahl basierend auf Standardminuten",
+            "dhu_quality": "Trendanalyse Fehler pro Hunder Einheiten",
+            "speed_quality": "Korrelation zwischen Geschwindigkeit und Qualität",
+            "top_blockers": "Häufigste Gründe für Produktionsstopps",
+            "style_progress": "Fortschritt % der aktuellen Styles",
+            "daily_target": "Fortschritt zum Tagesziel",
+            "production_timeline": "Gantt-Ansicht des Zeitplans",
+            "complexity_impact": "Analyse der Style-Komplexität",
+            "workforce_attendance": "Anwesenheit und Linienausgleich",
+            "kpi_summary": "Übersicht der wichtigsten Kennzahlen"
+        },
+        "production_chart": {
+            "planned": "GEPLANT",
+            "actual_output": "IST-OUTPUT"
+        },
+        "speed_quality": {
+            "efficiency": "Effizienz",
+            "defect_rate": "Fehlerrate"
+        },
+        "earned_minutes": {
+            "earned": "VERDIENT",
+            "available": "VERFÜGBAR"
+        },
+        "dhu_quality": {
+            "no_data": "Keine DHU-Daten",
+            "current_dhu": "Aktueller DHU",
+            "above_limit": "ÜBER LIMIT"
+        },
+        "blocker_cloud": {
+            "occurrences": "Vorkommen",
+            "view_all_logs": "Alle Logs ansehen"
+        }
+    },
+    "common": {
+        "back": "Zurück",
+        "cancel": "Abbrechen",
+        "error": "Fehler",
+        "success": "Erfolg",
+        "uploading": "Hochladen...",
+        "processing": "Verarbeiten...",
+        "remove": "Entfernen",
+        "ready": "Bereit",
+        "needs_setup": "Einrichtung nötig",
+        "date": "Datum",
+        "actions": {
+            "save": "Speichern",
+            "cancel": "Abbrechen",
+            "close": "Schließen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
+            "search": "Suchen...",
+            "confirm": "Bestätigen",
+            "back": "Zurück",
+            "create": "Erstellen",
+            "invite": "Einladen"
+        },
+        "status": {
+            "active": "Aktiv",
+            "inactive": "Inaktiv",
+            "unknown": "Unbekannt"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Dashboard-Name",
+            "dashboard_name_placeholder": "z.B. Linie 4 Übersicht",
+            "name_error_tooltip": "Bitte geben Sie zuerst einen Namen ein.",
+            "name_error_text": "Bitte geben Sie einen Namen ein, um fortzufahren.",
+            "selection_title": "Datenquellenauswahl",
+            "selection_desc": "Wählen Sie eine hochgeladene Datei.",
+            "columns": {
+                "file_name": "Dateiname",
+                "status": "Status",
+                "uploaded": "Hochgeladen",
+                "action": "Aktion"
+            },
+            "btn_configure": "Konfigurieren",
+            "btn_complete_setup": "Einrichtung abschließen",
+            "note": "Hinweis: Dashboard enthält Daten ALLER Dateien.",
+            "empty_title": "Noch keine Datenquellen",
+            "empty_desc": "Laden Sie Dateien auf der Produktionslinienseite hoch.",
+            "error_load_failed": "Fehler beim Laden der Konfiguration."
+        },
+        "step2": {
+            "title": "Mapping validieren",
+            "subtitle": "Überprüfen Sie die Spaltenzuordnung.",
+            "stats": {
+                "auto": "Auto-zugeordnet",
+                "review": "Prüfung nötig",
+                "attention": "Achtung",
+                "ignored": "Ignoriert"
+            },
+            "filter": {
+                "all": "Alle",
+                "unmapped": "Nicht zugeordnet",
+                "conflicts": "Konflikte"
+            },
+            "showing_count": "Zeige {{filtered}} von {{total}} Spalten",
+            "table": {
+                "source": "Quellspalte",
+                "target": "Zielfeld",
+                "status": "Status",
+                "no_match": "Keine Übereinstimmung",
+                "try_different": "Versuchen Sie eine andere Ansicht"
+            },
+            "status_labels": {
+                "exact": "Exakt",
+                "exact_tooltip": "Exakter Name",
+                "fuzzy": "Ähnlich",
+                "fuzzy_tooltip": "Ähnlicher Name",
+                "ai": "KI",
+                "ai_tooltip": "KI-Vorschlag",
+                "manual": "Manuell",
+                "manual_tooltip": "Manuell zugewiesen",
+                "unset": "Nicht gesetzt",
+                "unset_tooltip": "Benötigt Zuordnung",
+                "duplicate": "Duplikat"
+            },
+            "field_selector": {
+                "select_placeholder": "Zielfeld wählen...",
+                "search_placeholder": "Felder suchen...",
+                "suggested": "Vorgeschlagen",
+                "all_fields": "Alle Felder",
+                "no_results": "Keine Felder für \"{{term}}\"",
+                "ignore_action": "Spalte ignorieren",
+                "restore_action": "Ignoriert — klicken zum Wiederherstellen",
+                "in_use": "in Verwendung"
+            },
+            "alerts": {
+                "conflict_count_one": "1 Feld hat doppelte Zuordnungen",
+                "conflict_count_other": "{{count}} Felder haben doppelte Zuordnungen",
+                "remaining_needed": "Verbleibende Felder benötigt"
+            },
+            "btn_confirm": "Mapping bestätigen",
+            "processing": {
+                "title": "Daten verarbeiten",
+                "subtitle": "Validierung und Import...",
+                "logs": {
+                    "init": "Initialisiere...",
+                    "schema": "Prüfe Schema...",
+                    "mapping": "Mappe Spalte '{{column}}'...",
+                    "req": "Verarbeite Anfrage...",
+                    "sending": "Sende Daten...",
+                    "success": "Erfolgreich."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Schnellstart-Vorlagen",
+            "divider": "oder individuell anpassen",
+            "library_title": "Widget-Bibliothek",
+            "selected_count": "{{count}} ausgewählt",
+            "btn_create": "Dashboard erstellen",
+            "btn_configuring": "Konfiguriere..."
+        },
+        "title": "LineSight Setup",
+        "steps": {
+            "upload": {
+                "label": "Quelldaten",
+                "desc": "Upload / Auswahl",
+                "desc_alt": "Upload CSV/Excel"
+            },
+            "mapping": {
+                "label": "Daten-Mapping",
+                "desc": "Spalten prüfen"
+            },
+            "widgets": {
+                "label": "Dashboard",
+                "desc": "Layout konfigurieren"
+            }
+        },
+        "mini_map": {
+            "title": "Vorschau",
+            "empty_state": "Widgets auswählen",
+            "stats": {
+                "widgets_one": "{{count}} Widget",
+                "widgets_other": "{{count}} Widgets",
+                "screens_one": "~{{count}} Bildschirm",
+                "screens_other": "~{{count}} Bildschirme"
+            },
+            "density": {
+                "empty": "Leer",
+                "compact": "Kompakt",
+                "balanced": "Ausgewogen",
+                "heavy": "Dicht"
+            },
+            "scroll_warning": "Scrollen evtl. nötig"
+        },
+        "context": {
+            "title": "Aktueller Kontext",
+            "select_factory": "Fabrik wählen",
+            "select_source": "Quelle wählen",
+            "select_factory_first": "Erst Fabrik wählen",
+            "loading_factories": "Lade Fabriken...",
+            "loading_sources": "Lade Quellen...",
+            "fetching_sources": "Rufe Quellen ab...",
+            "no_sources_alert": "Keine Quellen verfügbar. Bitte konfigurieren.",
+            "select_source_overlay": "Quelle auswählen zum Fortfahren"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Daten hochladen",
+            "title_preview": "Datenvorschau",
+            "subtitle_upload": "Upload zu {{dataSourceName}}",
+            "subtitle_preview": "Vorschau des Imports",
+            "drop_text": "Datei hier ablegen oder klicken",
+            "supports_text": "Unterstützt Excel (.xlsx, .xls) und CSV",
+            "success_redirect": "Upload erfolgreich! Weiter zum Mapping...",
+            "info_preview": "Vorschau vor dem Mapping.",
+            "btn_upload_preview": "Upload & Vorschau",
+            "btn_uploading": "Lade hoch...",
+            "errors": {
+                "invalid_extension": "Bitte Excel oder CSV wählen",
+                "duplicate_file": "Datei bereits vorhanden.",
+                "preview_failed": "Vorschau fehlgeschlagen.",
+                "upload_failed": "Upload fehlgeschlagen"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Organisationseinstellungen",
+        "description": "Verwalten Sie Ihre Arbeitsbereichskonfiguration.",
+        "cards": {
+            "general": {
+                "title": "Allgemein",
+                "description": "Profil, Logo und IDs."
+            },
+            "members": {
+                "title": "Mitglieder",
+                "description": "Zugriff, Rollen und Einladungen."
+            },
+            "infrastructure": {
+                "title": "Infrastruktur",
+                "description": "Fabriken, Linien und Zonen."
+            },
+            "security": {
+                "title": "Sicherheit",
+                "description": "SSO, Logs und Passwörter."
+            },
+            "billing": {
+                "title": "Abrechnung",
+                "description": "Rechnungen und Limits."
+            }
+        },
+        "badges": {
+            "coming_soon": "Demnächst"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Zurück zu Einstellungen"
+        },
+        "top_nav": {
+            "search_placeholder": "Suche Fabriken, Aufträge...",
+            "search_coming_soon": "Globale Suche kommt bald!",
+            "notifications": {
+                "title": "Benachrichtigungen",
+                "mark_read": "Alle gelesen",
+                "empty": "Keine neuen Nachrichten"
+            },
+            "user_menu": {
+                "profile": "Profil & Einstellungen",
+                "logout": "Abmelden",
+                "default_user": "Benutzer",
+                "default_role": "Betrachter"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organisation",
+            "factories": "Fabriken"
+        },
+        "header": {
+            "title": "Fabrik-Konfiguration",
+            "popover_trigger_label": "Fabrik-Info"
+        },
+        "popover": {
+            "title": "Konfiguration",
+            "assignment": {
+                "title": "Zuweisungsmodus:",
+                "desc_part1": "Standardansicht. Klicken für Details oder",
+                "desc_part2": "Button zum Zuweisen von Managern."
+            },
+            "structure": {
+                "title": "Strukturmodus:",
+                "desc": "Layout anpassen zum Ändern der Quellen."
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Zuweisung",
+            "structure_mode": "Struktur",
+            "customize_layout": "Layout anpassen",
+            "done_editing": "Fertig"
+        },
+        "list": {
+            "add_data_source": "Quelle hinzufügen",
+            "no_data_sources": "Keine Quellen. Wechseln Sie in den Bearbeitungsmodus."
+        },
+        "bulk_actions": {
+            "selected": "Ausgewählt",
+            "assign_manager": "Manager zuweisen"
+        },
+        "messages": {
+            "loading": "Lade Fabrik...",
+            "assignment_failed": "Zuweisung fehlgeschlagen."
+        }
+    },
+    "roles": {
+        "system_admin": "System-Admin",
+        "owner": "Inhaber",
+        "admin": "Admin",
+        "viewer": "Betrachter",
+        "member": "Mitglied",
+        "operator": "Bediener",
+        "factory_manager": "Fabrikleiter",
+        "line_manager": "Linienleiter",
+        "user": "Benutzer",
+        "manager": "Manager"
+    },
+    "org_general": {
+        "title": "Allgemein",
+        "profile": {
+            "logged_in_as": "Angemeldet als"
+        },
+        "at_a_glance": "Auf einen Blick",
+        "stats": {
+            "total_managers": "Manager gesamt",
+            "assigned": "Zugewiesen",
+            "factories": "Fabriken",
+            "production_lines": "Produktionslinien"
+        },
+        "danger_zone": {
+            "title": "Gefahrenzone",
+            "description": "Löschen der Organisation entfernt alle Daten unwiderruflich.",
+            "delete_button": "Organisation löschen (Demnächst)"
+        }
+    },
+    "org_members": {
+        "title": "Mitglieder",
+        "invite_member": "Mitglied einladen",
+        "search_placeholder": "Suche Name oder E-Mail...",
+        "filter": "Filter",
+        "table": {
+            "user": "Benutzer",
+            "global_role": "Globale Rolle",
+            "access": "Zugriff",
+            "last_active": "Zuletzt aktiv",
+            "actions": "Aktionen",
+            "loading": "Lade Mitglieder...",
+            "no_members": "Keine Mitglieder gefunden.",
+            "assignments": "{{count}} Zuweisungen",
+            "unassigned": "Nicht zugewiesen",
+            "never_active": "Nie",
+            "view_details": "Details ansehen"
+        },
+        "drawer": {
+            "title": "Mitgliederdetails",
+            "role_label": "Rolle",
+            "active_assignments": "Aktive Zuweisungen",
+            "no_assignments": "Keine Zuweisungen.",
+            "current_factory": "Aktuelle Fabrik",
+            "danger_zone": {
+                "title": "Gefahrenzone",
+                "suspend_button": "Benutzer sperren"
+            }
+        },
+        "cell": {
+            "unknown_user": "Unbekannter Benutzer",
+            "active": "Aktiv",
+            "inactive": "Inaktiv"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Zurück",
+        "back_button": "Zurück",
+        "title": "Infrastruktur",
+        "sites_count": "{{count}} Standorte",
+        "sites": "Standorte",
+        "add_factory": "Fabrik hinzufügen",
+        "search_placeholder": "Suche...",
+        "retry": "Wiederholen",
+        "new_factory": {
+            "title": "Neue Fabrik",
+            "subtitle": "Neuen Standort hinzufügen"
+        },
+        "card": {
+            "data_sources": "Datenquellen",
+            "managers": "Manager",
+            "configure_site": "Konfigurieren",
+            "edit_details": "Details bearbeiten",
+            "delete_factory": "Löschen"
+        },
+        "list": {
+            "name": "Name",
+            "factory": "Fabrik",
+            "code": "Code",
+            "country": "Land",
+            "sources": "Quellen",
+            "managers": "Manager",
+            "actions": "Aktionen"
+        },
+        "no_match": "Kein Treffer für \"{{query}}\"",
+        "confirm_delete": "Löschen von {{name}} bestätigen? Unwiderruflich.",
+        "delete_fail": "Löschen fehlgeschlagen: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Datenquelle hinzufügen",
+            "subtitle": "Neue Quelle für {{factoryName}}",
+            "name_label": "Name",
+            "name_placeholder": "z.B. Linie 3",
+            "code_label": "Code",
+            "code_placeholder": "L-03",
+            "specialty_label": "Fachgebiet",
+            "specialty_placeholder": "z.B. Montage",
+            "description_label": "Beschreibung",
+            "description_placeholder": "Beschreibung...",
+            "use_defaults": "Fabrik-Standards nutzen",
+            "inherit_tooltip": "Erbt Schichten & Wochenenden",
+            "custom_tooltip": "Eigene Konfiguration",
+            "inherit_desc": "Erbt automatisch Schichtmodell.",
+            "custom_desc": "Startet mit leerem Plan",
+            "source_usage": "Quellennutzung",
+            "quota_reached": "Max. Quellen erreicht.",
+            "submit_button": "Hinzufügen",
+            "submitting": "Erstelle..."
+        },
+        "create_factory": {
+            "title": "Neue Fabrik",
+            "subtitle": "Fabrik mit erster Quelle einrichten",
+            "quota_reached": "Quote erreicht",
+            "name_label": "Fabrikname",
+            "name_placeholder": "z.B. Werk Berlin",
+            "code_label": "Fabrik-Code",
+            "code_placeholder": "z.B. BER-01",
+            "code_desc": "Kurzzeichen",
+            "source_name_label": "Initiale Datenquelle",
+            "source_name_placeholder": "z.B. Linie A",
+            "source_specialty_label": "Fachgebiet",
+            "source_specialty_placeholder": "z.B. Produktion",
+            "source_specialty_desc": "Hauptfunktion",
+            "source_desc_label": "Beschreibung",
+            "source_desc_placeholder": "Kurzbeschreibung",
+            "source_desc_help": "Funktion der Quelle",
+            "submitting_msg": "Erstelle Fabrik...",
+            "submit_button": "Erstellen",
+            "submitting_button": "Erstelle..."
+        },
+        "edit_factory": {
+            "title": "Fabrik bearbeiten",
+            "name_label": "Name",
+            "code_label": "Code",
+            "submit_button": "Speichern",
+            "submitting_button": "Speichere..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Umbenennen",
+            "managers_stat": "Manager",
+            "efficiency_stat": "Effizienz",
+            "assigned_team": "Team",
+            "no_managers": "Keine Manager zugewiesen.",
+            "remove_button": "Entfernen",
+            "danger_zone": "Gefahrenzone",
+            "delete_button": "Quelle löschen",
+            "confirm_remove": "Manager entfernen?",
+            "remove_fail": "Entfernen fehlgeschlagen.",
+            "confirm_delete": "{{name}} wirklich löschen?",
+            "delete_fail": "Löschen nicht möglich (aktiv/Daten).",
+            "rename_fail": "Umbenennen fehlgeschlagen."
+        },
+        "row": {
+            "untitled_source": "Unbenannte Quelle",
+            "rename_required": "Name erforderlich",
+            "click_tooltip": "Klicken für Details",
+            "confirm_delete": "{{name}} löschen?",
+            "rename_prompt": "Quelle umbenennen:"
+        },
+        "user_search": {
+            "placeholder": "Manager suchen...",
+            "no_results": "Keine Treffer",
+            "no_available": "Keine verfügbar",
+            "available_count": "{{count}} verfügbar"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Willkommen zurück",
+            "welcome_subtitle": "Bitte einloggen.",
+            "email_label": "Arbeits-E-mail",
+            "password_label": "Passwort",
+            "forgot_password": "Passwort vergessen?",
+            "sign_in_button": "Anmelden",
+            "no_account": "Kein Konto?",
+            "contact_sales": "Vertrieb kontaktieren",
+            "back_to_landing": "Zur Startseite",
+            "errors": {
+                "network_error": "Verbindungsfehler.",
+                "invalid_credentials": "Ungültige Zugangsdaten."
+            },
+            "demo_card": {
+                "title": "Schichtbericht",
+                "subtitle": "Live • Fabrik 01",
+                "efficiency": "Effizienz",
+                "efficiency_sub": "↑ {{val}}% vs Ziel",
+                "output": "Output",
+                "output_sub": "Im Plan",
+                "chart_title": "Stundenrate",
+                "chart_period": "Letzte 4h",
+                "chart_current": "Aktuell",
+                "quote": "\"{{text}}\"",
+                "quote_author": "Betriebsleiter"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Unerwarteter Fehler",
+            "unknown_error": "Unbekannter Fehler.",
+            "return_home": "Zur Startseite"
+        },
+        "confirm_dialog": {
+            "confirm": "Bestätigen",
+            "cancel": "Abbrechen",
+            "please_wait": "Bitte warten..."
+        },
+        "quota_warning": {
+            "limit_reached": "{{type}}-Limit erreicht ({{max}})",
+            "near_limit": "{{type}}-Limit fast erreicht ({{current}}/{{max}})",
+            "upgrade_prompt": "Upgrade für mehr {{type}}.",
+            "consider_upgrade": "Erwägen Sie ein Upgrade.",
+            "upgrade_button": "Upgrade",
+            "dismiss_label": "Schließen",
+            "type_factories": "Fabriken",
+            "type_lines": "Produktionslinien"
+        },
+        "date_range_picker": {
+            "start_date": "Startdatum",
+            "end_date": "Enddatum",
+            "start_in_timezone": "Start in {{timezone}}",
+            "end_in_timezone": "Ende in {{timezone}}"
+        },
+        "breadcrumb": {
+            "aria_label": "Brotkrumen"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Fabrikstandards",
+            "subtitle": "Defaults für {{name}}"
+        },
+        "sections": {
+            "localization": "Lokalisierung",
+            "shifts": {
+                "title": "Standard-Schichtmodell",
+                "description": "Für neue Linien übernommen."
+            },
+            "non_working_days": {
+                "title": "Standard-Ruhetage",
+                "description": "Standardmäßig arbeitsfrei."
+            },
+            "schema_configuration": "Schema-Konfiguration",
+            "upload_history": "Upload-Verlauf",
+            "active_field_mapping": "Aktives Mapping",
+            "field_mapping_description": "Excel-Header zu Systemfeldern."
+        },
+        "fields": {
+            "date_format": "Datumsformat",
+            "currency": "Währung",
+            "measurement_system": "Maßsystem",
+            "preview": "Vorschau"
+        },
+        "shifts": {
+            "add": "Schicht hinzufügen",
+            "new_shift": "Neue Schicht",
+            "empty": "Keine Schichten konfiguriert.",
+            "name_label": "Name",
+            "name_placeholder": "z.B. Früh",
+            "start_time": "Start",
+            "end_time": "Ende"
+        },
+        "timezone_warning": {
+            "title": "Zeitzone ändern?",
+            "message": "Wechsel zu <strong>{{timezone}}</strong> beeinflusst historische Daten.",
+            "confirm": "Ja, ändern"
+        },
+        "buttons": {
+            "save": "Speichern",
+            "saving": "Speichere..."
+        },
+        "errors": {
+            "save_failed": "Speichern fehlgeschlagen."
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Quelle nicht gefunden",
+        "system_node": "System-Node",
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Fabrik",
+            "not_found": "Nicht gefunden"
+        },
+        "tabs": {
+            "schema_configuration": "Schema",
+            "upload_history": "Uploads"
+        },
+        "schema": {
+            "active_field_mapping": "Aktives Mapping",
+            "field_mapping_description": "Excel zu System.",
+            "edit_mappings": "Bearbeiten",
+            "reset_schema": "Zurücksetzen",
+            "no_mappings": "Kein Mapping.",
+            "system_status": "Systemstatus",
+            "last_updated": "Zuletzt aktualisiert",
+            "no_config_title": "Keine Konfiguration",
+            "no_config_description": "Noch nicht gemappt.",
+            "no_config_hint": "Bitte Datei hochladen.",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "System"
+            }
+        },
+        "uploads": {
+            "processed_files": "Verarbeitete Dateien",
+            "clear_history": "Verlauf löschen",
+            "no_files": "Keine Dateien."
+        },
+        "confirm": {
+            "reset_schema": "WARNUNG: Löscht Quelle und Schema. Sicher?",
+            "clear_history": "WARNUNG: Löscht Upload-Verlauf. Sicher?"
+        },
+        "errors": {
+            "reset_failed": "Fehler beim Zurücksetzen.",
+            "clear_failed": "Fehler beim Löschen."
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Dashboard ist leer",
+            "description": "Fügen Sie Widgets hinzu.",
+            "action": "Designer öffnen"
+        }
+    },
+    "file_preview": {
+        "title": "Vorschau",
+        "loading": "Lade Vorschau...",
+        "loading_subtitle": "Analysiere...",
+        "error_title": "Fehler",
+        "error_default": "Vorschau fehlgeschlagen.",
+        "showing_rows": "Zeige {{count}} Zeilen",
+        "columns_detected": "{{count}} Spalten",
+        "info_note": "Datenvorschau.",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Datenintegration",
+        "subtitle": "Schema & Datenfluss",
+        "upload_data": "Upload",
+        "collapse": "Einklappen",
+        "expand": "Ausklappen",
+        "tabs": {
+            "schema": "Schema",
+            "uploads": "Verlauf"
+        },
+        "empty_sources": "Keine Quellen.",
+        "configure_new": "Neue Quelle",
+        "no_description": "Keine Beschreibung.",
+        "schema_version": "Schema v{{version}}:",
+        "no_active_schema": "Kein Schema",
+        "edit_config": "Bearbeiten",
+        "error_update": "Fehler.",
+        "modal": {
+            "title": "Konfiguration",
+            "source_name": "Name",
+            "time_column": "Zeitspalte",
+            "time_column_hint": "Excel-Header Name.",
+            "config_active": "Aktiv"
+        }
+    },
+    "data_source_config": {
+        "title": "Quellen-Konfiguration",
+        "subtitle": "Linie: {{id}}",
+        "loading": "Lade...",
+        "not_configured_title": "Nicht konfiguriert",
+        "not_configured_desc": "Keine Quelle konfiguriert.",
+        "close_modal": "Schließen",
+        "time_column": "Zeitspalte",
+        "time_column_placeholder": "z.B. Datum",
+        "time_column_hint": "Name der Zeitspalte.",
+        "schema_title": "Aktives Schema",
+        "schema_version": "Version {{version}}",
+        "table": {
+            "source": "Quelle",
+            "target": "Ziel"
+        },
+        "schema_note": "Automatisch gelernt.",
+        "description": "Beschreibung",
+        "description_placeholder": "Beschreibung...",
+        "success": "Erfolg!",
+        "error_save": "Fehler beim Speichern.",
+        "error_load": "Fehler beim Laden.",
+        "save_button": "Speichern"
+    },
+    "upload_history": {
+        "title": "Letzte Uploads",
+        "loading": "Laden...",
+        "empty": "Leer.",
+        "error": "Fehler."
+    }
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Settings, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '../../../api/endpoints/factories/factories';
@@ -28,6 +29,7 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
     const [useDefaults, setUseDefaults] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const { t } = useTranslation();
     const createDataSourceMutation = useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost();
 
     // Get quota info for this specific factory
@@ -110,9 +112,9 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                             <Settings className="w-6 h-6 text-brand" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-text-main">Add Data Source</h2>
+                            <h2 className="text-xl font-bold text-text-main">{t('org_modals.create_datasource.title')}</h2>
                             <p className="text-sm text-text-muted mt-0.5">
-                                Add a new source to {factoryName}
+                                {t('org_modals.create_datasource.subtitle', { factoryName })}
                             </p>
                         </div>
                     </div>
@@ -128,14 +130,14 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                         : 'bg-danger/10 border-danger/20'
                         }`}>
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-text-main">Source Usage</span>
+                            <span className="text-sm font-medium text-text-main">{t('org_modals.create_datasource.source_usage')}</span>
                             <span className={`text-sm font-bold ${canCreate ? 'text-brand' : 'text-danger'}`}>
                                 {factoryQuota.current} / {quotaStatus?.lines_per_factory.max}
                             </span>
                         </div>
                         {!canCreate && (
                             <p className="text-xs text-danger mt-1">
-                                Maximum sources reached for this factory.
+                                {t('org_modals.create_datasource.quota_reached')}
                             </p>
                         )}
                     </div>
@@ -143,49 +145,49 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-text-main mb-1">Name *</label>
+                        <label className="block text-sm font-medium text-text-main mb-1">{t('org_modals.create_datasource.name_label')} *</label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all"
-                            placeholder="e.g. Line 3 / Cutting Table A"
+                            placeholder={t('org_modals.create_datasource.name_placeholder')}
                             disabled={!canCreate || isSubmitting}
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-text-main mb-1">Code</label>
+                            <label className="block text-sm font-medium text-text-main mb-1">{t('org_modals.create_datasource.code_label')}</label>
                             <input
                                 type="text"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                                 className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all font-mono"
-                                placeholder="L-03"
+                                placeholder={t('org_modals.create_datasource.code_placeholder')}
                                 disabled={!canCreate || isSubmitting}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-text-main mb-1">Specialty</label>
+                            <label className="block text-sm font-medium text-text-main mb-1">{t('org_modals.create_datasource.specialty_label')}</label>
                             <input
                                 type="text"
                                 value={specialty}
                                 onChange={(e) => setSpecialty(e.target.value)}
                                 className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all"
-                                placeholder="e.g. Assembly"
+                                placeholder={t('org_modals.create_datasource.specialty_placeholder')}
                                 disabled={!canCreate || isSubmitting}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-text-main mb-1">Description</label>
+                        <label className="block text-sm font-medium text-text-main mb-1">{t('org_modals.create_datasource.description_label')}</label>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className="w-full px-3 py-2 border border-border rounded-lg bg-surface text-text-main placeholder:text-text-muted/50 focus:ring-2 focus:ring-brand focus:border-transparent outline-none transition-all resize-none"
-                            placeholder="Briefly describe this data source..."
+                            placeholder={t('org_modals.create_datasource.description_placeholder')}
                             rows={2}
                             disabled={!canCreate || isSubmitting}
                         />
@@ -202,22 +204,22 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                                     className="w-4 h-4 text-brand rounded border-border focus:ring-brand bg-surface"
                                     disabled={!canCreate || isSubmitting}
                                 />
-                                <span className="text-sm font-medium text-text-main">Use Factory Defaults</span>
+                                <span className="text-sm font-medium text-text-main">{t('org_modals.create_datasource.use_defaults')}</span>
                             </label>
                             <span className="text-xs text-text-muted">
-                                {useDefaults ? 'Inherits shifts & weekends' : 'Custom configuration'}
+                                {useDefaults ? t('org_modals.create_datasource.inherit_tooltip') : t('org_modals.create_datasource.custom_tooltip')}
                             </span>
                         </div>
 
                         {useDefaults ? (
                             <p className="text-xs text-text-muted ml-6">
-                                This source will automatically inherit the factory's standard shift pattern.
+                                {t('org_modals.create_datasource.inherit_desc')}
                             </p>
                         ) : (
                             <div className="ml-6 mt-2">
                                 <p className="text-xs text-warning flex items-center gap-1.5">
                                     <AlertCircle className="w-3.5 h-3.5" />
-                                    Starting with empty schedule
+                                    {t('org_modals.create_datasource.custom_desc')}
                                 </p>
                             </div>
                         )}
@@ -236,17 +238,17 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
                             onClick={onClose}
                             disabled={isSubmitting}
                         >
-                            Cancel
+                            {t('common.actions.cancel')}
                         </Button>
                         <Button
                             type="submit"
                             disabled={isSubmitting || !canCreate}
                             className="bg-brand hover:bg-brand-dark text-white gap-2"
                         >
-                            {isSubmitting ? 'Creating...' : (
+                            {isSubmitting ? t('org_modals.create_datasource.submitting') : (
                                 <>
                                     <CheckCircle className="w-4 h-4" />
-                                    <span>Add Source</span>
+                                    <span>{t('org_modals.create_datasource.submit_button')}</span>
                                 </>
                             )}
                         </Button>

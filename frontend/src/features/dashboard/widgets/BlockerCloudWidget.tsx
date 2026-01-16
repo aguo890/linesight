@@ -56,7 +56,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
 
     return (
         <div className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+            <div className="flex-1 overflow-y-auto space-y-3 pe-1">
                 {displayReasons.map((item, idx) => (
                     <div key={idx} className="group">
                         <div className="flex justify-between items-center text-xs mb-1">
@@ -77,7 +77,7 @@ const BlockerCloudWidget: React.FC<SmartWidgetProps<DowntimeReasonsData, Blocker
 
             <div className="mt-2 pt-2 border-t border-border">
                 <button className="text-[10px] text-brand font-medium flex items-center hover:underline">
-                    {t('widgets.blocker_cloud.view_all_logs')} <ArrowRight className="w-3 h-3 ml-1" />
+                    {t('widgets.blocker_cloud.view_all_logs')} <ArrowRight className="w-3 h-3 ms-1 rtl:rotate-180" />
                 </button>
             </div>
         </div>

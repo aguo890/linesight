@@ -6,8 +6,10 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { AutoFlipIcon } from '../common/AutoFlipIcon';
 
 interface SettingsPageHeaderProps {
     title: string;
@@ -22,19 +24,22 @@ export const SettingsPageHeader: React.FC<SettingsPageHeaderProps> = ({
     title,
     description,
     backTo = '/organization/settings',
-    backLabel = 'Back to Settings'
+    backLabel
 }) => {
+    const { t } = useTranslation();
+    const label = backLabel ?? t('layout.settings_header.back_to_settings');
     return (
         <div className="mb-6">
             <Link
                 to={backTo}
                 className="inline-flex items-center text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] mb-4 transition-colors group"
             >
-                <ArrowLeft
+                <AutoFlipIcon
+                    icon={ArrowLeft}
                     size={16}
-                    className="mr-1.5 transition-transform group-hover:-translate-x-0.5"
+                    className="me-1.5 group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5"
                 />
-                {backLabel}
+                {label}
             </Link>
             <div>
                 <h1 className="text-2xl font-bold text-[var(--color-text)]">{title}</h1>

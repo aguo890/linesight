@@ -1,0 +1,1018 @@
+{
+    "profile": {
+        "title": "Profil Utilisateur",
+        "subtitle": "Gérez les paramètres et préférences de votre compte",
+        "back": "Retour",
+        "save_btn": "Enregistrer les modifications",
+        "success": "Profil mis à jour avec succès !",
+        "error_required": "Le nom complet est requis",
+        "error_fail": "Échec de la mise à jour du profil. Veuillez réessayer.",
+        "at": "à",
+        "roles": {
+            "admin": "Administrateur",
+            "user": "Utilisateur",
+            "manager": "Manager"
+        },
+        "sections": {
+            "factories": "Vos Usines",
+            "security": "Sécurité",
+            "personal_info": "Informations Personnelles",
+            "localization": "Localisation et Région",
+            "notifications": "Préférences de Notification (Bientôt)"
+        },
+        "security": {
+            "change_password": "Changer le mot de passe",
+            "two_factor": "Authentification à deux facteurs"
+        },
+        "fields": {
+            "full_name": "Nom complet",
+            "email": "Adresse E-mail",
+            "email_hint": "L'adresse e-mail ne peut pas être modifiée directement.",
+            "language": "Langue",
+            "theme": "Thème"
+        },
+        "themes": {
+            "light": "Mode Clair",
+            "dark": "Mode Sombre",
+            "system": "Défaut Système"
+        },
+        "notifications": {
+            "email": "Alertes E-mail",
+            "push": "Notifications Push",
+            "weekly": "Résumé Hebdomadaire"
+        },
+        "location_selector": {
+            "label": "Localisation et Fuseau Horaire",
+            "auto_detect": "Détection Auto",
+            "search_placeholder": "Rechercher un pays...",
+            "no_results": "Aucun pays trouvé",
+            "select_country_first": "Sélectionnez d'abord un pays",
+            "selected": "Sélectionné :"
+        }
+    },
+    "navigation": {
+        "dashboard": "Tableau de Bord",
+        "my_dashboards": "Mes Tableaux de Bord",
+        "organization": "Organisation",
+        "show_more": "Afficher plus",
+        "show_less": "Afficher moins"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Mes Tableaux de Bord",
+            "search_placeholder": "Rechercher des sites...",
+            "status": {
+                "loading": "Chargement de vos sites...",
+                "none": "Aucun site de production actif",
+                "available_one": "{{count}} site disponible",
+                "available_other": "{{count}} sites disponibles"
+            },
+            "table": {
+                "header_name": "Nom du Site",
+                "header_location": "Localisation",
+                "header_status": "Statut",
+                "header_lines": "Lignes",
+                "header_actions": "Actions",
+                "action_view": "Voir"
+            },
+            "actions": {
+                "new_dashboard": "Nouveau Tableau de Bord",
+                "configure_sites": "Configurer les Sites",
+                "clear_search": "Effacer la recherche"
+            },
+            "search": {
+                "results_info": "Affichage de {{count}} sur {{total}} usines",
+                "no_results": "Aucune usine trouvée",
+                "no_results_detail": "Aucune usine ne correspond à \"{{query}}\". Essayez un autre terme de recherche."
+            },
+            "factory_status": {
+                "at_limit": "À la limite",
+                "near_limit": "Proche de la limite",
+                "active": "Actif"
+            },
+            "empty_state": {
+                "title": "Aucun site actif",
+                "description": "Votre tableau de bord est vide car aucune usine n'a encore été configurée.",
+                "admin_hint": "Rendez-vous dans les Paramètres de l'Organisation pour configurer votre infrastructure.",
+                "user_hint": "Veuillez contacter votre administrateur pour configurer l'infrastructure.",
+                "cta": "Aller aux Paramètres de l'Organisation"
+            },
+            "view": {
+                "grid": "Vue grille",
+                "list": "Vue liste"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} sources",
+            "edit": "Modifier",
+            "delete": "Supprimer",
+            "open": "Ouvrir",
+            "edit_title": "Modifier l'usine",
+            "delete_title": "Supprimer l'usine"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Accueil",
+            "list": "Mes Tableaux de Bord",
+            "production_sites": "Sites de Production",
+            "sites": "Sites",
+            "not_found": "Non Trouvé"
+        },
+        "sections": {
+            "overview": "Vue d'ensemble",
+            "performance": "Performance",
+            "settings": "Paramètres",
+            "dashboards": "Tableaux de Bord",
+            "data_sources": "Sources de Données"
+        },
+        "actions": {
+            "edit": "Modifier la Configuration",
+            "delete": "Supprimer le Site",
+            "save": "Enregistrer les Modifications",
+            "settings": "Paramètres",
+            "new_dashboard": "Nouveau Tableau de Bord",
+            "create_dashboard": "Créer un Tableau de Bord",
+            "add_data_source": "Ajouter une Source de Données",
+            "new_source": "Nouvelle Source",
+            "upload_data": "Télécharger des données",
+            "no_write_access": "Pas d'accès en écriture à cette source"
+        },
+        "alerts": {
+            "confirm_delete": "Êtes-vous sûr de vouloir supprimer cette usine ? Cette action est irréversible.",
+            "edit_soon": "Fonctionnalité d'édition bientôt disponible",
+            "delete_soon": "Fonctionnalité de suppression bientôt disponible",
+            "delete_fail": "Échec de la suppression du tableau de bord."
+        },
+        "stats": {
+            "dashboards": "Tableaux de Bord",
+            "active_widgets": "Widgets Actifs",
+            "active_sources": "Sources Actives",
+            "used_info": "{{current}} / {{max}} Utilisés"
+        },
+        "not_found": "Usine non trouvée",
+        "search": {
+            "dashboards_placeholder": "Filtrer les tableaux de bord...",
+            "sources_placeholder": "Rechercher des sources...",
+            "no_sources_found": "Aucune source trouvée correspondant à votre recherche."
+        },
+        "quota": {
+            "limit_reached": "Limite de quota atteinte"
+        },
+        "table": {
+            "headers": {
+                "name": "Nom",
+                "status": "Statut",
+                "actions": "Actions"
+            }
+        },
+        "status": {
+            "active": "Actif",
+            "inactive": "Inactif"
+        },
+        "confirm": {
+            "delete_source": "Êtes-vous sûr de vouloir supprimer cette source de données ?",
+            "delete_dashboard": "Êtes-vous sûr de vouloir supprimer ce tableau de bord ?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Aujourd'hui",
+            "yesterday": "Hier",
+            "last_7_days": "7 Jours",
+            "last_30_days": "30 Jours",
+            "this_month": "Ce Mois",
+            "last_month": "Mois Dernier"
+        },
+        "shifts": {
+            "all": "Toutes les Équipes",
+            "shift_a": "Équipe A (Matin)",
+            "shift_b": "Équipe B (Soir)",
+            "shift_c": "Équipe C (Nuit)"
+        },
+        "date_range": "Plage de Dates",
+        "to": "à"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Espace de Travail",
+            "factory": "Usine",
+            "line": "Ligne",
+            "dashboard": "Tableau de Bord"
+        },
+        "status": {
+            "updated": "Mis à jour {{time}}",
+            "live": "En Direct",
+            "loading": "Chargement...",
+            "saving": "Sauvegarde..."
+        },
+        "actions": {
+            "refresh": "Actualiser",
+            "reset_layout": "Réinitialiser la Mise en Page",
+            "reset_confirm": "Êtes-vous sûr de vouloir réinitialiser la mise en page par défaut ?",
+            "design_layout": "Concevoir la Mise en Page",
+            "save_layout": "Enregistrer la Mise en Page",
+            "add_widget": "Ajouter un Widget",
+            "cancel": "Annuler"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Bibliothèque de Widgets",
+            "subtitle": "Glissez et déposez des widgets pour personnaliser votre tableau de bord.",
+            "categories": {
+                "all": "Tous",
+                "production": "Production",
+                "quality": "Qualité",
+                "efficiency": "Efficacité"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simulé",
+            "ready_to_use": "Prêt à l'emploi",
+            "recommended": "Recommandé",
+            "future_capability": "Capacité Future",
+            "coming_soon": "Bientôt Disponible",
+            "near_match": "Correspondance Proche",
+            "ai_recommendations": "Recommandations IA",
+            "select_all": "Tout Sélectionner",
+            "selected": "sélectionné",
+            "compatible": "compatible",
+            "status_summary": "{{selected}} sélectionné • {{compatible}} compatible",
+            "data_req": "Données Requises",
+            "needs_mapping": "Nécessite Mapping",
+            "categories": {
+                "Efficiency": "Efficacité",
+                "Quality": "Qualité",
+                "Workforce": "Main-d'œuvre",
+                "Operations": "Opérations"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Recommandé",
+                "Operations": "Opérations",
+                "Strategy": "Stratégie"
+            },
+            "efficiency_starter": {
+                "title": "Démarrage Efficacité",
+                "description": "Boîte à outils essentielle pour suivre la production et la performance horaire."
+            },
+            "quality_auditor": {
+                "title": "Auditeur Qualité",
+                "description": "Focus sur le DHU, les défauts et le compromis vitesse-qualité."
+            },
+            "floor_manager": {
+                "title": "Vue Manager de Terrain",
+                "description": "Visibilité en temps réel sur la main-d'œuvre et la production."
+            },
+            "executive_summary": {
+                "title": "Résumé Exécutif",
+                "description": "KPIs de haut niveau pour la prise de décision stratégique."
+            }
+        },
+        "common": {
+            "planned": "PRÉVU",
+            "actual": "RÉEL",
+            "target": "CIBLE",
+            "efficiency": "Efficacité",
+            "minutes": "min",
+            "limit": "Limite",
+            "status": "Statut",
+            "on_target": "SUR CIBLE",
+            "below_target": "SOUS CIBLE",
+            "defect_rate": "Taux de Défauts"
+        },
+        "titles": {
+            "production_chart": "Production",
+            "line_efficiency": "Efficacité de Ligne",
+            "earned_minutes": "Minutes Gagnées",
+            "sam_performance": "Performance SAM",
+            "dhu_quality": "Qualité DHU",
+            "speed_quality": "Vitesse vs Qualité",
+            "top_blockers": "Principaux Bloquants",
+            "style_progress": "Progression du Style",
+            "daily_target": "Objectif Quotidien",
+            "production_timeline": "Chronologie de Production",
+            "complexity_impact": "Impact de Complexité",
+            "workforce_attendance": "Présence Main-d'œuvre",
+            "kpi_summary": "Résumé KPI"
+        },
+        "descriptions": {
+            "production_chart": "Comparer production prévue vs réelle dans le temps",
+            "line_efficiency": "Efficacité de ligne en temps réel par rapport à la cible",
+            "earned_minutes": "Minutes Standard Allouées (SAM) gagnées vs disponibles",
+            "sam_performance": "Métrique de performance basée sur les minutes standard",
+            "dhu_quality": "Analyse de tendance des Défauts par Cent Unités",
+            "speed_quality": "Corrélation entre vitesse de production et qualité",
+            "top_blockers": "Problèmes les plus fréquents arrêtant la production",
+            "style_progress": "Suivi du % d'achèvement des styles actuels",
+            "daily_target": "Progression vers l'objectif de production quotidien",
+            "production_timeline": "Vue Gantt du planning de production",
+            "complexity_impact": "Analyse de la complexité du style sur la production",
+            "workforce_attendance": "Présence des opérateurs et équilibrage de ligne",
+            "kpi_summary": "Vue d'ensemble de haut niveau des métriques clés"
+        },
+        "production_chart": {
+            "planned": "PRÉVU",
+            "actual_output": "SORTIE RÉELLE"
+        },
+        "speed_quality": {
+            "efficiency": "Efficacité",
+            "defect_rate": "Taux de Défauts"
+        },
+        "earned_minutes": {
+            "earned": "GAGNÉ",
+            "available": "DISPONIBLE"
+        },
+        "dhu_quality": {
+            "no_data": "Pas de données DHU disponibles",
+            "current_dhu": "DHU Actuel",
+            "above_limit": "AU-DESSUS LIMIT"
+        },
+        "blocker_cloud": {
+            "occurrences": "occurrences",
+            "view_all_logs": "Voir tous les journaux"
+        }
+    },
+    "common": {
+        "back": "Retour",
+        "cancel": "Annuler",
+        "error": "Erreur",
+        "success": "Succès",
+        "uploading": "Téléchargement...",
+        "processing": "Traitement...",
+        "remove": "Supprimer",
+        "ready": "Prêt",
+        "needs_setup": "Nécessite Configuration",
+        "date": "Date",
+        "actions": {
+            "save": "Enregistrer",
+            "cancel": "Annuler",
+            "close": "Fermer",
+            "delete": "Supprimer",
+            "edit": "Modifier",
+            "search": "Rechercher...",
+            "confirm": "Confirmer",
+            "back": "Retour",
+            "create": "Créer",
+            "invite": "Inviter"
+        },
+        "status": {
+            "active": "Actif",
+            "inactive": "Inactif",
+            "unknown": "Inconnu"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Nom du Tableau de Bord",
+            "dashboard_name_placeholder": "ex: Aperçu Production Ligne 4",
+            "name_error_tooltip": "Veuillez d'abord saisir un nom de tableau de bord.",
+            "name_error_text": "Veuillez saisir un nom pour votre tableau de bord pour continuer.",
+            "selection_title": "Sélection Source de Données",
+            "selection_desc": "Sélectionnez un fichier précédemment téléchargé pour configurer vos widgets.",
+            "columns": {
+                "file_name": "Nom du Fichier",
+                "status": "Statut",
+                "uploaded": "Téléchargé",
+                "action": "Action"
+            },
+            "btn_configure": "Configurer",
+            "btn_complete_setup": "Terminer Configuration",
+            "note": "Note : Votre tableau de bord inclura les données de TOUS les fichiers de cette liste. Sélectionnez n'importe quel fichier pour définir les colonnes des widgets.",
+            "empty_title": "Pas encore de sources de données",
+            "empty_desc": "Téléchargez des fichiers depuis la page Ligne de Production, puis revenez ici pour créer un tableau de bord.",
+            "error_load_failed": "Échec du chargement de la configuration de source de données existante."
+        },
+        "step2": {
+            "title": "Valider le Mapping",
+            "subtitle": "Vérifiez comment vos colonnes correspondent à la base de données.",
+            "stats": {
+                "auto": "Auto-mappé",
+                "review": "A revoir",
+                "attention": "Attention",
+                "ignored": "Ignoré"
+            },
+            "filter": {
+                "all": "Tous",
+                "unmapped": "Non mappé",
+                "conflicts": "Conflits"
+            },
+            "showing_count": "Affichage de {{filtered}} sur {{total}} colonnes",
+            "table": {
+                "source": "Colonne Source",
+                "target": "Champ Cible",
+                "status": "Statut",
+                "no_match": "Aucune colonne ne correspond à ce filtre",
+                "try_different": "Essayez de sélectionner une vue différente"
+            },
+            "status_labels": {
+                "exact": "Exact",
+                "exact_tooltip": "Correspondance exacte du nom de colonne",
+                "fuzzy": "Flou",
+                "fuzzy_tooltip": "Nom similaire trouvé",
+                "ai": "IA",
+                "ai_tooltip": "Mapping suggéré par IA",
+                "manual": "Manuel",
+                "manual_tooltip": "Assigné manuellement",
+                "unset": "Non défini",
+                "unset_tooltip": "Nécessite mapping",
+                "duplicate": "Doublon"
+            },
+            "field_selector": {
+                "select_placeholder": "Sélectionner champ cible...",
+                "search_placeholder": "Rechercher champs...",
+                "suggested": "Suggéré",
+                "all_fields": "Tous les Champs",
+                "no_results": "Aucun champ ne correspond à \"{{term}}\"",
+                "ignore_action": "Ignorer cette colonne",
+                "restore_action": "Ignoré — cliquer pour restaurer",
+                "in_use": "utilisé"
+            },
+            "alerts": {
+                "conflict_count_one": "1 champ a des mappings en double",
+                "conflict_count_other": "{{count}} champs ont des mappings en double",
+                "remaining_needed": "Champs restants nécessaires"
+            },
+            "btn_confirm": "Confirmer le Mapping",
+            "processing": {
+                "title": "Traitement des Données",
+                "subtitle": "Validation et importation vers la ligne de production...",
+                "logs": {
+                    "init": "Initialisation du moteur de transformation...",
+                    "schema": "Vérification de la compatibilité du schéma...",
+                    "mapping": "Mapping de la colonne '{{column}}'...",
+                    "req": "Traitement de la demande d'ingestion...",
+                    "sending": "Envoi des données au Core LineSight...",
+                    "success": "Ingestion réussie. Finalisation..."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Modèles de Démarrage Rapide",
+            "divider": "ou personnaliser individuellement",
+            "library_title": "Bibliothèque de Widgets",
+            "selected_count": "{{count}} sélectionné",
+            "btn_create": "Créer le Tableau de Bord",
+            "btn_configuring": "Configuration..."
+        },
+        "title": "Configuration LineSight",
+        "steps": {
+            "upload": {
+                "label": "Données Source",
+                "desc": "Télécharger ou Sélec. Source",
+                "desc_alt": "Télécharger CSV/Excel"
+            },
+            "mapping": {
+                "label": "Mapping Données",
+                "desc": "Valider Colonnes"
+            },
+            "widgets": {
+                "label": "Tableau de Bord",
+                "desc": "Configurer Mise en Page"
+            }
+        },
+        "mini_map": {
+            "title": "Aperçu Spatial",
+            "empty_state": "Sélectionnez des widgets pour prévisualiser la mise en page",
+            "stats": {
+                "widgets_one": "{{count}} widget",
+                "widgets_other": "{{count}} widgets",
+                "screens_one": "~{{count}} écran",
+                "screens_other": "~{{count}} écrans"
+            },
+            "density": {
+                "empty": "Vide",
+                "compact": "Compact",
+                "balanced": "Équilibré",
+                "heavy": "Chargé"
+            },
+            "scroll_warning": "Le tableau de bord peut nécessiter un défilement"
+        },
+        "context": {
+            "title": "Contexte Actuel",
+            "select_factory": "Sélectionner Usine",
+            "select_source": "Sélectionner Source de Données",
+            "select_factory_first": "Sélectionner Usine d'abord",
+            "loading_factories": "Chargement des Usines...",
+            "loading_sources": "Chargement des Sources...",
+            "fetching_sources": "Récupération des sources...",
+            "no_sources_alert": "Aucune source de données disponible. Configurez les sources depuis la page Paramètres de l'usine.",
+            "select_source_overlay": "Sélectionnez une Source de Données pour continuer"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Télécharger des Données",
+            "title_preview": "Prévisualiser les Données",
+            "subtitle_upload": "Télécharger des données pour {{dataSourceName}}",
+            "subtitle_preview": "Vérifiez comment vos données seront importées",
+            "drop_text": "Déposez votre fichier ici ou cliquez pour parcourir",
+            "supports_text": "Supporte les fichiers Excel (.xlsx, .xls) et CSV",
+            "success_redirect": "Téléchargement réussi ! Redirection vers le mapping...",
+            "info_preview": "Après le téléchargement, vous verrez un aperçu avant de mapper les colonnes.",
+            "btn_upload_preview": "Télécharger & Prévisualiser",
+            "btn_uploading": "Téléchargement...",
+            "errors": {
+                "invalid_extension": "Veuillez sélectionner un fichier Excel (.xlsx, .xls) ou CSV",
+                "duplicate_file": "Ce fichier a déjà été téléchargé. Veuillez sélectionner un fichier différent ou supprimer le téléchargement existant d'abord.",
+                "preview_failed": "Échec de la génération de l'aperçu des données.",
+                "upload_failed": "Échec du téléchargement"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Paramètres de l'Organisation",
+        "description": "Gérez la configuration et les préférences de votre espace de travail.",
+        "cards": {
+            "general": {
+                "title": "Général",
+                "description": "Profil de l'organisation, logo et identifiants."
+            },
+            "members": {
+                "title": "Membres",
+                "description": "Gérer l'accès de l'équipe, les rôles et les invitations."
+            },
+            "infrastructure": {
+                "title": "Infrastructure",
+                "description": "Configurer les usines, les lignes et les zones."
+            },
+            "security": {
+                "title": "Sécurité",
+                "description": "SSO, journaux d'audit et politiques de mot de passe."
+            },
+            "billing": {
+                "title": "Facturation",
+                "description": "Factures, limites d'utilisation et abonnement."
+            }
+        },
+        "badges": {
+            "coming_soon": "Bientôt Disponible"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Retour aux Paramètres"
+        },
+        "top_nav": {
+            "search_placeholder": "Rechercher usines, commandes...",
+            "search_coming_soon": "La recherche globale arrive bientôt !",
+            "notifications": {
+                "title": "Notifications",
+                "mark_read": "Tout marquer comme lu",
+                "empty": "Aucune nouvelle notification"
+            },
+            "user_menu": {
+                "profile": "Profil & Paramètres",
+                "logout": "Déconnexion",
+                "default_user": "Utilisateur",
+                "default_role": "Visualiseur"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organisation",
+            "factories": "Usines"
+        },
+        "header": {
+            "title": "Configuration Usine",
+            "popover_trigger_label": "Info Usine"
+        },
+        "popover": {
+            "title": "Configuration Usine",
+            "assignment": {
+                "title": "Mode Affectation :",
+                "desc_part1": "Vue par défaut. Cliquez sur les visages pour voir les détails ou le",
+                "desc_part2": "bouton pour assigner des managers aux sources de données."
+            },
+            "structure": {
+                "title": "Mode Structure :",
+                "desc": "Cliquez sur \"Personnaliser la disposition\" pour renommer, supprimer ou ajouter de nouvelles sources de données à cette usine."
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Mode Affectation",
+            "structure_mode": "Mode Structure",
+            "customize_layout": "Personnaliser Disposition",
+            "done_editing": "Fin d'édition"
+        },
+        "list": {
+            "add_data_source": "Ajouter Source",
+            "no_data_sources": "Aucune source configurée. Passez en Mode Édition pour en ajouter une."
+        },
+        "bulk_actions": {
+            "selected": "Sélectionné",
+            "assign_manager": "Assigner Manager"
+        },
+        "messages": {
+            "loading": "Chargement Usine...",
+            "assignment_failed": "Échec de l'assignation du manager."
+        }
+    },
+    "roles": {
+        "system_admin": "Admin Système",
+        "owner": "Propriétaire",
+        "admin": "Admin",
+        "viewer": "Visualiseur",
+        "member": "Membre",
+        "operator": "Opérateur",
+        "factory_manager": "Directeur d'Usine",
+        "line_manager": "Chef de Ligne",
+        "user": "Utilisateur",
+        "manager": "Manager"
+    },
+    "org_general": {
+        "title": "Général",
+        "profile": {
+            "logged_in_as": "Connecté en tant que"
+        },
+        "at_a_glance": "En un coup d'œil",
+        "stats": {
+            "total_managers": "Total Managers",
+            "assigned": "Assignés",
+            "factories": "Usines",
+            "production_lines": "Lignes de Production"
+        },
+        "danger_zone": {
+            "title": "Zone de Danger",
+            "description": "Supprimer une organisation effacera définitivement toutes les usines, lignes de production et données.",
+            "delete_button": "Supprimer Organisation (Bientôt)"
+        }
+    },
+    "org_members": {
+        "title": "Membres",
+        "invite_member": "Inviter Membre",
+        "search_placeholder": "Rechercher par nom ou email...",
+        "filter": "Filtrer",
+        "table": {
+            "user": "Utilisateur",
+            "global_role": "Rôle Global",
+            "access": "Accès",
+            "last_active": "Dernière Activité",
+            "actions": "Actions",
+            "loading": "Chargement des membres...",
+            "no_members": "Aucun membre trouvé.",
+            "assignments": "{{count}} Affectations",
+            "unassigned": "Non assigné",
+            "never_active": "Jamais",
+            "view_details": "Voir Détails"
+        },
+        "drawer": {
+            "title": "Détails Membre",
+            "role_label": "Rôle",
+            "active_assignments": "Affectations Actives",
+            "no_assignments": "Aucune affectation.",
+            "current_factory": "Usine Actuelle",
+            "danger_zone": {
+                "title": "Zone de Danger",
+                "suspend_button": "Suspendre Utilisateur"
+            }
+        },
+        "cell": {
+            "unknown_user": "Utilisateur Inconnu",
+            "active": "Actif",
+            "inactive": "Inactif"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Retour aux Paramètres",
+        "back_button": "Retour aux Paramètres",
+        "title": "Infrastructure",
+        "sites_count": "{{count}} Sites",
+        "sites": "Sites",
+        "add_factory": "Ajouter Usine",
+        "search_placeholder": "Rechercher usines...",
+        "retry": "Réessayer",
+        "new_factory": {
+            "title": "Nouvelle Usine",
+            "subtitle": "Ajouter un nouveau site de fabrication"
+        },
+        "card": {
+            "data_sources": "Sources de Données",
+            "managers": "Managers",
+            "configure_site": "Configurer Site",
+            "edit_details": "Modifier Détails",
+            "delete_factory": "Supprimer Usine"
+        },
+        "list": {
+            "name": "Nom",
+            "factory": "Usine",
+            "code": "Code",
+            "country": "Pays",
+            "sources": "Sources",
+            "managers": "Managers",
+            "actions": "Actions"
+        },
+        "no_match": "Aucune usine ne correspond à \"{{query}}\"",
+        "confirm_delete": "Êtes-vous sûr de vouloir supprimer {{name}} ? Ceci est irréversible.",
+        "delete_fail": "Échec de la suppression de l'usine : {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Ajouter Source de Données",
+            "subtitle": "Ajouter une nouvelle source à {{factoryName}}",
+            "name_label": "Nom",
+            "name_placeholder": "ex: Ligne 3 / Table de Coupe A",
+            "code_label": "Code",
+            "code_placeholder": "L-03",
+            "specialty_label": "Spécialité",
+            "specialty_placeholder": "ex: Assemblage",
+            "description_label": "Description",
+            "description_placeholder": "Décrivez brièvement cette source...",
+            "use_defaults": "Utiliser Défauts Usine",
+            "inherit_tooltip": "Hérite des équipes & weekends",
+            "custom_tooltip": "Configuration personnalisée",
+            "inherit_desc": "Cette source héritera automatiquement du modèle d'équipe standard de l'usine.",
+            "custom_desc": "Démarrage avec un planning vide",
+            "source_usage": "Utilisation Source",
+            "quota_reached": "Nombre maximum de sources atteint pour cette usine.",
+            "submit_button": "Ajouter Source",
+            "submitting": "Création..."
+        },
+        "create_factory": {
+            "title": "Créer Nouvelle Usine",
+            "subtitle": "Configurer une nouvelle usine avec une source de données initiale",
+            "quota_reached": "Quota Atteint",
+            "name_label": "Nom de l'Usine",
+            "name_placeholder": "ex: Gigafactory Texas",
+            "code_label": "Code Usine",
+            "code_placeholder": "ex: GTX-01",
+            "code_desc": "Identifiant court pour cette usine",
+            "source_name_label": "Source de Données Initiale",
+            "source_name_placeholder": "ex: Ligne d'Assemblage A",
+            "source_specialty_label": "Spécialité Source",
+            "source_specialty_placeholder": "ex: Assemblage, Test, Emballage",
+            "source_specialty_desc": "Fonction principale ou type de cette source",
+            "source_desc_label": "Description Source",
+            "source_desc_placeholder": "ex: Ligne principale d'assemblage",
+            "source_desc_help": "Décrivez brièvement la fonction de cette source",
+            "submitting_msg": "Création de l'usine et de la source...",
+            "submit_button": "Créer Usine",
+            "submitting_button": "Création..."
+        },
+        "edit_factory": {
+            "title": "Modifier Usine",
+            "name_label": "Nom de l'Usine",
+            "code_label": "Code Usine",
+            "submit_button": "Enregistrer Modifications",
+            "submitting_button": "Enregistrement..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID : {{id}}",
+            "rename_tooltip": "Renommer Source",
+            "managers_stat": "Managers",
+            "efficiency_stat": "Efficacité",
+            "assigned_team": "Équipe Assignée",
+            "no_managers": "Aucun manager assigné à cette source.",
+            "remove_button": "Retirer",
+            "danger_zone": "Zone de Danger",
+            "delete_button": "Supprimer Source de Données",
+            "confirm_remove": "Retirer ce manager de la source de données ?",
+            "remove_fail": "Échec du retrait de l'utilisateur.",
+            "confirm_delete": "Êtes-vous sûr de vouloir supprimer {{name}} ? Ceci est irréversible.",
+            "delete_fail": "Impossible de supprimer la source. Elle a peut-être des affectations ou données actives.",
+            "rename_fail": "Échec du renommage de la source."
+        },
+        "row": {
+            "untitled_source": "Source Sans Titre",
+            "rename_required": "Renommage Requis",
+            "click_tooltip": "Cliquer pour voir détails & renommer",
+            "confirm_delete": "Supprimer {{name}} ?",
+            "rename_prompt": "Renommer source de données :"
+        },
+        "user_search": {
+            "placeholder": "Rechercher managers...",
+            "no_results": "Aucun manager correspondant trouvé",
+            "no_available": "Aucun manager disponible",
+            "available_count": "{{count}} disponible(s)"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Bon retour",
+            "welcome_subtitle": "Entrez vos détails pour accéder au tableau de bord.",
+            "email_label": "Email Professionnel",
+            "password_label": "Mot de passe",
+            "forgot_password": "Mot de passe oublié ?",
+            "sign_in_button": "Se connecter",
+            "no_account": "Pas de compte ?",
+            "contact_sales": "Contacter Ventes",
+            "back_to_landing": "Retour à l'accueil",
+            "errors": {
+                "network_error": "Erreur de connexion. Veuillez réessayer ou utiliser les identifiants démo.",
+                "invalid_credentials": "Identifiants invalides. Veuillez réessayer."
+            },
+            "demo_card": {
+                "title": "Rapport d'Équipe",
+                "subtitle": "En Direct • Usine 01",
+                "efficiency": "Efficacité",
+                "efficiency_sub": "↑ {{val}}% vs cible",
+                "output": "Sortie (Unités)",
+                "output_sub": "Sur la bonne voie",
+                "chart_title": "Taux Horaire",
+                "chart_period": "Dernières 4h",
+                "chart_current": "Actuel",
+                "quote": "\"{{text}}\"",
+                "quote_author": "Directeur des Opérations, Textile Co."
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Erreur Application Inattendue",
+            "unknown_error": "Une erreur inconnue est survenue.",
+            "return_home": "Retour à l'Accueil"
+        },
+        "confirm_dialog": {
+            "confirm": "Confirmer",
+            "cancel": "Annuler",
+            "please_wait": "Veuillez patienter..."
+        },
+        "quota_warning": {
+            "limit_reached": "Vous avez atteint votre limite de {{type}} ({{max}})",
+            "near_limit": "Vous approchez de votre limite de {{type}} ({{current}}/{{max}})",
+            "upgrade_prompt": "Mettez à niveau votre plan pour créer plus de {{type}}.",
+            "consider_upgrade": "Envisagez de mettre à niveau pour éviter les interruptions.",
+            "upgrade_button": "Mettre à niveau",
+            "dismiss_label": "Ignorer l'avertissement",
+            "type_factories": "usines",
+            "type_lines": "lignes de production"
+        },
+        "date_range_picker": {
+            "start_date": "Date de Début",
+            "end_date": "Date de Fin",
+            "start_in_timezone": "Début à {{timezone}}",
+            "end_in_timezone": "Fin à {{timezone}}"
+        },
+        "breadcrumb": {
+            "aria_label": "Fil d'Ariane"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Standards & Défauts Usine",
+            "subtitle": "Configurer les défauts globaux pour {{name}}"
+        },
+        "sections": {
+            "localization": "Localisation & Formats",
+            "shifts": {
+                "title": "Modèle d'Équipe Par Défaut",
+                "description": "Les nouvelles lignes hériteront de ces équipes."
+            },
+            "non_working_days": {
+                "title": "Jours Non Travaillés Standards",
+                "description": "Ces jours seront marqués comme non travaillés par défaut."
+            },
+            "schema_configuration": "Configuration Schéma",
+            "upload_history": "Historique Téléchargements",
+            "active_field_mapping": "Mapping Champs Actif",
+            "field_mapping_description": "Mappe vos en-têtes Excel aux champs système."
+        },
+        "fields": {
+            "date_format": "Format Date",
+            "currency": "Devise",
+            "measurement_system": "Système de Mesure",
+            "preview": "Aperçu"
+        },
+        "shifts": {
+            "add": "Ajouter Équipe",
+            "new_shift": "Nouvelle Équipe",
+            "empty": "Aucune équipe configurée. Ajoutez une équipe pour définir le planning quotidien.",
+            "name_label": "Nom Équipe",
+            "name_placeholder": "ex: Matin",
+            "start_time": "Heure Début",
+            "end_time": "Heure Fin"
+        },
+        "timezone_warning": {
+            "title": "Changer Fuseau Horaire ?",
+            "message": "Changer le fuseau horaire vers <strong>{{timezone}}</strong> peut affecter les rapports historiques.",
+            "confirm": "Oui, Mettre à Jour"
+        },
+        "buttons": {
+            "save": "Enregistrer",
+            "saving": "Enregistrement..."
+        },
+        "errors": {
+            "save_failed": "Échec de l'enregistrement."
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Source de Données non trouvée",
+        "system_node": "Nœud Système",
+        "breadcrumbs": {
+            "workspace": "Espace de Travail",
+            "factory": "Usine",
+            "not_found": "Non Trouvé"
+        },
+        "tabs": {
+            "schema_configuration": "Configuration Schéma",
+            "upload_history": "Historique Téléchargements"
+        },
+        "schema": {
+            "active_field_mapping": "Mapping Champs Actif",
+            "field_mapping_description": "Mappe vos en-têtes Excel aux champs système.",
+            "edit_mappings": "Modifier Mappings",
+            "reset_schema": "Réinitialiser Schéma",
+            "no_mappings": "Aucun mapping défini.",
+            "system_status": "Statut Système",
+            "last_updated": "Dernière mise à jour",
+            "no_config_title": "Aucune Configuration",
+            "no_config_description": "Cette source n'a pas encore été mappée.",
+            "no_config_hint": "Téléchargez un fichier depuis la page Usine pour commencer.",
+            "table": {
+                "excel_header": "En-tête Excel",
+                "system_field": "Champ Système"
+            }
+        },
+        "uploads": {
+            "processed_files": "Fichiers Traités",
+            "clear_history": "Effacer Historique",
+            "no_files": "Aucun fichier téléchargé."
+        },
+        "confirm": {
+            "reset_schema": "ATTENTION : Cela supprimera la Source et toute la Configuration. Irréversible. Êtes-vous sûr ?",
+            "clear_history": "ATTENTION : Cela supprimera TOUT l'historique. Irréversible. Êtes-vous sûr ?"
+        },
+        "errors": {
+            "reset_failed": "Échec réinit schéma.",
+            "clear_failed": "Échec effacement historique."
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Votre Tableau de Bord est Vide",
+            "description": "Commencez par ajouter des widgets.",
+            "action": "Ouvrir Designer"
+        }
+    },
+    "file_preview": {
+        "title": "Aperçu Fichier",
+        "loading": "Chargement aperçu...",
+        "loading_subtitle": "Analyse structure fichier",
+        "error_title": "Erreur Aperçu",
+        "error_default": "Échec chargement aperçu.",
+        "showing_rows": "Affichage des {{count}} premières lignes",
+        "columns_detected": "{{count}} colonnes détectées",
+        "info_note": "Note : Ceci est un aperçu.",
+        "null_value": "nul"
+    },
+    "data_integration": {
+        "title": "Contexte Intégration Données",
+        "subtitle": "Gérer schémas et flux données",
+        "upload_data": "Télécharger Données",
+        "collapse": "Réduire",
+        "expand": "Étendre",
+        "tabs": {
+            "schema": "Configuration Schéma",
+            "uploads": "Historique Téléchargements"
+        },
+        "empty_sources": "Aucune source configurée.",
+        "configure_new": "Configurer Nouvelle Source",
+        "no_description": "Pas de description.",
+        "schema_version": "Schéma Strict v{{version}} :",
+        "no_active_schema": "Aucun schéma actif",
+        "edit_config": "Modifier Configuration",
+        "error_update": "Échec mise à jour.",
+        "modal": {
+            "title": "Modifier Configuration",
+            "source_name": "Nom Source",
+            "time_column": "Colonne Temps (En-tête Excel)",
+            "time_column_hint": "Nom exact pour la colonne Date/Heure.",
+            "config_active": "Configuration Active"
+        }
+    },
+    "data_source_config": {
+        "title": "Configuration Source Données",
+        "subtitle": "Ligne de Production : {{id}}",
+        "loading": "Chargement...",
+        "not_configured_title": "Non Configuré",
+        "not_configured_desc": "Aucune source configurée.",
+        "close_modal": "Fermer",
+        "time_column": "Colonne Temps",
+        "time_column_placeholder": "ex: Timestamp, Date",
+        "time_column_hint": "Nom de la colonne temps.",
+        "schema_title": "Mapping Schéma Actif",
+        "schema_version": "Version {{version}}",
+        "table": {
+            "source": "Colonne Source",
+            "target": "Champ Cible"
+        },
+        "schema_note": "Note : Mappings appris automatiquement.",
+        "description": "Description",
+        "description_placeholder": "Description rapide...",
+        "success": "Mise à jour réussie !",
+        "error_save": "Échec sauvegarde.",
+        "error_load": "Échec chargement.",
+        "save_button": "Enregistrer Configuration"
+    },
+    "upload_history": {
+        "title": "Téléchargements Récents",
+        "loading": "Chargement...",
+        "empty": "Aucun fichier téléchargé.",
+        "error": "Échec chargement historique."
+    }
+}

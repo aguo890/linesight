@@ -286,7 +286,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
                             {/* Info */}
                             <div className="mt-4 p-3 bg-info/10 border border-info/20 rounded-lg">
                                 <p className="text-sm text-info">
-                                    <Calendar className="w-4 h-4 inline-block mr-1" />
+                                    <Calendar className="w-4 h-4 inline-block me-1" />
                                     {t('modals.upload.info_preview')}
                                 </p>
                             </div>

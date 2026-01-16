@@ -47,7 +47,7 @@ export const SettingsSidebar: React.FC = () => {
                                     onClick={() => widget && updateWidgetSettings(widget.i, { [key]: !currentValue })}
                                     className={`w-12 h-6 rounded-full transition-colors relative ${currentValue ? 'bg-blue-600' : 'bg-gray-200'}`}
                                 >
-                                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${currentValue ? 'left-7' : 'left-1'}`} />
+                                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${currentValue ? 'start-7' : 'start-1'}`} />
                                 </button>
                             ) :
                                 fieldSchema._def.typeName === 'ZodNumber' ? (

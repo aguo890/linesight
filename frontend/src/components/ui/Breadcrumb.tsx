@@ -7,6 +7,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export interface BreadcrumbItem {
     label: string;
@@ -19,8 +20,10 @@ interface BreadcrumbProps {
 }
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' }) => {
+    const { t } = useTranslation();
+
     return (
-        <nav aria-label="Breadcrumb" className={`flex items-center text-sm ${className}`}>
+        <nav aria-label={t('components.breadcrumb.aria_label')} className={`flex items-center text-sm ${className}`}>
             <ol className="flex items-center">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Settings, LayoutGrid, Users, X, Plus, Info } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
@@ -21,6 +22,7 @@ import type { DataSourceRead as DataSource } from '../../../api/model';
 export const FactoryConfigurationPage: React.FC = () => {
     const { factoryId } = useParams<{ factoryId: string }>();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { quotaStatus, refreshQuota } = useOrganization();
 
     // Data State
@@ -76,11 +78,11 @@ export const FactoryConfigurationPage: React.FC = () => {
             setIsBulkAssignOpen(false);
         } catch (err) {
             console.error("Assignment failed", err);
-            alert("Failed to assign manager.");
+            alert(t('factory_configuration.messages.assignment_failed'));
         }
     };
 
-    if (isLoading || !factory) return <div className="p-8">Loading Factory...</div>;
+    if (isLoading || !factory) return <div className="p-8">{t('factory_configuration.messages.loading')}</div>;
 
     // Use data_sources from factory response
     const dataSources = factory.data_sources || [];
@@ -93,8 +95,8 @@ export const FactoryConfigurationPage: React.FC = () => {
                     {/* Breadcrumbs */}
                     <Breadcrumb
                         items={[
-                            { label: 'Organization', href: '/organization/settings' },
-                            { label: 'Factories', href: '/organization/settings/factories' },
+                            { label: t('factory_configuration.breadcrumbs.organization'), href: '/organization/settings' },
+                            { label: t('factory_configuration.breadcrumbs.factories'), href: '/organization/settings/factories' },
                             { label: factory.name }
                         ]}
                     />
@@ -111,13 +113,13 @@ export const FactoryConfigurationPage: React.FC = () => {
                                 </button>
                             </PopoverTrigger>
                             <PopoverContent className="w-80 p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xl">
-                                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Factory Configuration</h3>
+                                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">{t('factory_configuration.popover.title')}</h3>
                                 <div className="space-y-3 text-sm text-slate-500 dark:text-slate-400">
                                     <p>
-                                        <strong className="text-slate-700 dark:text-slate-200">Assignment Mode:</strong> Default view. Click faces to view details or the <span className="inline-block border border-dashed border-slate-300 dark:border-slate-600 w-4 h-4 text-center leading-3 rounded-full">+</span> button to assign managers to data sources.
+                                        <strong className="text-slate-700 dark:text-slate-200">{t('factory_configuration.popover.assignment.title')}</strong> {t('factory_configuration.popover.assignment.desc_part1')} <span className="inline-block border border-dashed border-slate-300 dark:border-slate-600 w-4 h-4 text-center leading-3 rounded-full">+</span> {t('factory_configuration.popover.assignment.desc_part2')}
                                     </p>
                                     <p>
-                                        <strong className="text-slate-700 dark:text-slate-200">Structure Mode:</strong> Click "Customize Layout" to rename, delete, or add new data sources to this factory.
+                                        <strong className="text-slate-700 dark:text-slate-200">{t('factory_configuration.popover.structure.title')}</strong> {t('factory_configuration.popover.structure.desc')}
                                     </p>
                                 </div>
                             </PopoverContent>
@@ -127,7 +129,7 @@ export const FactoryConfigurationPage: React.FC = () => {
 
                 <div className="flex items-center gap-3">
                     <span className="text-sm text-gray-500 hidden md:inline">
-                        {isEditMode ? 'Structure Mode' : 'Assignment Mode'}
+                        {isEditMode ? t('factory_configuration.mode_switch.structure_mode') : t('factory_configuration.mode_switch.assignment_mode')}
                     </span>
                     <Button
                         variant={isEditMode ? "default" : "outline"}
@@ -138,7 +140,7 @@ export const FactoryConfigurationPage: React.FC = () => {
                         className="gap-2"
                     >
                         {isEditMode ? <Settings className="w-4 h-4" /> : <LayoutGrid className="w-4 h-4" />}
-                        {isEditMode ? 'Done Editing' : 'Customize Layout'}
+                        {isEditMode ? t('factory_configuration.mode_switch.done_editing') : t('factory_configuration.mode_switch.customize_layout')}
                     </Button>
                 </div>
             </div>
@@ -156,7 +158,7 @@ export const FactoryConfigurationPage: React.FC = () => {
                         >
                             <span className="font-bold flex items-center gap-2">
                                 <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                Add Data Source
+                                {t('factory_configuration.list.add_data_source')}
                             </span>
                         </button>
                     )}
@@ -165,7 +167,7 @@ export const FactoryConfigurationPage: React.FC = () => {
                     {/* Removed rounded-xl, shadow-sm, and outer border. Added border-b to close the list. */}
                     <div className="bg-white dark:bg-surface border-b border-border divide-y divide-border">
                         {dataSources.length === 0 ? (
-                            <div className="p-12 text-center text-text-muted">No data sources configured. Switch to Edit Mode to add one.</div>
+                            <div className="p-12 text-center text-text-muted">{t('factory_configuration.list.no_data_sources')}</div>
                         ) : (
                             dataSources.map((ds) => {
                                 // Calculate assigned users for this source
@@ -204,14 +206,14 @@ export const FactoryConfigurationPage: React.FC = () => {
                             <div className="bg-white text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                                 {selectedDataSourceIds.size}
                             </div>
-                            <span className="text-sm font-medium">Selected</span>
+                            <span className="text-sm font-medium">{t('factory_configuration.bulk_actions.selected')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Popover open={isBulkAssignOpen} onOpenChange={setIsBulkAssignOpen}>
                                 <PopoverTrigger asChild>
                                     <Button variant="ghost" className="text-white hover:bg-gray-800 h-8 gap-2">
                                         <Users className="w-4 h-4" />
-                                        Assign Manager
+                                        {t('factory_configuration.bulk_actions.assign_manager')}
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="p-0 w-64 mb-2" side="top">

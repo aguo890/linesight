@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
 import { Logo } from '../../../components/common/Logo';
-import { ArrowRight, Loader2, ShieldCheck, ChevronLeft } from 'lucide-react';
+import { ArrowRight, Loader2, ChevronLeft } from 'lucide-react';
 
 // -----------------------------------------------------------------------------
 // 1. Clean, Standard Enterprise Input
@@ -149,6 +150,7 @@ const DevQuickFill: React.FC<{
 // 3. The Login Page
 // -----------------------------------------------------------------------------
 const LoginPage: React.FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { login: authLogin, loginDemo } = useAuth();
     const { resolvedTheme } = useTheme();
@@ -176,10 +178,10 @@ const LoginPage: React.FC = () => {
                         loginDemo(email);
                         navigate('/dashboard/factories');
                     } else {
-                        setError('Connection error. Please try again or use demo credentials.');
+                        setError(t('auth.login_page.errors.network_error'));
                     }
                 } else {
-                    setError(apiError.response?.data?.detail || "Invalid credentials. Please try again.");
+                    setError(apiError.response?.data?.detail || t('auth.login_page.errors.invalid_credentials'));
                 }
                 setLoading(false);
             }, 800);
@@ -201,7 +203,7 @@ const LoginPage: React.FC = () => {
                         to="/"
                         className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest transition-colors ${isDark ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'}`}
                     >
-                        <ChevronLeft size={14} /> Back to landing
+                        <ChevronLeft size={14} /> {t('auth.login_page.back_to_landing')}
                     </Link>
                 </div>
 
@@ -209,10 +211,10 @@ const LoginPage: React.FC = () => {
                 <div className="max-w-sm w-full mx-auto">
                     <div className="mb-10">
                         <h1 className={`text-3xl font-bold tracking-tight mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                            Welcome back
+                            {t('auth.login_page.welcome_title')}
                         </h1>
                         <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            Enter your details to access the factory dashboard.
+                            {t('auth.login_page.welcome_subtitle')}
                         </p>
                     </div>
 
@@ -220,10 +222,12 @@ const LoginPage: React.FC = () => {
                         <StandardInput
                             id="email"
                             type="email"
-                            label="Work Email"
+                            label={t('auth.login_page.email_label')}
                             placeholder="name@company.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            dir="ltr"
+                            className="text-left"
                             error={error ? ' ' : undefined} // Highlight border on error
                             required
                         />
@@ -231,13 +235,13 @@ const LoginPage: React.FC = () => {
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
                                 <label htmlFor="password" className={`block text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                                    Password
+                                    {t('auth.login_page.password_label')}
                                 </label>
                                 <Link
                                     to="/forgot-password"
                                     className="text-sm font-semibold text-blue-600 hover:text-blue-500 transition-colors"
                                 >
-                                    Forgot password?
+                                    {t('auth.login_page.forgot_password')}
                                 </Link>
                             </div>
                             <StandardInput
@@ -247,6 +251,8 @@ const LoginPage: React.FC = () => {
                                 placeholder="••••••••"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                dir="ltr"
+                                className="text-left"
                                 error={error ? error : undefined}
                                 required
                             />
@@ -269,7 +275,7 @@ const LoginPage: React.FC = () => {
                                 <Loader2 className="animate-spin w-5 h-5" />
                             ) : (
                                 <>
-                                    Sign in <ArrowRight size={16} />
+                                    {t('auth.login_page.sign_in_button')} <ArrowRight size={16} className="rtl:rotate-180" />
                                 </>
                             )}
                         </motion.button>
@@ -277,9 +283,9 @@ const LoginPage: React.FC = () => {
 
                     <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-center">
                         <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-500'}`}>
-                            Don't have an account?{' '}
+                            {t('auth.login_page.no_account')}{' '}
                             <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-500 transition-colors">
-                                Contact Sales
+                                {t('auth.login_page.contact_sales')}
                             </Link>
                         </p>
                     </div>
@@ -287,10 +293,10 @@ const LoginPage: React.FC = () => {
 
                 {/* Footer Legal/Compliance */}
                 <div className={`flex items-center gap-4 text-xs font-medium ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
-                    <span className="flex items-center gap-1.5">
+                    {/* <span className="flex items-center gap-1.5">
                         <ShieldCheck size={14} /> SOC2 Compliant
-                    </span>
-                    <span>•</span>
+                    </span> */}
+                    {/* <span>•</span> */}
                     <a href="#" className="hover:text-slate-500">Privacy</a>
                     <span>•</span>
                     <a href="#" className="hover:text-slate-500">Terms</a>
@@ -327,8 +333,8 @@ const LoginPage: React.FC = () => {
                         {/* Fake Header of Card */}
                         <div className={`flex items-center justify-between mb-8 border-b pb-4 ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
                             <div>
-                                <h3 className={`font-bold transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>Shift Report</h3>
-                                <p className={`text-[10px] uppercase tracking-wider font-bold ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Live • Factory 01</p>
+                                <h3 className={`font-bold transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>{t('auth.login_page.demo_card.title')}</h3>
+                                <p className={`text-[10px] uppercase tracking-wider font-bold ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('auth.login_page.demo_card.subtitle')}</p>
                             </div>
                             <div className={`h-8 w-8 rounded-full flex items-center justify-center animate-pulse ${isDark ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-100 text-emerald-600'}`}>
                                 <div className="h-2 w-2 rounded-full bg-current" />
@@ -338,22 +344,22 @@ const LoginPage: React.FC = () => {
                         {/* Fake Stats Row */}
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className={`rounded-xl p-4 border transition-colors ${isDark ? 'bg-slate-900/50 border-slate-700/30' : 'bg-slate-50 border-slate-100'}`}>
-                                <p className={`text-[10px] font-bold uppercase tracking-tight mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Efficiency</p>
+                                <p className={`text-[10px] font-bold uppercase tracking-tight mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('auth.login_page.demo_card.efficiency')}</p>
                                 <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>94.2%</p>
-                                <p className="text-[10px] text-emerald-500 mt-1 font-bold">↑ 2.4% vs target</p>
+                                <p className="text-[10px] text-emerald-500 mt-1 font-bold">{t('auth.login_page.demo_card.efficiency_sub', { val: '2.4' })}</p>
                             </div>
                             <div className={`rounded-xl p-4 border transition-colors ${isDark ? 'bg-slate-900/50 border-slate-700/30' : 'bg-slate-50 border-slate-100'}`}>
-                                <p className={`text-[10px] font-bold uppercase tracking-tight mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Output (Units)</p>
+                                <p className={`text-[10px] font-bold uppercase tracking-tight mb-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('auth.login_page.demo_card.output')}</p>
                                 <p className={`text-2xl font-bold transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>1,240</p>
-                                <p className="text-[10px] text-blue-500 mt-1 font-bold">On track</p>
+                                <p className="text-[10px] text-blue-500 mt-1 font-bold">{t('auth.login_page.demo_card.output_sub')}</p>
                             </div>
                         </div>
 
                         {/* Fake Chart Visualization (CSS Lines) */}
                         <div className="space-y-3">
                             <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                                <span>Hourly Rate</span>
-                                <span>Last 4h</span>
+                                <span>{t('auth.login_page.demo_card.chart_title')}</span>
+                                <span>{t('auth.login_page.demo_card.chart_period')}</span>
                             </div>
                             <div className={`flex items-end gap-2 h-24 pb-2 border-b ${isDark ? 'border-slate-700/50' : 'border-slate-100'}`}>
                                 <div className={`flex-1 rounded-sm transition-all ${isDark ? 'bg-blue-500/30' : 'bg-blue-100'} h-[60%]`} />
@@ -361,7 +367,7 @@ const LoginPage: React.FC = () => {
                                 <div className={`flex-1 rounded-sm transition-all ${isDark ? 'bg-blue-500/50' : 'bg-blue-300'} h-[75%]`} />
                                 <div className="flex-1 bg-blue-500 h-[90%] rounded-sm relative group">
                                     <div className={`absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-all shadow-xl ${isDark ? 'bg-white text-slate-900' : 'bg-slate-900 text-white'}`}>
-                                        Current
+                                        {t('auth.login_page.demo_card.chart_current')}
                                     </div>
                                 </div>
                             </div>
@@ -371,10 +377,10 @@ const LoginPage: React.FC = () => {
                     {/* Social Proof / Quote below card */}
                     <div className={`mt-8 pl-4 border-l-2 transition-colors ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
                         <p className={`italic text-sm mb-2 transition-colors ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                            "The visibility we gained in the first week allowed us to spot a 15% bottleneck in Line C."
+                            {t('auth.login_page.demo_card.quote', { text: "The visibility we gained in the first week allowed us to spot a 15% bottleneck in Line C." })}
                         </p>
                         <p className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                            Operations Director, Textile Co.
+                            {t('auth.login_page.demo_card.quote_author')}
                         </p>
                     </div>
                 </motion.div>

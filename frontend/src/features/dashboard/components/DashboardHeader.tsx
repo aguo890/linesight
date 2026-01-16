@@ -100,7 +100,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                                 className="flex items-center px-4 py-2 bg-surface border border-border text-text-main rounded-full text-sm font-medium hover:bg-surface-subtle hover:border-border transition-all shadow-sm hover:shadow"
                                 title={t('dashboard_header.actions.refresh')}
                             >
-                                <RefreshCw className="w-4 h-4 mr-2" />
+                                <RefreshCw className="w-4 h-4 me-2" />
                                 {t('dashboard_header.actions.refresh')}
                             </button>
                         )}
@@ -122,7 +122,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                                 onClick={onOpenLibrary}
                                 className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-lg"
                             >
-                                <Plus className="w-4 h-4 mr-2" />
+                                <Plus className="w-4 h-4 me-2" />
                                 {t('dashboard_header.actions.add_widget')}
                             </button>
                         )}
@@ -135,9 +135,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                                 } ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
                         >
                             {isSaving ? (
-                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                <Loader2 className="w-4 h-4 me-2 animate-spin" />
                             ) : (
-                                <LayoutGrid className="w-4 h-4 mr-2" />
+                                <LayoutGrid className="w-4 h-4 me-2" />
                             )}
                             {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
                         </button>

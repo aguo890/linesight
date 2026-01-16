@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface MemberIdentityCellProps {
@@ -11,7 +12,8 @@ interface MemberIdentityCellProps {
 }
 
 export const MemberIdentityCell: React.FC<MemberIdentityCellProps> = ({ member }) => {
-    const name = member.full_name || 'Unknown User';
+    const { t } = useTranslation();
+    const name = member.full_name || t('org_members.cell.unknown_user');
     const email = member.email;
     const initials = name.slice(0, 2).toUpperCase();
     const isActive = member.is_active ?? true; // Default to true if undefined for now
@@ -26,15 +28,15 @@ export const MemberIdentityCell: React.FC<MemberIdentityCellProps> = ({ member }
                     </AvatarFallback>
                 </Avatar>
                 <span
-                    className={`absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full ring-2 ring-white ${isActive ? 'bg-emerald-500' : 'bg-amber-500'}`}
-                    title={isActive ? "Active" : "Inactive"}
+                    className={`absolute -bottom-0.5 -right-0.5 block h-2.5 w-2.5 rounded-full ring-2 ring-white dark:ring-slate-800 ${isActive ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                    title={isActive ? t('common.status.active') : t('common.status.inactive')}
                 />
             </div>
             <div className="flex flex-col max-w-[180px]">
-                <span className="text-sm font-medium text-gray-900 truncate" title={name}>
+                <span className="text-sm font-medium text-gray-900 truncate dark:text-white" title={name}>
                     {name}
                 </span>
-                <span className="text-xs text-gray-500 truncate" title={email}>
+                <span className="text-xs text-gray-500 truncate dark:text-gray-400" title={email}>
                     {email}
                 </span>
             </div>

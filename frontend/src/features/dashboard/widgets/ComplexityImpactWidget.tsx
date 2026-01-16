@@ -38,7 +38,7 @@ const ComplexityImpactWidget: React.FC<WidgetProps> = ({
                 density={density}
             >
                 <div className="h-full flex items-center justify-center text-gray-400 text-xs">
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" /> {t('widgets.complexity_impact.loading_styles')}
+                    <Loader2 className="w-4 h-4 animate-spin me-2" /> {t('widgets.complexity_impact.loading_styles')}
                 </div>
             </WidgetWrapper>
         );
@@ -70,7 +70,10 @@ const ComplexityImpactWidget: React.FC<WidgetProps> = ({
         >
             <div className="flex-1 min-h-0 w-full relative">
                 <ResponsiveContainer width="100%" height="100%">
-                    <ScatterChart margin={{ top: 10, right: 10, bottom: 0, left: -10 }}>
+                    <ScatterChart margin={document.documentElement.dir === 'rtl'
+                        ? { top: 10, right: -10, bottom: 0, left: 10 }
+                        : { top: 10, right: 10, bottom: 0, left: -10 }
+                    }>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             type="number"
@@ -86,6 +89,7 @@ const ComplexityImpactWidget: React.FC<WidgetProps> = ({
                             unit="%"
                             tick={{ fontSize: 10 }}
                             domain={[0, 'auto']}
+                            orientation={document.documentElement.dir === 'rtl' ? 'right' : 'left'}
                         />
                         <Tooltip
                             cursor={{ strokeDasharray: '3 3' }}

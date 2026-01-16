@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import { type Factory } from '../lib/factoryApi';
 import { useListFactoriesApiV1FactoriesGet } from '../api/endpoints/factories/factories';
+import { useAuth } from '../hooks/useAuth';
 
 interface FactoryContextType {
     /** All available factories */
@@ -20,7 +21,12 @@ interface FactoryContextType {
 export const FactoryContext = createContext<FactoryContextType | undefined>(undefined);
 
 export const FactoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { data: factoriesData, isLoading, error: queryError } = useListFactoriesApiV1FactoriesGet();
+    const { user } = useAuth();
+    const { data: factoriesData, isLoading, error: queryError } = useListFactoriesApiV1FactoriesGet({
+        query: {
+            enabled: !!user
+        }
+    });
     const [activeFactoryId, setActiveFactoryId] = useState<string | null>(null);
 
     const factories = (factoriesData as unknown as Factory[]) || [];

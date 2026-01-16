@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '../../../api/endpoints/factories/factories';
 import type { Factory, FactorySettings, ShiftConfig } from '../../../lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -45,6 +46,8 @@ const MEASUREMENT_SYSTEMS = [
 ];
 
 export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory }) => {
+    const { t } = useTranslation();
+
     // State
     const [shifts, setShifts] = useState<ShiftConfig[]>([]);
     const [currency, setCurrency] = useState('USD');
@@ -156,14 +159,14 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                     if (previousFactory) {
                         queryClient.setQueryData(queryKey, previousFactory);
                     }
-                    alert('Failed to save settings. Please try again.');
+                    alert(t('factory_settings.errors.save_failed'));
                 }
             }
         );
     };
 
     const addShift = () => {
-        setShifts([...shifts, { name: 'New Shift', start_time: '09:00', end_time: '17:00' }]);
+        setShifts([...shifts, { name: t('factory_settings.shifts.new_shift'), start_time: '09:00', end_time: '17:00' }]);
     };
 
     const updateShift = (index: number, field: keyof ShiftConfig, value: string) => {
@@ -197,22 +200,22 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 <AlertTriangle className="w-6 h-6" />
                             </div>
                             <div>
-                                <h4 className="text-lg font-bold text-text-main">Change Timezone?</h4>
+                                <h4 className="text-lg font-bold text-text-main">{t('factory_settings.timezone_warning.title')}</h4>
                                 <p className="text-sm text-text-muted mt-2">
-                                    Changing the timezone to <strong>{timezone}</strong> may affect historical data reporting and active shift schedules.
+                                    {t('factory_settings.timezone_warning.message', { timezone })}
                                 </p>
                                 <div className="mt-6 flex gap-3 justify-end">
                                     <button
                                         onClick={() => setShowTimezoneWarning(false)}
                                         className="px-3 py-2 text-text-muted hover:bg-surface-subtle rounded-md text-sm font-medium"
                                     >
-                                        Cancel
+                                        {t('common.actions.cancel')}
                                     </button>
                                     <button
                                         onClick={executeSave}
                                         className="px-3 py-2 bg-warning text-white hover:bg-warning/90 rounded-md text-sm font-medium"
                                     >
-                                        Yes, Update Timezone
+                                        {t('factory_settings.timezone_warning.confirm')}
                                     </button>
                                 </div>
                             </div>
@@ -230,8 +233,8 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                             <Save className="w-5 h-5" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-text-main">Factory Standards & Defaults</h2>
-                            <p className="text-sm text-text-muted">Configure global defaults for {factory.name}</p>
+                            <h2 className="text-xl font-bold text-text-main">{t('factory_settings.header.title')}</h2>
+                            <p className="text-sm text-text-muted">{t('factory_settings.header.subtitle', { name: factory.name })}</p>
                         </div>
                     </div>
                     <button onClick={onClose} className="p-2 text-text-muted hover:text-text-main hover:bg-surface-subtle rounded-full transition-colors">
@@ -246,7 +249,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                     <section>
                         <h3 className="text-sm font-semibold text-text-main flex items-center gap-2 mb-4">
                             <Clock className="w-4 h-4 text-text-muted" />
-                            Localization & Formats
+                            {t('factory_settings.sections.localization')}
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="col-span-1 md:col-span-2">
@@ -262,7 +265,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 </Suspense>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-text-muted mb-1 block">Date Format</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.fields.date_format')}</label>
                                 <select
                                     value={dateFormat}
                                     onChange={(e) => setDateFormat(e.target.value)}
@@ -273,7 +276,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                     ))}
                                 </select>
                                 <p className="text-xs text-text-muted mt-1">
-                                    Preview: <span className="font-medium text-text-main">
+                                    {t('factory_settings.fields.preview')}: <span className="font-medium text-text-main">
                                         {(() => {
                                             try {
                                                 const safeFormat = dateFormat.replace('DD', 'dd').replace('YYYY', 'yyyy');
@@ -284,7 +287,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 </p>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-text-muted mb-1 block">Currency</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.fields.currency')}</label>
                                 <select
                                     value={currency}
                                     onChange={(e) => setCurrency(e.target.value)}
@@ -295,13 +298,13 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                     ))}
                                 </select>
                                 <p className="text-xs text-text-muted mt-1">
-                                    Preview: <span className="font-medium text-text-main">
+                                    {t('factory_settings.fields.preview')}: <span className="font-medium text-text-main">
                                         {new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(1234.56)}
                                     </span>
                                 </p>
                             </div>
                             <div>
-                                <label className="text-xs font-medium text-text-muted mb-1 block">Measurement System</label>
+                                <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.fields.measurement_system')}</label>
                                 <select
                                     value={measurementSystem}
                                     onChange={(e) => setMeasurementSystem(e.target.value)}
@@ -323,37 +326,37 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                             <div>
                                 <h3 className="text-sm font-semibold text-text-main flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-text-muted" />
-                                    Default Shift Pattern
+                                    {t('factory_settings.sections.shifts.title')}
                                 </h3>
                                 <p className="text-xs text-text-muted mt-1">
-                                    New production lines will inherit these shifts.
+                                    {t('factory_settings.sections.shifts.description')}
                                 </p>
                             </div>
                             <button onClick={addShift} className="text-sm text-brand font-medium hover:text-brand-dark flex items-center gap-1">
                                 <Plus className="w-4 h-4" />
-                                Add Shift
+                                {t('factory_settings.shifts.add')}
                             </button>
                         </div>
                         <div className="space-y-3">
                             {shifts.length === 0 && (
                                 <div className="p-4 bg-surface-subtle rounded-lg border border-dashed border-border text-center text-sm text-text-muted">
-                                    No shifts configured. Add a shift to set the default daily schedule.
+                                    {t('factory_settings.shifts.empty')}
                                 </div>
                             )}
                             {shifts.map((shift, idx) => (
                                 <div key={idx} className="flex flex-col sm:flex-row gap-3 p-3 bg-surface-subtle rounded-lg border border-border">
                                     <div className="flex-1">
-                                        <label className="text-xs font-medium text-text-muted mb-1 block">Shift Name</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.shifts.name_label')}</label>
                                         <input
                                             type="text"
                                             value={shift.name}
                                             onChange={(e) => updateShift(idx, 'name', e.target.value)}
                                             className="w-full px-3 py-1.5 bg-surface border border-border rounded text-sm text-text-main focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none"
-                                            placeholder="e.g. Morning"
+                                            placeholder={t('factory_settings.shifts.name_placeholder')}
                                         />
                                     </div>
                                     <div className="w-32">
-                                        <label className="text-xs font-medium text-text-muted mb-1 block">Start Time</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.shifts.start_time')}</label>
                                         <input
                                             type="time"
                                             value={shift.start_time}
@@ -362,7 +365,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                         />
                                     </div>
                                     <div className="w-32">
-                                        <label className="text-xs font-medium text-text-muted mb-1 block">End Time</label>
+                                        <label className="text-xs font-medium text-text-muted mb-1 block">{t('factory_settings.shifts.end_time')}</label>
                                         <input
                                             type="time"
                                             value={shift.end_time}
@@ -387,7 +390,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                         <div>
                             <h3 className="text-sm font-semibold text-text-main flex items-center gap-2 mb-4">
                                 <Calendar className="w-4 h-4 text-text-muted" />
-                                Standard Non-Working Days
+                                {t('factory_settings.sections.non_working_days.title')}
                             </h3>
                             <div className="flex flex-wrap gap-2">
                                 {WEEKDAYS.map(day => {
@@ -407,7 +410,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                                 })}
                             </div>
                             <p className="text-xs text-text-muted mt-2">
-                                These days will be marked as non-working by default. Individual lines can override this.
+                                {t('factory_settings.sections.non_working_days.description')}
                             </p>
                         </div>
                     </section>
@@ -420,7 +423,7 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                         className="px-4 py-2 text-text-muted font-medium hover:bg-surface-subtle rounded-lg transition-colors"
                         disabled={isSubmitting}
                     >
-                        Cancel
+                        {t('common.actions.cancel')}
                     </button>
                     <button
                         onClick={handleSaveRequest}
@@ -430,12 +433,12 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
                         {isSubmitting ? (
                             <>
                                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Saving...
+                                {t('factory_settings.buttons.saving')}
                             </>
                         ) : (
                             <>
                                 <Save className="w-4 h-4" />
-                                Save Changes
+                                {t('factory_settings.buttons.save')}
                             </>
                         )}
                     </button>

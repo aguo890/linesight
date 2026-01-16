@@ -45,7 +45,7 @@ class Factory(Base, UUIDMixin, TimestampMixin):
 
     # Basic Info
     name: Mapped[str] = mapped_column(String(255), nullable=False)
-    code: Mapped[str | None] = mapped_column(String(50), unique=True, nullable=True)
+    code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
     # Location
     country: Mapped[str] = mapped_column(String(100), nullable=False)

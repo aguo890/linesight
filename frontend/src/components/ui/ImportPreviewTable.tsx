@@ -94,7 +94,7 @@ export const ImportPreviewTable: React.FC<ImportPreviewTableProps> = ({
 
                                 {/* Arrow Icon */}
                                 <td className="p-3 text-slate-300">
-                                    <ArrowRight className="w-4 h-4" />
+                                    <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                                 </td>
 
                                 {/* Cleaned Data Column - Highlights Dates */}

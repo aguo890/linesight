@@ -27,7 +27,9 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
     data,
     settings
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+
     // Extract settings with defaults
     const showVariance = settings?.showVariance ?? true;
 
@@ -61,7 +63,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
         <div className="flex-1 w-full min-h-0 flex flex-col justify-between h-full relative">
             {/* Status Badge (Moved from Header Action to Content Overlay) */}
             {showVariance && (
-                <div className="absolute top-0 right-0 z-10">
+                <div className={`absolute top-0 z-10 ${isRTL ? 'start-0' : 'end-0'}`}>
                     <div className={`px-2 py-1 rounded text-xs font-bold ${displayPercentage >= 100 ? 'bg-success/10 text-success' : 'bg-surface-subtle text-text-muted'}`}>
                         {displayPercentage}%
                     </div>
@@ -74,8 +76,8 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                 <div className="h-16 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart layout="vertical" data={chartData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-                            <XAxis type="number" hide />
-                            <YAxis type="category" dataKey="name" hide />
+                            <XAxis type="number" hide reversed={isRTL} />
+                            <YAxis type="category" dataKey="name" hide orientation={isRTL ? 'right' : 'left'} />
                             <Tooltip
                                 cursor={{ fill: 'transparent' }}
                                 contentStyle={{
@@ -83,13 +85,15 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                                     border: 'none',
                                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                                     backgroundColor: tooltipBg,
-                                    color: textMuted
+                                    color: textMuted,
+                                    textAlign: isRTL ? 'right' : 'left'
                                 }}
+                                itemStyle={{ textAlign: isRTL ? 'right' : 'left' }}
                             />
                             <Bar dataKey="actual" barSize={24} radius={[0, 4, 4, 0]}>
                                 <Cell fill={displayPercentage >= 100 ? '#10b981' : (isBehind ? '#f59e0b' : '#3b82f6')} />
                             </Bar>
-                            <ReferenceLine x={target} stroke="currentColor" strokeWidth={2} label={{ position: 'top', value: t('widgets.common.goal'), fontSize: 10, fill: textMuted }} strokeDasharray="3 3" />
+                            <ReferenceLine x={target} stroke="currentColor" strokeWidth={2} label={{ position: 'top', value: t('widgets.common.target'), fontSize: 10, fill: textMuted }} strokeDasharray="3 3" />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -99,7 +103,7 @@ const TargetRealizationWidget: React.FC<SmartWidgetProps<TargetRealizationData, 
                         <span className="text-[10px] text-text-subtle">{t('widgets.common.actual')}</span>
                         <div className="text-3xl font-bold text-text-main">{actual ? actual.toLocaleString() : '0'}</div>
                     </div>
-                    <div className="flex flex-col text-right">
+                    <div className="flex flex-col text-end">
                         <span className="text-[10px] text-text-subtle">{t('widgets.common.target')}</span>
                         <div className="text-sm font-medium text-text-muted">{t('widgets.common.target')}: {target ? target.toLocaleString() : '0'}</div>
                     </div>

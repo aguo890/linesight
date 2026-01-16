@@ -86,7 +86,7 @@ class FactoryBase(BaseModel):
     """Base factory schema."""
 
     name: str = Field(..., min_length=1, max_length=255)
-    code: str | None = Field(None, max_length=50)
+    code: str = Field(..., max_length=50)
     location: str | None = Field(None, max_length=255)
     country: str | None = Field(None, max_length=100)
     timezone: str | None = Field(None, max_length=50)

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../../components/ui/checkbox';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
@@ -33,6 +34,7 @@ export const DataSourceRow = ({
     onToggleSearch,
     onClickName
 }: DataSourceRowProps) => {
+    const { t } = useTranslation();
     const [allUsers, setAllUsers] = useState<any[]>([]);
 
     const updateDataSource = useUpdateDataSourceApiV1DataSourcesDataSourceIdPut();
@@ -46,7 +48,7 @@ export const DataSourceRow = ({
     // --- Structure Mode Handlers ---
     const handleRename = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        const newName = prompt("Rename data source:", dataSource.name);
+        const newName = prompt(t('data_source_list.row.rename_prompt'), dataSource.name);
         if (newName && newName !== dataSource.name) {
             // Using PUT with partial data (Orval generated PUT for update)
             await updateDataSource.mutateAsync({
@@ -59,7 +61,7 @@ export const DataSourceRow = ({
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (confirm(`Delete ${dataSource.name}?`)) {
+        if (confirm(t('data_source_list.row.confirm_delete', { name: dataSource.name }))) {
             await deleteDataSource.mutateAsync({ dataSourceId: dataSource.id });
             onRefetchRequest();
         }
@@ -97,15 +99,15 @@ export const DataSourceRow = ({
                             font-medium text-sm truncate transition-all cursor-pointer underline-offset-2
                             ${(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? 'text-text-muted italic' : 'text-text-main group-hover/name:text-brand group-hover/name:underline'}
                         `}
-                        title="Click to view details & rename"
+                        title={t('data_source_list.row.click_tooltip')}
                     >
-                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? "Untitled Source" : dataSource.name}
+                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) ? t('data_source_list.row.untitled_source') : dataSource.name}
                     </h4>
                     <span
                         className="text-[10px] text-text-muted font-mono mt-0.5 group-hover/name:text-brand transition-colors"
                     >
                         ID: {dataSource.id.split('-').pop()}
-                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) && <span className="ml-1 text-orange-400">• Rename Required</span>}
+                        {(/^[0-9a-f]{8}-[0-9a-f]{4}/.test(dataSource.name)) && <span className="ml-1 text-orange-400">• {t('data_source_list.row.rename_required')}</span>}
                     </span>
                 </div>
             </div>
@@ -129,7 +131,7 @@ export const DataSourceRow = ({
                         {/* Facepile */}
                         <div className="flex -space-x-2">
                             {assignedUsers.map((u: any) => (
-                                <Avatar key={u.id} className="w-8 h-8 border-2 border-white ring-1 ring-gray-100" title={u.full_name}>
+                                <Avatar key={u.id} className="w-8 h-8 ring-2 ring-white dark:ring-slate-800" title={u.full_name}>
                                     {/* src is likely undefined, checking types tells us MemberRead has no avatar_url. Avatar component handles missing src safely now. */}
                                     <AvatarImage src={(u as any).avatar_url} />
                                     <AvatarFallback className="bg-brand/10 text-brand text-xs">
@@ -149,7 +151,7 @@ export const DataSourceRow = ({
                                     <Plus className="w-4 h-4" />
                                 </button>
                             </PopoverTrigger>
-                            <PopoverContent className="p-0 w-64" side="left">
+                            <PopoverContent className="p-0 w-64" side="start">
                                 <UserSearchCommand
                                     users={allUsers}
                                     onSelect={(uid) => {

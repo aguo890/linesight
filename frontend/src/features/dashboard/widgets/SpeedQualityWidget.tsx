@@ -21,7 +21,9 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
     data,
     settings
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.dir() === 'rtl';
+
     const showLegend = settings?.showLegend ?? true;
     const rawData = data;
     const { formatDate } = useFactoryFormat();
@@ -44,7 +46,12 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
     return (
         <div className="flex-1 min-h-0 w-full relative" style={{ width: '100%', height: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={chartData} margin={{ top: 10, right: 10, bottom: 0, left: -10 }}>
+                <ComposedChart data={chartData} margin={{
+                    top: 10,
+                    right: isRTL ? -10 : 10,
+                    bottom: 0,
+                    left: isRTL ? 10 : -10
+                }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
                     <XAxis
                         dataKey="date"
@@ -52,11 +59,12 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                         axisLine={false}
                         tickLine={false}
                         tickFormatter={(val) => formatDate(val)}
+                        reversed={isRTL}
                     />
                     {/* Left Axis: Efficiency */}
                     <YAxis
                         yAxisId="left"
-                        orientation="left"
+                        orientation={isRTL ? 'right' : 'left'}
                         tick={{ fontSize: 10, fill: textMainColor }}
                         axisLine={false}
                         tickLine={false}
@@ -66,7 +74,7 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                     {/* Right Axis: DHU */}
                     <YAxis
                         yAxisId="right"
-                        orientation="right"
+                        orientation={isRTL ? 'left' : 'right'}
                         tick={{ fontSize: 10, fill: '#ef4444' }}
                         axisLine={false}
                         tickLine={false}
@@ -78,13 +86,23 @@ const SpeedQualityWidget: React.FC<SmartWidgetProps<SpeedQualityData, SpeedQuali
                             border: '1px solid var(--color-border)',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                             backgroundColor: tooltipBg,
-                            color: 'var(--color-text-main)'
+                            color: 'var(--color-text-main)',
+                            textAlign: isRTL ? 'right' : 'left'
                         }}
-                        itemStyle={{ color: 'var(--color-text-main)' }}
+                        itemStyle={{
+                            color: 'var(--color-text-main)',
+                            textAlign: isRTL ? 'right' : 'left'
+                        }}
                         labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
                         labelFormatter={(label) => formatDate(label)}
                     />
-                    {showLegend && <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '5px' }} />}
+                    {showLegend && <Legend
+                        wrapperStyle={{
+                            fontSize: '11px',
+                            paddingTop: '5px',
+                            direction: isRTL ? 'rtl' : 'ltr'
+                        }}
+                    />}
 
                     {/* Efficiency Area/Line */}
                     <Line

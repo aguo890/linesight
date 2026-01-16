@@ -1,0 +1,29 @@
+import React from 'react';
+import type { LucideIcon, LucideProps } from 'lucide-react';
+import { cn } from '../../lib/utils';
+
+interface AutoFlipIconProps extends LucideProps {
+    icon: LucideIcon;
+    shouldFlip?: boolean;
+}
+
+/**
+ * A wrapper for Lucide icons that automatically applies RTL rotation (180 degrees)
+ * for directional icons (e.g., arrows, chevrons).
+ */
+export const AutoFlipIcon: React.FC<AutoFlipIconProps> = ({
+    icon: Icon,
+    shouldFlip = true,
+    className,
+    ...props
+}) => {
+    return (
+        <Icon
+            className={cn(
+                className,
+                shouldFlip && "rtl:rotate-180 transition-transform"
+            )}
+            {...props}
+        />
+    );
+};

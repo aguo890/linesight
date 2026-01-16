@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // =============================================================================
 // Types
@@ -42,11 +43,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     onConfirm,
     title,
     message,
-    confirmLabel = 'Confirm',
-    cancelLabel = 'Cancel',
+    confirmLabel,
+    cancelLabel,
     variant = 'danger',
     isLoading = false,
 }) => {
+    const { t } = useTranslation();
+
+    // Resolve labels inside the body to avoid Rules of Hooks violation
+    const effectiveConfirmLabel = confirmLabel || t('components.confirm_dialog.confirm');
+    const effectiveCancelLabel = cancelLabel || t('components.confirm_dialog.cancel');
+    const processingText = t('components.confirm_dialog.please_wait');
+
     if (!isOpen) return null;
 
     const variantStyles = {
@@ -100,14 +108,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
                         disabled={isLoading}
                         className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors disabled:opacity-50"
                     >
-                        {cancelLabel}
+                        {effectiveCancelLabel}
                     </button>
                     <button
                         onClick={onConfirm}
                         disabled={isLoading}
                         className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${styles.button}`}
                     >
-                        {isLoading ? 'Please wait...' : confirmLabel}
+                        {isLoading ? processingText : effectiveConfirmLabel}
                     </button>
                 </div>
             </div>

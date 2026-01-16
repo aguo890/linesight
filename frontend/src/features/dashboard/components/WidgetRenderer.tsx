@@ -112,7 +112,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         <>
             {/* Edit Mode ID Badge */}
             {editMode && (
-                <div className="absolute top-3 left-3 flex items-center gap-2 z-20 bg-surface/90 backdrop-blur p-1.5 rounded-lg border border-border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-3 start-3 flex items-center gap-2 z-20 bg-surface/90 backdrop-blur p-1.5 rounded-lg border border-border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="text-[10px] font-bold text-text-muted uppercase px-1">
                         {t('widgets.renderer.widget_id')}: {widget.i.split('-')[0]}
                     </span>

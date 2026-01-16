@@ -2,6 +2,7 @@ import React from 'react';
 import { useTimezoneDate } from '../../hooks/useTimezoneDate';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { Calendar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface TimezoneDateRangePickerProps {
     /** The IANA timezone string to enforce (e.g. "Asia/Ho_Chi_Minh") */
@@ -29,6 +30,7 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
     onChange,
     className
 }) => {
+    const { t } = useTranslation();
     // Initialize hook with the PASSED timezone (decoupled from context)
     const {
         toFactoryDateInputValue,
@@ -94,7 +96,7 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
             <div className="relative group min-w-[90px] text-center">
                 <div className="flex items-center justify-center gap-1.5 px-1">
                     <span className="text-sm text-text-main font-medium whitespace-nowrap">
-                        {startDate ? formatDate(startDate) : <span className="text-text-muted">Start Date</span>}
+                        {startDate ? formatDate(startDate) : <span className="text-text-muted">{t('components.date_range_picker.start_date')}</span>}
                     </span>
                     <Calendar className="w-3 h-3 text-text-muted" />
                 </div>
@@ -103,7 +105,7 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
                     value={startStr}
                     onChange={handleStartChange}
                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
-                    title={`Start Date in ${timezone}`}
+                    title={t('components.date_range_picker.start_in_timezone', { timezone })}
                 />
             </div>
 
@@ -112,7 +114,7 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
             <div className="relative group min-w-[90px] text-center">
                 <div className="flex items-center justify-center gap-1.5 px-1">
                     <span className="text-sm text-text-main font-medium whitespace-nowrap">
-                        {endDate ? formatDate(endDate) : <span className="text-text-muted">End Date</span>}
+                        {endDate ? formatDate(endDate) : <span className="text-text-muted">{t('components.date_range_picker.end_date')}</span>}
                     </span>
                     <Calendar className="w-3 h-3 text-text-muted" />
                 </div>
@@ -121,7 +123,7 @@ export const TimezoneDateRangePicker: React.FC<TimezoneDateRangePickerProps> = (
                     value={endStr}
                     onChange={handleEndChange}
                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
-                    title={`End Date in ${timezone}`}
+                    title={t('components.date_range_picker.end_in_timezone', { timezone })}
                 />
             </div>
         </div>

@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
     Building2,
@@ -26,63 +27,65 @@ interface SettingsCard {
     badge?: string;
 }
 
-const settingsCards: SettingsCard[] = [
-    {
-        title: 'General',
-        description: 'Organization profile, logo, and identifiers.',
-        to: 'general',
-        icon: Building2,
-        color: 'bg-blue-50 dark:bg-blue-900/20',
-        iconColor: 'text-blue-600 dark:text-blue-400',
-    },
-    {
-        title: 'Members',
-        description: 'Manage team access, roles, and invites.',
-        to: 'members',
-        icon: Users,
-        color: 'bg-emerald-50 dark:bg-emerald-900/20',
-        iconColor: 'text-emerald-600 dark:text-emerald-400',
-    },
-    {
-        title: 'Infrastructure',
-        description: 'Configure factories, lines, and zones.',
-        to: 'factories',
-        icon: Factory,
-        color: 'bg-amber-50 dark:bg-amber-900/20',
-        iconColor: 'text-amber-600 dark:text-amber-400',
-    },
-    {
-        title: 'Security',
-        description: 'SSO, audit logs, and password policies.',
-        to: '',
-        icon: ShieldCheck,
-        color: 'bg-[var(--color-border)]/30',
-        iconColor: 'text-[var(--color-text-subtle)]',
-        disabled: true,
-        badge: 'Coming Soon',
-    },
-    {
-        title: 'Billing',
-        description: 'Invoices, usage limits, and subscription.',
-        to: '',
-        icon: CreditCard,
-        color: 'bg-[var(--color-border)]/30',
-        iconColor: 'text-[var(--color-text-subtle)]',
-        disabled: true,
-        badge: 'Coming Soon',
-    },
-];
-
 const OrganizationSettingsHub: React.FC = () => {
+    const { t } = useTranslation();
+
+    const settingsCards: SettingsCard[] = [
+        {
+            title: t('organization_settings.cards.general.title'),
+            description: t('organization_settings.cards.general.description'),
+            to: 'general',
+            icon: Building2,
+            color: 'bg-blue-50 dark:bg-blue-900/20',
+            iconColor: 'text-blue-600 dark:text-blue-400',
+        },
+        {
+            title: t('organization_settings.cards.members.title'),
+            description: t('organization_settings.cards.members.description'),
+            to: 'members',
+            icon: Users,
+            color: 'bg-emerald-50 dark:bg-emerald-900/20',
+            iconColor: 'text-emerald-600 dark:text-emerald-400',
+        },
+        {
+            title: t('organization_settings.cards.infrastructure.title'),
+            description: t('organization_settings.cards.infrastructure.description'),
+            to: 'factories',
+            icon: Factory,
+            color: 'bg-amber-50 dark:bg-amber-900/20',
+            iconColor: 'text-amber-600 dark:text-amber-400',
+        },
+        {
+            title: t('organization_settings.cards.security.title'),
+            description: t('organization_settings.cards.security.description'),
+            to: '',
+            icon: ShieldCheck,
+            color: 'bg-[var(--color-border)]/30',
+            iconColor: 'text-[var(--color-text-subtle)]',
+            disabled: true,
+            badge: t('organization_settings.badges.coming_soon'),
+        },
+        {
+            title: t('organization_settings.cards.billing.title'),
+            description: t('organization_settings.cards.billing.description'),
+            to: '',
+            icon: CreditCard,
+            color: 'bg-[var(--color-border)]/30',
+            iconColor: 'text-[var(--color-text-subtle)]',
+            disabled: true,
+            badge: t('organization_settings.badges.coming_soon'),
+        },
+    ];
+
     return (
         <div>
             {/* Header */}
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-[var(--color-text)]">
-                    Organization Settings
+                    {t('organization_settings.title')}
                 </h1>
                 <p className="text-[var(--color-text-muted)] mt-1">
-                    Manage your workspace configuration and preferences.
+                    {t('organization_settings.description')}
                 </p>
             </div>
 

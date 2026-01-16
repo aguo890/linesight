@@ -1,8 +1,10 @@
 import React from 'react';
 import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ErrorPage: React.FC = () => {
     const error = useRouteError();
+    const { t } = useTranslation();
     let errorMessage: string;
     let errorDetail: string | undefined;
 
@@ -15,7 +17,7 @@ const ErrorPage: React.FC = () => {
     } else if (typeof error === 'string') {
         errorMessage = error;
     } else {
-        errorMessage = 'Unknown error occurred.';
+        errorMessage = t('components.error_page.unknown_error');
         errorDetail = JSON.stringify(error);
     }
 
@@ -27,7 +29,7 @@ const ErrorPage: React.FC = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                 </div>
-                <h1 className="text-xl font-bold mb-2">Unexpected Application Error</h1>
+                <h1 className="text-xl font-bold mb-2">{t('components.error_page.title')}</h1>
                 <p className="text-[var(--color-text-muted)] mb-6 text-sm">
                     {errorMessage}
                 </p>
@@ -39,7 +41,7 @@ const ErrorPage: React.FC = () => {
                 )}
 
                 <a href="/" className="inline-block px-4 py-2 bg-[var(--color-primary)] text-white rounded hover:bg-[var(--color-primary-dark)] transition-colors text-sm font-medium">
-                    Return to Home
+                    {t('components.error_page.return_home')}
                 </a>
             </div>
         </div>

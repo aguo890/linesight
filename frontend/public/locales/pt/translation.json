@@ -1,0 +1,1018 @@
+{
+    "profile": {
+        "title": "Perfil de Usuário",
+        "subtitle": "Gerencie configurações e preferências da conta",
+        "back": "Voltar",
+        "save_btn": "Salvar Alterações",
+        "success": "Perfil atualizado com sucesso!",
+        "error_required": "O nome completo é obrigatório",
+        "error_fail": "Falha ao atualizar perfil. Tente novamente.",
+        "at": "em",
+        "roles": {
+            "admin": "Admin",
+            "user": "Usuário",
+            "manager": "Gerente"
+        },
+        "sections": {
+            "factories": "Suas Fábricas",
+            "security": "Segurança",
+            "personal_info": "Informações Pessoais",
+            "localization": "Localização e Região",
+            "notifications": "Notificações (Em breve)"
+        },
+        "security": {
+            "change_password": "Alterar Senha",
+            "two_factor": "Autenticação em Dois Fatores"
+        },
+        "fields": {
+            "full_name": "Nome Completo",
+            "email": "Endereço de E-mail",
+            "email_hint": "O e-mail não pode ser alterado diretamente.",
+            "language": "Idioma",
+            "theme": "Tema"
+        },
+        "themes": {
+            "light": "Modo Claro",
+            "dark": "Modo Escuro",
+            "system": "Padrão do Sistema"
+        },
+        "notifications": {
+            "email": "Alertas por E-mail",
+            "push": "Notificações Push",
+            "weekly": "Resumo Semanal"
+        },
+        "location_selector": {
+            "label": "Localização e Fuso Horário",
+            "auto_detect": "Detecção Automática",
+            "search_placeholder": "Buscar país...",
+            "no_results": "Nenhum país encontrado",
+            "select_country_first": "Selecione o país primeiro",
+            "selected": "Selecionado:"
+        }
+    },
+    "navigation": {
+        "dashboard": "Painel",
+        "my_dashboards": "Meus Painéis",
+        "organization": "Organização",
+        "show_more": "Mostrar mais",
+        "show_less": "Mostrar menos"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Meus Painéis",
+            "search_placeholder": "Buscar...",
+            "status": {
+                "loading": "Carregando...",
+                "none": "Nenhum site ativo",
+                "available_one": "{{count}} site disponível",
+                "available_other": "{{count}} sites disponíveis"
+            },
+            "table": {
+                "header_name": "Nome do Site",
+                "header_location": "Local",
+                "header_status": "Status",
+                "header_lines": "Linhas",
+                "header_actions": "Ações",
+                "action_view": "Ver"
+            },
+            "actions": {
+                "new_dashboard": "Novo Painel",
+                "configure_sites": "Configurar Sites",
+                "clear_search": "Limpar busca"
+            },
+            "search": {
+                "results_info": "Mostrando {{count}} de {{total}} fábricas",
+                "no_results": "Nenhuma fábrica encontrada",
+                "no_results_detail": "Nenhuma fábrica corresponde a \"{{query}}\". Tente outro termo."
+            },
+            "factory_status": {
+                "at_limit": "No Limite",
+                "near_limit": "Perto do Limite",
+                "active": "Ativo"
+            },
+            "empty_state": {
+                "title": "Nenhum site ativo",
+                "description": "Seu painel está vazio pois nenhuma fábrica foi configurada ainda.",
+                "admin_hint": "Vá para Configurações da Organização para configurar sua infraestrutura.",
+                "user_hint": "Entre em contato com seu administrador para configurar a infraestrutura.",
+                "cta": "Ir para Configurações"
+            },
+            "view": {
+                "grid": "Grade",
+                "list": "Lista"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} fontes",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "open": "Abrir",
+            "edit_title": "Editar fábrica",
+            "delete_title": "Excluir fábrica"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Início",
+            "list": "Meus Painéis",
+            "production_sites": "Locais de Produção",
+            "sites": "Sites",
+            "not_found": "Não Encontrado"
+        },
+        "sections": {
+            "overview": "Visão Geral",
+            "performance": "Desempenho",
+            "settings": "Configurações",
+            "dashboards": "Painéis",
+            "data_sources": "Fontes de Dados"
+        },
+        "actions": {
+            "edit": "Editar Configuração",
+            "delete": "Excluir Site",
+            "save": "Salvar Alterações",
+            "settings": "Configurações",
+            "new_dashboard": "Novo Painel",
+            "create_dashboard": "Criar Painel",
+            "add_data_source": "Adicionar Fonte",
+            "new_source": "Nova Fonte",
+            "upload_data": "Carregar dados",
+            "no_write_access": "Sem acesso de escrita"
+        },
+        "alerts": {
+            "confirm_delete": "Tem certeza que deseja excluir esta fábrica? Esta ação não pode ser desfeita.",
+            "edit_soon": "Edição em breve",
+            "delete_soon": "Exclusão em breve",
+            "delete_fail": "Falha ao excluir painel."
+        },
+        "stats": {
+            "dashboards": "Painéis",
+            "active_widgets": "Widgets Ativos",
+            "active_sources": "Fontes Ativas",
+            "used_info": "{{current}} / {{max}} Usados"
+        },
+        "not_found": "Fábrica não encontrada",
+        "search": {
+            "dashboards_placeholder": "Filtrar painéis...",
+            "sources_placeholder": "Buscar fontes...",
+            "no_sources_found": "Nenhuma fonte encontrada."
+        },
+        "quota": {
+            "limit_reached": "Limite de cota atingido"
+        },
+        "table": {
+            "headers": {
+                "name": "Nome",
+                "status": "Status",
+                "actions": "Ações"
+            }
+        },
+        "status": {
+            "active": "Ativo",
+            "inactive": "Inativo"
+        },
+        "confirm": {
+            "delete_source": "Tem certeza que deseja excluir esta fonte de dados?",
+            "delete_dashboard": "Tem certeza que deseja excluir este painel?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Hoje",
+            "yesterday": "Ontem",
+            "last_7_days": "7 Dias",
+            "last_30_days": "30 Dias",
+            "this_month": "Este Mês",
+            "last_month": "Mês Passado"
+        },
+        "shifts": {
+            "all": "Todos os Turnos",
+            "shift_a": "Turno A (Manhã)",
+            "shift_b": "Turno B (Tarde)",
+            "shift_c": "Turno C (Noite)"
+        },
+        "date_range": "Intervalo de Datas",
+        "to": "até"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Fábrica",
+            "line": "Linha",
+            "dashboard": "Painel"
+        },
+        "status": {
+            "updated": "Atualizado {{time}}",
+            "live": "Ao Vivo",
+            "loading": "Carregando...",
+            "saving": "Salvando..."
+        },
+        "actions": {
+            "refresh": "Atualizar",
+            "reset_layout": "Redefinir Layout",
+            "reset_confirm": "Tem certeza que deseja redefinir o layout para o padrão?",
+            "design_layout": "Projetar Layout",
+            "save_layout": "Salvar Layout",
+            "add_widget": "Adicionar Widget",
+            "cancel": "Cancelar"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Biblioteca de Widgets",
+            "subtitle": "Arraste e solte widgets para personalizar seu painel.",
+            "categories": {
+                "all": "Todos",
+                "production": "Produção",
+                "quality": "Qualidade",
+                "efficiency": "Eficiência"
+            }
+        },
+        "selector": {
+            "simulated_data": "Simulado",
+            "ready_to_use": "Pronto para uso",
+            "recommended": "Recomendado",
+            "future_capability": "Capacidade Futura",
+            "coming_soon": "Em Breve",
+            "near_match": "Quase Compatível",
+            "ai_recommendations": "Recomendações IA",
+            "select_all": "Selecionar Tudo",
+            "selected": "selecionado",
+            "compatible": "compatível",
+            "status_summary": "{{selected}} selecionado • {{compatible}} compatível",
+            "data_req": "Dados Necessários",
+            "needs_mapping": "Requer Mapeamento",
+            "categories": {
+                "Efficiency": "Eficiência",
+                "Quality": "Qualidade",
+                "Workforce": "Mão de Obra",
+                "Operations": "Operações"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Recomendado",
+                "Operations": "Operações",
+                "Strategy": "Estratégia"
+            },
+            "efficiency_starter": {
+                "title": "Início Eficiência",
+                "description": "Kit essencial para rastrear produção e desempenho."
+            },
+            "quality_auditor": {
+                "title": "Auditor de Qualidade",
+                "description": "Foco em DHU, defeitos e equilíbrio velocidade-qualidade."
+            },
+            "floor_manager": {
+                "title": "Visão do Gerente",
+                "description": "Visibilidade em tempo real da mão de obra e produção."
+            },
+            "executive_summary": {
+                "title": "Resumo Executivo",
+                "description": "KPIs de alto nível para decisão estratégica."
+            }
+        },
+        "common": {
+            "planned": "PLANEJADO",
+            "actual": "REAL",
+            "target": "META",
+            "efficiency": "Eficiência",
+            "minutes": "min",
+            "limit": "Limite",
+            "status": "Status",
+            "on_target": "NA META",
+            "below_target": "ABAIXO META",
+            "defect_rate": "Taxa de Defeito"
+        },
+        "titles": {
+            "production_chart": "Saída de Produção",
+            "line_efficiency": "Eficiência da Linha",
+            "earned_minutes": "Minutos Ganhos",
+            "sam_performance": "Desempenho SAM",
+            "dhu_quality": "Qualidade DHU",
+            "speed_quality": "Velocidade vs Qualidade",
+            "top_blockers": "Principais Bloqueios",
+            "style_progress": "Progresso do Estilo",
+            "daily_target": "Meta Diária",
+            "production_timeline": "Cronograma de Produção",
+            "complexity_impact": "Impacto da Complexidade",
+            "workforce_attendance": "Frequência da Mão de Obra",
+            "kpi_summary": "Resumo de KPI"
+        },
+        "descriptions": {
+            "production_chart": "Comparar planejado vs real ao longo do tempo",
+            "line_efficiency": "Eficiência da linha em tempo real vs meta",
+            "earned_minutes": "Minutos Padrão (SAM) ganhos vs disponíveis",
+            "sam_performance": "Métrica de desempenho baseada em minutos padrão",
+            "dhu_quality": "Análise de tendência de Defeitos por Cem Unidades",
+            "speed_quality": "Correlação entre velocidade de produção e qualidade",
+            "top_blockers": "Problemas mais frequentes parando a produção",
+            "style_progress": "% de conclusão dos estilos atuais",
+            "daily_target": "Progresso em direção à meta diária",
+            "production_timeline": "Visão Gantt do cronograma",
+            "complexity_impact": "Análise da complexidade do estilo na saída",
+            "workforce_attendance": "Frequência dos operadores e balanceamento",
+            "kpi_summary": "Visão geral das principais métricas"
+        },
+        "production_chart": {
+            "planned": "PLANEJADO",
+            "actual_output": "SAÍDA REAL"
+        },
+        "speed_quality": {
+            "efficiency": "Eficiência",
+            "defect_rate": "Taxa de Defeito"
+        },
+        "earned_minutes": {
+            "earned": "GANHO",
+            "available": "DISPONÍVEL"
+        },
+        "dhu_quality": {
+            "no_data": "Sem dados DHU",
+            "current_dhu": "DHU Atual",
+            "above_limit": "ACIMA DO LIMITE"
+        },
+        "blocker_cloud": {
+            "occurrences": "ocorrências",
+            "view_all_logs": "Ver todos os logs"
+        }
+    },
+    "common": {
+        "back": "Voltar",
+        "cancel": "Cancelar",
+        "error": "Erro",
+        "success": "Sucesso",
+        "uploading": "Enviando...",
+        "processing": "Processando...",
+        "remove": "Remover",
+        "ready": "Pronto",
+        "needs_setup": "Requer Configuração",
+        "date": "Data",
+        "actions": {
+            "save": "Salvar",
+            "cancel": "Cancelar",
+            "close": "Fechar",
+            "delete": "Excluir",
+            "edit": "Editar",
+            "search": "Buscar...",
+            "confirm": "Confirmar",
+            "back": "Voltar",
+            "create": "Criar",
+            "invite": "Convidar"
+        },
+        "status": {
+            "active": "Ativo",
+            "inactive": "Inativo",
+            "unknown": "Desconhecido"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Nome do Painel",
+            "dashboard_name_placeholder": "ex: Visão Geral Linha 4",
+            "name_error_tooltip": "Por favor, insira um Nome de Painel primeiro.",
+            "name_error_text": "Por favor, insira um nome para continuar.",
+            "selection_title": "Seleção de Fonte de Dados",
+            "selection_desc": "Selecione um arquivo carregado anteriormente.",
+            "columns": {
+                "file_name": "Nome do Arquivo",
+                "status": "Status",
+                "uploaded": "Enviado",
+                "action": "Ação"
+            },
+            "btn_configure": "Configurar",
+            "btn_complete_setup": "Concluir Configuração",
+            "note": "Nota: Seu painel incluirá dados de TODOS os arquivos desta lista.",
+            "empty_title": "Sem Fontes de Dados Ainda",
+            "empty_desc": "Carregue arquivos na página da Linha de Produção primeiro.",
+            "error_load_failed": "Falha ao carregar configuração."
+        },
+        "step2": {
+            "title": "Validar Mapeamento",
+            "subtitle": "Revise a correspondência das colunas.",
+            "stats": {
+                "auto": "Auto-mapeado",
+                "review": "Revisar",
+                "attention": "Atenção",
+                "ignored": "Ignorado"
+            },
+            "filter": {
+                "all": "Todos",
+                "unmapped": "Não Mapeado",
+                "conflicts": "Conflitos"
+            },
+            "showing_count": "Mostrando {{filtered}} de {{total}} colunas",
+            "table": {
+                "source": "Coluna Origem",
+                "target": "Campo Destino",
+                "status": "Status",
+                "no_match": "Nenhuma coluna corresponde",
+                "try_different": "Tente outra visão"
+            },
+            "status_labels": {
+                "exact": "Exato",
+                "exact_tooltip": "Correspondência exata",
+                "fuzzy": "Aproximado",
+                "fuzzy_tooltip": "Nome similar",
+                "ai": "IA",
+                "ai_tooltip": "Sugerido por IA",
+                "manual": "Manual",
+                "manual_tooltip": "Atribuído manualmente",
+                "unset": "Não definido",
+                "unset_tooltip": "Requer mapeamento",
+                "duplicate": "Duplicado"
+            },
+            "field_selector": {
+                "select_placeholder": "Selecione destino...",
+                "search_placeholder": "Buscar campos...",
+                "suggested": "Sugerido",
+                "all_fields": "Todos os Campos",
+                "no_results": "Sem resultados para \"{{term}}\"",
+                "ignore_action": "Ignorar coluna",
+                "restore_action": "Ignorado — clique para restaurar",
+                "in_use": "em uso"
+            },
+            "alerts": {
+                "conflict_count_one": "1 campo tem mapeamento duplicado",
+                "conflict_count_other": "{{count}} campos têm mapeamento duplicado",
+                "remaining_needed": "Campos restantes necessários"
+            },
+            "btn_confirm": "Confirmar Mapeamento",
+            "processing": {
+                "title": "Processando Dados",
+                "subtitle": "Validando e importando...",
+                "logs": {
+                    "init": "Inicializando...",
+                    "schema": "Verificando esquema...",
+                    "mapping": "Mapeando coluna '{{column}}'...",
+                    "req": "Processando requisição...",
+                    "sending": "Enviando dados...",
+                    "success": "Sucesso."
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Modelos Rápidos",
+            "divider": "ou personalizar individualmente",
+            "library_title": "Biblioteca de Widgets",
+            "selected_count": "{{count}} selecionados",
+            "btn_create": "Criar Painel",
+            "btn_configuring": "Configurando..."
+        },
+        "title": "Configuração LineSight",
+        "steps": {
+            "upload": {
+                "label": "Dados Fonte",
+                "desc": "Upload ou Seleção",
+                "desc_alt": "Upload CSV/Excel"
+            },
+            "mapping": {
+                "label": "Mapeamento",
+                "desc": "Validar Colunas"
+            },
+            "widgets": {
+                "label": "Painel",
+                "desc": "Layout"
+            }
+        },
+        "mini_map": {
+            "title": "Prévia Espacial",
+            "empty_state": "Selecione widgets",
+            "stats": {
+                "widgets_one": "{{count}} widget",
+                "widgets_other": "{{count}} widgets",
+                "screens_one": "~{{count}} tela",
+                "screens_other": "~{{count}} telas"
+            },
+            "density": {
+                "empty": "Vazio",
+                "compact": "Compacto",
+                "balanced": "Balanceado",
+                "heavy": "Denso"
+            },
+            "scroll_warning": "Pode precisar de rolagem"
+        },
+        "context": {
+            "title": "Contexto Atual",
+            "select_factory": "Selecione Fábrica",
+            "select_source": "Selecione Fonte",
+            "select_factory_first": "Selecione Fábrica Primeiro",
+            "loading_factories": "Carregando Fábricas...",
+            "loading_sources": "Carregando Fontes...",
+            "fetching_sources": "Buscando fontes...",
+            "no_sources_alert": "Nenhuma fonte disponível.",
+            "select_source_overlay": "Selecione uma Fonte para continuar"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Carregar Dados",
+            "title_preview": "Pré-visualizar",
+            "subtitle_upload": "Upload para {{dataSourceName}}",
+            "subtitle_preview": "Revise a importação",
+            "drop_text": "Arraste o arquivo ou clique",
+            "supports_text": "Suporta Excel (.xlsx, .xls) e CSV",
+            "success_redirect": "Upload bem sucedido! Redirecionando...",
+            "info_preview": "Prévia antes do mapeamento.",
+            "btn_upload_preview": "Upload & Prévia",
+            "btn_uploading": "Carregando...",
+            "errors": {
+                "invalid_extension": "Selecione Excel ou CSV",
+                "duplicate_file": "Arquivo já existe.",
+                "preview_failed": "Falha na prévia.",
+                "upload_failed": "Falha no upload"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Configurações da Organização",
+        "description": "Gerencie a configuração do workspace.",
+        "cards": {
+            "general": {
+                "title": "Geral",
+                "description": "Perfil, logo e identificadores."
+            },
+            "members": {
+                "title": "Membros",
+                "description": "Acesso e permissões."
+            },
+            "infrastructure": {
+                "title": "Infraestrutura",
+                "description": "Fábricas, linhas e zonas."
+            },
+            "security": {
+                "title": "Segurança",
+                "description": "SSO, logs e senhas."
+            },
+            "billing": {
+                "title": "Cobrança",
+                "description": "Faturas e limites."
+            }
+        },
+        "badges": {
+            "coming_soon": "Em Breve"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Voltar para Configurações"
+        },
+        "top_nav": {
+            "search_placeholder": "Buscar fábricas...",
+            "search_coming_soon": "Busca global em breve!",
+            "notifications": {
+                "title": "Notificações",
+                "mark_read": "Marcar lidas",
+                "empty": "Sem notificações"
+            },
+            "user_menu": {
+                "profile": "Perfil & Configurações",
+                "logout": "Sair",
+                "default_user": "Usuário",
+                "default_role": "Visualizador"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organização",
+            "factories": "Fábricas"
+        },
+        "header": {
+            "title": "Configuração da Fábrica",
+            "popover_trigger_label": "Info Fábrica"
+        },
+        "popover": {
+            "title": "Configuração",
+            "assignment": {
+                "title": "Modo Atribuição:",
+                "desc_part1": "Visão padrão. Clique para detalhes ou",
+                "desc_part2": "botão para atribuir gerentes."
+            },
+            "structure": {
+                "title": "Modo Estrutura:",
+                "desc": "Personalizar layout para alterar fontes."
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Modo Atribuição",
+            "structure_mode": "Modo Estrutura",
+            "customize_layout": "Personalizar Layout",
+            "done_editing": "Concluído"
+        },
+        "list": {
+            "add_data_source": "Adicionar Fonte",
+            "no_data_sources": "Nenhuma fonte configurada."
+        },
+        "bulk_actions": {
+            "selected": "Selecionado",
+            "assign_manager": "Atribuir Gerente"
+        },
+        "messages": {
+            "loading": "Carregando Fábrica...",
+            "assignment_failed": "Falha na atribuição."
+        }
+    },
+    "roles": {
+        "system_admin": "Admin Sistema",
+        "owner": "Proprietário",
+        "admin": "Admin",
+        "viewer": "Visualizador",
+        "member": "Membro",
+        "operator": "Operador",
+        "factory_manager": "Gerente de Fábrica",
+        "line_manager": "Gerente de Linha",
+        "user": "Usuário",
+        "manager": "Gerente"
+    },
+    "org_general": {
+        "title": "Geral",
+        "profile": {
+            "logged_in_as": "Logado como"
+        },
+        "at_a_glance": "Resumo",
+        "stats": {
+            "total_managers": "Total Gerentes",
+            "assigned": "Atribuídos",
+            "factories": "Fábricas",
+            "production_lines": "Linhas"
+        },
+        "danger_zone": {
+            "title": "Zona de Perigo",
+            "description": "Excluir a organização removerá todos os dados permanentemente.",
+            "delete_button": "Excluir Organização (Em Breve)"
+        }
+    },
+    "org_members": {
+        "title": "Membros",
+        "invite_member": "Convidar Membro",
+        "search_placeholder": "Buscar por nome ou e-mail...",
+        "filter": "Filtro",
+        "table": {
+            "user": "Usuário",
+            "global_role": "Função Global",
+            "access": "Acesso",
+            "last_active": "Último Acesso",
+            "actions": "Ações",
+            "loading": "Carregando membros...",
+            "no_members": "Nenhum membro encontrado.",
+            "assignments": "{{count}} Atribuições",
+            "unassigned": "Não atribuído",
+            "never_active": "Nunca",
+            "view_details": "Ver Detalhes"
+        },
+        "drawer": {
+            "title": "Detalhes do Membro",
+            "role_label": "Função",
+            "active_assignments": "Atribuições Ativas",
+            "no_assignments": "Nenhuma atribuição.",
+            "current_factory": "Fábrica Atual",
+            "danger_zone": {
+                "title": "Zona de Perigo",
+                "suspend_button": "Suspender Usuário"
+            }
+        },
+        "cell": {
+            "unknown_user": "Usuário Desconhecido",
+            "active": "Ativo",
+            "inactive": "Inativo"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Voltar",
+        "back_button": "Voltar",
+        "title": "Infraestrutura",
+        "sites_count": "{{count}} Sites",
+        "sites": "Sites",
+        "add_factory": "Adicionar Fábrica",
+        "search_placeholder": "Buscar...",
+        "retry": "Tentar Novamente",
+        "new_factory": {
+            "title": "Nova Fábrica",
+            "subtitle": "Adicionar novo local"
+        },
+        "card": {
+            "data_sources": "Fontes de Dados",
+            "managers": "Gerentes",
+            "configure_site": "Configurar",
+            "edit_details": "Editar Detalhes",
+            "delete_factory": "Excluir Fábrica"
+        },
+        "list": {
+            "name": "Nome",
+            "factory": "Fábrica",
+            "code": "Código",
+            "country": "País",
+            "sources": "Fontes",
+            "managers": "Gerentes",
+            "actions": "Ações"
+        },
+        "no_match": "Sem correspondência para \"{{query}}\"",
+        "confirm_delete": "Tem certeza que deseja excluir {{name}}?",
+        "delete_fail": "Falha ao excluir: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Adicionar Fonte",
+            "subtitle": "Nova fonte para {{factoryName}}",
+            "name_label": "Nome",
+            "name_placeholder": "ex: Linha 3",
+            "code_label": "Código",
+            "code_placeholder": "L-03",
+            "specialty_label": "Especialidade",
+            "specialty_placeholder": "ex: Montagem",
+            "description_label": "Descrição",
+            "description_placeholder": "Descreva...",
+            "use_defaults": "Usar Padrões",
+            "inherit_tooltip": "Herda turnos",
+            "custom_tooltip": "Config personalizado",
+            "inherit_desc": "Herda padrão da fábrica.",
+            "custom_desc": "Começa vazio",
+            "source_usage": "Uso da Fonte",
+            "quota_reached": "Limite atingido.",
+            "submit_button": "Adicionar",
+            "submitting": "Criando..."
+        },
+        "create_factory": {
+            "title": "Criar Fábrica",
+            "subtitle": "Configurar nova fábrica",
+            "quota_reached": "Cota Atingida",
+            "name_label": "Nome da Fábrica",
+            "name_placeholder": "ex: Fábrica SP",
+            "code_label": "Código",
+            "code_placeholder": "ex: SP-01",
+            "code_desc": "Identificador curto",
+            "source_name_label": "Fonte Inicial",
+            "source_name_placeholder": "ex: Linha A",
+            "source_specialty_label": "Especialidade",
+            "source_specialty_placeholder": "ex: Montagem",
+            "source_specialty_desc": "Função primária",
+            "source_desc_label": "Descrição",
+            "source_desc_placeholder": "Breve descrição",
+            "source_desc_help": "Função da fonte",
+            "submitting_msg": "Criando fábrica...",
+            "submit_button": "Criar",
+            "submitting_button": "Criando..."
+        },
+        "edit_factory": {
+            "title": "Editar Fábrica",
+            "name_label": "Nome",
+            "code_label": "Código",
+            "submit_button": "Salvar",
+            "submitting_button": "Salvando..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Renomear",
+            "managers_stat": "Gerentes",
+            "efficiency_stat": "Eficiência",
+            "assigned_team": "Equipe",
+            "no_managers": "Nenhum gerente.",
+            "remove_button": "Remover",
+            "danger_zone": "Zona de Perigo",
+            "delete_button": "Excluir Fonte",
+            "confirm_remove": "Remover gerente?",
+            "remove_fail": "Falha ao remover.",
+            "confirm_delete": "Excluir {{name}}?",
+            "delete_fail": "Falha ao excluir.",
+            "rename_fail": "Falha ao renomear."
+        },
+        "row": {
+            "untitled_source": "Fonte Sem Título",
+            "rename_required": "Renomear Necessário",
+            "click_tooltip": "Clique para detalhes",
+            "confirm_delete": "Excluir {{name}}?",
+            "rename_prompt": "Renomear fonte:"
+        },
+        "user_search": {
+            "placeholder": "Buscar gerentes...",
+            "no_results": "Nenhum gerente encontrado",
+            "no_available": "Nenhum disponível",
+            "available_count": "{{count}} disponível"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Bem-vindo de volta",
+            "welcome_subtitle": "Entre com seus detalhes.",
+            "email_label": "E-mail Corporativo",
+            "password_label": "Senha",
+            "forgot_password": "Esqueceu a senha?",
+            "sign_in_button": "Entrar",
+            "no_account": "Não tem conta?",
+            "contact_sales": "Contatar Vendas",
+            "back_to_landing": "Voltar",
+            "errors": {
+                "network_error": "Erro de conexão.",
+                "invalid_credentials": "Credenciais inválidas."
+            },
+            "demo_card": {
+                "title": "Relatório de Turno",
+                "subtitle": "Ao Vivo • Fábrica 01",
+                "efficiency": "Eficiência",
+                "efficiency_sub": "↑ {{val}}% vs meta",
+                "output": "Saída",
+                "output_sub": "No prazo",
+                "chart_title": "Taxa Horária",
+                "chart_period": "Útltimas 4h",
+                "chart_current": "Atual",
+                "quote": "\"{{text}}\"",
+                "quote_author": "Diretor de Operações"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Erro Inesperado",
+            "unknown_error": "Ocorreu um erro desconhecido.",
+            "return_home": "Voltar ao Início"
+        },
+        "confirm_dialog": {
+            "confirm": "Confirmar",
+            "cancel": "Cancelar",
+            "please_wait": "Aguarde..."
+        },
+        "quota_warning": {
+            "limit_reached": "Você atingiu seu limite de {{type}} ({{max}})",
+            "near_limit": "Você está próximo do limite de {{type}} ({{current}}/{{max}})",
+            "upgrade_prompt": "Atualize seu plano.",
+            "consider_upgrade": "Considere atualizar.",
+            "upgrade_button": "Atualizar",
+            "dismiss_label": "Dispensar",
+            "type_factories": "fábricas",
+            "type_lines": "linhas de produção"
+        },
+        "date_range_picker": {
+            "start_date": "Data Início",
+            "end_date": "Data Fim",
+            "start_in_timezone": "Início em {{timezone}}",
+            "end_in_timezone": "Fim em {{timezone}}"
+        },
+        "breadcrumb": {
+            "aria_label": "Breadcrumb"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Padrões da Fábrica",
+            "subtitle": "Padrões para {{name}}"
+        },
+        "sections": {
+            "localization": "Localização",
+            "shifts": {
+                "title": "Padrão de Turno",
+                "description": "Novas linhas herdarão estes turnos."
+            },
+            "non_working_days": {
+                "title": "Dias Não Úteis Padrão",
+                "description": "Marcados como não úteis por padrão."
+            },
+            "schema_configuration": "Configuração de Esquema",
+            "upload_history": "Histórico de Upload",
+            "active_field_mapping": "Mapeamento Ativo",
+            "field_mapping_description": "Mapeia cabeçalhos Excel para sistema."
+        },
+        "fields": {
+            "date_format": "Formato de Data",
+            "currency": "Moeda",
+            "measurement_system": "Sistema de Medida",
+            "preview": "Prévia"
+        },
+        "shifts": {
+            "add": "Adicionar Turno",
+            "new_shift": "Novo Turno",
+            "empty": "Nenhum turno.",
+            "name_label": "Nome",
+            "name_placeholder": "ex: Manhã",
+            "start_time": "Início",
+            "end_time": "Fim"
+        },
+        "timezone_warning": {
+            "title": "Mudar Fuso Horário?",
+            "message": "Mudar para <strong>{{timezone}}</strong> pode afetar dados históricos.",
+            "confirm": "Sim, Atualizar"
+        },
+        "buttons": {
+            "save": "Salvar",
+            "saving": "Salvando..."
+        },
+        "errors": {
+            "save_failed": "Falha ao salvar."
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Fonte não encontrada",
+        "system_node": "Nó do Sistema",
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Fábrica",
+            "not_found": "Não Encontrado"
+        },
+        "tabs": {
+            "schema_configuration": "Configuração de Esquema",
+            "upload_history": "Histórico"
+        },
+        "schema": {
+            "active_field_mapping": "Mapeamento Ativo",
+            "field_mapping_description": "Excel para Sistema.",
+            "edit_mappings": "Editar Mapeamentos",
+            "reset_schema": "Redefinir Esquema",
+            "no_mappings": "Sem mapeamentos.",
+            "system_status": "Status do Sistema",
+            "last_updated": "Última atualização",
+            "no_config_title": "Nenhuma Configuração",
+            "no_config_description": "Fonte não mapeada.",
+            "no_config_hint": "Carregue um arquivo para começar.",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "Sistema"
+            }
+        },
+        "uploads": {
+            "processed_files": "Arquivos Processados",
+            "clear_history": "Limpar Histórico",
+            "no_files": "Nenhum arquivo."
+        },
+        "confirm": {
+            "reset_schema": "AVISO: Isso excluirá o Esquema. Tem certeza?",
+            "clear_history": "AVISO: Isso limpará o histórico. Tem certeza?"
+        },
+        "errors": {
+            "reset_failed": "Falha ao redefinir.",
+            "clear_failed": "Falha ao limpar."
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Painel Vazio",
+            "description": "Adicione widgets.",
+            "action": "Abrir Designer"
+        }
+    },
+    "file_preview": {
+        "title": "Prévia do Arquivo",
+        "loading": "Carregando...",
+        "loading_subtitle": "Analisando...",
+        "error_title": "Erro",
+        "error_default": "Falha na prévia.",
+        "showing_rows": "Mostrando {{count}} linhas",
+        "columns_detected": "{{count}} colunas",
+        "info_note": "Nota: Prévia.",
+        "null_value": "nulo"
+    },
+    "data_integration": {
+        "title": "Integração de Dados",
+        "subtitle": "Gerenciar esquemas",
+        "upload_data": "Upload",
+        "collapse": "Recolher",
+        "expand": "Expandir",
+        "tabs": {
+            "schema": "Esquema",
+            "uploads": "Histórico"
+        },
+        "empty_sources": "Sem fontes.",
+        "configure_new": "Configurar Nova",
+        "no_description": "Sem descrição.",
+        "schema_version": "Esquema v{{version}}:",
+        "no_active_schema": "Nenhum esquema ativo",
+        "edit_config": "Editar Config",
+        "error_update": "Falha ao atualizar.",
+        "modal": {
+            "title": "Editar Config",
+            "source_name": "Nome",
+            "time_column": "Coluna de Tempo",
+            "time_column_hint": "Nome exato no Excel.",
+            "config_active": "Ativo"
+        }
+    },
+    "data_source_config": {
+        "title": "Configuração da Fonte",
+        "subtitle": "Linha: {{id}}",
+        "loading": "Carregando...",
+        "not_configured_title": "Não Configurado",
+        "not_configured_desc": "Nenhuma fonte configurada.",
+        "close_modal": "Fechar",
+        "time_column": "Coluna de Tempo",
+        "time_column_placeholder": "ex: Data",
+        "time_column_hint": "Nome da coluna de tempo.",
+        "schema_title": "Mapeamento Ativo",
+        "schema_version": "Versão {{version}}",
+        "table": {
+            "source": "Origem",
+            "target": "Destino"
+        },
+        "schema_note": "Aprendido automaticamente.",
+        "description": "Descrição",
+        "description_placeholder": "Descrição...",
+        "success": "Sucesso!",
+        "error_save": "Falha ao salvar.",
+        "error_load": "Falha ao carregar.",
+        "save_button": "Salvar"
+    },
+    "upload_history": {
+        "title": "Uploads Recentes",
+        "loading": "Carregando...",
+        "empty": "Vazio.",
+        "error": "Erro."
+    }
+}

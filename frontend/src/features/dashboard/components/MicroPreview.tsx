@@ -16,7 +16,7 @@ interface MicroPreviewProps {
 const SignatureWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="relative w-full h-full flex flex-col justify-center overflow-hidden group">
         {children}
-        <div className="absolute top-0 right-0 opacity-20 group-hover:opacity-40 transition-opacity text-[6px] font-black uppercase tracking-tighter text-text-muted pointer-events-none pr-1 pt-0.5">
+        <div className="absolute top-0 end-0 opacity-20 group-hover:opacity-40 transition-opacity text-[6px] font-black uppercase tracking-tighter text-text-muted pointer-events-none pe-1 pt-0.5">
             Simulated
         </div>
     </div>

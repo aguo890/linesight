@@ -40,6 +40,20 @@
             "email": "Email Alerts",
             "push": "Push Notifications",
             "weekly": "Weekly Digest"
+        },
+        "location_selector": {
+            "label": "Location & Timezone",
+            "auto_detect": "Auto-Detect",
+            "search_placeholder": "Search Country...",
+            "no_results": "No countries found",
+            "select_country_first": "Select Country First",
+            "selected": "Selected:"
+        },
+        "unsaved_changes": {
+            "title": "Unsaved Changes",
+            "message": "You have unsaved changes. Are you sure you want to leave?",
+            "confirm": "Leave without Saving",
+            "cancel": "Stay"
         }
     },
     "navigation": {
@@ -93,6 +107,14 @@
                 "grid": "Grid view",
                 "list": "List view"
             }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} sources",
+            "edit": "Edit",
+            "delete": "Delete",
+            "open": "Open",
+            "edit_title": "Edit factory",
+            "delete_title": "Delete factory"
         }
     },
     "factory_detail": {
@@ -217,7 +239,43 @@
             "recommended": "Recommended",
             "future_capability": "Future Capability",
             "coming_soon": "Coming Soon",
-            "near_match": "Near Match"
+            "near_match": "Near Match",
+            "ai_recommendations": "AI Recommendations",
+            "select_all": "Select All",
+            "selected": "selected",
+            "compatible": "compatible",
+            "status_summary": "{{selected}} selected • {{compatible}} compatible",
+            "data_req": "Data Required",
+            "needs_mapping": "Needs Mapping",
+            "categories": {
+                "Efficiency": "Efficiency",
+                "Quality": "Quality",
+                "Workforce": "Workforce",
+                "Operations": "Operations"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Recommended",
+                "Operations": "Operations",
+                "Strategy": "Strategy"
+            },
+            "efficiency_starter": {
+                "title": "Efficiency Kickstart",
+                "description": "Essential toolkit for tracking output and hourly performance."
+            },
+            "quality_auditor": {
+                "title": "Quality Auditor",
+                "description": "Focus on DHU, defects, and speed-quality trade-offs."
+            },
+            "floor_manager": {
+                "title": "Floor Manager View",
+                "description": "Real-time workforce and production visibility."
+            },
+            "executive_summary": {
+                "title": "Executive Summary",
+                "description": "High-level KPIs for strategic decision-making."
+            }
         },
         "common": {
             "planned": "PLANNED",
@@ -265,6 +323,17 @@
             "planned": "PLANNED",
             "actual_output": "ACTUAL OUTPUT"
         },
+        "production_timeline": {
+            "output": "Actual Output",
+            "target": "Target"
+        },
+        "complexity_impact": {
+            "title": "Complexity Impact",
+            "loading_styles": "Loading styles...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Complexity)",
+            "styles": "Styles"
+        },
         "speed_quality": {
             "efficiency": "Efficiency",
             "defect_rate": "Defect Rate"
@@ -280,7 +349,8 @@
         },
         "blocker_cloud": {
             "occurrences": "occurrences",
-            "view_all_logs": "View all logs"
+            "view_all_logs": "View all logs",
+            "no_blockers": "No blockers recorded"
         }
     },
     "common": {
@@ -293,8 +363,24 @@
         "remove": "Remove",
         "ready": "Ready",
         "needs_setup": "Needs Setup",
-        "actions": "Action",
-        "date": "Date"
+        "date": "Date",
+        "actions": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "close": "Close",
+            "delete": "Delete",
+            "edit": "Edit",
+            "search": "Search...",
+            "confirm": "Confirm",
+            "back": "Back",
+            "create": "Create",
+            "invite": "Invite"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "unknown": "Unknown"
+        }
     },
     "wizard": {
         "step1": {
@@ -388,6 +474,50 @@
             "selected_count": "{{count}} selected",
             "btn_create": "Create Dashboard",
             "btn_configuring": "Configuring..."
+        },
+        "title": "LineSight Setup",
+        "steps": {
+            "upload": {
+                "label": "Source Data",
+                "desc": "Upload or Select Source",
+                "desc_alt": "Upload CSV/Excel"
+            },
+            "mapping": {
+                "label": "Data Mapping",
+                "desc": "Validate Columns"
+            },
+            "widgets": {
+                "label": "Dashboard",
+                "desc": "Configure Layout"
+            }
+        },
+        "mini_map": {
+            "title": "Spatial Preview",
+            "empty_state": "Select widgets to preview layout",
+            "stats": {
+                "widgets_one": "{{count}} widget",
+                "widgets_other": "{{count}} widgets",
+                "screens_one": "~{{count}} screen",
+                "screens_other": "~{{count}} screens"
+            },
+            "density": {
+                "empty": "Empty",
+                "compact": "Compact",
+                "balanced": "Balanced",
+                "heavy": "Heavy"
+            },
+            "scroll_warning": "Dashboard may require scrolling"
+        },
+        "context": {
+            "title": "Current Context",
+            "select_factory": "Select Factory",
+            "select_source": "Select Data Source",
+            "select_factory_first": "Select Factory First",
+            "loading_factories": "Loading Factories...",
+            "loading_sources": "Loading Sources...",
+            "fetching_sources": "Fetching sources...",
+            "no_sources_alert": "No data sources available. Configure sources from the Factory settings page first.",
+            "select_source_overlay": "Select a Data Source to continue"
         }
     },
     "modals": {
@@ -409,5 +539,498 @@
                 "upload_failed": "Upload failed"
             }
         }
+    },
+    "organization_settings": {
+        "title": "Organization Settings",
+        "description": "Manage your workspace configuration and preferences.",
+        "cards": {
+            "general": {
+                "title": "General",
+                "description": "Organization profile, logo, and identifiers."
+            },
+            "members": {
+                "title": "Members",
+                "description": "Manage team access, roles, and invites."
+            },
+            "infrastructure": {
+                "title": "Infrastructure",
+                "description": "Configure factories, lines, and zones."
+            },
+            "security": {
+                "title": "Security",
+                "description": "SSO, audit logs, and password policies."
+            },
+            "billing": {
+                "title": "Billing",
+                "description": "Invoices, usage limits, and subscription."
+            }
+        },
+        "badges": {
+            "coming_soon": "Coming Soon"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "Back to Settings"
+        },
+        "top_nav": {
+            "search_placeholder": "Search factories, orders...",
+            "search_coming_soon": "Global search is coming soon!",
+            "notifications": {
+                "title": "Notifications",
+                "mark_read": "Mark all read",
+                "empty": "No new notifications"
+            },
+            "user_menu": {
+                "profile": "Profile & Settings",
+                "logout": "Sign out",
+                "default_user": "User",
+                "default_role": "Viewer"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Organization",
+            "factories": "Factories"
+        },
+        "header": {
+            "title": "Factory Configuration",
+            "popover_trigger_label": "Factory Info"
+        },
+        "popover": {
+            "title": "Factory Configuration",
+            "assignment": {
+                "title": "Assignment Mode:",
+                "desc_part1": "Default view. Click faces to view details or the",
+                "desc_part2": "button to assign managers to data sources."
+            },
+            "structure": {
+                "title": "Structure Mode:",
+                "desc": "Click \"Customize Layout\" to rename, delete, or add new data sources to this factory."
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Assignment Mode",
+            "structure_mode": "Structure Mode",
+            "customize_layout": "Customize Layout",
+            "done_editing": "Done Editing"
+        },
+        "list": {
+            "add_data_source": "Add Data Source",
+            "no_data_sources": "No data sources configured. Switch to Edit Mode to add one."
+        },
+        "bulk_actions": {
+            "selected": "Selected",
+            "assign_manager": "Assign Manager"
+        },
+        "messages": {
+            "loading": "Loading Factory...",
+            "assignment_failed": "Failed to assign manager."
+        }
+    },
+    "roles": {
+        "system_admin": "System Admin",
+        "owner": "Owner",
+        "admin": "Admin",
+        "viewer": "Viewer",
+        "member": "Member",
+        "operator": "Operator",
+        "factory_manager": "Factory Manager",
+        "line_manager": "Line Manager",
+        "user": "User",
+        "manager": "Manager"
+    },
+    "org_general": {
+        "title": "General",
+        "profile": {
+            "logged_in_as": "Logged in as"
+        },
+        "at_a_glance": "At a Glance",
+        "stats": {
+            "total_managers": "Total Managers",
+            "assigned": "Assigned",
+            "factories": "Factories",
+            "production_lines": "Production Lines"
+        },
+        "danger_zone": {
+            "title": "Danger Zone",
+            "description": "Deleting an organization will permanently remove all factories, production lines, and data.",
+            "delete_button": "Delete Organization (Coming Soon)"
+        }
+    },
+    "org_members": {
+        "title": "Members",
+        "invite_member": "Invite Member",
+        "search_placeholder": "Search by name or email...",
+        "filter": "Filter",
+        "table": {
+            "user": "User",
+            "global_role": "Global Role",
+            "access": "Access",
+            "last_active": "Last Active",
+            "actions": "Actions",
+            "loading": "Loading members...",
+            "no_members": "No members found.",
+            "assignments": "{{count}} Assignments",
+            "unassigned": "Unassigned",
+            "never_active": "Never",
+            "view_details": "View Details"
+        },
+        "drawer": {
+            "title": "Member Details",
+            "role_label": "Role",
+            "active_assignments": "Active Assignments",
+            "no_assignments": "No assignments.",
+            "current_factory": "Current Factory",
+            "danger_zone": {
+                "title": "Danger Zone",
+                "suspend_button": "Suspend User"
+            }
+        },
+        "cell": {
+            "unknown_user": "Unknown User",
+            "active": "Active",
+            "inactive": "Inactive"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "Back to Settings",
+        "back_button": "Back to Settings",
+        "title": "Infrastructure",
+        "sites_count": "{{count}} Sites",
+        "sites": "Sites",
+        "add_factory": "Add Factory",
+        "search_placeholder": "Search factories...",
+        "retry": "Retry",
+        "new_factory": {
+            "title": "New Factory",
+            "subtitle": "Add a new manufacturing site"
+        },
+        "card": {
+            "data_sources": "Data Sources",
+            "managers": "Managers",
+            "configure_site": "Configure Site",
+            "edit_details": "Edit Details",
+            "delete_factory": "Delete Factory"
+        },
+        "list": {
+            "name": "Name",
+            "factory": "Factory",
+            "code": "Code",
+            "country": "Country",
+            "sources": "Sources",
+            "managers": "Managers",
+            "actions": "Actions"
+        },
+        "no_match": "No factories found matching \"{{query}}\"",
+        "confirm_delete": "Are you sure you want to delete {{name}}? This cannot be undone.",
+        "delete_fail": "Failed to delete factory: {{error}}"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Add Data Source",
+            "subtitle": "Add a new source to {{factoryName}}",
+            "name_label": "Name",
+            "name_placeholder": "e.g. Line 3 / Cutting Table A",
+            "code_label": "Code",
+            "code_placeholder": "L-03",
+            "specialty_label": "Specialty",
+            "specialty_placeholder": "e.g. Assembly",
+            "description_label": "Description",
+            "description_placeholder": "Briefly describe this data source...",
+            "use_defaults": "Use Factory Defaults",
+            "inherit_tooltip": "Inherits shifts & weekends",
+            "custom_tooltip": "Custom configuration",
+            "inherit_desc": "This source will automatically inherit the factory's standard shift pattern.",
+            "custom_desc": "Starting with empty schedule",
+            "source_usage": "Source Usage",
+            "quota_reached": "Maximum sources reached for this factory.",
+            "submit_button": "Add Source",
+            "submitting": "Creating..."
+        },
+        "create_factory": {
+            "title": "Create New Factory",
+            "subtitle": "Set up a new factory with an initial data source",
+            "quota_reached": "Quota Reached",
+            "name_label": "Factory Name",
+            "name_placeholder": "e.g. Gigafactory Texas",
+            "code_label": "Factory Code",
+            "code_placeholder": "e.g. GTX-01",
+            "code_desc": "Short identifier for this factory",
+            "source_name_label": "Initial Data Source",
+            "source_name_placeholder": "e.g. Assembly Line A",
+            "source_specialty_label": "Source Specialty",
+            "source_specialty_placeholder": "e.g. Assembly, Testing, Packaging",
+            "source_specialty_desc": "Primary function or type of this source",
+            "source_desc_label": "Source Description",
+            "source_desc_placeholder": "e.g. Primary assembly line for sportswear",
+            "source_desc_help": "Briefly describe the function of this source",
+            "submitting_msg": "Creating factory and data source...",
+            "submit_button": "Create Factory",
+            "submitting_button": "Creating..."
+        },
+        "edit_factory": {
+            "title": "Edit Factory",
+            "name_label": "Factory Name",
+            "code_label": "Factory Code",
+            "submit_button": "Save Changes",
+            "submitting_button": "Saving..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Rename Source",
+            "managers_stat": "Managers",
+            "efficiency_stat": "Efficiency",
+            "assigned_team": "Assigned Team",
+            "no_managers": "No managers assigned to this source.",
+            "remove_button": "Remove",
+            "danger_zone": "Danger Zone",
+            "delete_button": "Delete Data Source",
+            "confirm_remove": "Remove this manager from the data source?",
+            "remove_fail": "Failed to remove user.",
+            "confirm_delete": "Are you sure you want to delete {{name}}? This cannot be undone.",
+            "delete_fail": "Cannot delete data source. It may have active assignments or data.",
+            "rename_fail": "Failed to rename data source."
+        },
+        "row": {
+            "untitled_source": "Untitled Source",
+            "rename_required": "Rename Required",
+            "click_tooltip": "Click to view details & rename",
+            "confirm_delete": "Delete {{name}}?",
+            "rename_prompt": "Rename data source:"
+        },
+        "user_search": {
+            "placeholder": "Search managers...",
+            "no_results": "No matching managers found",
+            "no_available": "No available managers",
+            "available_count": "{{count}} available"
+        }
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Welcome back",
+            "welcome_subtitle": "Enter your details to access the factory dashboard.",
+            "email_label": "Work Email",
+            "password_label": "Password",
+            "forgot_password": "Forgot password?",
+            "sign_in_button": "Sign in",
+            "no_account": "Don't have an account?",
+            "contact_sales": "Contact Sales",
+            "back_to_landing": "Back to landing",
+            "errors": {
+                "network_error": "Connection error. Please try again or use demo credentials.",
+                "invalid_credentials": "Invalid credentials. Please try again."
+            },
+            "demo_card": {
+                "title": "Shift Report",
+                "subtitle": "Live • Factory 01",
+                "efficiency": "Efficiency",
+                "efficiency_sub": "↑ {{val}}% vs target",
+                "output": "Output (Units)",
+                "output_sub": "On track",
+                "chart_title": "Hourly Rate",
+                "chart_period": "Last 4h",
+                "chart_current": "Current",
+                "quote": "\"{{text}}\"",
+                "quote_author": "Operations Director, Textile Co."
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Unexpected Application Error",
+            "unknown_error": "Unknown error occurred.",
+            "return_home": "Return to Home"
+        },
+        "confirm_dialog": {
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "please_wait": "Please wait..."
+        },
+        "quota_warning": {
+            "limit_reached": "You've reached your {{type}} limit ({{max}})",
+            "near_limit": "You're approaching your {{type}} limit ({{current}}/{{max}})",
+            "upgrade_prompt": "Upgrade your plan to create more {{type}}.",
+            "consider_upgrade": "Consider upgrading to avoid interruptions.",
+            "upgrade_button": "Upgrade",
+            "dismiss_label": "Dismiss warning",
+            "type_factories": "factories",
+            "type_lines": "production lines"
+        },
+        "date_range_picker": {
+            "start_date": "Start Date",
+            "end_date": "End Date",
+            "start_in_timezone": "Start Date in {{timezone}}",
+            "end_in_timezone": "End Date in {{timezone}}"
+        },
+        "breadcrumb": {
+            "aria_label": "Breadcrumb"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Factory Standards & Defaults",
+            "subtitle": "Configure global defaults for {{name}}"
+        },
+        "sections": {
+            "localization": "Localization & Formats",
+            "shifts": {
+                "title": "Default Shift Pattern",
+                "description": "New production lines will inherit these shifts."
+            },
+            "non_working_days": {
+                "title": "Standard Non-Working Days",
+                "description": "These days will be marked as non-working by default. Individual lines can override this."
+            },
+            "schema_configuration": "Schema Configuration",
+            "upload_history": "Upload History",
+            "active_field_mapping": "Active Field Mapping",
+            "field_mapping_description": "Maps your Excel file headers to system database fields."
+        },
+        "fields": {
+            "date_format": "Date Format",
+            "currency": "Currency",
+            "measurement_system": "Measurement System",
+            "preview": "Preview"
+        },
+        "shifts": {
+            "add": "Add Shift",
+            "new_shift": "New Shift",
+            "empty": "No shifts configured. Add a shift to set the default daily schedule.",
+            "name_label": "Shift Name",
+            "name_placeholder": "e.g. Morning",
+            "start_time": "Start Time",
+            "end_time": "End Time"
+        },
+        "timezone_warning": {
+            "title": "Change Timezone?",
+            "message": "Changing the timezone to <strong>{{timezone}}</strong> may affect historical data reporting and active shift schedules.",
+            "confirm": "Yes, Update Timezone"
+        },
+        "buttons": {
+            "save": "Save Changes",
+            "saving": "Saving..."
+        },
+        "errors": {
+            "save_failed": "Failed to save settings. Please try again."
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Data Source not found",
+        "system_node": "System Node",
+        "breadcrumbs": {
+            "workspace": "Workspace",
+            "factory": "Factory",
+            "not_found": "Not Found"
+        },
+        "tabs": {
+            "schema_configuration": "Schema Configuration",
+            "upload_history": "Upload History"
+        },
+        "schema": {
+            "active_field_mapping": "Active Field Mapping",
+            "field_mapping_description": "Maps your Excel file headers to system database fields.",
+            "edit_mappings": "Edit Mappings",
+            "reset_schema": "Reset Schema",
+            "no_mappings": "No mappings defined.",
+            "system_status": "System Status",
+            "last_updated": "Last updated",
+            "no_config_title": "No Configuration Found",
+            "no_config_description": "This data source hasn't been mapped yet.",
+            "no_config_hint": "Upload a file from the Factory page to get started.",
+            "table": {
+                "excel_header": "Excel Header",
+                "system_field": "System Field"
+            }
+        },
+        "uploads": {
+            "processed_files": "Processed Files",
+            "clear_history": "Clear History",
+            "no_files": "No files have been uploaded for this source yet."
+        },
+        "confirm": {
+            "reset_schema": "WARNING: This will delete the Data Source and all Schema Configurations. This action cannot be undone. Are you sure?",
+            "clear_history": "WARNING: This will delete ALL upload history and physical files. This is a destructive action. Are you sure?"
+        },
+        "errors": {
+            "reset_failed": "Failed to reset schema.",
+            "clear_failed": "Failed to clear output history."
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Your Dashboard is Empty",
+            "description": "Start building your command center by adding widgets from the designer.",
+            "action": "Open Designer"
+        }
+    },
+    "file_preview": {
+        "title": "File Preview",
+        "loading": "Loading preview...",
+        "loading_subtitle": "Analyzing file structure",
+        "error_title": "Preview Error",
+        "error_default": "Failed to load preview. Please ensure the file is a valid CSV or Excel document.",
+        "showing_rows": "Showing first {{count}} rows",
+        "columns_detected": "{{count}} columns detected",
+        "info_note": "Note: This is a preview of your data. Review the columns and values to ensure the file uploaded correctly.",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Data Integration Context",
+        "subtitle": "Manage schemas and monitor data flow",
+        "upload_data": "Upload Data",
+        "collapse": "Collapse",
+        "expand": "Expand",
+        "tabs": {
+            "schema": "Schema Configuration",
+            "uploads": "Upload History"
+        },
+        "empty_sources": "No data sources configured yet.",
+        "configure_new": "Configure New Data Source",
+        "no_description": "No description provided.",
+        "schema_version": "Strict Schema v{{version}}:",
+        "no_active_schema": "No active schema",
+        "edit_config": "Edit Configuration",
+        "error_update": "Failed to update configuration.",
+        "modal": {
+            "title": "Edit Configuration",
+            "source_name": "Source Name",
+            "time_column": "Time Column (Excel Header)",
+            "time_column_hint": "Exact header name for the Date/Time column.",
+            "config_active": "Configuration Active"
+        }
+    },
+    "data_source_config": {
+        "title": "Data Source Configuration",
+        "subtitle": "Production Line: {{id}}",
+        "loading": "Loading configuration...",
+        "not_configured_title": "No Data Source Configured",
+        "not_configured_desc": "No Data Source configured for this line. You need to upload data first to create one.",
+        "close_modal": "Close Modal",
+        "time_column": "Time Column",
+        "time_column_placeholder": "e.g. Timestamp, Date, Time",
+        "time_column_hint": "The name of the column in your Excel/CSV files used for time-series analysis.",
+        "schema_title": "Active Schema Mapping",
+        "schema_version": "Version {{version}}",
+        "table": {
+            "source": "Source Column",
+            "target": "Target Field"
+        },
+        "schema_note": "Note: Schema mappings are learned automatically. To change mappings, upload a new version of the file.",
+        "description": "Description",
+        "description_placeholder": "Briefly describe this data source...",
+        "success": "Configuration updated successfully!",
+        "error_save": "Failed to save changes.",
+        "error_load": "Failed to load configuration.",
+        "save_button": "Save Configuration"
+    },
+    "upload_history": {
+        "title": "Recent Uploads",
+        "loading": "Loading history...",
+        "empty": "No files uploaded yet.",
+        "error": "Failed to load upload history."
     }
 }

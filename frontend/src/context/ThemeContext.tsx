@@ -5,6 +5,7 @@ type Theme = 'light' | 'dark' | 'system';
 interface ThemeContextValue {
     theme: Theme;
     resolvedTheme: 'light' | 'dark';
+    systemTheme: 'light' | 'dark';
     setTheme: (theme: Theme) => void;
     toggleTheme: () => void;
 }
@@ -49,6 +50,10 @@ interface ThemeProviderProps {
 export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
     const [theme, setThemeState] = useState<Theme>(() => defaultTheme ?? getInitialTheme());
     const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => resolveTheme(theme));
+    const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(() => {
+        if (typeof window === 'undefined') return 'light';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    });
 
     // Update the DOM and localStorage when theme changes
     useEffect(() => {
@@ -69,29 +74,20 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
         } catch {
             // localStorage not available
         }
-    }, [theme]);
+    }, [theme, systemTheme]);
 
-    // Listen for system preference changes when theme is 'system'
+    // Listen for system preference changes ALWAYS to keep systemTheme up to date
     useEffect(() => {
-        if (theme !== 'system') return;
-
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
         const handleChange = (e: MediaQueryListEvent) => {
-            const newResolved = e.matches ? 'dark' : 'light';
-            setResolvedTheme(newResolved);
-
-            const root = document.documentElement;
-            if (newResolved === 'dark') {
-                root.classList.add('dark');
-            } else {
-                root.classList.remove('dark');
-            }
+            const newSystemTheme = e.matches ? 'dark' : 'light';
+            setSystemTheme(newSystemTheme);
         };
 
         mediaQuery.addEventListener('change', handleChange);
         return () => mediaQuery.removeEventListener('change', handleChange);
-    }, [theme]);
+    }, []);
 
     const setTheme = useCallback((newTheme: Theme) => {
         setThemeState(newTheme);
@@ -105,7 +101,7 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
     }, []);
 
     return (
-        <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, resolvedTheme, systemTheme, setTheme, toggleTheme }}>
             {children}
         </ThemeContext.Provider>
     );

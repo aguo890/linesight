@@ -183,7 +183,7 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                         disabled={isCreating}
                         className="flex items-center px-4 py-2 text-sm font-medium text-text-muted bg-surface border border-border rounded-lg hover:bg-surface-subtle focus:outline-none focus:ring-2 focus:ring-brand/20 transition-all disabled:opacity-50"
                     >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        <ArrowLeft className="w-4 h-4 me-2" />
                         {t('common.back')}
                     </button>
 
@@ -201,12 +201,12 @@ export const WizardStep3Widgets: React.FC<WizardStep3WidgetsProps> = ({
                     >
                         {isCreating ? (
                             <>
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin me-2" />
                                 {t('wizard.step3.btn_configuring')}
                             </>
                         ) : (
                             <>
-                                <Wand2 className="w-4 h-4 mr-2" />
+                                <Wand2 className="w-4 h-4 me-2" />
                                 {t('wizard.step3.btn_create')}
                             </>
                         )}

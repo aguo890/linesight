@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Users, Trash2, ShieldAlert, Pencil, Check } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/Button';
@@ -27,6 +28,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
     onDataChange,
     onMemberClick
 }) => {
+    const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const [isEditingName, setIsEditingName] = useState(false);
     const [nameInput, setNameInput] = useState('');
@@ -55,9 +57,10 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
             });
             onDataChange();
             setIsEditingName(false);
+            setIsEditingName(false);
         } catch (error) {
             console.error("Failed to rename data source", error);
-            alert("Failed to rename data source.");
+            alert(t('data_source_list.drawer.rename_fail'));
         }
     };
 
@@ -65,14 +68,14 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
 
     const handleRemoveUser = async (e: React.MouseEvent, userId: string, scopeId: string) => {
         e.stopPropagation();
-        if (confirm("Remove this manager from the data source?")) {
+        if (confirm(t('data_source_list.drawer.confirm_remove'))) {
             try {
                 setIsLoading(true);
                 await removeUserScope(userId, scopeId);
                 onDataChange(); // Refresh parent data
             } catch (error) {
                 console.error("Failed to remove user", error);
-                alert("Failed to remove user.");
+                alert(t('data_source_list.drawer.remove_fail'));
             } finally {
                 setIsLoading(false);
             }
@@ -80,7 +83,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
     };
 
     const handleDelete = async () => {
-        if (confirm(`Are you sure you want to delete ${dataSource.name}? This cannot be undone.`)) {
+        if (confirm(t('data_source_list.drawer.confirm_delete', { name: dataSource.name }))) {
             try {
                 setIsLoading(true);
                 await deleteDataSource.mutateAsync({ dataSourceId: dataSource.id });
@@ -88,7 +91,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                 onClose();
             } catch (error) {
                 console.error("Failed to delete data source", error);
-                alert("Cannot delete data source. It may have active assignments or data.");
+                alert(t('data_source_list.drawer.delete_fail'));
             } finally {
                 setIsLoading(false);
             }
@@ -104,11 +107,11 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
             />
 
             {/* Slide-over Panel */}
-            <div className={`fixed inset-y-0 right-0 w-full max-w-md bg-surface shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border-l border-border ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`fixed inset-y-0 end-0 w-full max-w-md bg-surface shadow-2xl z-[60] transform transition-transform duration-300 ease-in-out flex flex-col border-inline-start border-border ${isOpen ? 'translate-x-0' : 'ltr:translate-x-full rtl:-translate-x-full'}`}>
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-                    <div className="flex-1 mr-4">
+                    <div className="flex-1 me-4">
                         {isEditingName ? (
                             <div className="flex items-center gap-2">
                                 <Input
@@ -128,13 +131,13 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                                 <button
                                     onClick={() => { setNameInput(dataSource.name); setIsEditingName(true); }}
                                     className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-subtle rounded text-text-muted transition-opacity"
-                                    title="Rename Source"
+                                    title={t('data_source_list.drawer.rename_tooltip')}
                                 >
                                     <Pencil className="w-4 h-4" />
                                 </button>
                             </div>
                         )}
-                        <p className="text-xs text-text-muted font-mono mt-1">ID: {dataSource.id}</p>
+                        <p className="text-xs text-text-muted font-mono mt-1">{t('data_source_list.drawer.id_label', { id: dataSource.id })}</p>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-surface-subtle rounded-full text-text-muted">
                         <X className="w-5 h-5" />
@@ -148,11 +151,11 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                     <div className="grid grid-cols-2 gap-4 mb-8">
                         <div className="bg-brand/10 p-4 rounded-lg border border-brand/20">
                             <span className="block text-2xl font-bold text-brand">{assignedMembers.length}</span>
-                            <span className="text-xs text-brand/80 font-medium uppercase tracking-wide">Managers</span>
+                            <span className="text-xs text-brand/80 font-medium uppercase tracking-wide">{t('data_source_list.drawer.managers_stat')}</span>
                         </div>
                         <div className="bg-surface-subtle p-4 rounded-lg border border-border opacity-60">
                             <span className="block text-2xl font-bold text-text-muted">--</span>
-                            <span className="text-xs text-text-muted font-medium uppercase tracking-wide">Efficiency</span>
+                            <span className="text-xs text-text-muted font-medium uppercase tracking-wide">{t('data_source_list.drawer.efficiency_stat')}</span>
                         </div>
                     </div>
 
@@ -160,13 +163,13 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h3 className="text-sm font-bold text-text-main flex items-center gap-2">
-                                <Users className="w-4 h-4" /> Assigned Team
+                                <Users className="w-4 h-4" /> {t('data_source_list.drawer.assigned_team')}
                             </h3>
                         </div>
 
                         {assignedMembers.length === 0 ? (
                             <div className="text-center py-8 border-2 border-dashed border-border rounded-lg bg-surface-subtle text-text-muted text-sm">
-                                No managers assigned to this source.
+                                {t('data_source_list.drawer.no_managers')}
                             </div>
                         ) : (
                             <div className="space-y-2">
@@ -187,7 +190,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                                                 </Avatar>
                                                 <div className="overflow-hidden">
                                                     <p className="text-sm font-medium text-text-main truncate w-32">
-                                                        {member.full_name || "Unknown"}
+                                                        {member.full_name || t('common.status.unknown')}
                                                     </p>
                                                     <p className="text-xs text-text-muted truncate w-32">
                                                         {member.email}
@@ -202,7 +205,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                                                 onClick={(e) => scope && handleRemoveUser(e, member.id, scope.id)}
                                                 disabled={isLoading}
                                             >
-                                                Remove
+                                                {t('data_source_list.drawer.remove_button')}
                                             </Button>
                                         </div>
                                     );
@@ -215,7 +218,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                 {/* Footer: Danger Zone */}
                 <div className="p-6 border-t border-border bg-surface-subtle">
                     <h4 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-3 flex items-center gap-2">
-                        <ShieldAlert className="w-3 h-3" /> Danger Zone
+                        <ShieldAlert className="w-3 h-3" /> {t('data_source_list.drawer.danger_zone')}
                     </h4>
                     <Button
                         variant="danger"
@@ -224,7 +227,7 @@ export const DataSourceDetailsDrawer: React.FC<DataSourceDetailsDrawerProps> = (
                         disabled={isLoading}
                     >
                         <Trash2 className="w-4 h-4" />
-                        Delete Data Source
+                        {t('data_source_list.drawer.delete_button')}
                     </Button>
                 </div>
             </div>

@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;700&family=Tajawal:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,29 +18,44 @@
   color-scheme: light;
 
   /* === HIERARCHY (Text) === */
-  --text-main: 29 29 31;          /* #1D1D1F - Deep charcoal */
-  --text-muted: 134 134 139;      /* #86868b - Apple-esque medium gray */
-  --text-subtle: 148 163 184;     /* #94A3B8 - Slate 400 */
+  --text-main: 29 29 31;
+  /* #1D1D1F - Deep charcoal */
+  --text-muted: 134 134 139;
+  /* #86868b - Apple-esque medium gray */
+  --text-subtle: 148 163 184;
+  /* #94A3B8 - Slate 400 */
 
   /* === SURFACES === */
-  --bg-page: 248 250 252;         /* #F8FAFC - Slate 50 */
-  --bg-card: 255 255 255;         /* #FFFFFF - White */
-  --bg-elevated: 255 255 255;     /* #FFFFFF - Elevated surfaces */
-  --bg-subtle: 245 245 247;       /* #F5F5F7 - Apple-esque light gray */
+  --bg-page: 248 250 252;
+  /* #F8FAFC - Slate 50 */
+  --bg-card: 255 255 255;
+  /* #FFFFFF - White */
+  --bg-elevated: 255 255 255;
+  /* #FFFFFF - Elevated surfaces */
+  --bg-subtle: 245 245 247;
+  /* #F5F5F7 - Apple-esque light gray */
 
   /* === BORDERS === */
-  --border-default: 203 213 225;  /* #CBD5E1 - Slate 300 */
-  --border-subtle: 226 232 240;   /* #E2E8F0 - Slate 200 */
+  --border-default: 203 213 225;
+  /* #CBD5E1 - Slate 300 */
+  --border-subtle: 226 232 240;
+  /* #E2E8F0 - Slate 200 */
 
   /* === BRANDING === */
-  --brand-primary: 37 99 235;     /* #2563EB - Blue 600 */
-  --brand-primary-light: 59 130 246; /* #3B82F6 - Blue 500 */
-  --brand-primary-dark: 29 78 216;   /* #1D4ED8 - Blue 700 */
+  --brand-primary: 37 99 235;
+  /* #2563EB - Blue 600 */
+  --brand-primary-light: 59 130 246;
+  /* #3B82F6 - Blue 500 */
+  --brand-primary-dark: 29 78 216;
+  /* #1D4ED8 - Blue 700 */
 
   /* === STATUS === */
-  --status-success: 5 150 105;    /* #059669 - Emerald 600 */
-  --status-warning: 217 119 6;    /* #D97706 - Amber 600 */
-  --status-danger: 220 38 38;     /* #DC2626 - Red 600 */
+  --status-success: 5 150 105;
+  /* #059669 - Emerald 600 */
+  --status-warning: 217 119 6;
+  /* #D97706 - Amber 600 */
+  --status-danger: 220 38 38;
+  /* #DC2626 - Red 600 */
 
   /* === LEGACY ALIASES (for backward compat) === */
   --color-primary: #2563EB;
@@ -63,8 +80,8 @@
   --color-text-subtle: #94A3B8;
 
   /* Typography */
-  --font-heading: 'Oswald', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Oswald', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
+  --font-body: 'Inter', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
 }
 
 /* ============================================
@@ -76,19 +93,28 @@
   color-scheme: dark;
 
   /* === HIERARCHY (Text) === */
-  --text-main: 241 245 249;       /* #F1F5F9 - Slate 100 */
-  --text-muted: 148 163 184;      /* #94A3B8 - Slate 400 */
-  --text-subtle: 100 116 139;     /* #64748B - Slate 500 */
+  --text-main: 241 245 249;
+  /* #F1F5F9 - Slate 100 */
+  --text-muted: 148 163 184;
+  /* #94A3B8 - Slate 400 */
+  --text-subtle: 100 116 139;
+  /* #64748B - Slate 500 */
 
   /* === SURFACES === */
-  --bg-page: 15 23 42;            /* #0F172A - Slate 900 */
-  --bg-card: 30 41 59;            /* #1E293B - Slate 800 */
-  --bg-elevated: 51 65 85;        /* #334155 - Slate 700 */
-  --bg-subtle: 30 41 59;          /* #1E293B - Slate 800 */
+  --bg-page: 15 23 42;
+  /* #0F172A - Slate 900 */
+  --bg-card: 30 41 59;
+  /* #1E293B - Slate 800 */
+  --bg-elevated: 51 65 85;
+  /* #334155 - Slate 700 */
+  --bg-subtle: 30 41 59;
+  /* #1E293B - Slate 800 */
 
   /* === BORDERS === */
-  --border-default: 51 65 85;     /* #334155 - Slate 700 */
-  --border-subtle: 71 85 105;     /* #475569 - Slate 600 */
+  --border-default: 51 65 85;
+  /* #334155 - Slate 700 */
+  --border-subtle: 71 85 105;
+  /* #475569 - Slate 600 */
 
   /* === LEGACY ALIASES (dark overrides) === */
   --color-background: #0F172A;
@@ -152,27 +178,51 @@ body {
 }
 
 @keyframes loading {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(250%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
 }
 
 @keyframes draw {
-  from { stroke-dashoffset: 100%; }
-  to { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: 100%;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes pulse-soft {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
 }
 
 @keyframes grow-up {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
 }
 
 .animate-draw {
-  stroke-dasharray: 100% 100%; 
+  stroke-dasharray: 100% 100%;
   animation: draw 1.5s ease-out forwards;
 }
 
@@ -183,4 +233,74 @@ body {
 .animate-grow-up {
   transform-origin: bottom;
   animation: grow-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 90s linear infinite;
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+/* ============================================
+   RTL LOGICAL OVERRIDES
+   ============================================ */
+
+[dir="rtl"] {
+  /* RTL languages (like Arabic) need more vertical breathing room */
+  line-height: 1.6;
+}
+
+[dir="rtl"] body {
+  /* Avoid Latin-style letter spacing which breaks Arabic script connectivity */
+  letter-spacing: normal;
+}
+
+/* Mirror animations that use physical translations */
+[dir="rtl"] .animate-loading {
+  animation-name: loading-rtl;
+}
+
+@keyframes loading-rtl {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-250%);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+[dir="rtl"] .animate-marquee {
+  animation-name: marquee-rtl;
+}
+
+/* Force all grid items to inherit the main 'dir' attribute */
+.react-grid-item {
+  direction: inherit !important;
+}
+
+/* Ensure icons flip if they are directional (like arrows) */
+[dir="rtl"] .icon-directional {
+  transform: scaleX(-1);
 }

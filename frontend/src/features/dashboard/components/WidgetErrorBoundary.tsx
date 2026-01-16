@@ -66,7 +66,7 @@ export class WidgetErrorBoundary extends Component<CombinedProps, State> {
                             }}
                             className="flex items-center px-3 py-1.5 bg-white border border-red-200 text-red-700 rounded text-xs font-medium hover:bg-red-100 transition-colors shadow-sm flex-shrink-0 cursor-pointer"
                         >
-                            <RefreshCw className="w-3 h-3 mr-1.5" />
+                            <RefreshCw className="w-3 h-3 me-1.5" />
                             {this.props.t('widgets.common.retry')}
                         </button>
                     </div>

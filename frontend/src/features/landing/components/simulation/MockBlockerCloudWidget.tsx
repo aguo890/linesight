@@ -62,7 +62,7 @@ export const MockBlockerCloudWidget: React.FC<MockBlockerProps> = ({ data, isDar
 
                 <div className={`mt-auto pt-2 border-t text-right ${isDark ? 'border-slate-700' : 'border-slate-50'}`}>
                     <button className="text-[10px] text-sky-600 font-medium inline-flex items-center hover:underline">
-                        View all logs <ArrowRight className="w-3 h-3 ml-1" />
+                        View all logs <ArrowRight className="w-3 h-3 ml-1 rtl:rotate-180" />
                     </button>
                 </div>
             </div>

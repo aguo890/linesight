@@ -2688,6 +2688,48 @@
         }
       }
     },
+    "/api/v1/waitlist/": {
+      "post": {
+        "tags": [
+          "Waitlist"
+        ],
+        "summary": "Join Waitlist",
+        "description": "Join the waitlist.\nReturns the created entry with a unique referral code.",
+        "operationId": "join_waitlist_api_v1_waitlist__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaitlistCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaitlistResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/organizations/members": {
       "get": {
         "tags": [
@@ -6171,15 +6213,8 @@
             "title": "Name"
           },
           "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 50,
             "title": "Code"
           },
           "location": {
@@ -6231,7 +6266,8 @@
         },
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "code"
         ],
         "title": "FactoryCreate",
         "description": "Schema for creating a factory."
@@ -6245,15 +6281,8 @@
             "title": "Name"
           },
           "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 50,
             "title": "Code"
           },
           "location": {
@@ -6399,6 +6428,7 @@
         "type": "object",
         "required": [
           "name",
+          "code",
           "id",
           "organization_id",
           "is_active",
@@ -6568,15 +6598,8 @@
             "title": "Name"
           },
           "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
+            "maxLength": 50,
             "title": "Code"
           },
           "location": {
@@ -6730,6 +6753,7 @@
         "type": "object",
         "required": [
           "name",
+          "code",
           "id",
           "organization_id",
           "is_active",
@@ -9235,6 +9259,57 @@
         "title": "UserPreferences",
         "description": "Schema for user preferences JSON structure."
       },
+      "UserPreferencesUpdate": {
+        "properties": {
+          "theme": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Theme"
+          },
+          "country_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country Code"
+          },
+          "notifications": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notifications"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          }
+        },
+        "type": "object",
+        "title": "UserPreferencesUpdate",
+        "description": "Schema for updating user preferences (all fields optional for merging)."
+      },
       "UserRead": {
         "properties": {
           "email": {
@@ -9389,12 +9464,17 @@
           "preferences": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/UserPreferences"
+                "$ref": "#/components/schemas/UserPreferencesUpdate"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Preferences"
           },
           "is_active": {
             "anyOf": [
@@ -9444,6 +9524,52 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "WaitlistCreate": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "WaitlistCreate",
+        "description": "Schema for creating a waitlist entry."
+      },
+      "WaitlistResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "referral_code": {
+            "type": "string",
+            "title": "Referral Code"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "referral_code",
+          "created_at"
+        ],
+        "title": "WaitlistResponse",
+        "description": "Schema for waitlist response."
       },
       "WidgetConfig": {
         "properties": {

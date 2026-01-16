@@ -776,37 +776,38 @@ export interface WidgetBundle {
 export const WIDGET_BUNDLES: WidgetBundle[] = [
     {
         id: 'efficiency-starter',
-        title: 'Efficiency Kickstart',
-        description: 'Essential toolkit for tracking output and hourly performance.',
+        title: 'widgets.bundles.efficiency_starter.title',
+        description: 'widgets.bundles.efficiency_starter.description',
         icon: 'Zap',
         widgetIds: ['production-chart', 'line-efficiency', 'target-realization', 'production-timeline'],
         displayCategory: 'Recommended'
     },
     {
         id: 'quality-auditor',
-        title: 'Quality Auditor',
-        description: 'Focus on DHU, defects, and speed-quality trade-offs.',
+        title: 'widgets.bundles.quality_auditor.title',
+        description: 'widgets.bundles.quality_auditor.description',
         icon: 'ShieldCheck',
         widgetIds: ['dhu-quality', 'speed-quality', 'blocker-cloud'],
         displayCategory: 'Operations'
     },
     {
         id: 'floor-manager',
-        title: 'Floor Manager View',
-        description: 'Real-time workforce and production visibility.',
+        title: 'widgets.bundles.floor_manager.title',
+        description: 'widgets.bundles.floor_manager.description',
         icon: 'Users',
         widgetIds: ['production-chart', 'workforce-attendance', 'earned-minutes', 'style-progress'],
         displayCategory: 'Recommended'
     },
     {
         id: 'executive-summary',
-        title: 'Executive Summary',
-        description: 'High-level KPIs for strategic decision-making.',
+        title: 'widgets.bundles.executive_summary.title',
+        description: 'widgets.bundles.executive_summary.description',
         icon: 'TrendingUp',
         widgetIds: ['line-efficiency', 'dhu-quality', 'target-realization'],
         displayCategory: 'Strategy'
     }
 ];
+
 
 export interface BundleReadiness {
     isReady: boolean;
@@ -820,16 +821,22 @@ export const getBundleReadiness = (bundleId: string, activeFields: string[]): Bu
     const bundle = WIDGET_BUNDLES.find(b => b.id === bundleId);
     if (!bundle) return { isReady: false, percentage: 0, supportedCount: 0, totalCount: 0, supportedWidgetIds: [] };
 
-    const supportedWidgetIds = bundle.widgetIds.filter(id => {
+    // Filter out locked widgets from the total count
+    const activeWidgetIds = bundle.widgetIds.filter(id => {
+        const manifest = getWidgetManifest(id);
+        return manifest && !manifest.locked;
+    });
+
+    const supportedWidgetIds = activeWidgetIds.filter(id => {
         const { status } = getCompatibilityStatus(id, activeFields);
         return status === 'supported';
     });
 
     const supportedCount = supportedWidgetIds.length;
-    const totalCount = bundle.widgetIds.length;
+    const totalCount = activeWidgetIds.length;
 
     return {
-        isReady: supportedCount === totalCount,
+        isReady: totalCount > 0 && supportedCount === totalCount,
         percentage: totalCount > 0 ? Math.round((supportedCount / totalCount) * 100) : 0,
         supportedCount,
         totalCount,
