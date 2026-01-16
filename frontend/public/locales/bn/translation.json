@@ -1,0 +1,1038 @@
+{
+    "profile": {
+        "title": "ব্যবহারকারীর প্রোফাইল",
+        "subtitle": "অ্যাকাউন্ট সেটিংস",
+        "back": "ফিরে যান",
+        "save_btn": "সংরক্ষণ",
+        "success": "সফল!",
+        "error_required": "নাম আবশ্যক",
+        "error_fail": "ব্যর্থ",
+        "at": "@",
+        "roles": {
+            "admin": "অ্যাডমিন",
+            "user": "ব্যবহারকারী",
+            "manager": "ম্যানেজার"
+        },
+        "sections": {
+            "factories": "কারখানা",
+            "security": "নিরাপত্তা",
+            "personal_info": "তথ্য",
+            "localization": "লোকালাইজেশন",
+            "notifications": "নোটিফিকেশন"
+        },
+        "security": {
+            "change_password": "পাসওয়ার্ড",
+            "two_factor": "2FA"
+        },
+        "fields": {
+            "full_name": "নাম",
+            "email": "ইমেল",
+            "email_hint": "ইমেল",
+            "language": "ভাষা",
+            "theme": "থিম"
+        },
+        "themes": {
+            "light": "লাইট",
+            "dark": "ডার্ক",
+            "system": "সিস্টেম"
+        },
+        "notifications": {
+            "email": "ইমেল",
+            "push": "পুশ",
+            "weekly": "সাপ্তাহিক"
+        },
+        "location_selector": {
+            "label": "অবস্থান",
+            "auto_detect": "অটো",
+            "search_placeholder": "দেশ...",
+            "no_results": "নেই",
+            "select_country_first": "দেশ নির্বাচন",
+            "selected": "নির্বাচিত"
+        },
+        "unsaved_changes": {
+            "title": "অসংরক্ষিত",
+            "message": "সংরক্ষণ করবেন?",
+            "confirm": "হ্যাঁ",
+            "cancel": "না"
+        }
+    },
+    "navigation": {
+        "dashboard": "ড্যাশবোর্ড",
+        "my_dashboards": "আমার ড্যাশবোর্ড",
+        "organization": "প্রতিষ্ঠান",
+        "show_more": "আরও",
+        "show_less": "কম"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "আমার ড্যাশবোর্ড",
+            "search_placeholder": "অনুসন্ধান...",
+            "status": {
+                "loading": "লোড হচ্ছে...",
+                "none": "নেই",
+                "available_one": "{{count}}টি",
+                "available_other": "{{count}}টি"
+            },
+            "table": {
+                "header_name": "নাম",
+                "header_location": "অবস্থান",
+                "header_status": "অবস্থা",
+                "header_lines": "লাইন",
+                "header_actions": "অ্যাকশন",
+                "action_view": "দেখুন"
+            },
+            "actions": {
+                "new_dashboard": "নতুন",
+                "configure_sites": "কনফিগার",
+                "clear_search": "মুছুন"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "মিলেনি",
+                "no_results_detail": "মিলেনি"
+            },
+            "factory_status": {
+                "at_limit": "সীমায়",
+                "near_limit": "কাছে",
+                "active": "সক্রিয়"
+            },
+            "empty_state": {
+                "title": "খালি",
+                "description": "নেই",
+                "admin_hint": "সেটিংস",
+                "user_hint": "অ্যাডমিন",
+                "cta": "সেটিংস"
+            },
+            "view": {
+                "grid": "গ্রিড",
+                "list": "তালিকা"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}}",
+            "edit": "এডিট",
+            "delete": "ডিলিট",
+            "open": "ওপেন",
+            "edit_title": "এডিট",
+            "delete_title": "ডিলিট"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "হোম",
+            "list": "লিস্ট",
+            "production_sites": "সাইট",
+            "sites": "সাইট",
+            "not_found": "নেই"
+        },
+        "sections": {
+            "overview": "ওভারভিউ",
+            "performance": "পারফরমেন্স",
+            "settings": "সেটিংস",
+            "dashboards": "ড্যাশবোর্ড",
+            "data_sources": "উৎস"
+        },
+        "actions": {
+            "edit": "এডিট",
+            "delete": "ডিলিট",
+            "save": "সেভ",
+            "settings": "সেটিংস",
+            "new_dashboard": "নতুন",
+            "create_dashboard": "তৈরি",
+            "add_data_source": "যোগ",
+            "new_source": "নতুন",
+            "upload_data": "আপলোড",
+            "no_write_access": "অধিকার নেই"
+        },
+        "alerts": {
+            "confirm_delete": "নিশ্চিত?",
+            "edit_soon": "শীঘ্রই",
+            "delete_soon": "শীঘ্রই",
+            "delete_fail": "ব্যর্থ"
+        },
+        "stats": {
+            "dashboards": "ড্যাশবোর্ড",
+            "active_widgets": "উইজেট",
+            "active_sources": "উৎস",
+            "used_info": "{{current}}/{{max}}"
+        },
+        "not_found": "নেই",
+        "search": {
+            "dashboards_placeholder": "ফিল্টার...",
+            "sources_placeholder": "খুঁজুন...",
+            "no_sources_found": "নেই"
+        },
+        "quota": {
+            "limit_reached": "সীমা"
+        },
+        "table": {
+            "headers": {
+                "name": "নাম",
+                "status": "অবস্থা",
+                "actions": "অ্যাকশন"
+            }
+        },
+        "status": {
+            "active": "সক্রিয়",
+            "inactive": "নিষ্ক্রিয়"
+        },
+        "confirm": {
+            "delete_source": "মুছবেন?",
+            "delete_dashboard": "মুছবেন?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "আজ",
+            "yesterday": "গতকাল",
+            "last_7_days": "৭ দিন",
+            "last_30_days": "৩০ দিন",
+            "this_month": "এই মাস",
+            "last_month": "গত মাস"
+        },
+        "shifts": {
+            "all": "সব",
+            "shift_a": "A",
+            "shift_b": "B",
+            "shift_c": "C"
+        },
+        "date_range": "তারিখ",
+        "to": "থেকে"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "ওয়ার্কস্পেস",
+            "factory": "কারখানা",
+            "line": "লাইন",
+            "dashboard": "ড্যাশবোর্ড"
+        },
+        "status": {
+            "updated": "আপডেট {{time}}",
+            "live": "লাইভ",
+            "loading": "লোড...",
+            "saving": "সেভ..."
+        },
+        "actions": {
+            "refresh": "রিফ্রেশ",
+            "reset_layout": "রিসেট",
+            "reset_confirm": "নিশ্চিত?",
+            "design_layout": "ডিজাইন",
+            "save_layout": "সেভ",
+            "add_widget": "যোগ",
+            "cancel": "বাতিল"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "লাইব্রেরি",
+            "subtitle": "টেনে আনুন",
+            "categories": {
+                "all": "সব",
+                "production": "উত্পাদন",
+                "quality": "গুণমান",
+                "efficiency": "দক্ষতা"
+            }
+        },
+        "selector": {
+            "simulated_data": "সিমুলেটেড",
+            "ready_to_use": "রেডি",
+            "recommended": "প্রস্তাবিত",
+            "future_capability": "ভবিষ্যত",
+            "coming_soon": "শীঘ্রই",
+            "near_match": "কাছাকাছি",
+            "ai_recommendations": "AI",
+            "select_all": "সব",
+            "selected": "নির্বাচিত",
+            "compatible": "সামঞ্জস্যপূর্ণ",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "প্রয়োজন",
+            "needs_mapping": "ম্যাপিং",
+            "categories": {
+                "Efficiency": "দক্ষতা",
+                "Quality": "গুণমান",
+                "Workforce": "জনশক্তি",
+                "Operations": "অপারেশন"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "প্রস্তাবিত",
+                "Operations": "অপারেশন",
+                "Strategy": "কৌশল"
+            },
+            "efficiency_starter": {
+                "title": "দক্ষতা",
+                "description": "ট্র্যাকিং"
+            },
+            "quality_auditor": {
+                "title": "গুণমান",
+                "description": "DHU"
+            },
+            "floor_manager": {
+                "title": "ম্যানেজার",
+                "description": "রিয়েল-টাইম"
+            },
+            "executive_summary": {
+                "title": "এক্সিকিউটিভ",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "পরিকল্পিত",
+            "actual": "আসল",
+            "target": "লক্ষ্য",
+            "efficiency": "দক্ষতা",
+            "minutes": "মিনিট",
+            "limit": "সীমা",
+            "status": "অবস্থা",
+            "on_target": "লক্ষ্যে",
+            "below_target": "নিচে",
+            "defect_rate": "হার"
+        },
+        "titles": {
+            "production_chart": "আউটপুট",
+            "line_efficiency": "দক্ষতা",
+            "earned_minutes": "মিনিট",
+            "sam_performance": "SAM",
+            "dhu_quality": "DHU",
+            "speed_quality": "গতি/গুণমান",
+            "top_blockers": "ব্লকার",
+            "style_progress": "স্টাইল",
+            "daily_target": "লক্ষ্য",
+            "production_timeline": "টাইমলাইন",
+            "complexity_impact": "জটিলতা",
+            "workforce_attendance": "উপস্থিতি",
+            "kpi_summary": "KPI"
+        },
+        "descriptions": {
+            "production_chart": "তুলনা",
+            "line_efficiency": "দক্ষতা",
+            "earned_minutes": "SAM",
+            "sam_performance": "পারফরমেন্স",
+            "dhu_quality": "DHU",
+            "speed_quality": "গতি",
+            "top_blockers": "ব্লকার",
+            "style_progress": "অগ্রগতি",
+            "daily_target": "লক্ষ্য",
+            "production_timeline": "গ্যান্ট",
+            "complexity_impact": "জটিলতা",
+            "workforce_attendance": "উপস্থিতি",
+            "kpi_summary": "সারাংশ"
+        },
+        "production_chart": {
+            "planned": "পরিকল্পিত",
+            "actual_output": "আসল"
+        },
+        "production_timeline": {
+            "output": "আসল",
+            "target": "লক্ষ্য"
+        },
+        "complexity_impact": {
+            "title": "জটিলতা",
+            "loading_styles": "লোড...",
+            "sam": "SAM",
+            "sam_complexity": "SAM",
+            "styles": "স্টাইল"
+        },
+        "speed_quality": {
+            "efficiency": "দক্ষতা",
+            "defect_rate": "হার"
+        },
+        "earned_minutes": {
+            "earned": "অর্জিত",
+            "available": "উপলব্ধ"
+        },
+        "dhu_quality": {
+            "no_data": "নেই",
+            "current_dhu": "DHU",
+            "above_limit": "উপরে"
+        },
+        "blocker_cloud": {
+            "occurrences": "ঘটনা",
+            "view_all_logs": "লগ",
+            "no_blockers": "নেই"
+        }
+    },
+    "common": {
+        "back": "ফিরে",
+        "cancel": "বাতিল",
+        "error": "ত্রুটি",
+        "success": "সফল",
+        "uploading": "আপলোড...",
+        "processing": "প্রক্রিয়া...",
+        "remove": "সরান",
+        "ready": "রেডি",
+        "needs_setup": "সেটআপ",
+        "date": "তারিখ",
+        "actions": {
+            "save": "সেভ",
+            "cancel": "বাতিল",
+            "close": "বন্ধ",
+            "delete": "ডিলিট",
+            "edit": "এডিট",
+            "search": "খুঁজুন",
+            "confirm": "নিশ্চিত",
+            "back": "ফিরে",
+            "create": "তৈরি",
+            "invite": "আমন্ত্রণ"
+        },
+        "status": {
+            "active": "সক্রিয়",
+            "inactive": "নিষ্ক্রিয়",
+            "unknown": "অজানা"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "নাম",
+            "dashboard_name_placeholder": "নাম",
+            "name_error_tooltip": "নাম দিন",
+            "name_error_text": "নাম আবশ্যক",
+            "selection_title": "নির্বাচন",
+            "selection_desc": "ফাইল",
+            "columns": {
+                "file_name": "ফাইল",
+                "status": "অবস্থা",
+                "uploaded": "আপলোড",
+                "action": "অ্যাকশন"
+            },
+            "btn_configure": "কনফিগার",
+            "btn_complete_setup": "সম্পূর্ণ",
+            "note": "নোট",
+            "empty_title": "নেই",
+            "empty_desc": "আপলোড করুন",
+            "error_load_failed": "ব্যর্থ"
+        },
+        "step2": {
+            "title": "ম্যাপিং",
+            "subtitle": "রিভিউ",
+            "stats": {
+                "auto": "অটো",
+                "review": "রিভিউ",
+                "attention": "মনোযোগ",
+                "ignored": "বাদ"
+            },
+            "filter": {
+                "all": "সব",
+                "unmapped": "আনম্যাপড",
+                "conflicts": "দ্বন্দ্ব"
+            },
+            "showing_count": "{{filtered}}/{{total}}",
+            "table": {
+                "source": "উৎস",
+                "target": "লক্ষ্য",
+                "status": "অবস্থা",
+                "no_match": "নেই",
+                "try_different": "চেষ্টা করুন"
+            },
+            "status_labels": {
+                "exact": "সঠিক",
+                "exact_tooltip": "সঠিক",
+                "fuzzy": "কাছাকাছি",
+                "fuzzy_tooltip": "কাছাকাছি",
+                "ai": "AI",
+                "ai_tooltip": "AI",
+                "manual": "ম্যানুয়াল",
+                "manual_tooltip": "ম্যানুয়াল",
+                "unset": "খালি",
+                "unset_tooltip": "খালি",
+                "duplicate": "ডুপ্লিকেট"
+            },
+            "field_selector": {
+                "select_placeholder": "নির্বাচন...",
+                "search_placeholder": "খুঁজুন...",
+                "suggested": "প্রস্তাবিত",
+                "all_fields": "সব",
+                "no_results": "নেই",
+                "ignore_action": "বাদ",
+                "restore_action": "ফেরত",
+                "in_use": "ব্যবহৃত"
+            },
+            "alerts": {
+                "conflict_count_one": "১ ডুপ্লিকেট",
+                "conflict_count_other": "{{count}} ডুপ্লিকেট",
+                "remaining_needed": "প্রয়োজন"
+            },
+            "btn_confirm": "নিশ্চিত",
+            "processing": {
+                "title": "প্রক্রিয়া",
+                "subtitle": "ইম্পোর্ট",
+                "logs": {
+                    "init": "শুরু",
+                    "schema": "যাচাই",
+                    "mapping": "ম্যাপিং",
+                    "req": "অনুরোধ",
+                    "sending": "পাঠানো",
+                    "success": "সফল"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "ব্লুপ্রিন্ট",
+            "divider": "অথবা",
+            "library_title": "লাইব্রেরি",
+            "selected_count": "{{count}}",
+            "btn_create": "তৈরি",
+            "btn_configuring": "চলছে..."
+        },
+        "title": "সেটআপ",
+        "steps": {
+            "upload": {
+                "label": "উৎস",
+                "desc": "আপলোড",
+                "desc_alt": "CSV"
+            },
+            "mapping": {
+                "label": "ম্যাপিং",
+                "desc": "যাচাই"
+            },
+            "widgets": {
+                "label": "ড্যাশবোর্ড",
+                "desc": "লেআউট"
+            }
+        },
+        "mini_map": {
+            "title": "প্রিভিউ",
+            "empty_state": "নির্বাচন করুন",
+            "stats": {
+                "widgets_one": "{{count}}",
+                "widgets_other": "{{count}}",
+                "screens_one": "{{count}}",
+                "screens_other": "{{count}}"
+            },
+            "density": {
+                "empty": "খালি",
+                "compact": "কমপ্যাক্ট",
+                "balanced": "ভারসাম্য",
+                "heavy": "ভারী"
+            },
+            "scroll_warning": "স্ক্রোল"
+        },
+        "context": {
+            "title": "প্রসঙ্গ",
+            "select_factory": "কারখানা",
+            "select_source": "উৎস",
+            "select_factory_first": "কারখানা আগে",
+            "loading_factories": "লোড...",
+            "loading_sources": "লোড...",
+            "fetching_sources": "আনা হচ্ছে...",
+            "no_sources_alert": "নেই",
+            "select_source_overlay": "নির্বাচন করুন"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "আপলোড",
+            "title_preview": "প্রিভিউ",
+            "subtitle_upload": "আপলোড করুন",
+            "subtitle_preview": "রিভিউ",
+            "drop_text": "ড্রপ করুন",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "সফল",
+            "info_preview": "প্রিভিউ",
+            "btn_upload_preview": "আপলোড",
+            "btn_uploading": "চলছে...",
+            "errors": {
+                "invalid_extension": "ভুল ফরম্যাট",
+                "duplicate_file": "ডুপ্লিকেট",
+                "preview_failed": "ব্যর্থ",
+                "upload_failed": "ব্যর্থ"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "সেটিংস",
+        "description": "পরিচালনা",
+        "cards": {
+            "general": {
+                "title": "সাধারণ",
+                "description": "প্রোফাইল"
+            },
+            "members": {
+                "title": "সদস্য",
+                "description": "টিম"
+            },
+            "infrastructure": {
+                "title": "অবকাঠামো",
+                "description": "কারখানা"
+            },
+            "security": {
+                "title": "নিরাপত্তা",
+                "description": "লগ"
+            },
+            "billing": {
+                "title": "বিলিং",
+                "description": "চালান"
+            }
+        },
+        "badges": {
+            "coming_soon": "শীঘ্রই"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "ফিরে যান"
+        },
+        "top_nav": {
+            "search_placeholder": "খুঁজুন...",
+            "search_coming_soon": "শীঘ্রই",
+            "notifications": {
+                "title": "নোটিফিকেশন",
+                "mark_read": "পড়া",
+                "empty": "নেই"
+            },
+            "user_menu": {
+                "profile": "প্রোফাইল",
+                "logout": "লগআউট",
+                "default_user": "ইউজার",
+                "default_role": "দর্শক"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "প্রতিষ্ঠান",
+            "factories": "কারখানা"
+        },
+        "header": {
+            "title": "কনফিগার",
+            "popover_trigger_label": "তথ্য"
+        },
+        "popover": {
+            "title": "কনফিগার",
+            "assignment": {
+                "title": "অ্যাসাইনমেন্ট",
+                "desc_part1": "বিবরণ",
+                "desc_part2": "অ্যাসাইন"
+            },
+            "structure": {
+                "title": "কাঠামো",
+                "desc": "কাস্টমাইজ"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "অ্যাসাইনমেন্ট",
+            "structure_mode": "কাঠামো",
+            "customize_layout": "কাস্টমাইজ",
+            "done_editing": "শেষ"
+        },
+        "list": {
+            "add_data_source": "যোগ",
+            "no_data_sources": "নেই"
+        },
+        "bulk_actions": {
+            "selected": "নির্বাচিত",
+            "assign_manager": "অ্যাসাইন"
+        },
+        "messages": {
+            "loading": "লোড...",
+            "assignment_failed": "ব্যর্থ"
+        }
+    },
+    "roles": {
+        "system_admin": "SysAdmin",
+        "owner": "মালিক",
+        "admin": "অ্যাডমিন",
+        "viewer": "দর্শক",
+        "member": "সদস্য",
+        "operator": "অপারেটর",
+        "factory_manager": "ফ্যাক্টরি ম্যানেজার",
+        "line_manager": "লাইন ম্যানেজার",
+        "user": "ইউজার",
+        "manager": "ম্যানেজার"
+    },
+    "org_general": {
+        "title": "সাধারণ",
+        "profile": {
+            "logged_in_as": "লগইন"
+        },
+        "at_a_glance": "এক নজরে",
+        "stats": {
+            "total_managers": "ম্যানেজার",
+            "assigned": "অ্যাসাইনড",
+            "factories": "কারখানা",
+            "production_lines": "লাইন"
+        },
+        "danger_zone": {
+            "title": "বিপদ",
+            "description": "মুছে ফেলবে",
+            "delete_button": "মুছুন"
+        }
+    },
+    "org_members": {
+        "title": "সদস্য",
+        "invite_member": "আমন্ত্রণ",
+        "search_placeholder": "খুঁজুন...",
+        "filter": "ফিল্টার",
+        "table": {
+            "user": "ইউজার",
+            "global_role": "ভূমিকা",
+            "access": "অ্যাক্সেস",
+            "last_active": "সক্রিয়",
+            "actions": "অ্যাকশন",
+            "loading": "লোড...",
+            "no_members": "নেই",
+            "assignments": "অ্যাসাইনমেন্ট",
+            "unassigned": "নেই",
+            "never_active": "কখনও না",
+            "view_details": "বিস্তারিত"
+        },
+        "drawer": {
+            "title": "বিস্তারিত",
+            "role_label": "ভূমিকা",
+            "active_assignments": "সক্রিয়",
+            "no_assignments": "নেই",
+            "current_factory": "কারখানা",
+            "danger_zone": {
+                "title": "বিপদ",
+                "suspend_button": "স্থগিত"
+            }
+        },
+        "cell": {
+            "unknown_user": "অজানা",
+            "active": "সক্রিয়",
+            "inactive": "নিষ্ক্রিয়"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "ফিরে",
+        "back_button": "ফিরে",
+        "title": "অবকাঠামো",
+        "sites_count": "{{count}}",
+        "sites": "সাইট",
+        "add_factory": "যোগ",
+        "search_placeholder": "খুঁজুন...",
+        "retry": "চেষ্টা",
+        "new_factory": {
+            "title": "নতুন",
+            "subtitle": "যোগ"
+        },
+        "card": {
+            "data_sources": "উৎস",
+            "managers": "ম্যানেজার",
+            "configure_site": "কনফিগার",
+            "edit_details": "এডিট",
+            "delete_factory": "ডিলিট"
+        },
+        "list": {
+            "name": "নাম",
+            "factory": "কারখানা",
+            "code": "কোড",
+            "country": "দেশ",
+            "sources": "উৎস",
+            "managers": "ম্যানেজার",
+            "actions": "অ্যাকশন"
+        },
+        "no_match": "মিলেনি",
+        "confirm_delete": "মুছবেন?",
+        "delete_fail": "ব্যর্থ"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "যোগ",
+            "subtitle": "নতুন",
+            "name_label": "নাম",
+            "name_placeholder": "নাম",
+            "code_label": "কোড",
+            "code_placeholder": "কোড",
+            "specialty_label": "বিশেষত্ব",
+            "specialty_placeholder": "বিশেষত্ব",
+            "description_label": "বর্ণনা",
+            "description_placeholder": "বর্ণনা...",
+            "use_defaults": "ডিফল্ট",
+            "inherit_tooltip": "ইনহেরিট",
+            "custom_tooltip": "কাস্টম",
+            "inherit_desc": "ইনহেরিট",
+            "custom_desc": "খালি",
+            "source_usage": "ব্যবহার",
+            "quota_reached": "পূর্ণ",
+            "submit_button": "যোগ",
+            "submitting": "চলছে..."
+        },
+        "create_factory": {
+            "title": "তৈরি",
+            "subtitle": "সেটআপ",
+            "quota_reached": "পূর্ণ",
+            "name_label": "নাম",
+            "name_placeholder": "নাম",
+            "code_label": "কোড",
+            "code_placeholder": "কোড",
+            "code_desc": "শনাক্তকারী",
+            "source_name_label": "উৎস",
+            "source_name_placeholder": "উৎস",
+            "source_specialty_label": "বিশেষত্ব",
+            "source_specialty_placeholder": "বিশেষত্ব",
+            "source_specialty_desc": "ধরণ",
+            "source_desc_label": "বর্ণনা",
+            "source_desc_placeholder": "বর্ণনা",
+            "source_desc_help": "সাহায্য",
+            "submitting_msg": "চলছে...",
+            "submit_button": "তৈরি",
+            "submitting_button": "চলছে..."
+        },
+        "edit_factory": {
+            "title": "এডিট",
+            "name_label": "নাম",
+            "code_label": "কোড",
+            "submit_button": "সেভ",
+            "submitting_button": "চলছে..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "রিনেম",
+            "managers_stat": "ম্যানেজার",
+            "efficiency_stat": "দক্ষতা",
+            "assigned_team": "টিম",
+            "no_managers": "নেই",
+            "remove_button": "সরান",
+            "danger_zone": "বিপদ",
+            "delete_button": "মুছুন",
+            "confirm_remove": "সরান?",
+            "remove_fail": "ব্যর্থ",
+            "confirm_delete": "মুছবেন?",
+            "delete_fail": "ব্যর্থ",
+            "rename_fail": "ব্যর্থ"
+        },
+        "row": {
+            "untitled_source": "শিরোনামহীন",
+            "rename_required": "নাম!",
+            "click_to_view": "দেখুন",
+            "click_tooltip": "ক্লিক",
+            "confirm_delete": "মুছবেন?",
+            "rename_prompt": "নাম:"
+        },
+        "user_search": {
+            "placeholder": "খুঁজুন...",
+            "no_results": "নেই",
+            "no_available": "নেই",
+            "available_count": "{{count}}"
+        },
+        "user_search_placeholder": "খুঁজুন...",
+        "no_results": "নেই",
+        "manager_exists": "আছে"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "স্বাগতম",
+            "welcome_subtitle": "লগইন",
+            "email_label": "ইমেল",
+            "password_label": "পাসওয়ার্ড",
+            "forgot_password": "ভুলে গেছেন?",
+            "sign_in_button": "সাইন ইন",
+            "no_account": "অ্যাকাউন্ট নেই?",
+            "contact_sales": "যোগাযোগ",
+            "back_to_landing": "ফিরে",
+            "errors": {
+                "network_error": "নেটওয়ার্ক",
+                "invalid_credentials": "ভুল"
+            },
+            "demo_card": {
+                "title": "রিপোর্ট",
+                "subtitle": "লাইভ",
+                "efficiency": "দক্ষতা",
+                "efficiency_sub": "লক্ষ্য",
+                "output": "আউটপুট",
+                "output_sub": "ট্র্যাক",
+                "chart_title": "হার",
+                "chart_period": "৪ঘণ্টা",
+                "chart_current": "বর্তমান"
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "ত্রুটি",
+            "unknown_error": "অজানা",
+            "return_home": "হোম"
+        },
+        "confirm_dialog": {
+            "confirm": "নিশ্চিত",
+            "cancel": "বাতিল",
+            "please_wait": "অপেক্ষা..."
+        },
+        "quota_warning": {
+            "limit_reached": "সীমা",
+            "near_limit": "কাছে",
+            "upgrade_prompt": "আপগ্রেড",
+            "consider_upgrade": "বিবেচনা",
+            "upgrade_button": "আপগ্রেড",
+            "dismiss_label": "বাতিল",
+            "type_factories": "কারখানা",
+            "type_lines": "লাইন"
+        },
+        "date_range_picker": {
+            "start_date": "শুরু",
+            "end_date": "শেষ",
+            "start_in_timezone": "শুরু",
+            "end_in_timezone": "শেষ"
+        },
+        "breadcrumb": {
+            "aria_label": "ব্রেডক্রাম্ব"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "স্ট্যান্ডার্ড",
+            "subtitle": "ডিফল্ট"
+        },
+        "sections": {
+            "localization": "লোকালাইজেশন",
+            "shifts": {
+                "title": "শিফট",
+                "description": "ইনহেরিট"
+            },
+            "non_working_days": {
+                "title": "ছুটি",
+                "description": "ডিফল্ট"
+            },
+            "schema_configuration": "স্কিমা",
+            "upload_history": "ইতিহাস",
+            "active_field_mapping": "ম্যাপিং",
+            "field_mapping_description": "ম্যাপ"
+        },
+        "fields": {
+            "date_format": "তারিখ",
+            "currency": "মুদ্রা",
+            "measurement_system": "পরিমাপ",
+            "preview": "প্রিভিউ"
+        },
+        "shifts": {
+            "add": "যোগ",
+            "new_shift": "নতুন",
+            "empty": "নেই",
+            "name_label": "নাম",
+            "name_placeholder": "নাম",
+            "start_time": "শুরু",
+            "end_time": "শেষ"
+        },
+        "timezone_warning": {
+            "title": "টাইমজোন?",
+            "message": "প্রভাব",
+            "confirm": "হ্যাঁ"
+        },
+        "buttons": {
+            "save": "সেভ",
+            "saving": "সেভ..."
+        },
+        "errors": {
+            "save_failed": "ব্যর্থ"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "নেই",
+        "system_node": "নোড",
+        "breadcrumbs": {
+            "workspace": "ওয়ার্কস্পেস",
+            "factory": "কারখানা",
+            "not_found": "নেই"
+        },
+        "tabs": {
+            "schema_configuration": "স্কিমা",
+            "upload_history": "ইতিহাস"
+        },
+        "schema": {
+            "active_field_mapping": "ম্যাপিং",
+            "field_mapping_description": "ম্যাপ",
+            "edit_mappings": "এডিট",
+            "reset_schema": "রিসেট",
+            "no_mappings": "নেই",
+            "system_status": "অবস্থা",
+            "last_updated": "আপডেট",
+            "no_config_title": "নেই",
+            "no_config_description": "নেই",
+            "no_config_hint": "আপলোড",
+            "table": {
+                "excel_header": "হেডার",
+                "system_field": "ফিল্ড"
+            }
+        },
+        "uploads": {
+            "processed_files": "প্রক্রিয়া",
+            "clear_history": "মুছুন",
+            "no_files": "নেই"
+        },
+        "confirm": {
+            "reset_schema": "মুছবেন?",
+            "clear_history": "মুছবেন?"
+        },
+        "errors": {
+            "reset_failed": "ব্যর্থ",
+            "clear_failed": "ব্যর্থ"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "খালি",
+            "description": "যোগ",
+            "action": "ডিজাইনার"
+        }
+    },
+    "file_preview": {
+        "title": "প্রিভিউ",
+        "loading": "লোড...",
+        "loading_subtitle": "বিশ্লেষণ",
+        "error_title": "ত্রুটি",
+        "error_default": "ব্যর্থ",
+        "showing_rows": "দেখানো {{count}}",
+        "columns_detected": "{{count}} কলাম",
+        "info_note": "নোট",
+        "null_value": "নাল"
+    },
+    "data_integration": {
+        "title": "ইন্টিগ্রেশন",
+        "subtitle": "ম্যানেজ",
+        "upload_data": "আপলোড",
+        "collapse": "বন্ধ",
+        "expand": "খোলা",
+        "tabs": {
+            "schema": "স্কিমা",
+            "uploads": "আপলোড"
+        },
+        "empty_sources": "নেই",
+        "configure_new": "কনফিগার",
+        "no_description": "নেই",
+        "schema_version": "v{{version}}",
+        "no_active_schema": "নেই",
+        "edit_config": "এডিট",
+        "error_update": "ব্যর্থ",
+        "modal": {
+            "title": "এডিট",
+            "source_name": "নাম",
+            "time_column": "সময়",
+            "time_column_hint": "হেডার",
+            "config_active": "সক্রিয়"
+        }
+    },
+    "data_source_config": {
+        "title": "কনফিগার",
+        "subtitle": "লাইন: {{id}}",
+        "loading": "লোড...",
+        "not_configured_title": "নেই",
+        "not_configured_desc": "আপলোড",
+        "close_modal": "বন্ধ",
+        "time_column": "সময়",
+        "time_column_placeholder": "সময়",
+        "time_column_hint": "নাম",
+        "schema_title": "ম্যাপিং",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "উৎস",
+            "target": "লক্ষ্য"
+        },
+        "schema_note": "নোট",
+        "description": "বর্ণনা",
+        "description_placeholder": "বর্ণনা...",
+        "success": "সফল",
+        "error_save": "ব্যর্থ",
+        "error_load": "ব্যর্থ",
+        "save_button": "সেভ"
+    },
+    "upload_history": {
+        "title": "আপলোড",
+        "loading": "লোড...",
+        "empty": "নেই",
+        "error": "ব্যর্থ"
+    }
+}

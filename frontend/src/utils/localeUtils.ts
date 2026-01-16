@@ -8,6 +8,14 @@ export const SUPPORTED_LOCALES = [
     { label: '日本語 (Japanese)', value: 'ja-JP', short: 'ja' },
     { label: 'Português (Portuguese)', value: 'pt-BR', short: 'pt' },
     { label: 'हिन्दी (Hindi)', value: 'hi-IN', short: 'hi' },
+    { label: 'বাংলা (Bengali)', value: 'bn-BD', short: 'bn' },
+    { label: 'Tiếng Việt (Vietnamese)', value: 'vi-VN', short: 'vi' },
+    { label: 'Türkçe (Turkish)', value: 'tr-TR', short: 'tr' },
+    { label: 'Italiano (Italian)', value: 'it-IT', short: 'it' },
+    { label: 'اردو (Urdu)', value: 'ur-PK', short: 'ur' },
+    { label: '한국어 (Korean)', value: 'ko-KR', short: 'ko' },
+    { label: 'Русский (Russian)', value: 'ru-RU', short: 'ru' },
+    { label: 'Nederlands (Dutch)', value: 'nl-NL', short: 'nl' },
 ] as const;
 
 export type ShortLocale = typeof SUPPORTED_LOCALES[number]['short'];

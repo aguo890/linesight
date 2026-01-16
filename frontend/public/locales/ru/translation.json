@@ -1,0 +1,1037 @@
+{
+    "profile": {
+        "title": "Профиль пользователя",
+        "subtitle": "Управление настройками аккаунта",
+        "back": "Назад",
+        "save_btn": "Сохранить",
+        "success": "Успешно!",
+        "error_required": "Имя обязательно",
+        "error_fail": "Ошибка",
+        "at": "@",
+        "roles": {
+            "admin": "Админ",
+            "user": "Пользователь",
+            "manager": "Менеджер"
+        },
+        "sections": {
+            "factories": "Фабрики",
+            "security": "Безопасность",
+            "personal_info": "Личная инфо",
+            "localization": "Локализация",
+            "notifications": "Уведомления"
+        },
+        "security": {
+            "change_password": "Сменить пароль",
+            "two_factor": "2FA"
+        },
+        "fields": {
+            "full_name": "Полное имя",
+            "email": "Email",
+            "email_hint": "Email",
+            "language": "Язык",
+            "theme": "Тема"
+        },
+        "themes": {
+            "light": "Светлая",
+            "dark": "Темная",
+            "system": "Системная"
+        },
+        "notifications": {
+            "email": "Email",
+            "push": "Push",
+            "weekly": "Еженедельно"
+        },
+        "location_selector": {
+            "label": "Расположение",
+            "auto_detect": "Авто",
+            "search_placeholder": "Поиск...",
+            "no_results": "Нет результатов",
+            "select_country_first": "Выберите страну",
+            "selected": "Выбрано:"
+        },
+        "unsaved_changes": {
+            "title": "Несохраненные изменения",
+            "message": "Выйти?",
+            "confirm": "Выйти",
+            "cancel": "Остаться"
+        }
+    },
+    "navigation": {
+        "dashboard": "Дашборд",
+        "my_dashboards": "Мои дашборды",
+        "organization": "Организация",
+        "show_more": "Показать еще",
+        "show_less": "Скрыть"
+    },
+    "dashboard": {
+        "my_dashboards": {
+            "title": "Мои дашборды",
+            "search_placeholder": "Поиск...",
+            "status": {
+                "loading": "Загрузка...",
+                "none": "Нет",
+                "available_one": "{{count}} сайт",
+                "available_other": "{{count}} сайтов"
+            },
+            "table": {
+                "header_name": "Имя",
+                "header_location": "Расположение",
+                "header_status": "Статус",
+                "header_lines": "Линии",
+                "header_actions": "Действия",
+                "action_view": "Просмотр"
+            },
+            "actions": {
+                "new_dashboard": "Новый",
+                "configure_sites": "Настроить",
+                "clear_search": "Очистить"
+            },
+            "search": {
+                "results_info": "{{count}} / {{total}}",
+                "no_results": "Нет результатов",
+                "no_results_detail": "Не найдено"
+            },
+            "factory_status": {
+                "at_limit": "Лимит",
+                "near_limit": "Почти лимит",
+                "active": "Активен"
+            },
+            "empty_state": {
+                "title": "Пусто",
+                "description": "Нет фабрик",
+                "admin_hint": "Настройки",
+                "user_hint": "Свяжитесь с админом",
+                "cta": "В настройки"
+            },
+            "view": {
+                "grid": "Сетка",
+                "list": "Список"
+            }
+        },
+        "factory_card": {
+            "sources_suffix": "/ {{max}} источников",
+            "edit": "Изменить",
+            "delete": "Удалить",
+            "open": "Открыть",
+            "edit_title": "Изменить",
+            "delete_title": "Удалить"
+        }
+    },
+    "factory_detail": {
+        "breadcrumbs": {
+            "home": "Главная",
+            "list": "Список",
+            "production_sites": "Сайты",
+            "sites": "Сайты",
+            "not_found": "Не найдено"
+        },
+        "sections": {
+            "overview": "Обзор",
+            "performance": "Производительность",
+            "settings": "Настройки",
+            "dashboards": "Дашборды",
+            "data_sources": "Источники"
+        },
+        "actions": {
+            "edit": "Ред. конфиг",
+            "delete": "Удалить сайт",
+            "save": "Сохранить",
+            "settings": "Настройки",
+            "new_dashboard": "Новый дашборд",
+            "create_dashboard": "Создать",
+            "add_data_source": "Добавить источник",
+            "new_source": "Новый источник",
+            "upload_data": "Загрузить",
+            "no_write_access": "Нет прав"
+        },
+        "alerts": {
+            "confirm_delete": "Уверены?",
+            "edit_soon": "Скоро",
+            "delete_soon": "Скоро",
+            "delete_fail": "Ошибка"
+        },
+        "stats": {
+            "dashboards": "Дашборды",
+            "active_widgets": "Виджеты",
+            "active_sources": "Источники",
+            "used_info": "{{current}}/{{max}} исп."
+        },
+        "not_found": "Не найдено",
+        "search": {
+            "dashboards_placeholder": "Фильтр...",
+            "sources_placeholder": "Поиск...",
+            "no_sources_found": "Нет источников"
+        },
+        "quota": {
+            "limit_reached": "Лимит достигнут"
+        },
+        "table": {
+            "headers": {
+                "name": "Имя",
+                "status": "Статус",
+                "actions": "Действия"
+            }
+        },
+        "status": {
+            "active": "Активен",
+            "inactive": "Неактивен"
+        },
+        "confirm": {
+            "delete_source": "Удалить источник?",
+            "delete_dashboard": "Удалить дашборд?"
+        }
+    },
+    "filters": {
+        "time": {
+            "today": "Сегодня",
+            "yesterday": "Вчера",
+            "last_7_days": "7 дней",
+            "last_30_days": "30 дней",
+            "this_month": "Этот месяц",
+            "last_month": "Прошлый месяц"
+        },
+        "shifts": {
+            "all": "Все смены",
+            "shift_a": "Смена А",
+            "shift_b": "Смена Б",
+            "shift_c": "Смена В"
+        },
+        "date_range": "Диапазон",
+        "to": "по"
+    },
+    "dashboard_header": {
+        "breadcrumbs": {
+            "workspace": "Рабочая область",
+            "factory": "Фабрика",
+            "line": "Линия",
+            "dashboard": "Дашборд"
+        },
+        "status": {
+            "updated": "Обновлено {{time}}",
+            "live": "Live",
+            "loading": "Загрузка...",
+            "saving": "Сохранение..."
+        },
+        "actions": {
+            "refresh": "Обновить",
+            "reset_layout": "Сброс",
+            "reset_confirm": "Подтвердить?",
+            "design_layout": "Дизайн",
+            "save_layout": "Сохранить",
+            "add_widget": "Добавить виджет",
+            "cancel": "Отмена"
+        }
+    },
+    "widgets": {
+        "library": {
+            "title": "Библиотека",
+            "subtitle": "Перетащите",
+            "categories": {
+                "all": "Все",
+                "production": "Производство",
+                "quality": "Качество",
+                "efficiency": "Эффективность"
+            }
+        },
+        "selector": {
+            "simulated_data": "Симуляция",
+            "ready_to_use": "Готово",
+            "recommended": "Рекомендуемое",
+            "future_capability": "Будущее",
+            "coming_soon": "Скоро",
+            "near_match": "Похожее",
+            "ai_recommendations": "AI",
+            "select_all": "Выбрать все",
+            "selected": "Выбрано",
+            "compatible": "Совместимо",
+            "status_summary": "{{selected}} • {{compatible}}",
+            "data_req": "Нужны данные",
+            "needs_mapping": "Нужен маппинг",
+            "categories": {
+                "Efficiency": "Эффективность",
+                "Quality": "Качество",
+                "Workforce": "Персонал",
+                "Operations": "Операции"
+            }
+        },
+        "bundles": {
+            "categories": {
+                "Recommended": "Рекомендуемое",
+                "Operations": "Операции",
+                "Strategy": "Стратегия"
+            },
+            "efficiency_starter": {
+                "title": "Старт эффективност",
+                "description": "Базовый трекинг"
+            },
+            "quality_auditor": {
+                "title": "Аудитор качества",
+                "description": "DHU"
+            },
+            "floor_manager": {
+                "title": "Менеджер этажа",
+                "description": "Real-time"
+            },
+            "executive_summary": {
+                "title": "Сводка руководства",
+                "description": "KPI"
+            }
+        },
+        "common": {
+            "planned": "ПЛАН",
+            "actual": "ФАКТ",
+            "target": "ЦЕЛЬ",
+            "efficiency": "Эффективность",
+            "minutes": "мин",
+            "limit": "Лимит",
+            "status": "Статус",
+            "on_target": "В ЦЕЛИ",
+            "below_target": "НИЖЕ",
+            "defect_rate": "Брак"
+        },
+        "titles": {
+            "production_chart": "Выпуск продукции",
+            "line_efficiency": "Эффективность линии",
+            "earned_minutes": "Заработанные минуты",
+            "sam_performance": "SAM производительность",
+            "dhu_quality": "DHU качество",
+            "speed_quality": "Скорость vs Качество",
+            "top_blockers": "Топ блокировок",
+            "style_progress": "Прогресс стиля",
+            "daily_target": "Цель дня",
+            "production_timeline": "Временная шкала",
+            "complexity_impact": "Влияние сложности",
+            "workforce_attendance": "Посещаемость",
+            "kpi_summary": "Сводка KPI"
+        },
+        "descriptions": {
+            "production_chart": "Сравнение",
+            "line_efficiency": "Real-time",
+            "earned_minutes": "SAM",
+            "sam_performance": "Стандарт",
+            "dhu_quality": "Анализ дефектов",
+            "speed_quality": "Корреляция",
+            "top_blockers": "Причины остановок",
+            "style_progress": "% Завершения",
+            "daily_target": "Прогресс",
+            "production_timeline": "Гант",
+            "complexity_impact": "Анализ",
+            "workforce_attendance": "Присутствие",
+            "kpi_summary": "Обзор метрик"
+        },
+        "production_chart": {
+            "planned": "ПЛАН",
+            "actual_output": "ФАКТ"
+        },
+        "production_timeline": {
+            "output": "Факт",
+            "target": "Цель"
+        },
+        "complexity_impact": {
+            "title": "Сложность",
+            "loading_styles": "Загрузка...",
+            "sam": "SAM",
+            "sam_complexity": "SAM (Сложность)",
+            "styles": "Стиль"
+        },
+        "speed_quality": {
+            "efficiency": "Эффективность",
+            "defect_rate": "Брак"
+        },
+        "earned_minutes": {
+            "earned": "ЗАРАБОТАНО",
+            "available": "ДОСТУПНО"
+        },
+        "dhu_quality": {
+            "no_data": "Нет данных",
+            "current_dhu": "Текущий DHU",
+            "above_limit": "ВЫШЕ ЛИМИТА"
+        },
+        "blocker_cloud": {
+            "occurrences": "раз",
+            "view_all_logs": "Все логи",
+            "no_blockers": "Нет блокировок"
+        }
+    },
+    "common": {
+        "back": "Назад",
+        "cancel": "Отмена",
+        "error": "Ошибка",
+        "success": "Успех",
+        "uploading": "Загрузка...",
+        "processing": "Обработка...",
+        "remove": "Убрать",
+        "ready": "Готово",
+        "needs_setup": "Нужна настройка",
+        "date": "Дата",
+        "actions": {
+            "save": "Сохранить",
+            "cancel": "Отмена",
+            "close": "Закрыть",
+            "delete": "Удалить",
+            "edit": "Изменить",
+            "search": "Поиск...",
+            "confirm": "Подтвердить",
+            "back": "Назад",
+            "create": "Создать",
+            "invite": "Пригласить"
+        },
+        "status": {
+            "active": "Активен",
+            "inactive": "Неактивен",
+            "unknown": "Неизвестно"
+        }
+    },
+    "wizard": {
+        "step1": {
+            "dashboard_name_label": "Имя дашборда",
+            "dashboard_name_placeholder": "Напр. Линия 4",
+            "name_error_tooltip": "Введите имя",
+            "name_error_text": "Имя обязательно",
+            "selection_title": "Выбор источника",
+            "selection_desc": "Выберите файл",
+            "columns": {
+                "file_name": "Имя файла",
+                "status": "Статус",
+                "uploaded": "Загружено",
+                "action": "Действие"
+            },
+            "btn_configure": "Настроить",
+            "btn_complete_setup": "Завершить",
+            "note": "Прим.",
+            "empty_title": "Нет источников",
+            "empty_desc": "Загрузите файл",
+            "error_load_failed": "Ошибка загр."
+        },
+        "step2": {
+            "title": "Маппинг данных",
+            "subtitle": "Обзор колонок",
+            "stats": {
+                "auto": "Авто",
+                "review": "Обзор",
+                "attention": "Внимание",
+                "ignored": "Игнор"
+            },
+            "filter": {
+                "all": "Все",
+                "unmapped": "Без маппинга",
+                "conflicts": "Конфликты"
+            },
+            "showing_count": "{{filtered}}/{{total}} колонок",
+            "table": {
+                "source": "Источник",
+                "target": "Цель",
+                "status": "Статус",
+                "no_match": "Нет совпадений",
+                "try_different": "Попробуйте другой вид"
+            },
+            "status_labels": {
+                "exact": "Точно",
+                "exact_tooltip": "Точное совпадение",
+                "fuzzy": "Нечетко",
+                "fuzzy_tooltip": "Похоже",
+                "ai": "AI",
+                "ai_tooltip": "AI предсказание",
+                "manual": "Вручную",
+                "manual_tooltip": "Вручную",
+                "unset": "Не задано",
+                "unset_tooltip": "Нужен маппинг",
+                "duplicate": "Дубликат"
+            },
+            "field_selector": {
+                "select_placeholder": "Выберите поле...",
+                "search_placeholder": "Поиск...",
+                "suggested": "Предложено",
+                "all_fields": "Все поля",
+                "no_results": "Нет результатов",
+                "ignore_action": "Игнорировать",
+                "restore_action": "Восстановить",
+                "in_use": "исп."
+            },
+            "alerts": {
+                "conflict_count_one": "1 дубликат",
+                "conflict_count_other": "{{count}} дубликатов",
+                "remaining_needed": "Осталось"
+            },
+            "btn_confirm": "Подтвердить",
+            "processing": {
+                "title": "Обработка",
+                "subtitle": "Импорт...",
+                "logs": {
+                    "init": "Иниц...",
+                    "schema": "Схема...",
+                    "mapping": "Маппинг...",
+                    "req": "Запрос...",
+                    "sending": "Отправка...",
+                    "success": "Успех"
+                }
+            }
+        },
+        "step3": {
+            "blueprints_title": "Шаблоны",
+            "divider": "или",
+            "library_title": "Библиотека",
+            "selected_count": "{{count}} выбрано",
+            "btn_create": "Создать дашборд",
+            "btn_configuring": "Настройка..."
+        },
+        "title": "Настройка",
+        "steps": {
+            "upload": {
+                "label": "Источник",
+                "desc": "Загрузка"
+            },
+            "mapping": {
+                "label": "Маппинг",
+                "desc": "Проверка"
+            },
+            "widgets": {
+                "label": "Дашборд",
+                "desc": "Макет"
+            }
+        },
+        "mini_map": {
+            "title": "Превью",
+            "empty_state": "Выберите виджет",
+            "stats": {
+                "widgets_one": "{{count}} виджет",
+                "widgets_other": "{{count}} виджетов",
+                "screens_one": "~{{count}} экран",
+                "screens_other": "~{{count}} экранов"
+            },
+            "density": {
+                "empty": "Пусто",
+                "compact": "Компактно",
+                "balanced": "Сбаланс.",
+                "heavy": "Плотно"
+            },
+            "scroll_warning": "Скролл"
+        },
+        "context": {
+            "title": "Контекст",
+            "select_factory": "Выбрать фабрику",
+            "select_source": "Выбрать источник",
+            "select_factory_first": "Сначала фабрику",
+            "loading_factories": "Загр. фабрик...",
+            "loading_sources": "Загр. источников...",
+            "fetching_sources": "Получение...",
+            "no_sources_alert": "Нет источников",
+            "select_source_overlay": "Выберите источник"
+        }
+    },
+    "modals": {
+        "upload": {
+            "title_upload": "Загрузить",
+            "title_preview": "Превью",
+            "subtitle_upload": "Загрузка в {{dataSourceName}}",
+            "subtitle_preview": "Обзор",
+            "drop_text": "Перетащите файл",
+            "supports_text": "Excel/CSV",
+            "success_redirect": "Успех!",
+            "info_preview": "Превью данных",
+            "btn_upload_preview": "Загрузить и превью",
+            "btn_uploading": "Загрузка...",
+            "errors": {
+                "invalid_extension": "Excel или CSV",
+                "duplicate_file": "Файл существует",
+                "preview_failed": "Ошибка превью",
+                "upload_failed": "Ошибка загрузки"
+            }
+        }
+    },
+    "organization_settings": {
+        "title": "Настройки организации",
+        "description": "Конфигурация",
+        "cards": {
+            "general": {
+                "title": "Общее",
+                "description": "Профиль"
+            },
+            "members": {
+                "title": "Участники",
+                "description": "Доступ"
+            },
+            "infrastructure": {
+                "title": "Инфраструктура",
+                "description": "Фабрики"
+            },
+            "security": {
+                "title": "Безопасность",
+                "description": "SSO"
+            },
+            "billing": {
+                "title": "Биллинг",
+                "description": "Счета"
+            }
+        },
+        "badges": {
+            "coming_soon": "Скоро"
+        }
+    },
+    "layout": {
+        "settings_header": {
+            "back_to_settings": "К настройкам"
+        },
+        "top_nav": {
+            "search_placeholder": "Поиск...",
+            "search_coming_soon": "Скоро!",
+            "notifications": {
+                "title": "Уведомления",
+                "mark_read": "Прочитано",
+                "empty": "Нет уведомлений"
+            },
+            "user_menu": {
+                "profile": "Профиль",
+                "logout": "Выйти",
+                "default_user": "Пользователь",
+                "default_role": "Зритель"
+            }
+        }
+    },
+    "factory_configuration": {
+        "breadcrumbs": {
+            "organization": "Организация",
+            "factories": "Фабрики"
+        },
+        "header": {
+            "title": "Конфиг фабрики",
+            "popover_trigger_label": "Инфо"
+        },
+        "popover": {
+            "title": "Конфигурация",
+            "assignment": {
+                "title": "Назначение:",
+                "desc_part1": "Детали",
+                "desc_part2": "менеджер"
+            },
+            "structure": {
+                "title": "Структура:",
+                "desc": "настроить"
+            }
+        },
+        "mode_switch": {
+            "assignment_mode": "Назначение",
+            "structure_mode": "Структура",
+            "customize_layout": "Настроить",
+            "done_editing": "Готово"
+        },
+        "list": {
+            "add_data_source": "Добавить источник",
+            "no_data_sources": "Нет источников"
+        },
+        "bulk_actions": {
+            "selected": "Выбрано",
+            "assign_manager": "Назначить менеджера"
+        },
+        "messages": {
+            "loading": "Загрузка...",
+            "assignment_failed": "Ошибка"
+        }
+    },
+    "roles": {
+        "system_admin": "Системный админ",
+        "owner": "Владелец",
+        "admin": "Админ",
+        "viewer": "Зритель",
+        "member": "Участник",
+        "operator": "Оператор",
+        "factory_manager": "Менеджер фабрики",
+        "line_manager": "Менеджер линии",
+        "user": "Пользователь",
+        "manager": "Менеджер"
+    },
+    "org_general": {
+        "title": "Общее",
+        "profile": {
+            "logged_in_as": "Вход как"
+        },
+        "at_a_glance": "Обзор",
+        "stats": {
+            "total_managers": "Всего менеджеров",
+            "assigned": "Назначено",
+            "factories": "Фабрики",
+            "production_lines": "Линии"
+        },
+        "danger_zone": {
+            "title": "Опасная зона",
+            "description": "Удалить навсегда",
+            "delete_button": "Удалить организацию"
+        }
+    },
+    "org_members": {
+        "title": "Участники",
+        "invite_member": "Пригласить",
+        "search_placeholder": "Поиск...",
+        "filter": "Фильтр",
+        "table": {
+            "user": "Пользователь",
+            "global_role": "Роль",
+            "access": "Доступ",
+            "last_active": "Активность",
+            "actions": "Действия",
+            "loading": "Загрузка...",
+            "no_members": "Нет участников",
+            "assignments": "Назначения",
+            "unassigned": "Не назначено",
+            "never_active": "Никогда",
+            "view_details": "Детали"
+        },
+        "drawer": {
+            "title": "Детали",
+            "role_label": "Роль",
+            "active_assignments": "Активные",
+            "no_assignments": "Нет",
+            "current_factory": "Фабрика",
+            "danger_zone": {
+                "title": "Опасно",
+                "suspend_button": "Приостановить"
+            }
+        },
+        "cell": {
+            "unknown_user": "Неизвестно",
+            "active": "Активен",
+            "inactive": "Неактивен"
+        }
+    },
+    "factory_selection": {
+        "back_to_settings": "К настройкам",
+        "back_button": "Назад",
+        "title": "Инфраструктура",
+        "sites_count": "{{count}} сайтов",
+        "sites": "Сайты",
+        "add_factory": "Добавить фабрику",
+        "search_placeholder": "Поиск...",
+        "retry": "Повтор",
+        "new_factory": {
+            "title": "Новая фабрика",
+            "subtitle": "Добавить"
+        },
+        "card": {
+            "data_sources": "Источники",
+            "managers": "Менеджеры",
+            "configure_site": "Настроить",
+            "edit_details": "Ред. детали",
+            "delete_factory": "Удалить"
+        },
+        "list": {
+            "name": "Имя",
+            "factory": "Фабрика",
+            "code": "Код",
+            "country": "Страна",
+            "sources": "Источники",
+            "managers": "Менеджеры",
+            "actions": "Действия"
+        },
+        "no_match": "Нет совпадений",
+        "confirm_delete": "Удалить?",
+        "delete_fail": "Ошибка"
+    },
+    "org_modals": {
+        "create_datasource": {
+            "title": "Добавить источник",
+            "subtitle": "Новый",
+            "name_label": "Имя",
+            "name_placeholder": "Напр. Линия А",
+            "code_label": "Код",
+            "code_placeholder": "L-01",
+            "specialty_label": "Специализация",
+            "specialty_placeholder": "Сборка",
+            "description_label": "Описание",
+            "description_placeholder": "Описание...",
+            "use_defaults": "По умолчанию",
+            "inherit_tooltip": "Наследовать",
+            "custom_tooltip": "Пользовательский",
+            "inherit_desc": "Наследует",
+            "custom_desc": "Пусто",
+            "source_usage": "Использование",
+            "quota_reached": "Квота достигнута",
+            "submit_button": "Добавить",
+            "submitting": "Добавление..."
+        },
+        "create_factory": {
+            "title": "Создать фабрику",
+            "subtitle": "Настройка",
+            "quota_reached": "Квота достигнута",
+            "name_label": "Имя",
+            "name_placeholder": "Имя",
+            "code_label": "Код",
+            "code_placeholder": "Код",
+            "code_desc": "ID",
+            "source_name_label": "Источник (умолч.)",
+            "source_name_placeholder": "Имя источника",
+            "source_specialty_label": "Спец. (умолч.)",
+            "source_specialty_placeholder": "Тип",
+            "source_specialty_desc": "Тип работы",
+            "source_desc_label": "Опис. (умолч.)",
+            "source_desc_placeholder": "Описание",
+            "source_desc_help": "Помощь",
+            "submitting_msg": "Создание...",
+            "submit_button": "Создать",
+            "submitting_button": "Создание..."
+        },
+        "edit_factory": {
+            "title": "Редактировать",
+            "name_label": "Имя",
+            "code_label": "Код",
+            "submit_button": "Сохранить",
+            "submitting_button": "Сохранение..."
+        }
+    },
+    "data_source_list": {
+        "drawer": {
+            "id_label": "ID: {{id}}",
+            "rename_tooltip": "Переименовать",
+            "managers_stat": "Менеджеры",
+            "efficiency_stat": "Эффективность",
+            "assigned_team": "Команда",
+            "no_managers": "Нет",
+            "remove_button": "Убрать",
+            "danger_zone": "Опасно",
+            "delete_button": "Удалить",
+            "confirm_remove": "Убрать менеджера?",
+            "remove_fail": "Ошибка",
+            "confirm_delete": "Удалить?",
+            "delete_fail": "Ошибка",
+            "rename_fail": "Ошибка"
+        },
+        "row": {
+            "untitled_source": "Без названия",
+            "rename_required": "Имя обязательно!",
+            "click_to_view": "Просмотр",
+            "click_tooltip": "Детали",
+            "confirm_delete": "Удалить?",
+            "rename_prompt": "Переименовать:"
+        },
+        "user_search": {
+            "placeholder": "Поиск...",
+            "no_results": "Нет результатов",
+            "no_available": "Нет доступных",
+            "available_count": "{{count}} доступно"
+        },
+        "user_search_placeholder": "Поиск...",
+        "no_results": "Нет результатов",
+        "manager_exists": "Уже существует"
+    },
+    "auth": {
+        "login_page": {
+            "welcome_title": "Добро пожаловать",
+            "welcome_subtitle": "Войти в аккаунт",
+            "email_label": "Email",
+            "password_label": "Пароль",
+            "forgot_password": "Забыли?",
+            "sign_in_button": "Войти",
+            "no_account": "Нет аккаунта?",
+            "contact_sales": "Контакты",
+            "back_to_landing": "На главную",
+            "errors": {
+                "network_error": "Ошибка сети",
+                "invalid_credentials": "Неверные данные"
+            },
+            "demo_card": {
+                "title": "Отчет смены",
+                "subtitle": "Live",
+                "efficiency": "Эффективность",
+                "efficiency_sub": "vs цель",
+                "output": "Выпуск",
+                "output_sub": "в норме",
+                "chart_title": "Темп",
+                "chart_period": "4ч",
+                "chart_current": "Тек."
+            }
+        }
+    },
+    "components": {
+        "error_page": {
+            "title": "Ошибка",
+            "unknown_error": "Неизвестная ошибка",
+            "return_home": "На главную"
+        },
+        "confirm_dialog": {
+            "confirm": "Подтвердить",
+            "cancel": "Отмена",
+            "please_wait": "Ждите..."
+        },
+        "quota_warning": {
+            "limit_reached": "Лимит ({{max}})",
+            "near_limit": "Почти лимит",
+            "upgrade_prompt": "Обновить план",
+            "consider_upgrade": "Рассмотреть",
+            "upgrade_button": "Обновить",
+            "dismiss_label": "Скрыть",
+            "type_factories": "фабрики",
+            "type_lines": "линии"
+        },
+        "date_range_picker": {
+            "start_date": "Начало",
+            "end_date": "Конец",
+            "start_in_timezone": "Начало ({{timezone}})",
+            "end_in_timezone": "Конец ({{timezone}})"
+        },
+        "breadcrumb": {
+            "aria_label": "Хлебные крошки"
+        }
+    },
+    "factory_settings": {
+        "header": {
+            "title": "Стандарты",
+            "subtitle": "По умолчанию"
+        },
+        "sections": {
+            "localization": "Локализация",
+            "shifts": {
+                "title": "Смены",
+                "description": "Наследование"
+            },
+            "non_working_days": {
+                "title": "Выходные",
+                "description": "По умолчанию"
+            },
+            "schema_configuration": "Конфиг схемы",
+            "upload_history": "История",
+            "active_field_mapping": "Маппинг",
+            "field_mapping_description": "Маппинг"
+        },
+        "fields": {
+            "date_format": "Формат даты",
+            "currency": "Валюта",
+            "measurement_system": "Измерение",
+            "preview": "Превью"
+        },
+        "shifts": {
+            "add": "Добавить смену",
+            "new_shift": "Новая смена",
+            "empty": "Пусто",
+            "name_label": "Имя",
+            "name_placeholder": "Имя",
+            "start_time": "Начало",
+            "end_time": "Конец"
+        },
+        "timezone_warning": {
+            "title": "Сменить зону?",
+            "message": "Влияет на данные",
+            "confirm": "Да"
+        },
+        "buttons": {
+            "save": "Сохранить",
+            "saving": "Сохранение..."
+        },
+        "errors": {
+            "save_failed": "Ошибка"
+        }
+    },
+    "data_source_detail": {
+        "not_found": "Не найдено",
+        "system_node": "Узел",
+        "breadcrumbs": {
+            "workspace": "W",
+            "factory": "F",
+            "not_found": "NF"
+        },
+        "tabs": {
+            "schema_configuration": "Схема",
+            "upload_history": "История"
+        },
+        "schema": {
+            "active_field_mapping": "Маппинг",
+            "field_mapping_description": "Маппинг полей",
+            "edit_mappings": "Ред. маппинг",
+            "reset_schema": "Сброс",
+            "no_mappings": "Нет маппинга",
+            "system_status": "Статус",
+            "last_updated": "Обновлено",
+            "no_config_title": "Нет конфига",
+            "no_config_description": "Не настроено",
+            "no_config_hint": "Загрузите файл",
+            "table": {
+                "excel_header": "Excel",
+                "system_field": "Система"
+            }
+        },
+        "uploads": {
+            "processed_files": "Обработано",
+            "clear_history": "Очистить",
+            "no_files": "Нет файлов"
+        },
+        "confirm": {
+            "reset_schema": "Внимание: сброс схемы.",
+            "clear_history": "Внимание: очистка истории."
+        },
+        "errors": {
+            "reset_failed": "Ошибка",
+            "clear_failed": "Ошибка"
+        }
+    },
+    "dashboard_page": {
+        "empty_state": {
+            "title": "Пусто",
+            "description": "Добавьте виджеты",
+            "action": "Дизайнер"
+        }
+    },
+    "file_preview": {
+        "title": "Превью",
+        "loading": "Загрузка превью...",
+        "loading_subtitle": "Анализ",
+        "error_title": "Ошибка",
+        "error_default": "Не удалось загрузить",
+        "showing_rows": "Показано {{count}}",
+        "columns_detected": "{{count}} колонок",
+        "info_note": "Это только превью.",
+        "null_value": "null"
+    },
+    "data_integration": {
+        "title": "Интеграция",
+        "subtitle": "Управление",
+        "upload_data": "Загрузить",
+        "collapse": "Свернуть",
+        "expand": "Развернуть",
+        "tabs": {
+            "schema": "Схема",
+            "uploads": "Загрузки"
+        },
+        "empty_sources": "Нет источников",
+        "configure_new": "Настроить",
+        "no_description": "Нет описания",
+        "schema_version": "Версия {{version}}",
+        "no_active_schema": "Нет акт. схемы",
+        "edit_config": "Ред. конфиг",
+        "error_update": "Ошибка",
+        "modal": {
+            "title": "Ред. конфиг",
+            "source_name": "Имя",
+            "time_column": "Колонка времени",
+            "time_column_hint": "Заголовок",
+            "config_active": "Активен"
+        }
+    },
+    "data_source_config": {
+        "title": "Конфигурация",
+        "subtitle": "Линия: {{id}}",
+        "loading": "Загрузка...",
+        "not_configured_title": "Не настроено",
+        "not_configured_desc": "Не настроен",
+        "close_modal": "Закрыть",
+        "time_column": "Время",
+        "time_column_placeholder": "Напр. Timestamp",
+        "time_column_hint": "Заголовок для времени",
+        "schema_title": "Маппинг",
+        "schema_version": "v{{version}}",
+        "table": {
+            "source": "Источник",
+            "target": "Цель"
+        },
+        "schema_note": "Авто-генерация",
+        "description": "Описание",
+        "description_placeholder": "Введите описание...",
+        "success": "Успешно",
+        "error_save": "Ошибка сохр.",
+        "error_load": "Ошибка загр.",
+        "save_button": "Сохранить"
+    },
+    "upload_history": {
+        "title": "Загрузки",
+        "loading": "Загрузка...",
+        "empty": "Пусто",
+        "error": "Ошибка"
+    }
+}
