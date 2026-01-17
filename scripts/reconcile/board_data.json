@@ -1,0 +1,20 @@
+[
+    {
+        "id": "TICKET-101",
+        "status": "Todo",
+        "title": "Setup Login Page",
+        "last_updated": "2023-10-25"
+    },
+    {
+        "id": "TICKET-102",
+        "status": "In Progress",
+        "title": "Database Schema",
+        "last_updated": "2023-10-26"
+    },
+    {
+        "id": "TICKET-103",
+        "status": "In Progress",
+        "title": "User Profile UI",
+        "last_updated": "2023-10-15"
+    }
+]

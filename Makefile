@@ -3,7 +3,7 @@ BACKEND_VENV_PYTHON = backend\venv\Scripts\python
 COMPOSE_FILE := docker-compose.yml
 SERVICE_NAME := backend
 
-.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick migrate branch
+.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick migrate branch reconcile reconcile-dry
 
 # Default: List available commands
 default: help
@@ -17,6 +17,7 @@ help:
 	@echo "    make setup          - FRESH START: Down, Build, Up, Migrate (Data Loss!)"
 	@echo "    make dev            - Daily startup (Docker up + Frontend sync)"
 	@echo "    make migrate        - Generate new Alembic migration (auto)"
+	@echo "    make reconcile      - Sync PROJECT_BOARD.md with Git (DeepSeek)"
 	@echo ""
 	@echo "  Legacy/Dev:"
 	@echo "    make run            - Frontend only"
@@ -122,9 +123,15 @@ sync-check:
 	@cd frontend && npm run generate-api 2>nul
 	@echo "✅ Types synced."
 
-# Push to GitHub with automatic commit
-push:
-	@echo "🚀 Smart push..."
+# Push to GitHub - Reconciles board first to prevent drift
+push: reconcile-dry ## 🛡️ Reconcile board, then push (Prevents Ghost Work)
+	@echo ""
+	@echo "✅ Board verified. Running smart push..."
+	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
+
+# Quick push - Skip reconciliation (use sparingly!)
+push-quick:
+	@echo "⚡ Quick push (skipping reconciliation)..."
 	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
 
 # Create a new branch
@@ -138,3 +145,22 @@ branch:
 	@echo "🌿 Creating branch: $(BRANCH_ARGS)"
 	@git checkout -b $(BRANCH_ARGS)
 	@git push --set-upstream origin $(BRANCH_ARGS)
+
+# ============================================================================
+# PROJECT MANAGEMENT
+# ============================================================================
+
+# V2 Code-First Reconciliation - Verifies board against ACTUAL code, not just commits
+reconcile:
+	@echo ""
+	@echo "🔍 Running V2 Code-First Reconciliation..."
+	@echo "   (Commits are claims, code is truth)"
+	@$(BACKEND_VENV_PYTHON) scripts/reconcile/reconcile_board.py --days 14
+	@echo ""
+
+# Dry-run reconciliation (report only, no changes)
+reconcile-dry:
+	@echo ""
+	@echo "🔍 Running Reconciliation (Dry Run)..."
+	@$(BACKEND_VENV_PYTHON) scripts/reconcile/reconcile_board.py --days 14 --dry-run
+	@echo ""
