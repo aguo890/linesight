@@ -14,11 +14,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.api.deps import CurrentUser, get_db
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.analytics import DHUReport, EfficiencyMetric
+
 # from app.models.compliance import TraceabilityRecord, VerificationStatus
 from app.models.events import ProductionEvent
 from app.models.factory import Factory
-from app.models import ProductionLine  # Alias for DataSource
 from app.models.production import Order, OrderStatus, ProductionRun, Style
 from app.models.workforce import Worker, WorkerSkill
 from app.schemas.analytics import (
@@ -75,12 +76,12 @@ async def get_overview_stats(
     if date_from and date_to:
         current_start = date_from
         current_end = date_to
-        
+
         # Previous Period Logic (Same Duration)
         duration = (current_end - current_start).days + 1
         prev_end = current_start - timedelta(days=1)
         prev_start = prev_end - timedelta(days=duration - 1)
-        
+
         effective_date = current_end # For "Last Updated" text
     else:
         # Fallback to "Effective Date" (Today or latest data)
@@ -88,7 +89,7 @@ async def get_overview_stats(
         effective_date = await prod_repo.get_effective_date(line_id)
         current_start = effective_date
         current_end = effective_date
-        
+
         prev_end = effective_date - timedelta(days=1)
         prev_start = prev_end
 
@@ -137,8 +138,8 @@ async def get_overview_stats(
     try:
         from zoneinfo import ZoneInfo
     except ImportError:
-        from backports.zoneinfo import ZoneInfo
-        
+        pass
+
     today = datetime.now(timezone.utc).date()
     if effective_date != today:
         last_updated = f"Data from {effective_date.strftime('%Y-%m-%d')}"
@@ -340,7 +341,7 @@ async def get_style_progress(
     If date range provided, shows orders that were ACTIVE (had production) during that range.
     Optionally filter by production line ID.
     """
-    # Logic: 
+    # Logic:
     # If date range: Find all Orders that have ProductionRuns in that range.
     # If no date range: Find all Orders with active status.
 
@@ -355,9 +356,9 @@ async def get_style_progress(
         )
         if line_id:
             query = query.where(ProductionRun.line_id == line_id)
-            
+
         query = query.options(selectinload(Order.style)).distinct()
-        
+
     else:
         # Defaults to "Current Active Orders"
         if line_id:
@@ -392,30 +393,33 @@ async def get_style_progress(
             ProductionRun.order_id == order.id
         )
 
-        # Filter runs? 
-        # If we are in date range mode, should we show TOTAL progress of the order, 
+        # Filter runs?
+        # If we are in date range mode, should we show TOTAL progress of the order,
         # or just what was made in that window?
         # Usually "Style Progress" implies "How much is done for the Order Total".
         # So we keep looking at ALL runs for that order to show true % completion.
-        
+
         # However, verifying if we should respect line_id for the count.
         # Yes, if we are filtering by line, we might only care about that line's contribution?
         # Standard logic: Progress of the order is global. But if line filter active...
         # Let's keep it simple: Show Global Progress for that Order, even if filtered by Line.
         # Or... if line_id, we only count runs from that line.
-        
+
         if line_id:
             run_query = run_query.where(ProductionRun.line_id == line_id)
 
         run_res = await db.execute(run_query)
         total_produced = run_res.scalar() or 0
 
-        target = order.quantity
-        progress = (
-            (Decimal(total_produced) / Decimal(target)) * 100
-            if target > 0
-            else Decimal(0)
-        )
+        target = order.quantity or 0
+        try:
+            progress = (
+                (Decimal(total_produced) / Decimal(target)) * 100
+                if target > 0
+                else Decimal(0)
+            )
+        except (ZeroDivisionError, TypeError, Exception):
+            progress = Decimal(0)
 
         # Determine Status Logic
         status = "On Track"
@@ -428,9 +432,14 @@ async def get_style_progress(
         else:
             status = "Pending"
 
+        # Safe Style Code
+        style_code = "Unknown"
+        if order.style and order.style.style_number:
+            style_code = order.style.style_number
+
         styles.append(
             StyleProgressItem(
-                style_code=order.style.style_number,  # Style Number
+                style_code=style_code,
                 target=target,
                 actual=total_produced,
                 progress_pct=round(progress, 1),
@@ -536,7 +545,7 @@ async def get_speed_quality_stats(
     from app.repositories.production_repo import ProductionRepository
 
     prod_repo = ProductionRepository(db)
-    
+
     if date_from and date_to:
         effective_date = date_to
         start_date = date_from
@@ -696,7 +705,7 @@ async def get_downtime_reasons(
 
     if line_id:
         base_filter.append(ProductionRun.line_id == line_id)
-        
+
     if date_from and date_to:
         base_filter.append(func.date(ProductionRun.production_date) >= date_from)
         base_filter.append(func.date(ProductionRun.production_date) <= date_to)
@@ -732,9 +741,9 @@ async def get_downtime_reasons(
         )
     if line_id:
         query_notes = query_notes.where(ProductionRun.line_id == line_id)
-        
+
     query_notes = query_notes.limit(100)
-    
+
     result_notes = await db.execute(query_notes)
     notes_list = result_notes.scalars().all()
 
@@ -829,7 +838,6 @@ async def get_sam_performance(
     """
     Get SAM performance metrics for today or a specific range.
     """
-    from app.repositories.production_repo import ProductionRepository
 
     # If no dates, defaults inside get_sam_performance_metrics are used (Today)
     analytics_service = AnalyticsService(db)

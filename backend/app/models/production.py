@@ -189,6 +189,11 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
         CheckConstraint(
             "wip_end >= 0 OR wip_end IS NULL", name="check_positive_wip_end"
         ),
+        # Unique Index for Idempotency
+        # Ensures (Line, Order, Date, Shift) is unique
+        UniqueConstraint(
+            "data_source_id", "order_id", "production_date", "shift", name="uq_production_run"
+        ),
     )
 
     # Factory FK (Denormalized for performance)

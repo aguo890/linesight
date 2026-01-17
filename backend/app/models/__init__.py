@@ -13,6 +13,7 @@ from app.models.quality import Defect, QualityInspection
 from app.models.raw_import import RawImport, StagingRecord
 from app.models.user import Organization, RoleScope, User, UserRole, UserScope
 from app.models.workforce import ProductionOutput, Worker, WorkerAttendance, WorkerSkill
+from app.models.waitlist import Waitlist
 
 # BACKWARD COMPATIBILITY ALIAS
 # ProductionLine has been merged into DataSource
@@ -59,4 +60,5 @@ __all__ = [
     "IssueType",
     "ProductionEvent",
     "EventType",
+    "Waitlist",
 ]
