@@ -32,7 +32,7 @@ import type {
   EarnedMinutesStats,
   GetComplexityAnalysisApiV1AnalyticsComplexityGetParams,
   GetComplexityStatsApiV1AnalyticsComplexityImpactGetParams,
-  GetDhuHistoryApiV1AnalyticsQualityDhuGetParams,
+  GetDhuTrendApiV1AnalyticsDhuGetParams,
   GetDowntimeReasonsApiV1AnalyticsDowntimeReasonsGetParams,
   GetEarnedMinutesStatsApiV1AnalyticsEarnedMinutesGetParams,
   GetHourlyProductionApiV1AnalyticsProductionHourlyGetParams,
@@ -41,7 +41,7 @@ import type {
   GetProductionChartApiV1AnalyticsProductionChartGetParams,
   GetProductionEventsApiV1AnalyticsEventsGetParams,
   GetSamPerformanceApiV1AnalyticsSamPerformanceGetParams,
-  GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams,
+  GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams,
   GetStyleProgressApiV1AnalyticsProductionStylesGetParams,
   GetTargetRealizationApiV1AnalyticsTargetRealizationGetParams,
   GetWorkforceStatsApiV1AnalyticsWorkforceGetParams,
@@ -541,16 +541,17 @@ export function useGetStyleProgressApiV1AnalyticsProductionStylesGet<TData = Awa
 /**
  * Get daily DHU trend for the last N days (or specific range).
 Optionally filter by production line ID.
- * @summary Get Dhu History
+Restored endpoint for Quality Widget.
+ * @summary Get Dhu Trend
  */
-export const getDhuHistoryApiV1AnalyticsQualityDhuGet = (
-    params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams,
+export const getDhuTrendApiV1AnalyticsDhuGet = (
+    params?: GetDhuTrendApiV1AnalyticsDhuGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<DhuPoint[]>(
-      {url: `/api/v1/analytics/quality/dhu`, method: 'GET',
+      {url: `/api/v1/analytics/dhu`, method: 'GET',
         params, signal
     },
       options);
@@ -559,69 +560,69 @@ export const getDhuHistoryApiV1AnalyticsQualityDhuGet = (
 
 
 
-export const getGetDhuHistoryApiV1AnalyticsQualityDhuGetQueryKey = (params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams,) => {
+export const getGetDhuTrendApiV1AnalyticsDhuGetQueryKey = (params?: GetDhuTrendApiV1AnalyticsDhuGetParams,) => {
     return [
-    `/api/v1/analytics/quality/dhu`, ...(params ? [params]: [])
+    `/api/v1/analytics/dhu`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getGetDhuHistoryApiV1AnalyticsQualityDhuGetQueryOptions = <TData = Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError = HTTPValidationError>(params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetDhuTrendApiV1AnalyticsDhuGetQueryOptions = <TData = Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError = HTTPValidationError>(params?: GetDhuTrendApiV1AnalyticsDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDhuHistoryApiV1AnalyticsQualityDhuGetQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetDhuTrendApiV1AnalyticsDhuGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>> = ({ signal }) => getDhuHistoryApiV1AnalyticsQualityDhuGet(params, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>> = ({ signal }) => getDhuTrendApiV1AnalyticsDhuGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetDhuHistoryApiV1AnalyticsQualityDhuGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>>
-export type GetDhuHistoryApiV1AnalyticsQualityDhuGetQueryError = HTTPValidationError
+export type GetDhuTrendApiV1AnalyticsDhuGetQueryResult = NonNullable<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>>
+export type GetDhuTrendApiV1AnalyticsDhuGetQueryError = HTTPValidationError
 
 
-export function useGetDhuHistoryApiV1AnalyticsQualityDhuGet<TData = Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError = HTTPValidationError>(
- params: undefined |  GetDhuHistoryApiV1AnalyticsQualityDhuGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData>> & Pick<
+export function useGetDhuTrendApiV1AnalyticsDhuGet<TData = Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError = HTTPValidationError>(
+ params: undefined |  GetDhuTrendApiV1AnalyticsDhuGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>,
+          Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>,
           TError,
-          Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>
+          Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDhuHistoryApiV1AnalyticsQualityDhuGet<TData = Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError = HTTPValidationError>(
- params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData>> & Pick<
+export function useGetDhuTrendApiV1AnalyticsDhuGet<TData = Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError = HTTPValidationError>(
+ params?: GetDhuTrendApiV1AnalyticsDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>,
+          Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>,
           TError,
-          Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>
+          Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetDhuHistoryApiV1AnalyticsQualityDhuGet<TData = Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError = HTTPValidationError>(
- params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDhuTrendApiV1AnalyticsDhuGet<TData = Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError = HTTPValidationError>(
+ params?: GetDhuTrendApiV1AnalyticsDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Get Dhu History
+ * @summary Get Dhu Trend
  */
 
-export function useGetDhuHistoryApiV1AnalyticsQualityDhuGet<TData = Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError = HTTPValidationError>(
- params?: GetDhuHistoryApiV1AnalyticsQualityDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuHistoryApiV1AnalyticsQualityDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetDhuTrendApiV1AnalyticsDhuGet<TData = Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError = HTTPValidationError>(
+ params?: GetDhuTrendApiV1AnalyticsDhuGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDhuTrendApiV1AnalyticsDhuGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDhuHistoryApiV1AnalyticsQualityDhuGetQueryOptions(params,options)
+  const queryOptions = getGetDhuTrendApiV1AnalyticsDhuGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -634,18 +635,17 @@ export function useGetDhuHistoryApiV1AnalyticsQualityDhuGet<TData = Awaited<Retu
 
 /**
  * Get daily trend of Efficiency vs Defects (DHU).
-Returns last N days (default 14).
-Optionally filter by production line ID.
- * @summary Get Speed Quality Stats
+Restored endpoint for Speed vs Quality Widget.
+ * @summary Get Speed Quality Trend
  */
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet = (
-    params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams,
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet = (
+    params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<SpeedQualityResponse>(
-      {url: `/api/v1/analytics/speed-vs-quality`, method: 'GET',
+      {url: `/api/v1/analytics/speed-quality`, method: 'GET',
         params, signal
     },
       options);
@@ -654,69 +654,69 @@ export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet = (
 
 
 
-export const getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryKey = (params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams,) => {
+export const getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryKey = (params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams,) => {
     return [
-    `/api/v1/analytics/speed-vs-quality`, ...(params ? [params]: [])
+    `/api/v1/analytics/speed-quality`, ...(params ? [params]: [])
     ] as const;
     }
 
     
-export const getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryOptions = <TData = Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError = HTTPValidationError>(params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryOptions = <TData = Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError = HTTPValidationError>(params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>> = ({ signal }) => getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet(params, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>> = ({ signal }) => getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryResult = NonNullable<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>>
-export type GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryError = HTTPValidationError
+export type GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryResult = NonNullable<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>>
+export type GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryError = HTTPValidationError
 
 
-export function useGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError = HTTPValidationError>(
- params: undefined |  GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData>> & Pick<
+export function useGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError = HTTPValidationError>(
+ params: undefined |  GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>,
+          Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>,
           TError,
-          Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>
+          Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError = HTTPValidationError>(
- params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData>> & Pick<
+export function useGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError = HTTPValidationError>(
+ params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>,
+          Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>,
           TError,
-          Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>
+          Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError = HTTPValidationError>(
- params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError = HTTPValidationError>(
+ params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
- * @summary Get Speed Quality Stats
+ * @summary Get Speed Quality Trend
  */
 
-export function useGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError = HTTPValidationError>(
- params?: GetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGet<TData = Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError = HTTPValidationError>(
+ params?: GetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryOptions(params,options)
+  const queryOptions = getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

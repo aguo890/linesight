@@ -1811,14 +1811,14 @@
         }
       }
     },
-    "/api/v1/analytics/quality/dhu": {
+    "/api/v1/analytics/dhu": {
       "get": {
         "tags": [
           "Analytics"
         ],
-        "summary": "Get Dhu History",
-        "description": "Get daily DHU trend for the last N days (or specific range).\nOptionally filter by production line ID.",
-        "operationId": "get_dhu_history_api_v1_analytics_quality_dhu_get",
+        "summary": "Get Dhu Trend",
+        "description": "Get daily DHU trend for the last N days (or specific range).\nOptionally filter by production line ID.\nRestored endpoint for Quality Widget.",
+        "operationId": "get_dhu_trend_api_v1_analytics_dhu_get",
         "security": [
           {
             "HTTPBearer": []
@@ -1896,7 +1896,7 @@
                   "items": {
                     "$ref": "#/components/schemas/DhuPoint"
                   },
-                  "title": "Response Get Dhu History Api V1 Analytics Quality Dhu Get"
+                  "title": "Response Get Dhu Trend Api V1 Analytics Dhu Get"
                 }
               }
             }
@@ -1914,14 +1914,14 @@
         }
       }
     },
-    "/api/v1/analytics/speed-vs-quality": {
+    "/api/v1/analytics/speed-quality": {
       "get": {
         "tags": [
           "Analytics"
         ],
-        "summary": "Get Speed Quality Stats",
-        "description": "Get daily trend of Efficiency vs Defects (DHU).\nReturns last N days (default 14).\nOptionally filter by production line ID.",
-        "operationId": "get_speed_quality_stats_api_v1_analytics_speed_vs_quality_get",
+        "summary": "Get Speed Quality Trend",
+        "description": "Get daily trend of Efficiency vs Defects (DHU).\nRestored endpoint for Speed vs Quality Widget.",
+        "operationId": "get_speed_quality_trend_api_v1_analytics_speed_quality_get",
         "security": [
           {
             "HTTPBearer": []
@@ -2458,6 +2458,22 @@
         "description": "Analyze correlation between Style Complexity (SAM) and Efficiency.",
         "operationId": "get_complexity_analysis_api_v1_analytics_complexity_get",
         "parameters": [
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line Id"
+            }
+          },
           {
             "name": "start_date",
             "in": "query",

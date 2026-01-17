@@ -6,8 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type GetComplexityAnalysisApiV1AnalyticsComplexityGetParams = {
+export type GetDhuTrendApiV1AnalyticsDhuGetParams = {
+days?: number;
+date_from?: string | null;
+date_to?: string | null;
 line_id?: string | null;
-start_date?: string | null;
-end_date?: string | null;
 };

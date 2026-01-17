@@ -341,117 +341,136 @@ async def get_style_progress(
     If date range provided, shows orders that were ACTIVE (had production) during that range.
     Optionally filter by production line ID.
     """
-    # Logic:
-    # If date range: Find all Orders that have ProductionRuns in that range.
-    # If no date range: Find all Orders with active status.
+    import traceback
+    
+    # Initialize debug log explicitly to prevent UnboundLocalError
+    debug_log = []
+    
+    try:
+        debug_log.append("Started get_style_progress")
 
-    if date_from and date_to:
-        query = (
-            select(Order)
-            .join(ProductionRun, Order.production_runs)
-            .where(
+        if date_from and date_to:
+            # Subquery to find orders with production in range
+            run_query = select(ProductionRun.order_id).where(
                 func.date(ProductionRun.production_date) >= date_from,
                 func.date(ProductionRun.production_date) <= date_to
             )
-        )
-        if line_id:
-            query = query.where(ProductionRun.line_id == line_id)
-
-        query = query.options(selectinload(Order.style)).distinct()
-
-    else:
-        # Defaults to "Current Active Orders"
-        if line_id:
+            
+            if line_id:
+                run_query = run_query.where(ProductionRun.data_source_id == line_id)
+            
+            # Use IN_ to avoid JOIN duplication and bad DISTINCT on JSON columns
             query = (
                 select(Order)
-                .join(ProductionRun, Order.production_runs)
-                .where(ProductionRun.line_id == line_id)
+                .where(Order.id.in_(run_query))
                 .options(selectinload(Order.style))
-                .distinct()
             )
+
         else:
-            # Global view: Active statuses including PENDING
-            active_statuses = [
-                OrderStatus.CUTTING,
-                OrderStatus.SEWING,
-                OrderStatus.FINISHING,
-                OrderStatus.PENDING,
-            ]
-            query = (
-                select(Order)
-                .options(selectinload(Order.style))
-                .where(Order.status.in_(active_statuses))
-                .order_by(desc(Order.order_date))
-            )
+            # Defaults to "Current Active Orders"
+            if line_id:
+                # Filter by line presence using subquery
+                run_query = select(ProductionRun.order_id).where(
+                    ProductionRun.data_source_id == line_id
+                )
+                
+                query = (
+                    select(Order)
+                    .where(Order.id.in_(run_query))
+                    .options(selectinload(Order.style))
+                )
+            else:
+                # Global view: Active statuses including PENDING
+                active_statuses = [
+                    OrderStatus.CUTTING,
+                    OrderStatus.SEWING,
+                    OrderStatus.FINISHING,
+                    OrderStatus.PENDING,
+                ]
+                query = (
+                    select(Order)
+                    .options(selectinload(Order.style))
+                    .where(Order.status.in_(active_statuses))
+                    .order_by(desc(Order.order_date))
+                )
 
-    result = await db.execute(query)
-    orders = result.scalars().all()
-
-    styles = []
-    for order in orders:
-        run_query = select(func.sum(ProductionRun.actual_qty)).where(
-            ProductionRun.order_id == order.id
-        )
-
-        # Filter runs?
-        # If we are in date range mode, should we show TOTAL progress of the order,
-        # or just what was made in that window?
-        # Usually "Style Progress" implies "How much is done for the Order Total".
-        # So we keep looking at ALL runs for that order to show true % completion.
-
-        # However, verifying if we should respect line_id for the count.
-        # Yes, if we are filtering by line, we might only care about that line's contribution?
-        # Standard logic: Progress of the order is global. But if line filter active...
-        # Let's keep it simple: Show Global Progress for that Order, even if filtered by Line.
-        # Or... if line_id, we only count runs from that line.
-
-        if line_id:
-            run_query = run_query.where(ProductionRun.line_id == line_id)
-
-        run_res = await db.execute(run_query)
-        total_produced = run_res.scalar() or 0
-
-        target = order.quantity or 0
+        debug_log.append("Compiling query...")
         try:
-            progress = (
-                (Decimal(total_produced) / Decimal(target)) * 100
-                if target > 0
-                else Decimal(0)
+             # compile query to string for debugging
+             compiled = str(query.compile(compile_kwargs={"literal_binds": True}))
+             debug_log.append(f"SQL: {compiled}")
+        except Exception as ce:
+             debug_log.append(f"SQL Compile Error: {ce}")
+
+        debug_log.append("Executing query...")
+        result = await db.execute(query)
+        orders = result.scalars().all()
+
+        styles = []
+        for order in orders:
+            run_query = select(func.sum(ProductionRun.actual_qty)).where(
+                ProductionRun.order_id == order.id
             )
-        except (ZeroDivisionError, TypeError, Exception):
-            progress = Decimal(0)
 
-        # Determine Status Logic
-        status = "On Track"
-        progress_val = progress if progress else Decimal(0)
+            if line_id:
+                run_query = run_query.where(ProductionRun.data_source_id == line_id)
 
-        if progress_val >= 90:
-            status = "Completed"
-        elif progress_val > 0:
-            status = "In Progress"
-        else:
-            status = "Pending"
+            run_res = await db.execute(run_query)
+            total_produced = run_res.scalar() or 0
 
-        # Safe Style Code
-        style_code = "Unknown"
-        if order.style and order.style.style_number:
-            style_code = order.style.style_number
+            target = order.quantity or 0
+            try:
+                progress = (
+                    (Decimal(total_produced) / Decimal(target)) * 100
+                    if target > 0
+                    else Decimal(0)
+                )
+            except (ZeroDivisionError, TypeError, Exception):
+                progress = Decimal(0)
 
-        styles.append(
-            StyleProgressItem(
-                style_code=style_code,
-                target=target,
-                actual=total_produced,
-                progress_pct=round(progress, 1),
-                status=status,
+            # Determine Status Logic
+            status = "On Track"
+            progress_val = progress if progress else Decimal(0)
+
+            if progress_val >= 90:
+                status = "Completed"
+            elif progress_val > 0:
+                status = "In Progress"
+            else:
+                status = "Pending"
+
+            # Safe Style Code
+            style_code = "Unknown"
+            if order.style and order.style.style_number:
+                style_code = order.style.style_number
+
+            styles.append(
+                StyleProgressItem(
+                    style_code=style_code,
+                    target=target,
+                    actual=int(total_produced) if total_produced else 0,
+                    progress_pct=round(progress, 1),
+                    status=status,
+                )
             )
+
+        return StyleProgressResponse(active_styles=styles)
+    except Exception as e:
+        # Keep debug response in case of other errors during verification
+        import traceback
+        from fastapi.responses import JSONResponse
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": str(e),
+                "traceback": traceback.format_exc(),
+                "debug_log": debug_log
+            }
         )
 
-    return StyleProgressResponse(active_styles=styles)
 
-
-@router.get("/quality/dhu", response_model=list[DhuPoint])
-async def get_dhu_history(
+@router.get("/dhu", response_model=list[DhuPoint])
+async def get_dhu_trend(
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
     days: int = 7,
@@ -462,6 +481,7 @@ async def get_dhu_history(
     """
     Get daily DHU trend for the last N days (or specific range).
     Optionally filter by production line ID.
+    Restored endpoint for Quality Widget.
     """
     # Determine effective date via repo
     from app.repositories.production_repo import ProductionRepository
@@ -502,15 +522,8 @@ async def get_dhu_history(
     result = await db.execute(query)
     rows = result.all()
 
-    print(f"DEBUG: DHU Effective Date: {effective_date}")
-    print(f"DEBUG: DHU Start Date: {query_start}")
-    print(f"DEBUG: DHU Found Rows: {len(rows)}")
-
     data = []
     for row in rows:
-        print(
-            f"DEBUG: Row: Date={row.report_date}, Defects={row.total_defects}, Checked={row.total_checked}"
-        )
         dhu = Decimal(0)
         if row.total_checked > 0:
             dhu = (Decimal(row.total_defects) / Decimal(row.total_checked)) * 100
@@ -527,8 +540,8 @@ async def get_dhu_history(
     return data
 
 
-@router.get("/speed-vs-quality", response_model=SpeedQualityResponse)
-async def get_speed_quality_stats(
+@router.get("/speed-quality", response_model=SpeedQualityResponse)
+async def get_speed_quality_trend(
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
     days: int = 14,
@@ -538,8 +551,7 @@ async def get_speed_quality_stats(
 ):
     """
     Get daily trend of Efficiency vs Defects (DHU).
-    Returns last N days (default 14).
-    Optionally filter by production line ID.
+    Restored endpoint for Speed vs Quality Widget.
     """
     # Determine effective date
     from app.repositories.production_repo import ProductionRepository
@@ -869,6 +881,7 @@ async def get_target_realization(
 @router.get("/complexity", response_model=ComplexityAnalysisResponse)
 async def get_complexity_analysis(
     db: Annotated[AsyncSession, Depends(get_db)],
+    line_id: str | None = None,
     start_date: datetime | None = None,
     end_date: datetime | None = None,
 ):

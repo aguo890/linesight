@@ -53,8 +53,8 @@ setup:
 # Starts containers, syncs API types, then shows logs
 dev:
 	@echo ""
-	@echo "🚀 Starting Docker Containers..."
-	docker-compose up -d
+	@echo "🚀 Starting Docker Containers (Recreating)..."
+	docker-compose up -d --force-recreate
 	@echo ""
 	@echo "⏳ Waiting for API to be ready (3s)..."
 	@timeout /t 3 /nobreak > nul

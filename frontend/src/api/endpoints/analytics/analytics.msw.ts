@@ -46,9 +46,9 @@ export const getGetDiscrepanciesApiV1AnalyticsDiscrepanciesGetResponseMock = (ov
 
 export const getGetStyleProgressApiV1AnalyticsProductionStylesGetResponseMock = (overrideResponse: Partial< StyleProgressResponse > = {}): StyleProgressResponse => ({active_styles: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({style_code: faker.string.alpha({length: {min: 10, max: 20}}), target: faker.number.int({min: undefined, max: undefined}), actual: faker.number.int({min: undefined, max: undefined}), progress_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), status: faker.string.alpha({length: {min: 10, max: 20}})})), ...overrideResponse})
 
-export const getGetDhuHistoryApiV1AnalyticsQualityDhuGetResponseMock = (): DhuPoint[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({date: faker.string.alpha({length: {min: 10, max: 20}}), dhu: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$')})))
+export const getGetDhuTrendApiV1AnalyticsDhuGetResponseMock = (): DhuPoint[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({date: faker.string.alpha({length: {min: 10, max: 20}}), dhu: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$')})))
 
-export const getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseMock = (overrideResponse: Partial< SpeedQualityResponse > = {}): SpeedQualityResponse => ({data_points: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({date: faker.string.alpha({length: {min: 10, max: 20}}), efficiency_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), defects_per_hundred: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$')})), ...overrideResponse})
+export const getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseMock = (overrideResponse: Partial< SpeedQualityResponse > = {}): SpeedQualityResponse => ({data_points: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({date: faker.string.alpha({length: {min: 10, max: 20}}), efficiency_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), defects_per_hundred: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$')})), ...overrideResponse})
 
 export const getGetComplexityStatsApiV1AnalyticsComplexityImpactGetResponseMock = (overrideResponse: Partial< ComplexityAnalysisResponse > = {}): ComplexityAnalysisResponse => ({data_points: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({style_id: faker.string.alpha({length: {min: 10, max: 20}}), sam: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), efficiency_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), style_code: faker.string.alpha({length: {min: 10, max: 20}})})), ...overrideResponse})
 
@@ -129,24 +129,24 @@ export const getGetStyleProgressApiV1AnalyticsProductionStylesGetMockHandler = (
   }, options)
 }
 
-export const getGetDhuHistoryApiV1AnalyticsQualityDhuGetMockHandler = (overrideResponse?: DhuPoint[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DhuPoint[]> | DhuPoint[]), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/analytics/quality/dhu', async (info) => {await delay(1000);
+export const getGetDhuTrendApiV1AnalyticsDhuGetMockHandler = (overrideResponse?: DhuPoint[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<DhuPoint[]> | DhuPoint[]), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/analytics/dhu', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetDhuHistoryApiV1AnalyticsQualityDhuGetResponseMock()),
+    : getGetDhuTrendApiV1AnalyticsDhuGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)
 }
 
-export const getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetMockHandler = (overrideResponse?: SpeedQualityResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SpeedQualityResponse> | SpeedQualityResponse), options?: RequestHandlerOptions) => {
-  return http.get('*/api/v1/analytics/speed-vs-quality', async (info) => {await delay(1000);
+export const getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetMockHandler = (overrideResponse?: SpeedQualityResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SpeedQualityResponse> | SpeedQualityResponse), options?: RequestHandlerOptions) => {
+  return http.get('*/api/v1/analytics/speed-quality', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseMock()),
+    : getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -276,8 +276,8 @@ export const getAnalyticsMock = () => [
   getGetLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetMockHandler(),
   getGetDiscrepanciesApiV1AnalyticsDiscrepanciesGetMockHandler(),
   getGetStyleProgressApiV1AnalyticsProductionStylesGetMockHandler(),
-  getGetDhuHistoryApiV1AnalyticsQualityDhuGetMockHandler(),
-  getGetSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetMockHandler(),
+  getGetDhuTrendApiV1AnalyticsDhuGetMockHandler(),
+  getGetSpeedQualityTrendApiV1AnalyticsSpeedQualityGetMockHandler(),
   getGetComplexityStatsApiV1AnalyticsComplexityImpactGetMockHandler(),
   getGetEarnedMinutesStatsApiV1AnalyticsEarnedMinutesGetMockHandler(),
   getGetDowntimeReasonsApiV1AnalyticsDowntimeReasonsGetMockHandler(),
