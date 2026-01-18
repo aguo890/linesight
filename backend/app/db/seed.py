@@ -752,56 +752,12 @@ async def seed_data(db: AsyncSession):
     print(f"Created {len(workers)} workers")
 
     # =========================================================================
-    # 7. CREATE HISTORICAL PRODUCTION RUNS (Last 7 days for Detroit)
+    # 7. PRODUCTION RUNS INTENTIONALLY SKIPPED
     # =========================================================================
-    print("\n--- Creating Historical Production Runs ---")
-    
-    today = date.today()
-    runs_created = 0
-    for d in range(7):
-        target_date = today - timedelta(days=d)
-        for line in detroit_lines:
-            run_query = select(ProductionRun).where(
-                ProductionRun.data_source_id == line.id,
-                ProductionRun.production_date == target_date,
-            )
-            run_result = await db.execute(run_query)
-            run = run_result.scalar_one_or_none()
-
-            if not run:
-                style = styles[d % len(styles)]
-                order = orders[d % len(orders)]
-                planned = 500
-                actual = int(planned * (0.8 + (0.05 * (d % 4))))
-
-                run = ProductionRun(
-                    factory_id=factory_a.id,
-                    production_date=target_date,
-                    order_id=order.id,
-                    data_source_id=line.id,
-                    planned_qty=planned,
-                    actual_qty=actual,
-                    worked_minutes=Decimal("480"),
-                    operators_present=20,
-                    sam=style.base_sam,
-                )
-                db.add(run)
-                await db.flush()
-                runs_created += 1
-
-                # Add efficiency metric
-                eff_pct = Decimal(str((actual / planned) * 100))
-                metric = EfficiencyMetric(
-                    production_run_id=run.id,
-                    efficiency_pct=eff_pct,
-                    sam_target=Decimal(str(planned * (style.base_sam or 0))),
-                    sam_actual=Decimal(str(actual * (style.base_sam or 0))),
-                    calculated_at=datetime.utcnow(),
-                )
-                db.add(metric)
+    # NOTE: Production runs are NOT seeded to keep the database clean for testing.
+    # Upload your own data via Excel imports to test real workflows.
 
     await db.commit()
-    print(f"Created {runs_created} production runs with efficiency metrics")
     print("\n=== Database seeding completed successfully! ===")
     print(f"""
 Summary:
@@ -811,4 +767,5 @@ Summary:
   - Edge cases: Ghost, Stale, Suspended, Super Manager, Unassigned, Cross-Factory
   - Overcrowded line: Chassis Assembly (5+ managers)
   - 2 UUID-named lines in Shanghai (for 'Untitled Line' UI testing)
+  - Production runs: EMPTY (upload your own data for testing)
 """)

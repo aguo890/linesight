@@ -517,7 +517,7 @@ async def get_dhu_trend(
     )
 
     if line_id:
-        query = query.where(ProductionRun.line_id == line_id)
+        query = query.where(ProductionRun.data_source_id == line_id)
 
     result = await db.execute(query)
     rows = result.all()
@@ -577,7 +577,7 @@ async def get_speed_quality_trend(
     )
 
     if line_id:
-        eff_query = eff_query.where(ProductionRun.line_id == line_id)
+        eff_query = eff_query.where(ProductionRun.data_source_id == line_id)
 
     eff_query = eff_query.group_by(ProductionRun.production_date)
 
@@ -639,7 +639,7 @@ async def get_complexity_stats(
     )
 
     if line_id:
-        query = query.where(ProductionRun.line_id == line_id)
+        query = query.where(ProductionRun.data_source_id == line_id)
 
     query = query.group_by(Style.id, Style.style_number, Style.base_sam).limit(50)
 
@@ -716,7 +716,7 @@ async def get_downtime_reasons(
     ]
 
     if line_id:
-        base_filter.append(ProductionRun.line_id == line_id)
+        base_filter.append(ProductionRun.data_source_id == line_id)
 
     if date_from and date_to:
         base_filter.append(func.date(ProductionRun.production_date) >= date_from)
@@ -752,7 +752,7 @@ async def get_downtime_reasons(
             func.date(ProductionRun.production_date) <= date_to
         )
     if line_id:
-        query_notes = query_notes.where(ProductionRun.line_id == line_id)
+        query_notes = query_notes.where(ProductionRun.data_source_id == line_id)
 
     query_notes = query_notes.limit(100)
 
@@ -946,7 +946,7 @@ async def get_workforce_stats(
     ).where(func.date(ProductionRun.production_date) == effective_date)
 
     if line_id:
-        query = query.where(ProductionRun.line_id == line_id)
+        query = query.where(ProductionRun.data_source_id == line_id)
 
     result = await db.execute(query)
     stats = result.one()
