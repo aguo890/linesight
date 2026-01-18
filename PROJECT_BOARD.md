@@ -1,6 +1,6 @@
 # 🏭 LineSight Project Board
 
-> **Last Updated**: 2026-01-17
+> **Last Updated**: 2026-01-18
 > **Status**: Active Development
 > **Current Focus**: Frontend Testing & UI Polish
 > **Note**: PostgreSQL migration complete ✅ | Ingestion reliability implemented ✅
@@ -55,6 +55,17 @@
 | BUG-BE-03 | **Fix Style Progress Data Mismatch**<br>Return Daily Actual vs Daily Target (not Cumulative) | P0 | M | ⬜ Todo | `getStyleProgress` |
 | REF-FE-01 | **Code Cleanup**<br>Remove debug logs (`console.group`) from `widgetDataService.ts` | P0 | S | ⬜ Todo | Tech debt |
 | REF-FE-04 | **Audit Widget Prop Passing**<br>Check `useWidgetData` props in all widgets (EarnedMinutes, Complexity, etc) | P0 | S | ⬜ Todo | Prevent silent mock fallback |
+| REF-BE-01 | **Modularize `analytics.py`**<br>Break up monolithic analytics module into smaller, focused modules | P1 | M | ⬜ Todo | Improve maintainability |
+
+### 📊 Analytics & API Refactoring (2026-01-18)
+> **Context**: Endpoint refactoring causing breaking changes.
+
+| Change | Old Endpoint | New Endpoint | Notes |
+|--------|--------------|--------------|-------|
+| DHU Quality | `/quality/dhu` | `/dhu` | Simplified path |
+| Speed vs Quality | `/speed-vs-quality` | `/speed-quality` | Simplified path |
+| Complexity Analysis | - | Added `line_id` param | New required parameter |
+| Error Handling | - | Improved | Better debug logging for production writers |
 
 ---
 
