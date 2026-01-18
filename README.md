@@ -4,6 +4,8 @@
 
 LineSight is a B2B SaaS platform that bridges the "digital divide" in apparel manufacturing. Using Large Language Models (LLMs) for Semantic ETL, LineSight parses messy Excel spreadsheets and delivers real-time analytics on SAM performance, DHU metrics, and workforce optimization—without requiring immediate behavioral changes from factory staff.
 
+You can see your asssembly line, because its the heartbeat of your operations.
+
 ## 🎯 Key Features
 
 - **Semantic ETL**: Parse any Excel format using LLM-powered schema inference

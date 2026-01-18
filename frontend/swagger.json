@@ -1400,7 +1400,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceUpdate"
+                "$ref": "#/components/schemas/DataSourceUpdate"
               }
             }
           }
@@ -1811,14 +1811,14 @@
         }
       }
     },
-    "/api/v1/analytics/quality/dhu": {
+    "/api/v1/analytics/dhu": {
       "get": {
         "tags": [
           "Analytics"
         ],
-        "summary": "Get Dhu History",
-        "description": "Get daily DHU trend for the last N days (or specific range).\nOptionally filter by production line ID.",
-        "operationId": "get_dhu_history_api_v1_analytics_quality_dhu_get",
+        "summary": "Get Dhu Trend",
+        "description": "Get daily DHU trend for the last N days (or specific range).\nOptionally filter by production line ID.\nRestored endpoint for Quality Widget.",
+        "operationId": "get_dhu_trend_api_v1_analytics_dhu_get",
         "security": [
           {
             "HTTPBearer": []
@@ -1896,7 +1896,7 @@
                   "items": {
                     "$ref": "#/components/schemas/DhuPoint"
                   },
-                  "title": "Response Get Dhu History Api V1 Analytics Quality Dhu Get"
+                  "title": "Response Get Dhu Trend Api V1 Analytics Dhu Get"
                 }
               }
             }
@@ -1914,14 +1914,14 @@
         }
       }
     },
-    "/api/v1/analytics/speed-vs-quality": {
+    "/api/v1/analytics/speed-quality": {
       "get": {
         "tags": [
           "Analytics"
         ],
-        "summary": "Get Speed Quality Stats",
-        "description": "Get daily trend of Efficiency vs Defects (DHU).\nReturns last N days (default 14).\nOptionally filter by production line ID.",
-        "operationId": "get_speed_quality_stats_api_v1_analytics_speed_vs_quality_get",
+        "summary": "Get Speed Quality Trend",
+        "description": "Get daily trend of Efficiency vs Defects (DHU).\nRestored endpoint for Speed vs Quality Widget.",
+        "operationId": "get_speed_quality_trend_api_v1_analytics_speed_quality_get",
         "security": [
           {
             "HTTPBearer": []
@@ -2458,6 +2458,22 @@
         "description": "Analyze correlation between Style Complexity (SAM) and Efficiency.",
         "operationId": "get_complexity_analysis_api_v1_analytics_complexity_get",
         "parameters": [
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line Id"
+            }
+          },
           {
             "name": "start_date",
             "in": "query",
@@ -3940,7 +3956,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceCreate"
+                "$ref": "#/components/schemas/DataSourceCreate"
               }
             }
           }
@@ -5717,6 +5733,45 @@
         "title": "DashboardUpdate",
         "description": "Schema for updating an existing dashboard."
       },
+      "DataSourceCreate": {
+        "properties": {
+          "production_line_id": {
+            "type": "string",
+            "title": "Production Line Id"
+          },
+          "source_name": {
+            "type": "string",
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "initial_mapping": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchemaMappingCreate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "production_line_id",
+          "source_name"
+        ],
+        "title": "DataSourceCreate"
+      },
       "DataSourceRead": {
         "properties": {
           "name": {
@@ -6049,6 +6104,143 @@
         "type": "object",
         "title": "DataSourceSettings",
         "description": "Settings specific to a data source.\nCan be inherited from Factory defaults or overridden."
+      },
+      "DataSourceUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "time_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
+          }
+        },
+        "type": "object",
+        "title": "DataSourceUpdate",
+        "description": "Schema for updating a data source."
       },
       "DhuPoint": {
         "properties": {
@@ -9678,45 +9870,6 @@
         "title": "WorkforceStats",
         "description": "Workforce attendance statistics."
       },
-      "app__api__v1__endpoints__datasource__DataSourceCreate": {
-        "properties": {
-          "production_line_id": {
-            "type": "string",
-            "title": "Production Line Id"
-          },
-          "source_name": {
-            "type": "string",
-            "title": "Source Name"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "initial_mapping": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SchemaMappingCreate"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "production_line_id",
-          "source_name"
-        ],
-        "title": "DataSourceCreate"
-      },
       "app__api__v1__endpoints__datasource__DataSourceUpdate": {
         "properties": {
           "name": {
@@ -9973,143 +10126,6 @@
         ],
         "title": "DataSourceCreate",
         "description": "Schema for creating a data source."
-      },
-      "app__schemas__datasource__DataSourceUpdate": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100,
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DataSourceSettings"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Settings"
-          },
-          "source_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Name"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "time_column": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Column"
-          },
-          "time_format": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Format"
-          }
-        },
-        "type": "object",
-        "title": "DataSourceUpdate",
-        "description": "Schema for updating a data source."
       }
     },
     "securitySchemes": {

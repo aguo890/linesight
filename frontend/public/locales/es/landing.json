@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Comenzar Ahora",
+    "subtitle": "Únase a más de 40 fábricas que reducen el tiempo de inactividad en un promedio del 18% en los primeros 90 días.",
+    "title": "¿Listo para digitalizar su planta?"
+  },
+  "demo": {
+    "cta": "Probar Demo en Vivo",
+    "stats": {
+      "change": "+2.1%",
+      "label": "Eficiencia en Tiempo Real",
+      "value": "94.2%"
+    },
+    "subtitle": "Experimente la interfaz que está reemplazando a las hojas de cálculo en más de 40 instalaciones. Monitoreo en tiempo real, informes automáticos y cero latencia.",
+    "title": "Su Fábrica,",
+    "title_accent": "Digitalizada."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Rastree los lotes mientras se mueven por la planta.",
+      "title": "Rastreo de WIP"
+    },
+    "operator": {
+      "desc": "Seguimiento de eficiencia e incentivos individuales.",
+      "title": "Rendimiento del Operador"
+    },
+    "realtime": {
+      "desc": "Vista en vivo del rendimiento de cada línea.",
+      "title": "Panel en Tiempo Real"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  },
+  "hero": {
+    "badge": "Rastreo de Producción en Vivo",
+    "cta_demo": "Ver Demo",
+    "cta_trial": "Prueba Gratis",
+    "cta_waitlist": "Unirse a la Lista",
+    "headline": "ELIMINE EL",
+    "headline_accent": "TIEMPO MUERTO.",
+    "subheadline": "Obtenga visibilidad en tiempo real de cada lote, operador y línea de costura—sin la configuración de ERP de 6 meses."
+  },
+  "nav": {
+    "dashboard": "Tablero",
+    "get_started": "Comenzar",
+    "join_waitlist": "Unirse a la Lista",
+    "platform": "Plataforma",
+    "pricing": "Precios",
+    "sign_in": "Iniciar Sesión"
+  },
+  "pricing": {
+    "monthly": "Mensual",
+    "plans": {
+      "enterprise": {
+        "cta": "Contactar Ventas",
+        "description": "Digitalización completa para grandes instalaciones.",
+        "features": [
+          "Líneas ilimitadas",
+          "Integración ERP personalizada",
+          "Historial Ilimitado",
+          "Gerente de Éxito Dedicado",
+          "Garantía SLA"
+        ],
+        "name": "Empresarial"
+      },
+      "pro": {
+        "cta": "Actualizar a Pro",
+        "description": "Para fábricas en crecimiento que necesitan visibilidad total.",
+        "features": [
+          "Hasta 20 líneas de costura",
+          "Analítica Avanzada",
+          "Retención de datos de 30 días",
+          "Soporte Prioritario",
+          "Tabletas para Operadores"
+        ],
+        "name": "Profesional"
+      },
+      "starter": {
+        "cta": "Prueba Gratis",
+        "description": "Perfecto para líneas piloto pequeñas.",
+        "features": [
+          "Hasta 5 líneas de costura",
+          "Informes Básicos",
+          "Retención de datos de 7 días",
+          "Soporte por Email"
+        ],
+        "name": "Inicial"
+      }
+    },
+    "save_badge": "Ahorra 20%",
+    "subtitle": "Empiece pequeño y escale a medida que digitaliza más líneas.",
+    "title": "Precios simples para",
+    "title_accent": "fábricas modernas.",
+    "yearly": "Anual"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Rastree tarifas por pieza, eficiencia y cuellos de botella a nivel individual del operador.",
+      "title": "Responsabilidad del Operador"
+    },
+    "erp": {
+      "description": "Omita la implementación de SAP de $100k. LineSight funciona con las tabletas que ya tiene, implementándose en días, no meses.",
+      "title": "La Alternativa al ERP"
+    },
+    "spreadsheets": {
+      "description": "Deje de administrar su planta con datos de ayer. Elimine los tickets de papel y el caos matutino por los números.",
+      "title": "Elimine las Hojas de Cálculo"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight nos dio una visibilidad que no sabíamos que nos faltaba. Redujimos nuestro tiempo de inactividad en un 20% en el primer mes.",
+    "role": "Gerente de Planta, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Gerente de Planta",
+    "quote_part1": "LineSight nos dio una visibilidad que no sabíamos que nos faltaba. Redujimos nuestro tiempo de inactividad en un 20% en el primer mes.",
+    "quote_part2": "Esto fue la actualización perfecta—nos dio los datos 'en vivo' que nos faltaban sin obligarnos a cambiar cómo operamos nuestro negocio."
+  },
+  "trust": {
+    "powering": "Impulsando la fabricación para"
+  },
+  "waitlist": {
+    "cta": "Unirse a la Lista",
+    "cta_loading": "Uniéndose...",
+    "helper": "Obtenga acceso temprano antes de que lancemos públicamente.",
+    "placeholder": "nombre@empresa.com",
+    "subtitle": "Estamos desplegando el acceso gradualmente. Asegure su lugar en la fila hoy.",
+    "success": {
+      "error_exists": "¡Este correo ya está en la lista!",
+      "error_generic": "Algo salió mal. Por favor intenta de nuevo.",
+      "referral_note": "Los colegas referidos se saltan la lista de espera y obtienen acceso temprano inmediato.",
+      "subtitle": "Te mantendremos informado en",
+      "title": "¡Estás en la lista!",
+      "vip_desc": "Extiende el acceso temprano a colegas en manufactura, operaciones o cadena de suministro. Los usuarios referidos se saltan la lista pero no recibirán invitaciones VIP.",
+      "vip_title": "Tienes 3 invitaciones VIP"
+    },
+    "title": "Obtenga acceso temprano."
+  }
+}

@@ -13,7 +13,7 @@ from app.core.config import settings
 
 # Synchronous engine (for Alembic migrations)
 sync_engine = create_engine(
-    settings.DATABASE_URL,
+    settings.SYNC_DATABASE_URL,
     echo=False,
     pool_pre_ping=True,
     pool_size=10,
@@ -22,7 +22,7 @@ sync_engine = create_engine(
 
 # Async engine (for FastAPI)
 async_engine = create_async_engine(
-    settings.DATABASE_URL.replace("pymysql", "aiomysql"),
+    settings.ASYNC_DATABASE_URL,
     echo=False,
     pool_pre_ping=True,
     pool_size=10,

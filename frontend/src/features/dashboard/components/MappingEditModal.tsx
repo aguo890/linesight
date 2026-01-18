@@ -59,7 +59,7 @@ export const MappingEditModal: React.FC<MappingEditModalProps> = ({
             }, 10);
         } catch (err) {
             console.error('Failed to save mappings:', err);
-            addToast("Failed to save mappings. Please try again.", "error");
+            addToast("Failed to save mappings. Please try again.", "error", 0);
         } finally {
             setIsSaving(false);
         }

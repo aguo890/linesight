@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "지금 시작하기",
+    "subtitle": "처음 90일 동안 가동 중지 시간을 평균 18% 줄인 40개 이상의 공장에 합류하세요.",
+    "title": "작업장을 디지털화할 준비가 되셨나요?"
+  },
+  "demo": {
+    "cta": "라이브 데모 체험",
+    "stats": {
+      "change": "+2.1%",
+      "label": "실시간 효율성",
+      "value": "94.2%"
+    },
+    "subtitle": "40개 이상의 시설에서 스프레드시트를 대체하고 있는 인터페이스를 경험해보세요. 실시간 모니터링, 자동 생성 보고서, 제로 레이턴시.",
+    "title": "당신의 공장,",
+    "title_accent": "디지털화되다."
+  },
+  "features": {
+    "inventory": {
+      "desc": "작업장을 이동하는 번들을 추적합니다.",
+      "title": "WIP 추적"
+    },
+    "operator": {
+      "desc": "개별 효율성 추적 및 인센티브.",
+      "title": "운영자 성과"
+    },
+    "realtime": {
+      "desc": "모든 봉제 라인 성과의 라이브 뷰.",
+      "title": "실시간 대시보드"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "개인정보 보호",
+    "terms": "이용약관"
+  },
+  "hero": {
+    "badge": "실시간 생산 추적",
+    "cta_demo": "데모 보기",
+    "cta_trial": "무료 평가판 시작",
+    "cta_waitlist": "대기자 명단 가입",
+    "headline": "제거하라",
+    "headline_accent": "가동 중지 시간.",
+    "subheadline": "6개월의 ERP 설정 없이 모든 번들, 운영자 및 봉제 라인에 대한 실시간 가시성을 확보하세요."
+  },
+  "nav": {
+    "dashboard": "대시보드",
+    "get_started": "시작하기",
+    "join_waitlist": "대기자 명단 가입",
+    "platform": "플랫폼",
+    "pricing": "가격",
+    "sign_in": "로그인"
+  },
+  "pricing": {
+    "monthly": "월간",
+    "plans": {
+      "enterprise": {
+        "cta": "영업팀 문의",
+        "description": "대규모 시설을 위한 완전한 디지털화.",
+        "features": [
+          "무제한 라인",
+          "맞춤형 ERP 통합",
+          "무제한 기록",
+          "전담 성공 매니저",
+          "SLA 보장"
+        ],
+        "name": "엔터프라이즈"
+      },
+      "pro": {
+        "cta": "팀으로 업그레이드",
+        "description": "완전한 가시성이 필요한 성장하는 공장용.",
+        "features": [
+          "최대 20개 봉제 라인",
+          "고급 분석",
+          "30일 데이터 보존",
+          "우선 지원",
+          "운영자 태블릿"
+        ],
+        "name": "프로페셔널"
+      },
+      "starter": {
+        "cta": "무료 평가판 시작",
+        "description": "소규모 파일럿 라인에 적합합니다.",
+        "features": [
+          "최대 5개 봉제 라인",
+          "기본 보고",
+          "7일 데이터 보존",
+          "이메일 지원"
+        ],
+        "name": "스타터"
+      }
+    },
+    "save_badge": "20% 절약",
+    "subtitle": "작게 시작하여 더 많은 라인을 디지털화함에 따라 확장하세요.",
+    "title": "단순한 가격 책정",
+    "title_accent": "현대 공장용.",
+    "yearly": "연간"
+  },
+  "problems": {
+    "accountability": {
+      "description": "개별 운영자 수준까지 조각 요금, 효율성 및 병목 현상을 추적합니다.",
+      "title": "운영자 책임"
+    },
+    "erp": {
+      "description": "10만 달러의 SAP 구현을 건너뛰세요. LineSight는 이미 보유한 태블릿과 작동하며 몇 달이 아닌 며칠 만에 배포됩니다.",
+      "title": "ERP 대안"
+    },
+    "spreadsheets": {
+      "description": "어제의 데이터로 작업장을 운영하지 마세요. 종이 티켓과 아침의 숫자 전쟁을 없애세요.",
+      "title": "스프레드시트 제거"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight는 우리가 놓치고 있는지 몰랐던 가시성을 제공했습니다. 첫 달에 가동 중지 시간을 20% 줄였습니다.",
+    "role": "공장장, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "운영 이사",
+    "quote_part1": "우리는 15년 넘게 스프레드시트로 운영해 왔고, 솔직히 더 나은 가시성을 원하는 팀에게 6자리 수의 ERP는 과도하게 느껴졌습니다.",
+    "quote_part2": "이것은 완벽한 업그레이드였습니다. 비즈니스 운영 방식을 바꾸지 않고도 놓치고 있던 '실시간' 데이터를 제공했습니다."
+  },
+  "trust": {
+    "powering": "제조를 뒷받침하는"
+  },
+  "waitlist": {
+    "cta": "대기자 명단 가입",
+    "cta_loading": "가입 중...",
+    "helper": "공개 출시 전에 미리 액세스하세요.",
+    "placeholder": "name@company.com",
+    "subtitle": "액세스 권한을 점진적으로 배포하고 있습니다. 오늘 자리를 확보하세요.",
+    "success": {
+      "error_exists": "이 이메일은 이미 목록에 있습니다!",
+      "error_generic": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "referral_note": "추천된 동료는 대기자 명단을 건너뛰고 즉시 조기 액세스 권한을 얻습니다.",
+      "subtitle": "계속해서 소식을 전해드리겠습니다:",
+      "title": "목록에 추가되었습니다!",
+      "vip_desc": "제조, 운영 또는 공급망의 동료들에게 조기 액세스를 확대하세요. 추천된 사용자는 대기자 명단을 건너뛰지만 VIP 초대장은 받지 못합니다.",
+      "vip_title": "VIP 초대장 3장이 있습니다"
+    },
+    "title": "조기 액세스 받기."
+  }
+}

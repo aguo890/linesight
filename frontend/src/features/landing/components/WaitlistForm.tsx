@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { AXIOS_INSTANCE as axiosClient } from '../../../api/axios-client';
@@ -20,6 +21,7 @@ const XIcon = ({ size = 18, className = "" }: { size?: number; className?: strin
 );
 
 export const WaitlistForm = () => {
+    const { t } = useTranslation('landing');
     const [email, setEmail] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -40,7 +42,7 @@ export const WaitlistForm = () => {
             if (error instanceof AxiosError && error.response) {
                 // If backend returns 409, it means already exists
                 if (error.response.status === 409) {
-                    setErrorMessage("This email is already on the list!");
+                    setErrorMessage(t('waitlist.success.error_exists'));
                 } else {
                     // Handle both string detail and Pydantic validation error array
                     const detail = error.response.data.detail;
@@ -51,12 +53,12 @@ export const WaitlistForm = () => {
                     } else if (typeof detail === 'string') {
                         message = detail;
                     } else {
-                        message = "Something went wrong. Please try again.";
+                        message = t('waitlist.success.error_generic');
                     }
                     setErrorMessage(message);
                 }
             } else {
-                setErrorMessage("Network error. Please try again.");
+                setErrorMessage(t('waitlist.success.error_generic'));
             }
         }
     };
@@ -88,9 +90,9 @@ export const WaitlistForm = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">You're on the list!</h3>
+                    <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('waitlist.success.title')}</h3>
                     <p className="text-slate-500 dark:text-slate-400">
-                        We'll keep you posted at <span className="font-semibold text-slate-900 dark:text-slate-200">{email}</span>.
+                        {t('waitlist.success.subtitle')} <span className="font-semibold text-slate-900 dark:text-slate-200">{email}</span>.
                     </p>
                 </div>
 
@@ -98,10 +100,10 @@ export const WaitlistForm = () => {
                 <div className="w-full max-w-md bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/70 dark:to-slate-800/50 p-5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4 shadow-sm">
                     <div className="space-y-1">
                         <p className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            You have 3 VIP invitations
+                            {t('waitlist.success.vip_title')}
                         </p>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            Extend early access to colleagues in manufacturing, operations, or supply chain. Referred users skip the waitlist but won't receive VIP invitations.
+                            {t('waitlist.success.vip_desc')}
                         </p>
                     </div>
 
@@ -148,7 +150,7 @@ export const WaitlistForm = () => {
                 </div>
 
                 <p className="text-xs text-slate-400 dark:text-slate-500 max-w-sm">
-                    Referred colleagues skip the waitlist and get immediate early access.
+                    {t('waitlist.success.referral_note')}
                 </p>
             </div>
         );
@@ -159,7 +161,7 @@ export const WaitlistForm = () => {
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
                 <Input
                     type="email"
-                    placeholder="name@company.com"
+                    placeholder={t('waitlist.placeholder')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -172,7 +174,7 @@ export const WaitlistForm = () => {
                     disabled={status === "loading"}
                     className="h-12 px-8 bg-black text-white hover:bg-slate-800 dark:bg-white dark:text-black dark:hover:bg-slate-200"
                 >
-                    {status === "loading" ? "Joining..." : "Join Waitlist"}
+                    {status === "loading" ? t('waitlist.cta_loading') : t('waitlist.cta')}
                 </Button>
             </form>
             {status === "error" && (
@@ -181,7 +183,7 @@ export const WaitlistForm = () => {
                 </p>
             )}
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
-                Get early access before we launch publicly.
+                {t('waitlist.helper')}
             </p>
         </div>
     );

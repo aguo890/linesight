@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Bắt đầu ngay",
+    "subtitle": "Tham gia cùng hơn 40 nhà máy giảm thời gian ngừng hoạt động trung bình 18% trong 90 ngày đầu tiên.",
+    "title": "Sẵn sàng số hóa nhà xưởng của bạn?"
+  },
+  "demo": {
+    "cta": "Dùng thử bản demo trực tiếp",
+    "stats": {
+      "change": "+2.1%",
+      "label": "Hiệu quả thời gian thực",
+      "value": "94.2%"
+    },
+    "subtitle": "Trải nghiệm giao diện đang thay thế bảng tính tại hơn 40 cơ sở. Giám sát thời gian thực, báo cáo tự động và độ trễ bằng không.",
+    "title": "Nhà máy của bạn,",
+    "title_accent": "Số hóa."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Theo dõi các bó khi chúng di chuyển qua sàn.",
+      "title": "Theo dõi WIP"
+    },
+    "operator": {
+      "desc": "Theo dõi hiệu quả cá nhân và khuyến khích.",
+      "title": "Hiệu suất vận hành"
+    },
+    "realtime": {
+      "desc": "Chế độ xem trực tiếp hiệu suất của từng dây chuyền may.",
+      "title": "Bảng điều khiển thời gian thực"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Quyền riêng tư",
+    "terms": "Điều khoản"
+  },
+  "hero": {
+    "badge": "Theo dõi sản xuất trực tiếp",
+    "cta_demo": "Xem bản demo",
+    "cta_trial": "Bắt đầu dùng thử miễn phí",
+    "cta_waitlist": "Tham gia danh sách chờ",
+    "headline": "LOẠI BỎ",
+    "headline_accent": "THỜI GIAN CHẾT.",
+    "subheadline": "Có được khả năng hiển thị thời gian thực vào từng bó, người vận hành và dây chuyền may - mà không cần thiết lập ERP trong 6 tháng."
+  },
+  "nav": {
+    "dashboard": "Bảng điều khiển",
+    "get_started": "Bắt đầu",
+    "join_waitlist": "Tham gia danh sách",
+    "platform": "Nền tảng",
+    "pricing": "Giá cả",
+    "sign_in": "Đăng nhập"
+  },
+  "pricing": {
+    "monthly": "Hàng tháng",
+    "plans": {
+      "enterprise": {
+        "cta": "Liên hệ bộ phận bán hàng",
+        "description": "Số hóa hoàn toàn cho các cơ sở lớn.",
+        "features": [
+          "Dây chuyền không giới hạn",
+          "Tích hợp ERP tùy chỉnh",
+          "Lịch sử không giới hạn",
+          "Người quản lý thành công chuyên dụng",
+          "Đảm bảo SLA"
+        ],
+        "name": "Doanh nghiệp"
+      },
+      "pro": {
+        "cta": "Nâng cấp lên nhóm",
+        "description": "Dành cho các nhà máy đang phát triển cần hiển thị đầy đủ.",
+        "features": [
+          "Lên đến 20 dây chuyền may",
+          "Phân tích nâng cao",
+          "Lưu giữ dữ liệu 30 ngày",
+          "Hỗ trợ ưu tiên",
+          "Máy tính bảng vận hành"
+        ],
+        "name": "Chuyên nghiệp"
+      },
+      "starter": {
+        "cta": "Bắt đầu dùng thử miễn phí",
+        "description": "Hoàn hảo cho các dây chuyền thí điểm nhỏ.",
+        "features": [
+          "Lên đến 5 dây chuyền may",
+          "Báo cáo cơ bản",
+          "Lưu giữ dữ liệu 7 ngày",
+          "Hỗ trợ qua email"
+        ],
+        "name": "Người mới bắt đầu"
+      }
+    },
+    "save_badge": "Tiết kiệm 20%",
+    "subtitle": "Bắt đầu nhỏ và mở rộng quy mô khi bạn số hóa nhiều dòng hơn.",
+    "title": "Giá cả đơn giản cho",
+    "title_accent": "các nhà máy hiện đại.",
+    "yearly": "Hàng năm"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Theo dõi tỷ lệ sản phẩm, hiệu quả và tắc nghẽn xuống cấp độ vận hành cá nhân.",
+      "title": "Trách nhiệm vận hành"
+    },
+    "erp": {
+      "description": "Bỏ qua việc triển khai SAP trị giá 100 nghìn đô la. LineSight hoạt động với các máy tính bảng bạn đã sở hữu, triển khai trong vài ngày chứ không phải vài tháng.",
+      "title": "Giải pháp thay thế ERP"
+    },
+    "spreadsheets": {
+      "description": "Ngừng điều hành sàn của bạn bằng dữ liệu của ngày hôm qua. Loại bỏ vé giấy và cuộc tranh giành số liệu buổi sáng.",
+      "title": "Loại bỏ bảng tính"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight đã cho chúng tôi thấy khả năng hiển thị mà chúng tôi không biết là mình đang thiếu. Chúng tôi đã giảm 20% thời gian ngừng hoạt động trong tháng đầu tiên.",
+    "role": "Giám đốc nhà máy, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Giám đốc vận hành",
+    "quote_part1": "Chúng tôi đã chạy trên bảng tính hơn 15 năm và thành thật mà nói, một ERP sáu con số cảm thấy quá mức cần thiết cho một nhóm chỉ muốn hiển thị tốt hơn.",
+    "quote_part2": "Đây là bản nâng cấp hoàn hảo - nó cung cấp cho chúng tôi dữ liệu 'trực tiếp' mà chúng tôi đang thiếu mà không buộc chúng tôi phải thay đổi cách điều hành doanh nghiệp của mình."
+  },
+  "trust": {
+    "powering": "Cung cấp năng lượng cho sản xuất"
+  },
+  "waitlist": {
+    "cta": "Tham gia danh sách chờ",
+    "cta_loading": "Đang tham gia...",
+    "helper": "Nhận quyền truy cập sớm trước khi chúng tôi ra mắt công khai.",
+    "placeholder": "ten@congty.com",
+    "subtitle": "Chúng tôi đang triển khai quyền truy cập dần dần. Đảm bảo vị trí của bạn trong hàng ngay hôm nay.",
+    "success": {
+      "error_exists": "Email này đã có trong danh sách!",
+      "error_generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+      "referral_note": "Đồng nghiệp được giới thiệu bỏ qua danh sách chờ và nhận quyền truy cập sớm ngay lập tức.",
+      "subtitle": "Chúng tôi sẽ cập nhật cho bạn tại",
+      "title": "Bạn đã có tên trong danh sách!",
+      "vip_desc": "Mở rộng quyền truy cập sớm cho các đồng nghiệp trong sản xuất, vận hành hoặc chuỗi cung ứng. Người dùng được giới thiệu bỏ qua danh sách chờ nhưng sẽ không nhận được lời mời VIP.",
+      "vip_title": "Bạn có 3 lời mời VIP"
+    },
+    "title": "Nhận quyền truy cập sớm."
+  }
+}

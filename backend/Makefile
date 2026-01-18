@@ -45,33 +45,13 @@ kill-zombies:
 	@echo "✅ Port 8000 is clean."
 
 # -------------------------------------------------------------------------
-# DATABASE OPERATIONS (Robust Mode)
+# DATABASE OPERATIONS (DEPRECATED - Use Docker Root Makefile)
 # -------------------------------------------------------------------------
 
-# Apply migrations
-migrate:
-	$(VENV) alembic upgrade head
+# NOTE: Database operations have been moved to the root Makefile 
+# to run inside Docker (PostgreSQL). Do not run DB commands locally.
 
-# Create migration
-migration:
-	$(VENV) alembic revision --autogenerate -m "$(MSG)"
-
-# Seed the database DIRECTLY (Bypasses HTTP/Server)
-seed:
-	@echo "🌱 Seeding database via CLI..."
-	$(VENV) python seed_cli.py
-
-# Reset database: Drop -> Migrate -> Seed (Safe & Fast)
-reset-db:
-	@echo "🔄 Resetting database..."
-	@echo "Dropping all tables..."
-	mysql -u root -proot -P 3306 -e "SET FOREIGN_KEY_CHECKS = 0; DROP DATABASE IF EXISTS linesight; CREATE DATABASE linesight; SET FOREIGN_KEY_CHECKS = 1;"
-	@echo "Running migrations..."
-	$(VENV) alembic upgrade head
-	@echo "Seeding data..."
-	$(VENV) python seed_cli.py
-	@echo ""
-	@echo "✅ Database reset complete!"
+# -------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------
 # TESTING & QUALITY

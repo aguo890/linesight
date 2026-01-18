@@ -80,8 +80,8 @@
   --color-text-subtle: #94A3B8;
 
   /* Typography */
-  --font-heading: 'Oswald', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
-  --font-body: 'Inter', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
+  --font-heading: 'Oswald', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans', 'Meiryo', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
+  --font-body: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans', 'Meiryo', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Tajawal', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', sans-serif;
 }
 
 /* ============================================

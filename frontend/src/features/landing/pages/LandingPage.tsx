@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
@@ -7,11 +8,14 @@ import { Logo } from '../../../components/common/Logo';
 import {
     ArrowRight,
     Check,
-    FileSpreadsheet, // For "Kill Spreadsheets"
-    Tablet,          // For "ERP Alternative"
-    Users,           // For "Operator Accountability"
-    Quote,           // For Social Proof
-    BarChart3        // Needed for Hero/Widgets
+    FileSpreadsheet,
+    Tablet,
+    Users,
+    Quote,
+    BarChart3,
+    CheckCircle2,
+    Layout,
+    Smartphone
 } from 'lucide-react';
 import { MiniDashboard } from '../components/simulation/MiniDashboard';
 import { PARTNER_LOGOS } from '../components/PartnerLogos';
@@ -20,6 +24,8 @@ import { useSnakeScroll } from '../../../hooks/useSnakeScroll';
 import { SnakeLane } from '../components/SnakeLane';
 import { WaitlistForm } from '../components/WaitlistForm';
 import { FeaturesSection } from '../components/FeaturesSection';
+import LanguageSwitcher from '../../../components/common/LanguageSwitcher';
+import { SEOHreflangs } from '../../../components/common/SEOHreflangs';
 
 const springTransition = { type: "spring", stiffness: 100, damping: 20 } as const;
 
@@ -202,20 +208,54 @@ const LogoSet = ({ logos, ariaHidden }: { logos: string[], ariaHidden?: boolean 
 );
 
 const LandingPage: React.FC = () => {
+    const { t } = useTranslation('landing');
+    const { lang = 'en' } = useParams<{ lang: string }>();
+    const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
     const { resolvedTheme } = useTheme();
     // --- CONFIGURATION ---
     const IS_WAITLIST_MODE = true;
     const WAITLIST_SECTION_ID = "waitlist-form-section";
 
-    // --- ROUTES ---
+    // --- ROUTES (locale-aware) ---
     const ROUTES = {
-        LOGIN: "/login",
-        REGISTER: "/register",
+        LOGIN: `/${lang}/login`,
+        REGISTER: `/${lang}/register`,
     };
 
     const [isAnnual, setIsAnnual] = useState(true);
     const isDark = resolvedTheme === 'dark';
+
+    // 🟢 Dynamic Pricing Data (Must be inside component to use 't')
+    const PRICING_PLANS = useMemo(() => [
+        {
+            id: 'starter',
+            name: t('pricing.plans.starter.name'),
+            price: { monthly: 49, annual: 39 }, // Keeping existing structure for PricingPlan component
+            description: t('pricing.plans.starter.description'),
+            features: t('pricing.plans.starter.features', { returnObjects: true }) as string[],
+            cta: t('pricing.plans.starter.cta'),
+            popular: false
+        },
+        {
+            id: 'pro',
+            name: t('pricing.plans.pro.name'),
+            price: { monthly: 199, annual: 159 },
+            description: t('pricing.plans.pro.description'),
+            features: t('pricing.plans.pro.features', { returnObjects: true }) as string[],
+            cta: t('pricing.plans.pro.cta'),
+            popular: true
+        },
+        {
+            id: 'enterprise',
+            name: t('pricing.plans.enterprise.name'),
+            price: 'Custom',
+            description: t('pricing.plans.enterprise.description'),
+            features: t('pricing.plans.enterprise.features', { returnObjects: true }) as string[],
+            cta: t('pricing.plans.enterprise.cta'),
+            popular: false
+        }
+    ], [t]);
 
     // snake scroll logic
     const snakeContainerRef = useRef<HTMLDivElement>(null);
@@ -245,11 +285,14 @@ const LandingPage: React.FC = () => {
     return (
         <div className="min-h-screen font-sans selection:bg-blue-500/30 overflow-x-hidden transition-colors duration-300 bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
 
+            {/* SEO Hreflang tags for multi-language indexing */}
+            <SEOHreflangs currentPath="/" />
+
             {/* Navigation */}
             <nav className="fixed top-0 w-full z-[100] backdrop-blur-xl border-b transition-colors duration-300 bg-white/80 border-slate-100 dark:bg-slate-950/80 dark:border-slate-800">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
                     <Logo variant="marketing" textClassName="text-lg md:text-xl" />
-                    <div className="flex items-center gap-4 md:gap-8">
+                    <div className="flex items-center gap-3 md:gap-6">
                         {!IS_WAITLIST_MODE && (
                             <>
                                 <a href="#features" className={`hidden md:block text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>Platform</a>
@@ -257,12 +300,13 @@ const LandingPage: React.FC = () => {
                             </>
                         )}
 
+                        {/* Language Switcher */}
+                        <LanguageSwitcher />
+
                         {/* Always show Sign In explicitly */}
                         <Link to={ROUTES.LOGIN} className={`text-xs md:text-sm font-semibold transition-colors ${isDark ? 'text-slate-400 hover:text-blue-400' : 'text-slate-500 hover:text-blue-600'}`}>
-                            Sign In
+                            {t('nav.sign_in')}
                         </Link>
-
-
 
                         {IS_WAITLIST_MODE ? (
                             <motion.button
@@ -271,7 +315,7 @@ const LandingPage: React.FC = () => {
                                 onClick={scrollToWaitlist}
                                 className={`px-3 py-2 md:px-5 rounded-full text-xs md:text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
                             >
-                                Join Waitlist
+                                {t('nav.join_waitlist')}
                             </motion.button>
                         ) : (
                             <Link to={isAuthenticated ? "/dashboard" : ROUTES.REGISTER}>
@@ -280,13 +324,14 @@ const LandingPage: React.FC = () => {
                                     whileTap={{ scale: 0.95 }}
                                     className={`px-3 py-2 md:px-5 rounded-full text-xs md:text-sm font-bold shadow-lg ${isDark ? 'bg-white text-slate-900 shadow-slate-900/20' : 'bg-slate-900 text-white shadow-slate-200'}`}
                                 >
-                                    {isAuthenticated ? "Dashboard" : "Get Started"}
+                                    {isAuthenticated ? t('nav.dashboard') : t('nav.get_started')}
                                 </motion.button>
                             </Link>
                         )}
                     </div>
                 </div>
             </nav>
+
 
             {/* Refined Hero Section */}
             <section className="relative pt-40 pb-24 px-6 overflow-hidden">
@@ -302,16 +347,16 @@ const LandingPage: React.FC = () => {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                             </span>
-                            Live Production Tracking
+                            {t('hero.badge')}
                         </div>
 
                         <h1 className="text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8 text-slate-900 dark:text-white">
-                            ELIMINATE <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">DOWNTIME.</span>
+                            {t('hero.headline')} <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">{t('hero.headline_accent')}</span>
                         </h1>
 
                         <p className="text-xl font-medium max-w-lg mb-10 leading-relaxed text-slate-500 dark:text-slate-400">
-                            Get real-time visibility into every bundle, operator, and sewing line—without the 6-month ERP setup.
+                            {t('hero.subheadline')}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -323,7 +368,7 @@ const LandingPage: React.FC = () => {
                                     onClick={scrollToWaitlist}
                                     className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
                                 >
-                                    Join Waitlist <ArrowRight size={20} className="rtl:rotate-180" />
+                                    {t('hero.cta_waitlist')} <ArrowRight size={20} className="rtl:rotate-180" />
                                 </motion.button>
                             ) : (
                                 <Link to={ROUTES.REGISTER}>
@@ -332,13 +377,13 @@ const LandingPage: React.FC = () => {
                                         whileTap={{ scale: 0.98 }}
                                         className="px-8 py-4 rounded-2xl bg-blue-600 text-white text-lg font-bold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 transition-all"
                                     >
-                                        Start Free Trial <ArrowRight size={20} className="rtl:rotate-180" />
+                                        {t('hero.cta_trial')} <ArrowRight size={20} className="rtl:rotate-180" />
                                     </motion.button>
                                 </Link>
                             )}
 
                             <button className="px-8 py-4 rounded-2xl text-lg font-bold transition-colors bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
-                                Watch Demo
+                                {t('hero.cta_demo')}
                             </button>
                         </div>
                     </motion.div>
@@ -355,8 +400,8 @@ const LandingPage: React.FC = () => {
                         <div className="relative bg-white dark:bg-slate-900 rounded-[32px] p-8 shadow-2xl ring-1 ring-slate-900/5 dark:ring-white/10 overflow-hidden">
                             <div className="flex items-center justify-between mb-8">
                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-bold text-blue-500 dark:text-blue-400 uppercase tracking-widest">Real-time Efficiency</p>
-                                    <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tighter">94.2% <span className="text-xs text-green-500 font-medium">+2.1%</span></p>
+                                    <p className="text-[10px] font-bold text-blue-500 dark:text-blue-400 uppercase tracking-widest">{t('demo.stats.label')}</p>
+                                    <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tighter">{t('demo.stats.value')} <span className="text-xs text-green-500 font-medium">{t('demo.stats.change')}</span></p>
                                 </div>
                                 <div className="h-10 w-10 rounded-full bg-blue-50 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
                                     <BarChart3 size={20} />
@@ -383,7 +428,7 @@ const LandingPage: React.FC = () => {
             <div className="py-12 border-y overflow-hidden whitespace-nowrap bg-slate-50 border-slate-200 dark:bg-slate-950 dark:border-slate-800">
                 <div className="text-center mb-6">
                     <p className="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-                        Powering the manufacturing for
+                        {t('trust.powering')}
                     </p>
                 </div>
 
@@ -423,9 +468,9 @@ const LandingPage: React.FC = () => {
                                 }`}>
                                 <FileSpreadsheet size={28} strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Kill Spreadsheets</h3>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">{t('problems.spreadsheets.title')}</h3>
                             <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
-                                Stop running your floor on yesterday's data. Eliminate paper tickets and the morning scramble for numbers.
+                                {t('problems.spreadsheets.description')}
                             </p>
                         </motion.div>
 
@@ -442,9 +487,9 @@ const LandingPage: React.FC = () => {
                                 }`}>
                                 <Users size={28} strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 tracking-tight">Operator Accountability</h3>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">{t('problems.accountability.title')}</h3>
                             <p className={`${isDark ? 'text-slate-400' : 'text-slate-500'} leading-relaxed font-medium`}>
-                                Track piece-rates, efficiency, and bottlenecks down to the individual operator level.
+                                {t('problems.accountability.description')}
                             </p>
                         </motion.div>
                     </div>
@@ -480,9 +525,9 @@ const LandingPage: React.FC = () => {
                                 }`}>
                                 <Tablet size={28} strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 tracking-tight">The ERP Alternative</h3>
+                            <h3 className="text-2xl font-bold mb-4 tracking-tight">{t('problems.erp.title')}</h3>
                             <p className={`${isDark ? 'text-slate-300' : 'text-slate-600'} leading-relaxed font-medium`}>
-                                Skip the $100k SAP implementation. LineSight works with the tablets you already own, deploying in <span className="text-blue-500 font-bold">days, not months</span>.
+                                {t('problems.erp.description')}
                             </p>
                         </motion.div>
                     </div>
@@ -496,14 +541,14 @@ const LandingPage: React.FC = () => {
                     <Quote size={48} className="mx-auto mb-8 text-blue-500 opacity-50" />
 
                     <h2 className="text-2xl md:text-3xl font-medium tracking-tight mb-8 leading-relaxed text-slate-700 dark:text-slate-200">
-                        "We’ve run on spreadsheets for over 15 years, and honestly, a six-figure ERP felt like overkill for a team that just wanted better visibility.
+                        "{t('social_proof.quote_part1')}
                         <motion.span
                             variants={colorVariant}
                             initial="initial"
                             animate={isSnakeFinished ? "animate" : "initial"}
                             className="block mt-6 text-3xl md:text-4xl font-bold text-blue-600"
                         >
-                            This was the perfect upgrade—it gave us the 'live' data we were missing without forcing us to change how we run our business."
+                            {t('social_proof.quote_part2')}"
                         </motion.span>
                     </h2>
 
@@ -511,9 +556,9 @@ const LandingPage: React.FC = () => {
                         <div className="h-12 w-12 rounded-full bg-white overflow-hidden border border-slate-200 flex items-center justify-center">
                             <img src={tsfLogo} alt="Three Stars Fashion Logo" className="w-full h-full object-contain p-1" />
                         </div>
-                        <div className="text-left">
-                            <div className="font-bold">Operations Director</div>
-                            <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Three Stars Fashion</div>
+                        <div className="text-left rtl:text-right">
+                            <div className="font-bold">{t('social_proof.attribution_role')}</div>
+                            <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{t('social_proof.attribution_company')}</div>
                         </div>
                     </div>
                 </div>
@@ -528,13 +573,11 @@ const LandingPage: React.FC = () => {
                             whileInView="visible"
                             viewport={{ once: true }}
                             variants={fadeInVariant}
-                            className={`text-4xl md:text-5xl font-bold tracking-tight mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}
                         >
-                            Your Factory, <span className="text-blue-600">Digitized.</span>
+                            {t('demo.title')} <span className="text-blue-600">{t('demo.title_accent')}</span>
                         </motion.h2>
                         <p className={`text-xl max-w-2xl mx-auto font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            Experience the interface that's replacing spreadsheets in 40+ facilities.
-                            Real-time monitoring, auto-generated reports, and zero latency.
+                            {t('demo.subtitle')}
                         </p>
                     </div>
 
@@ -563,7 +606,7 @@ const LandingPage: React.FC = () => {
                             <div className={`absolute inset-0 z-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ${isDark ? 'bg-slate-950/50 backdrop-blur-[2px]' : 'bg-slate-900/10 backdrop-blur-[2px]'}`}>
                                 <Link to="/login">
                                     <button className="px-8 py-4 bg-white text-slate-900 text-lg font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-transform">
-                                        Try Live Demo
+                                        {t('demo.cta')}
                                     </button>
                                 </Link>
                             </div>
@@ -595,12 +638,12 @@ const LandingPage: React.FC = () => {
                                     initial="hidden" whileInView="visible" variants={fadeInVariant}
                                     className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6"
                                 >
-                                    Scale with Precision.
+                                    {t('pricing.title')}
                                 </motion.h2>
 
                                 {/* Custom Toggle */}
                                 <div className="flex items-center justify-center gap-4 mt-12">
-                                    <span className={`text-sm font-bold ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
+                                    <span className={`text-sm font-bold ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>{t('pricing.monthly')}</span>
                                     <button
                                         onClick={() => setIsAnnual(!isAnnual)}
                                         className="w-16 h-8 bg-slate-800 rounded-full p-1 relative flex items-center transition-colors"
@@ -611,7 +654,7 @@ const LandingPage: React.FC = () => {
                                         />
                                     </button>
                                     <span className={`text-sm font-bold ${isAnnual ? 'text-white' : 'text-slate-500'}`}>
-                                        Annual <span className="text-blue-400 ml-1">(-20%)</span>
+                                        {t('pricing.yearly')} <span className="text-blue-400 ml-1">{t('pricing.save_badge')}</span>
                                     </span>
                                 </div>
                             </div>
@@ -642,10 +685,10 @@ const LandingPage: React.FC = () => {
                         /* --- WAITLIST MODE CONTENT --- */
                         <div className="max-w-2xl mx-auto animate-in slide-in-from-bottom-4">
                             <h2 className={`text-4xl md:text-5xl font-black tracking-tighter mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                                Get early access.
+                                {t('waitlist.title')}
                             </h2>
                             <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                                We are rolling out access gradually. Secure your spot in line today.
+                                {t('waitlist.subtitle')}
                             </p>
 
                             <WaitlistForm />
@@ -654,13 +697,13 @@ const LandingPage: React.FC = () => {
                         /* --- LAUNCH MODE CONTENT --- */
                         <div className="rounded-[48px] p-16 text-white relative overflow-hidden shadow-2xl bg-blue-600 shadow-blue-200 dark:bg-blue-700 dark:shadow-blue-900/40">
                             <div className="relative z-10">
-                                <h2 className="text-5xl font-black tracking-tighter mb-8">Ready to digitize your floor?</h2>
+                                <h2 className="text-5xl font-black tracking-tighter mb-8">{t('cta.title')}</h2>
                                 <p className={`text-xl mb-10 max-w-xl mx-auto font-medium ${isDark ? 'text-blue-100/80' : 'text-blue-100'}`}>
-                                    Join 40+ factories reducing downtime by an average of 18% in the first 90 days.
+                                    {t('cta.subtitle')}
                                 </p>
                                 <Link to={ROUTES.REGISTER}>
                                     <button className="px-10 py-5 bg-white text-blue-600 rounded-2xl text-xl font-bold hover:scale-105 transition-transform shadow-xl dark:hover:bg-blue-50">
-                                        Get Started Now
+                                        {t('cta.button')}
                                     </button>
                                 </Link>
                             </div>
@@ -676,69 +719,17 @@ const LandingPage: React.FC = () => {
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <Logo variant="footer" />
                     <div className={`flex gap-8 text-sm font-bold uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                        <a href="#" className="hover:text-blue-600">Privacy</a>
-                        <a href="#" className="hover:text-blue-600">Terms</a>
-                        <a href="#" className="hover:text-blue-600">API</a>
+                        <a href="#" className="hover:text-blue-600">{t('footer.privacy')}</a>
+                        <a href="#" className="hover:text-blue-600">{t('footer.terms')}</a>
+                        <a href="#" className="hover:text-blue-600">{t('footer.api')}</a>
                     </div>
-                    <p className={`text-sm font-medium italic ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 LineSight</p>
+                    <p className={`text-sm font-medium italic ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{t('footer.copyright')}</p>
                 </div>
             </footer>
         </div>
     );
 };
 
-const PRICING_PLANS = [
-    {
-        id: 'starter',
-        name: 'Starter',
-        // Strategy: Cheap enough to expense, enough lines to run a real shop.
-        price: { monthly: 49, annual: 39 },
-        description: 'Perfect for replacing paper tickets and getting live visibility.',
-        features: [
-            '1 Factory',
-            'Up to 10 Production Lines', // High enough to capture the whole shop
-            'Unlimited Dashboards', // Let them build as much as they want (Stickiness)
-            '1 Admin User', // The Restriction: Single Player Mode
-            '30-Day Data Retention'
-        ],
-        cta: 'Start Free Trial'
-    },
-    {
-        id: 'pro',
-        name: 'Professional',
-        // Strategy: The upsell for teams. 
-        price: { monthly: 199, annual: 159 },
-        description: 'For organizations managing teams and hierarchies.',
-        features: [
-            '3 Factories',
-            '25 Production Lines',
-            'Role-Based Access (RBAC)', // The Killer Feature: Multi Player Mode
-            'Line Manager & Analyst Accounts',
-            'Automatic Data Sync and Analytics',
-            'Unlimited Data History',
-            'Unlimited Data Retention',
-            'Unlimited Dashboards',
-            'Export to Excel/CSV',
-        ],
-        cta: 'Upgrade to Team'
-    },
-    {
-        id: 'enterprise',
-        name: 'Enterprise',
-        price: 'Custom',
-        description: 'For global operations requiring compliance & auditing.',
-        features: [
-            `Everything in the Professional plan`,
-            'Unlimited Factories',
-            'Unlimited Lines',
-            'Custom Integrations & Features',
-            'Dedicated Success Manager',
-            'SSO (SAML) & Audit Logs',
-            'UFLPA Compliance Reporting',
-            'On-Premise / Private Cloud'
-        ],
-        cta: 'Contact Sales'
-    }
-];
+
 
 export default LandingPage;

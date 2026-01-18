@@ -1,0 +1,26 @@
+[
+    {
+        "hash": "a1b2c3d",
+        "author": "dev_alex",
+        "message": "feat(auth): initial setup for TICKET-101",
+        "branch": "feat/login",
+        "is_merged_to_main": false,
+        "date": "2023-10-27"
+    },
+    {
+        "hash": "e5f6g7h",
+        "author": "dev_alex",
+        "message": "fix(db): finalize schema TICKET-102",
+        "branch": "feat/db-schema",
+        "is_merged_to_main": true,
+        "date": "2023-10-27"
+    },
+    {
+        "hash": "i8j9k0l",
+        "author": "dev_sam",
+        "message": "feat(search): added elasticsearch integration",
+        "branch": "feat/search",
+        "is_merged_to_main": false,
+        "date": "2023-10-27"
+    }
+]

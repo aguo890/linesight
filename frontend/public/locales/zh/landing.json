@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "立即开始",
+    "subtitle": "加入 40 多家工厂，在前 90 天内将停机时间平均减少 18%。",
+    "title": "准备好数字化您的车间了吗？"
+  },
+  "demo": {
+    "cta": "尝试现场演示",
+    "stats": {
+      "change": "+2.1%",
+      "label": "实时效率",
+      "value": "94.2%"
+    },
+    "subtitle": "体验正在取代 40 多个设施中电子表格的界面。实时监控，自动生成报告，零延迟。",
+    "title": "您的工厂，",
+    "title_accent": "数字化。"
+  },
+  "features": {
+    "inventory": {
+      "desc": "在车间内移动时跟踪捆束。",
+      "title": "WIP 跟踪"
+    },
+    "operator": {
+      "desc": "单个效率跟踪和激励。",
+      "title": "操作员绩效"
+    },
+    "realtime": {
+      "desc": "每个缝纫线性能的实时视图。",
+      "title": "实时仪表板"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "隐私",
+    "terms": "条款"
+  },
+  "hero": {
+    "badge": "实时生产跟踪",
+    "cta_demo": "观看演示",
+    "cta_trial": "开始免费试用",
+    "cta_waitlist": "加入候补名单",
+    "headline": "消除",
+    "headline_accent": "停机时间。",
+    "subheadline": "获得对每个捆束、操作员和缝纫线的实时可见性——无需 6 个月的 ERP 设置。"
+  },
+  "nav": {
+    "dashboard": "仪表板",
+    "get_started": "开始",
+    "join_waitlist": "加入候补名单",
+    "platform": "平台",
+    "pricing": "定价",
+    "sign_in": "登录"
+  },
+  "pricing": {
+    "monthly": "每月",
+    "plans": {
+      "enterprise": {
+        "cta": "联系销售",
+        "description": "大型设施的全面数字化。",
+        "features": [
+          "无限线条",
+          "自定义 ERP 集成",
+          "无限历史",
+          "专属成功经理",
+          "SLA 保证"
+        ],
+        "name": "企业"
+      },
+      "pro": {
+        "cta": "升级到团队",
+        "description": "适用于需要全面可见性的成长型工厂。",
+        "features": [
+          "最多 20 条缝纫线",
+          "高级分析",
+          "30 天数据保留",
+          "优先支持",
+          "操作员平板电脑"
+        ],
+        "name": "专业"
+      },
+      "starter": {
+        "cta": "开始免费试用",
+        "description": "非常适合小型试点线。",
+        "features": [
+          "最多 5 条缝纫线",
+          "基础报告",
+          "7 天数据保留",
+          "电子邮件支持"
+        ],
+        "name": "入门"
+      }
+    },
+    "save_badge": "节省 20%",
+    "subtitle": "从小处开始，随着数字化更多线条而扩展。",
+    "title": "简单的定价",
+    "title_accent": "现代工厂。",
+    "yearly": "每年"
+  },
+  "problems": {
+    "accountability": {
+      "description": "跟踪计件费率、效率和瓶颈直至单个操作员级别。",
+      "title": "操作员责任"
+    },
+    "erp": {
+      "description": "跳过 10 万美元的 SAP 实施。LineSight 与您已有的平板电脑配合使用，几天内部署，而不是几个月。",
+      "title": "ERP 替代方案"
+    },
+    "spreadsheets": {
+      "description": "停止依靠昨天的数据运行您的车间。消除纸质票据和早晨争夺数字的混乱。",
+      "title": "消灭电子表格"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight 给了我们以前不知道缺失的可见性。我们在第一个月就减少了 20% 的停机时间。",
+    "role": "工厂经理, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "三星时尚",
+    "attribution_role": "运营总监",
+    "quote_part1": "我们使用电子表格运行了 15 年以上，说实话，对于一个只想获得更好可见性的团队来说，六位数的 ERP 感觉有点过头了。",
+    "quote_part2": "这是完美的升级——它给了我们缺失的“实时”数据，而没有强迫我们改变经营业务的方式。"
+  },
+  "trust": {
+    "powering": "为制造业提供动力"
+  },
+  "waitlist": {
+    "cta": "加入候补名单",
+    "cta_loading": "加入中...",
+    "helper": "在我们公开发布之前获得早期访问权限。",
+    "placeholder": "name@company.com",
+    "subtitle": "我们正在逐步推出访问权限。立即确保您的位置。",
+    "success": {
+      "error_exists": "此电子邮件已在列表中！",
+      "error_generic": "出了点问题。请重试。",
+      "referral_note": "被推荐的同事跳过候补名单并立即获得早期访问权限。",
+      "subtitle": "我们将随时通知您",
+      "title": "您在名单上！",
+      "vip_desc": "将早期访问权限扩展到制造、运营或供应链的同事。被推荐的用户跳过候补名单，但不会收到 VIP 邀请。",
+      "vip_title": "您有 3 个 VIP 邀请"
+    },
+    "title": "获得早期访问权限。"
+  }
+}

@@ -1,8 +1,8 @@
-"""initial_schema
+"""initial_postgres_schema
 
-Revision ID: f7ced662400e
+Revision ID: f8a3147f3765
 Revises: 
-Create Date: 2026-01-10 06:23:23.791575+00:00
+Create Date: 2026-01-16 19:55:16.243951+00:00
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision: str = 'f7ced662400e'
+revision: str = 'f8a3147f3765'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('data_source_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('widget_config', sa.Text(), nullable=True),
     sa.Column('layout_config', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], name='fk_dashboard_datasource', ondelete='SET NULL', use_alter=True),
@@ -55,12 +55,12 @@ def upgrade() -> None:
     sa.Column('date_range_start', sa.Date(), nullable=True),
     sa.Column('date_range_end', sa.Date(), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], ondelete='CASCADE', use_alter=True),
     sa.ForeignKeyConstraint(['parent_data_source_id'], ['data_sources.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['supervisor_id'], ['workers.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['supervisor_id'], ['workers.id'], ondelete='SET NULL', use_alter=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_data_sources_factory_id'), 'data_sources', ['factory_id'], unique=False)
@@ -68,7 +68,7 @@ def upgrade() -> None:
     op.create_table('factories',
     sa.Column('organization_id', mysql.CHAR(length=36), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
-    sa.Column('code', sa.String(length=50), nullable=True),
+    sa.Column('code', sa.String(length=50), nullable=False),
     sa.Column('country', sa.String(length=100), nullable=False),
     sa.Column('city', sa.String(length=100), nullable=True),
     sa.Column('address', sa.Text(), nullable=True),
@@ -80,7 +80,7 @@ def upgrade() -> None:
     sa.Column('settings', sa.JSON(), nullable=True),
     sa.Column('locale', sa.String(length=20), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['organization_id'], ['organizations.id'], name='fk_factory_org', ondelete='CASCADE', use_alter=True),
@@ -97,7 +97,7 @@ def upgrade() -> None:
     sa.Column('max_lines_per_factory', sa.Integer(), nullable=False),
     sa.Column('primary_email', sa.String(length=255), nullable=True),
     sa.Column('primary_phone', sa.String(length=50), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
@@ -106,19 +106,19 @@ def upgrade() -> None:
     sa.UniqueConstraint('code')
     )
     op.create_table('workers',
-    sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('factory_id', sa.String(length=36), nullable=False),
     sa.Column('employee_id', sa.String(length=50), nullable=False),
     sa.Column('full_name', sa.String(length=255), nullable=False),
     sa.Column('department', sa.String(length=100), nullable=True),
     sa.Column('job_title', sa.String(length=100), nullable=True),
     sa.Column('primary_skill', sa.String(length=100), nullable=True),
-    sa.Column('data_source_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('data_source_id', sa.String(length=36), nullable=True),
     sa.Column('hire_date', sa.Date(), nullable=True),
     sa.Column('termination_date', sa.Date(), nullable=True),
     sa.Column('hourly_rate', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.Column('currency', sa.String(length=3), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
@@ -139,7 +139,7 @@ def upgrade() -> None:
     sa.Column('confidence', sa.Float(), nullable=True),
     sa.Column('reasoning', sa.JSON(), nullable=True),
     sa.Column('performance_metadata', sa.JSON(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], ),
@@ -163,7 +163,7 @@ def upgrade() -> None:
     sa.Column('dhu_change_pct', sa.Numeric(precision=6, scale=2), nullable=True),
     sa.Column('trend_direction', sa.String(length=20), nullable=True),
     sa.Column('recommendations', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], ondelete='CASCADE'),
@@ -187,7 +187,7 @@ def upgrade() -> None:
     sa.Column('user_corrected', sa.Boolean(), nullable=False),
     sa.Column('correction_count', sa.Integer(), nullable=True),
     sa.Column('correction_history', sa.JSON(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], ondelete='CASCADE'),
@@ -195,7 +195,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_schema_mappings_data_source_id'), 'schema_mappings', ['data_source_id'], unique=False)
     op.create_table('styles',
-    sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('factory_id', sa.String(length=36), nullable=False),
     sa.Column('style_number', sa.String(length=100), nullable=False),
     sa.Column('style_name', sa.String(length=255), nullable=True),
     sa.Column('description', sa.String(length=500), nullable=True),
@@ -207,7 +207,7 @@ def upgrade() -> None:
     sa.Column('bom_summary', sa.JSON(), nullable=True),
     sa.Column('tech_pack_url', sa.String(length=500), nullable=True),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['factory_id'], ['factories.id'], ondelete='CASCADE'),
@@ -229,7 +229,7 @@ def upgrade() -> None:
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
     sa.Column('last_login', sa.DateTime(timezone=True), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('is_deleted', sa.Boolean(), nullable=False),
@@ -240,7 +240,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_users_organization_id'), 'users', ['organization_id'], unique=False)
     op.create_table('worker_attendances',
-    sa.Column('worker_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('worker_id', sa.String(length=36), nullable=False),
     sa.Column('work_date', sa.Date(), nullable=False),
     sa.Column('clock_in', sa.Time(), nullable=True),
     sa.Column('clock_out', sa.Time(), nullable=True),
@@ -250,7 +250,7 @@ def upgrade() -> None:
     sa.Column('is_present', sa.Boolean(), nullable=False),
     sa.Column('absence_reason', sa.String(length=100), nullable=True),
     sa.Column('is_approved', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['worker_id'], ['workers.id'], ondelete='CASCADE'),
@@ -260,7 +260,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_worker_attendances_work_date'), 'worker_attendances', ['work_date'], unique=False)
     op.create_index(op.f('ix_worker_attendances_worker_id'), 'worker_attendances', ['worker_id'], unique=False)
     op.create_table('worker_skills',
-    sa.Column('worker_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('worker_id', sa.String(length=36), nullable=False),
     sa.Column('operation', sa.String(length=100), nullable=False),
     sa.Column('operation_category', sa.String(length=100), nullable=True),
     sa.Column('proficiency_pct', sa.Numeric(precision=5, scale=2), nullable=True),
@@ -272,7 +272,7 @@ def upgrade() -> None:
     sa.Column('is_certified', sa.Boolean(), nullable=False),
     sa.Column('certification_date', sa.Date(), nullable=True),
     sa.Column('last_assessed', sa.DateTime(timezone=True), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['worker_id'], ['workers.id'], ondelete='CASCADE'),
@@ -293,7 +293,7 @@ def upgrade() -> None:
     sa.Column('created_by_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('correction_count', sa.Integer(), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['created_by_id'], ['users.id'], ondelete='SET NULL'),
@@ -309,7 +309,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_alias_mappings_source_alias'), 'alias_mappings', ['source_alias'], unique=False)
     op.create_index(op.f('ix_alias_mappings_source_alias_normalized'), 'alias_mappings', ['source_alias_normalized'], unique=False)
     op.create_table('orders',
-    sa.Column('style_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('style_id', sa.String(length=36), nullable=False),
     sa.Column('po_number', sa.String(length=100), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('size_breakdown', sa.JSON(), nullable=True),
@@ -327,7 +327,7 @@ def upgrade() -> None:
     sa.Column('qty_packed', sa.Integer(), nullable=False),
     sa.Column('qty_shipped', sa.Integer(), nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['style_id'], ['styles.id'], ondelete='CASCADE'),
@@ -338,10 +338,10 @@ def upgrade() -> None:
     op.create_index(op.f('ix_orders_status'), 'orders', ['status'], unique=False)
     op.create_index(op.f('ix_orders_style_id'), 'orders', ['style_id'], unique=False)
     op.create_table('raw_imports',
-    sa.Column('uploaded_by_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('factory_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('production_line_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('data_source_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('uploaded_by_id', sa.String(length=36), nullable=True),
+    sa.Column('factory_id', sa.String(length=36), nullable=True),
+    sa.Column('production_line_id', sa.String(length=36), nullable=True),
+    sa.Column('data_source_id', sa.String(length=36), nullable=True),
     sa.Column('time_column_used', sa.String(length=100), nullable=True),
     sa.Column('original_filename', sa.String(length=500), nullable=False),
     sa.Column('file_path', sa.String(length=1000), nullable=False),
@@ -359,7 +359,7 @@ def upgrade() -> None:
     sa.Column('status', sa.String(length=50), nullable=False),
     sa.Column('processing_error', sa.Text(), nullable=True),
     sa.Column('processed_at', sa.DateTime(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], ondelete='SET NULL'),
@@ -379,7 +379,7 @@ def upgrade() -> None:
     sa.Column('factory_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('data_source_id', mysql.CHAR(length=36), nullable=True),
     sa.Column('role', sa.Enum('system_admin', 'owner', 'factory_manager', 'line_manager', 'analyst', 'viewer', name='userrole'), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], ondelete='CASCADE'),
@@ -390,7 +390,7 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_user_scopes_user_id'), 'user_scopes', ['user_id'], unique=False)
     op.create_table('data_quality_issues',
-    sa.Column('raw_import_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('raw_import_id', sa.String(length=36), nullable=False),
     sa.Column('row_number', sa.Integer(), nullable=True),
     sa.Column('issue_type', sa.String(length=50), nullable=False),
     sa.Column('severity', sa.String(length=20), nullable=False),
@@ -398,9 +398,9 @@ def upgrade() -> None:
     sa.Column('field_name', sa.String(length=100), nullable=True),
     sa.Column('field_value', sa.String(length=500), nullable=True),
     sa.Column('resolved_at', sa.DateTime(), nullable=True),
-    sa.Column('resolved_by_user_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('resolved_by_user_id', sa.String(length=36), nullable=True),
     sa.Column('resolution_notes', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['raw_import_id'], ['raw_imports.id'], ondelete='CASCADE'),
@@ -411,10 +411,10 @@ def upgrade() -> None:
     op.create_index(op.f('ix_data_quality_issues_raw_import_id'), 'data_quality_issues', ['raw_import_id'], unique=False)
     op.create_index(op.f('ix_data_quality_issues_severity'), 'data_quality_issues', ['severity'], unique=False)
     op.create_table('production_runs',
-    sa.Column('factory_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('order_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('data_source_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('source_import_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('factory_id', sa.String(length=36), nullable=False),
+    sa.Column('order_id', sa.String(length=36), nullable=False),
+    sa.Column('data_source_id', sa.String(length=36), nullable=False),
+    sa.Column('source_import_id', sa.String(length=36), nullable=True),
     sa.Column('production_date', sa.DateTime(), nullable=True),
     sa.Column('inspection_date', sa.DateTime(), nullable=True),
     sa.Column('shift', sa.String(length=20), nullable=False),
@@ -434,7 +434,7 @@ def upgrade() -> None:
     sa.Column('earned_minutes', sa.Numeric(precision=15, scale=4), sa.Computed('actual_qty * sam', ), nullable=True),
     sa.Column('efficiency', sa.Numeric(precision=10, scale=2), sa.Computed('\n            CASE\n                WHEN (worked_minutes * (operators_present + helpers_present)) > 0 AND sam IS NOT NULL\n                THEN ((actual_qty * sam) / (worked_minutes * (operators_present + helpers_present))) * 100\n                ELSE 0\n            END\n            ', ), nullable=True),
     sa.Column('notes', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.CheckConstraint('actual_qty >= 0', name='check_positive_qty'),
@@ -458,7 +458,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_production_runs_production_date'), 'production_runs', ['production_date'], unique=False)
     op.create_index(op.f('ix_production_runs_source_import_id'), 'production_runs', ['source_import_id'], unique=False)
     op.create_table('staging_records',
-    sa.Column('raw_import_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('raw_import_id', sa.String(length=36), nullable=False),
     sa.Column('source_row_number', sa.Integer(), nullable=False),
     sa.Column('status', sa.String(length=50), nullable=False),
     sa.Column('validation_errors', sa.Text(), nullable=True),
@@ -469,8 +469,8 @@ def upgrade() -> None:
     sa.Column('null_field_count', sa.Integer(), nullable=True),
     sa.Column('promoted_at', sa.DateTime(), nullable=True),
     sa.Column('promoted_to_table', sa.String(length=100), nullable=True),
-    sa.Column('promoted_record_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('promoted_record_id', sa.String(length=36), nullable=True),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['raw_import_id'], ['raw_imports.id'], ondelete='CASCADE'),
@@ -489,7 +489,7 @@ def upgrade() -> None:
     sa.Column('factory_avg_efficiency', sa.Numeric(precision=6, scale=2), nullable=True),
     sa.Column('line_avg_efficiency', sa.Numeric(precision=6, scale=2), nullable=True),
     sa.Column('calculated_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['production_run_id'], ['production_runs.id'], ondelete='CASCADE'),
@@ -500,13 +500,13 @@ def upgrade() -> None:
     sa.Column('timestamp', sa.DateTime(), nullable=False),
     sa.Column('event_type', sa.Enum('SCAN', 'BATCH_UPLOAD', 'MANUAL_ADJUSTMENT', 'IOT_SIGNAL', name='eventtype', native_enum=False), nullable=False),
     sa.Column('quantity', sa.Integer(), nullable=False),
-    sa.Column('data_source_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('order_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('style_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('production_run_id', mysql.CHAR(length=36), nullable=True),
-    sa.Column('source_import_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('data_source_id', sa.String(length=36), nullable=False),
+    sa.Column('order_id', sa.String(length=36), nullable=False),
+    sa.Column('style_id', sa.String(length=36), nullable=False),
+    sa.Column('production_run_id', sa.String(length=36), nullable=True),
+    sa.Column('source_import_id', sa.String(length=36), nullable=True),
     sa.Column('raw_data', sa.JSON(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['data_source_id'], ['data_sources.id'], ondelete='CASCADE'),
@@ -523,15 +523,15 @@ def upgrade() -> None:
     op.create_index(op.f('ix_production_events_style_id'), 'production_events', ['style_id'], unique=False)
     op.create_index(op.f('ix_production_events_timestamp'), 'production_events', ['timestamp'], unique=False)
     op.create_table('production_outputs',
-    sa.Column('worker_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('production_run_id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('worker_id', sa.String(length=36), nullable=False),
+    sa.Column('production_run_id', sa.String(length=36), nullable=False),
     sa.Column('operation', sa.String(length=100), nullable=False),
     sa.Column('pieces_completed', sa.Integer(), nullable=False),
     sa.Column('sam_earned', sa.Numeric(precision=10, scale=2), nullable=True),
     sa.Column('minutes_worked', sa.Numeric(precision=8, scale=2), nullable=True),
     sa.Column('efficiency_pct', sa.Numeric(precision=5, scale=2), nullable=True),
     sa.Column('recorded_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['production_run_id'], ['production_runs.id'], ondelete='CASCADE'),
@@ -541,8 +541,8 @@ def upgrade() -> None:
     op.create_index(op.f('ix_production_outputs_production_run_id'), 'production_outputs', ['production_run_id'], unique=False)
     op.create_index(op.f('ix_production_outputs_worker_id'), 'production_outputs', ['worker_id'], unique=False)
     op.create_table('quality_inspections',
-    sa.Column('production_run_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('inspector_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('production_run_id', sa.String(length=36), nullable=False),
+    sa.Column('inspector_id', sa.String(length=36), nullable=True),
     sa.Column('inspection_type', sa.Enum('INLINE', 'ENDLINE', 'FINAL', 'AQL', name='inspectiontype'), nullable=False),
     sa.Column('units_checked', sa.Integer(), nullable=False),
     sa.Column('defects_found', sa.Integer(), nullable=False),
@@ -554,7 +554,7 @@ def upgrade() -> None:
     sa.Column('aql_result', sa.Enum('PASS', 'FAIL', 'PENDING', name='aqlresult'), nullable=True),
     sa.Column('inspected_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('notes', sa.Text(), nullable=True),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['inspector_id'], ['workers.id'], ondelete='SET NULL'),
@@ -563,8 +563,8 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_quality_inspections_production_run_id'), 'quality_inspections', ['production_run_id'], unique=False)
     op.create_table('defects',
-    sa.Column('inspection_id', mysql.CHAR(length=36), nullable=False),
-    sa.Column('worker_id', mysql.CHAR(length=36), nullable=True),
+    sa.Column('inspection_id', sa.String(length=36), nullable=False),
+    sa.Column('worker_id', sa.String(length=36), nullable=True),
     sa.Column('defect_type', sa.String(length=100), nullable=False),
     sa.Column('defect_code', sa.String(length=20), nullable=True),
     sa.Column('defect_category', sa.String(length=100), nullable=True),
@@ -576,7 +576,7 @@ def upgrade() -> None:
     sa.Column('machine_id', sa.String(length=50), nullable=True),
     sa.Column('image_url', sa.String(length=500), nullable=True),
     sa.Column('count', sa.Integer(), nullable=False),
-    sa.Column('id', mysql.CHAR(length=36), nullable=False),
+    sa.Column('id', sa.String(length=36), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=False),
     sa.ForeignKeyConstraint(['inspection_id'], ['quality_inspections.id'], ondelete='CASCADE'),

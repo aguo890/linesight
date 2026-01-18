@@ -9,7 +9,6 @@ from datetime import datetime
 from enum import Enum
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDMixin
@@ -49,7 +48,7 @@ class DataQualityIssue(Base, UUIDMixin, TimestampMixin):
 
     # Link to the source import (Trace ID)
     raw_import_id: Mapped[str] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("raw_imports.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
@@ -82,7 +81,7 @@ class DataQualityIssue(Base, UUIDMixin, TimestampMixin):
     # Resolution tracking
     resolved_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     resolved_by_user_id: Mapped[str | None] = mapped_column(
-        CHAR(36),
+        String(36),
         ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
     )

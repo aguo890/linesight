@@ -992,51 +992,51 @@ export const getStyleProgressApiV1AnalyticsProductionStylesGetResponse = zod.obj
 /**
  * Get daily DHU trend for the last N days (or specific range).
 Optionally filter by production line ID.
- * @summary Get Dhu History
+Restored endpoint for Quality Widget.
+ * @summary Get Dhu Trend
  */
-export const getDhuHistoryApiV1AnalyticsQualityDhuGetQueryDaysDefault = 7;
+export const getDhuTrendApiV1AnalyticsDhuGetQueryDaysDefault = 7;
 
-export const getDhuHistoryApiV1AnalyticsQualityDhuGetQueryParams = zod.object({
-  "days": zod.number().default(getDhuHistoryApiV1AnalyticsQualityDhuGetQueryDaysDefault),
+export const getDhuTrendApiV1AnalyticsDhuGetQueryParams = zod.object({
+  "days": zod.number().default(getDhuTrendApiV1AnalyticsDhuGetQueryDaysDefault),
   "date_from": zod.union([zod.iso.date(),zod.null()]).optional(),
   "date_to": zod.union([zod.iso.date(),zod.null()]).optional(),
   "line_id": zod.union([zod.string(),zod.null()]).optional()
 })
 
-export const getDhuHistoryApiV1AnalyticsQualityDhuGetResponseDhuRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getDhuTrendApiV1AnalyticsDhuGetResponseDhuRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 
 
-export const getDhuHistoryApiV1AnalyticsQualityDhuGetResponseItem = zod.object({
+export const getDhuTrendApiV1AnalyticsDhuGetResponseItem = zod.object({
   "date": zod.string().describe('Report Date (YYYY-MM-DD)'),
-  "dhu": zod.string().regex(getDhuHistoryApiV1AnalyticsQualityDhuGetResponseDhuRegExp).describe('Defects per Hundred Units (%)')
+  "dhu": zod.string().regex(getDhuTrendApiV1AnalyticsDhuGetResponseDhuRegExp).describe('Defects per Hundred Units (%)')
 }).describe('Single point for DHU (Quality) Trend.')
-export const getDhuHistoryApiV1AnalyticsQualityDhuGetResponse = zod.array(getDhuHistoryApiV1AnalyticsQualityDhuGetResponseItem)
+export const getDhuTrendApiV1AnalyticsDhuGetResponse = zod.array(getDhuTrendApiV1AnalyticsDhuGetResponseItem)
 
 
 /**
  * Get daily trend of Efficiency vs Defects (DHU).
-Returns last N days (default 14).
-Optionally filter by production line ID.
- * @summary Get Speed Quality Stats
+Restored endpoint for Speed vs Quality Widget.
+ * @summary Get Speed Quality Trend
  */
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryDaysDefault = 14;
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryDaysDefault = 14;
 
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryParams = zod.object({
-  "days": zod.number().default(getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetQueryDaysDefault),
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryParams = zod.object({
+  "days": zod.number().default(getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetQueryDaysDefault),
   "date_from": zod.union([zod.iso.date(),zod.null()]).optional(),
   "date_to": zod.union([zod.iso.date(),zod.null()]).optional(),
   "line_id": zod.union([zod.string(),zod.null()]).optional()
 })
 
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseDataPointsItemEfficiencyPctRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseDataPointsItemDefectsPerHundredRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseDataPointsItemEfficiencyPctRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseDataPointsItemDefectsPerHundredRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 
 
-export const getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponse = zod.object({
+export const getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponse = zod.object({
   "data_points": zod.array(zod.object({
   "date": zod.string().describe('Date label (e.g., \'2025-01-01\')'),
-  "efficiency_pct": zod.string().regex(getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseDataPointsItemEfficiencyPctRegExp).describe('Average efficiency percentage for this day'),
-  "defects_per_hundred": zod.string().regex(getSpeedQualityStatsApiV1AnalyticsSpeedVsQualityGetResponseDataPointsItemDefectsPerHundredRegExp).describe('Defects per hundred units (DHU)')
+  "efficiency_pct": zod.string().regex(getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseDataPointsItemEfficiencyPctRegExp).describe('Average efficiency percentage for this day'),
+  "defects_per_hundred": zod.string().regex(getSpeedQualityTrendApiV1AnalyticsSpeedQualityGetResponseDataPointsItemDefectsPerHundredRegExp).describe('Defects per hundred units (DHU)')
 }).describe('Single point for Speed vs Quality chart.')).describe('Daily trend of efficiency vs defects')
 }).describe('Speed vs Quality trade-off analysis.')
 
@@ -1175,6 +1175,7 @@ export const getTargetRealizationApiV1AnalyticsTargetRealizationGetResponse = zo
  * @summary Get Complexity Analysis
  */
 export const getComplexityAnalysisApiV1AnalyticsComplexityGetQueryParams = zod.object({
+  "line_id": zod.union([zod.string(),zod.null()]).optional(),
   "start_date": zod.union([zod.iso.datetime({}),zod.null()]).optional(),
   "end_date": zod.union([zod.iso.datetime({}),zod.null()]).optional()
 })

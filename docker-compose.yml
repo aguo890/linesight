@@ -1,5 +1,5 @@
 # LineSight - Docker Compose Configuration
-# Complete stack: Backend + MySQL + Redis
+# Complete stack: Backend + Postgres + Redis
 
 version: '3.8'
 
@@ -13,15 +13,18 @@ services:
       dockerfile: Dockerfile
     container_name: linesight-api
     restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
       - APP_NAME=LineSight
       - DEBUG=false
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_USER=linesight
-      - DB_PASSWORD=${DB_PASSWORD:-linesight_secret}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD:-password}
       - DB_NAME=linesight
       - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
       - LLM_PROVIDER=${LLM_PROVIDER:-deepseek}
@@ -29,10 +32,11 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - REDIS_URL=redis://redis:6379/0
     volumes:
+      - ./backend:/app
       - upload_data:/app/uploads
     depends_on:
-      mysql:
-        condition: service_healthy
+      postgres:
+        condition: service_started
       redis:
         condition: service_started
     networks:
@@ -45,28 +49,27 @@ services:
       start_period: 40s
 
   # ==========================================
-  # MySQL Database
+  # PostgreSQL Database
   # ==========================================
-  mysql:
-    image: mysql:8.0
-    container_name: linesight-mysql
+  postgres:
+    image: postgres:15-alpine
+    container_name: linesight-postgres
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "5434:5432"
+    env_file:
+      - .env
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
-      - MYSQL_DATABASE=linesight
-      - MYSQL_USER=linesight
-      - MYSQL_PASSWORD=${DB_PASSWORD:-linesight_secret}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=linesight
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    command: >
-      --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - linesight-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -101,19 +104,22 @@ services:
     container_name: linesight-celery
     restart: unless-stopped
     command: celery -A app.worker worker --loglevel=info
+    env_file:
+      - .env
     environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_USER=linesight
-      - DB_PASSWORD=${DB_PASSWORD:-linesight_secret}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD:-password}
       - DB_NAME=linesight
       - REDIS_URL=redis://redis:6379/0
       - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     volumes:
+      - ./backend:/app
       - upload_data:/app/uploads
     depends_on:
-      - mysql
+      - postgres
       - redis
     networks:
       - linesight-network
@@ -129,8 +135,10 @@ services:
     restart: unless-stopped
     ports:
       - "5173:5173"
+    env_file:
+      - .env
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=http://localhost:8000/api/v1
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -150,6 +158,6 @@ networks:
 # Volumes
 # ==========================================
 volumes:
-  mysql_data:
+  postgres_data:
   redis_data:
   upload_data:

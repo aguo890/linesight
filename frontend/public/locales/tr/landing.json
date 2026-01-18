@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Şimdi Başlayın",
+    "subtitle": "İlk 90 günde duruş sürelerini ortalama %18 azaltan 40'tan fazla fabrikaya katılın.",
+    "title": "Katınızı dijitalleştirmeye hazır mısınız?"
+  },
+  "demo": {
+    "cta": "Canlı Demoyu Deneyin",
+    "stats": {
+      "change": "+%2.1",
+      "label": "Gerçek Zamanlı Verimlilik",
+      "value": "%94.2"
+    },
+    "subtitle": "40'tan fazla tesiste elektronik tabloların yerini alan arayüzü deneyimleyin. Gerçek zamanlı izleme, otomatik oluşturulan raporlar ve sıfır gecikme.",
+    "title": "Fabrikanız,",
+    "title_accent": "Dijitalleşti."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Demetleri kat boyunca hareket ederken izleyin.",
+      "title": "WIP Takibi"
+    },
+    "operator": {
+      "desc": "Bireysel verimlilik takibi ve teşvikler.",
+      "title": "Operatör Performansı"
+    },
+    "realtime": {
+      "desc": "Her dikiş hattı performansının canlı görünümü.",
+      "title": "Gerçek Zamanlı Gösterge Paneli"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Gizlilik",
+    "terms": "Şartlar"
+  },
+  "hero": {
+    "badge": "Canlı Üretim Takibi",
+    "cta_demo": "Demoyu İzle",
+    "cta_trial": "Ücretsiz Deneme Başlat",
+    "cta_waitlist": "Bekleme Listesine Katıl",
+    "headline": "DURUŞ SÜRESİNİ",
+    "headline_accent": "ORTADAN KALDIRIN.",
+    "subheadline": "Her demet, operatör ve dikiş hattı için 6 aylık ERP kurulumu olmadan gerçek zamanlı görünürlük elde edin."
+  },
+  "nav": {
+    "dashboard": "Gösterge Paneli",
+    "get_started": "Başla",
+    "join_waitlist": "Listeye Katıl",
+    "platform": "Platform",
+    "pricing": "Fiyatlandırma",
+    "sign_in": "Giriş Yap"
+  },
+  "pricing": {
+    "monthly": "Aylık",
+    "plans": {
+      "enterprise": {
+        "cta": "Satışla İletişime Geç",
+        "description": "Büyük tesisler için tam dijitalleşme.",
+        "features": [
+          "Sınırsız hat",
+          "Özel ERP Entegrasyonu",
+          "Sınırsız Geçmiş",
+          "Özel Başarı Yöneticisi",
+          "SLA Garantisi"
+        ],
+        "name": "Kurumsal"
+      },
+      "pro": {
+        "cta": "Ekibe Yükselt",
+        "description": "Tam görünürlüğe ihtiyaç duyan büyüyen fabrikalar için.",
+        "features": [
+          "20'ye kadar dikiş hattı",
+          "Gelişmiş Analitik",
+          "30 günlük Veri Saklama",
+          "Öncelikli Destek",
+          "Operatör Tabletleri"
+        ],
+        "name": "Profesyonel"
+      },
+      "starter": {
+        "cta": "Ücretsiz Deneme Başlat",
+        "description": "Küçük pilot hatlar için mükemmel.",
+        "features": [
+          "5'e kadar dikiş hattı",
+          "Temel Raporlama",
+          "7 günlük Veri Saklama",
+          "E-posta Desteği"
+        ],
+        "name": "Başlangıç"
+      }
+    },
+    "save_badge": "%20 Tasarruf Edin",
+    "subtitle": "Küçük başlayın ve daha fazla hattı dijitalleştirdikçe ölçeklendirin.",
+    "title": "Modern fabrikalar için",
+    "title_accent": "basit fiyatlandırma.",
+    "yearly": "Yıllık"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Parça başı ücretleri, verimliliği ve darboğazları bireysel operatör düzeyine kadar takip edin.",
+      "title": "Operatör Sorumluluğu"
+    },
+    "erp": {
+      "description": "100 bin dolarlık SAP uygulamasını atlayın. LineSight, halihazırda sahip olduğunuz tabletlerle çalışır ve aylar değil günler içinde dağıtılır.",
+      "title": "ERP Alternatifi"
+    },
+    "spreadsheets": {
+      "description": "Katınızı dünün verileriyle yönetmeyi bırakın. Kağıt biletleri ve sabah sayıları için mücadeleyi ortadan kaldırın.",
+      "title": "Elektronik Tabloları Öldürün"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight bize eksikliğini bilmediğimiz bir görünürlük sağladı. İlk ayda duruş süremizi %20 azalttık.",
+    "role": "Fabrika Müdürü, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Operasyon Direktörü",
+    "quote_part1": "15 yıldan fazla bir süredir elektronik tablolarla çalışıyoruz ve dürüst olmak gerekirse, sadece daha iyi görünürlük isteyen bir ekip için altı rakamlı bir ERP aşırı geldi.",
+    "quote_part2": "Bu mükemmel bir yükseltmeydi - işimizi yürütme şeklimizi değiştirmeye zorlamadan eksik olduğumuz 'canlı' verileri bize verdi."
+  },
+  "trust": {
+    "powering": "Üretimi güçlendiriyor"
+  },
+  "waitlist": {
+    "cta": "Bekleme Listesine Katıl",
+    "cta_loading": "Katılıyor...",
+    "helper": "Halka açık lansmanımızdan önce erken erişim elde edin.",
+    "placeholder": "isim@sirket.com",
+    "subtitle": "Erişimi kademeli olarak açıyoruz. Bugün sıradaki yerinizi ayırtın.",
+    "success": {
+      "error_exists": "Bu e-posta zaten listede!",
+      "error_generic": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "referral_note": "Yönlendirilen iş arkadaşları bekleme listesini atlar ve anında erken erişim elde eder.",
+      "subtitle": "Sizi şu adreste güncel tutacağız:",
+      "title": "Listedesiniz!",
+      "vip_desc": "Üretim, operasyon veya tedarik zincirindeki iş arkadaşlarınıza erken erişimi genişletin. Yönlendirilen kullanıcılar bekleme listesini atlar ancak VIP davetiyesi almazlar.",
+      "vip_title": "3 VIP davetiyeniz var"
+    },
+    "title": "Erken erişim elde edin."
+  }
+}

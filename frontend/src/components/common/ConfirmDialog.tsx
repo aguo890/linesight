@@ -73,7 +73,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             }
         } catch (error) {
             console.error('ConfirmDialog action failed:', error);
-            addToast(t('common.errors.generic'), 'error');
+            addToast(t('common.errors.generic'), 'error', 0);
         }
         onClose();
     };

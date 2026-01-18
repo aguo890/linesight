@@ -1,7 +1,7 @@
 # backend/scripts/extract_openapi.py
 """
-Extract OpenAPI schema from FastAPI app without running the server.
-This enables offline, deterministic frontend SDK generation.
+Extract OpenAPI schema from FastAPI app.
+Fetches from running API server (Docker-first workflow).
 """
 
 import argparse
@@ -9,18 +9,23 @@ import json
 import os
 import sys
 
-# Add the parent directory to sys.path so we can import the app module
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
-from app.main import app
+import requests
 
 
-def extract_openapi(output_path: str) -> None:
-    """Extract OpenAPI schema and save to file."""
-    print(f"Extracting OpenAPI schema to {output_path}...")
-
-    # Get the OpenAPI schema dictionary directly from the app
-    schema = app.openapi()
+def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") -> None:
+    """Fetch OpenAPI schema from running API and save to file."""
+    openapi_url = f"{api_url}/api/v1/openapi.json"
+    print(f"Fetching OpenAPI schema from {openapi_url}...")
+    
+    try:
+        response = requests.get(openapi_url, timeout=10)
+        response.raise_for_status()
+        schema = response.json()
+    except requests.RequestException as e:
+        print(f"❌ Failed to fetch schema from {openapi_url}")
+        print(f"   Error: {e}")
+        print(f"   Make sure the API is running (docker-compose up -d)")
+        sys.exit(1)
 
     # Ensure the directory exists
     output_dir = os.path.dirname(output_path)
@@ -44,5 +49,10 @@ if __name__ == "__main__":
         help="Output path for openapi.json",
         default="../frontend/swagger.json",
     )
+    parser.add_argument(
+        "--api-url",
+        help="API base URL",
+        default="http://localhost:8000",
+    )
     args = parser.parse_args()
-    extract_openapi(args.output)
+    extract_openapi(args.output, args.api_url)

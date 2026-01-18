@@ -7,6 +7,7 @@
  */
 
 export type GetComplexityAnalysisApiV1AnalyticsComplexityGetParams = {
+line_id?: string | null;
 start_date?: string | null;
 end_date?: string | null;
 };

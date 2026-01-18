@@ -162,7 +162,7 @@ export default function ProfilePage() {
     const handleSave = async () => {
         if (!user) return;
         if (!formData.full_name.trim()) {
-            addToast(t('profile.error_required'), 'error');
+            addToast(t('profile.error_required'), 'error', 0);
             return;
         }
 
@@ -202,7 +202,7 @@ export default function ProfilePage() {
             addToast(t('profile.success'), 'success');
         } catch (error) {
             console.error("Failed to update profile", error);
-            addToast(t('profile.error_fail'), 'error');
+            addToast(t('profile.error_fail'), 'error', 0);
             // FAILURE: Release lock so revert protection is active again
             isSaveOperation.current = false;
         } finally {

@@ -11,7 +11,8 @@ from datetime import date, datetime, time, timezone
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import insert, update
+from sqlalchemy import update
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import EfficiencyMetric
@@ -227,6 +228,13 @@ class ProductionWriter:
             new_id = str(uuid.uuid4())
 
             # Create run
+            run_production_date = record.get("production_date", now.date())
+            # Convert date to naive datetime for TIMESTAMP WITHOUT TIME ZONE
+            if isinstance(run_production_date, date) and not isinstance(run_production_date, datetime):
+                run_production_date = datetime.combine(run_production_date, time.min)
+            elif isinstance(run_production_date, datetime):
+                run_production_date = run_production_date.replace(tzinfo=None)
+
             run_payload = run_data_base.copy()
             run_payload.update({
                 "id": new_id,
@@ -234,7 +242,7 @@ class ProductionWriter:
                 "order_id": order.id,
                 "data_source_id": data_source_id,
                 "source_import_id": raw_import_id,
-                "production_date": record.get("production_date", now.date()),
+                "production_date": run_production_date,
                 "shift": shift,
                 "planned_qty": record.get("planned_qty", 0),
                 "created_at": now,
@@ -307,26 +315,41 @@ class ProductionWriter:
         Execute all database writes.
         Note: Caller should wrap in transaction context for atomicity.
         """
-        # Insert new runs
-        # Insert new runs
+        # Insert new runs (with UPSERT Fallback)
         if runs_to_insert:
-            logger.info(f"Inserting {len(runs_to_insert)} new runs...")
-            print(f"🐛 DEBUG: Starting Row-by-Row Insert for {len(runs_to_insert)} runs")
+            logger.info(f"Inserting/Upserting {len(runs_to_insert)} runs...")
             
             for i, row in enumerate(runs_to_insert):
                 try:
-                    # Row-Level Debugging: Insert one by one and flush
-                    # print(f"Processing row {i}...") # Optional noise
-                    await self.db.execute(
-                        insert(ProductionRun).values([row])
+                    # Construct Upsert Statement
+                    stmt = pg_insert(ProductionRun).values([row])
+                    stmt = stmt.on_conflict_do_update(
+                        constraint="uq_production_run",
+                        set_={
+                            "actual_qty": stmt.excluded.actual_qty,
+                            "planned_qty": stmt.excluded.planned_qty,
+                            "sam": stmt.excluded.sam,
+                            "shift": stmt.excluded.shift,
+                            "operators_present": stmt.excluded.operators_present,
+                            "helpers_present": stmt.excluded.helpers_present,
+                            "worked_minutes": stmt.excluded.worked_minutes,
+                            "downtime_minutes": stmt.excluded.downtime_minutes,
+                            "downtime_reason": stmt.excluded.downtime_reason,
+                            "updated_at": stmt.excluded.updated_at,
+                            "source_import_id": stmt.excluded.source_import_id,
+                            "lot_number": stmt.excluded.lot_number,
+                            "shade_band": stmt.excluded.shade_band,
+                            "batch_number": stmt.excluded.batch_number,
+                        }
                     )
+                    
+                    await self.db.execute(stmt)
                     await self.db.flush()
                 except Exception as e:
-                    print(f"\n{'!'*50}")
-                    print(f"❌ CRASH ON ROW {i+1}")
-                    print(f"DATA: {row}")
-                    print(f"ERROR: {e}")
-                    print(f"{'!'*50}\n")
+                    logger.error(f"❌ CRASH ON ProductionRun UPSERT (Row {i+1})")
+                    logger.error(f"DATA: {row}")
+                    logger.error(f"ERROR: {str(e)}")
+                    # Intentionally re-raise to rollback transaction
                     raise e
 
         # Update existing runs
@@ -338,28 +361,55 @@ class ProductionWriter:
         if production_events:
             logger.info(f"Inserting {len(production_events)} events...")
             for i in range(0, len(production_events), BATCH_SIZE):
-                await self.db.execute(
-                    insert(ProductionEvent).values(production_events[i : i + BATCH_SIZE])
-                )
+                batch = production_events[i : i + BATCH_SIZE]
+                try:
+                    await self.db.execute(pg_insert(ProductionEvent).values(batch))
+                    await self.db.flush()
+                except Exception as e:
+                    logger.error(f"❌ CRASH ON ProductionEvent BATCH INSERT (Indices {i} to {i+len(batch)})")
+                    logger.error(f"ERROR: {str(e)}")
+                    # Row-level debug fallback
+                    logger.info("Retrying row-by-row to pinpoint the 'smoking gun'...")
+                    for idx, row in enumerate(batch):
+                        try:
+                            await self.db.execute(pg_insert(ProductionEvent).values([row]))
+                            await self.db.flush()
+                        except Exception as row_err:
+                            logger.error(f"CRITICAL: ProductionEvent Row {i+idx} failed")
+                            logger.error(f"FAILING DATA: {row}")
+                            logger.error(f"ROW ERROR: {str(row_err)}")
+                            raise row_err
+                    raise e
 
         # Insert efficiency metrics
         if efficiency_metrics:
+            logger.info(f"Inserting {len(efficiency_metrics)} efficiency metrics...")
             for i in range(0, len(efficiency_metrics), BATCH_SIZE):
-                await self.db.execute(
-                    insert(EfficiencyMetric).values(efficiency_metrics[i : i + BATCH_SIZE])
-                )
+                batch = efficiency_metrics[i : i + BATCH_SIZE]
+                try:
+                    await self.db.execute(pg_insert(EfficiencyMetric).values(batch))
+                except Exception as e:
+                    logger.error(f"❌ EfficiencyMetric Batch Error: {str(e)}")
+                    raise e
 
         # Insert quality inspections
         if quality_inspections:
+            logger.info(f"Inserting {len(quality_inspections)} quality inspections...")
             for i in range(0, len(quality_inspections), BATCH_SIZE):
-                await self.db.execute(
-                    insert(QualityInspection).values(quality_inspections[i : i + BATCH_SIZE])
-                )
+                batch = quality_inspections[i : i + BATCH_SIZE]
+                try:
+                    await self.db.execute(pg_insert(QualityInspection).values(batch))
+                except Exception as e:
+                    logger.error(f"❌ QualityInspection Batch Error: {str(e)}")
+                    raise e
 
         # Insert data quality issues
         if quality_issues:
             logger.info(f"Persisting {len(quality_issues)} data quality issues...")
             for i in range(0, len(quality_issues), BATCH_SIZE):
-                await self.db.execute(
-                    insert(DataQualityIssue).values(quality_issues[i : i + BATCH_SIZE])
-                )
+                batch = quality_issues[i : i + BATCH_SIZE]
+                try:
+                    await self.db.execute(pg_insert(DataQualityIssue).values(batch))
+                except Exception as e:
+                    logger.error(f"❌ DataQualityIssue Batch Error: {str(e)}")
+                    raise e

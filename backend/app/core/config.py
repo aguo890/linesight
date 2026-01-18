@@ -24,26 +24,39 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"  # development, staging, production
     DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"
+    TIMEZONE: str = "UTC"
 
     # Security
     SECRET_KEY: str = "change-me-in-production-use-openssl-rand-hex-32"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     ALGORITHM: str = "HS256"
 
-    # Database - MySQL
-    DB_HOST: str = "localhost"
-    DB_PORT: int = 3306
-    DB_USER: str = "root"
-    DB_PASSWORD: str = "root"
+    # Database - PostgreSQL
+    DB_HOST: str = "postgres"
+    DB_PORT: int = 5432
+    DB_USER: str = "postgres"
+    DB_PASSWORD: str = "password"
     DB_NAME: str = "linesight"
 
     @property
-    def DATABASE_URL(self) -> str:  # noqa: N802
-        """Construct MySQL connection URL."""
-        return (
-            f"mysql+pymysql://{self.DB_USER}:{self.DB_PASSWORD}"
-            f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
-        )
+    def _base_url(self) -> str:
+        """Construct base connection URL."""
+        return f"{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+    @property
+    def SYNC_DATABASE_URL(self) -> str:
+        """Construct synchronous (Alembic) connection URL."""
+        return f"postgresql+psycopg2://{self._base_url}"
+
+    @property
+    def ASYNC_DATABASE_URL(self) -> str:
+        """Construct asynchronous (FastAPI) connection URL."""
+        return f"postgresql+asyncpg://{self._base_url}"
+
+    @property
+    def DATABASE_URL(self) -> str:
+        """Legacy alias for default async connection (backwards campat compatibility)."""
+        return self.ASYNC_DATABASE_URL
 
     # LLM Configuration
     LLM_PROVIDER: str = "deepseek"  # or "openai"
