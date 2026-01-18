@@ -1,0 +1,145 @@
+{
+    "nav": {
+        "sign_in": "Sign In",
+        "join_waitlist": "Join Waitlist",
+        "get_started": "Get Started",
+        "dashboard": "Dashboard",
+        "platform": "Platform",
+        "pricing": "Pricing"
+    },
+    "hero": {
+        "badge": "Live Production Tracking",
+        "headline": "ELIMINATE",
+        "headline_accent": "DOWNTIME.",
+        "subheadline": "Get real-time visibility into every bundle, operator, and sewing line—without the 6-month ERP setup.",
+        "cta_waitlist": "Join Waitlist",
+        "cta_trial": "Start Free Trial",
+        "cta_demo": "Watch Demo"
+    },
+    "trust": {
+        "powering": "Powering the manufacturing for"
+    },
+    "problems": {
+        "spreadsheets": {
+            "title": "Kill Spreadsheets",
+            "description": "Stop running your floor on yesterday's data. Eliminate paper tickets and the morning scramble for numbers."
+        },
+        "erp": {
+            "title": "The ERP Alternative",
+            "description": "Skip the $100k SAP implementation. LineSight works with the tablets you already own, deploying in days, not months."
+        },
+        "accountability": {
+            "title": "Operator Accountability",
+            "description": "Track piece-rates, efficiency, and bottlenecks down to the individual operator level."
+        }
+    },
+    "social": {
+        "quote": "LineSight gave us visibility we didn't know we were missing. We cut our downtime by 20% in the first month.",
+        "author": "Sarah Chen",
+        "role": "Plant Manager, TexTech Industries"
+    },
+    "social_proof": {
+        "quote_part1": "We've run on spreadsheets for over 15 years, and honestly, a six-figure ERP felt like overkill for a team that just wanted better visibility.",
+        "quote_part2": "This was the perfect upgrade—it gave us the 'live' data we were missing without forcing us to change how we run our business.",
+        "attribution_role": "Operations Director",
+        "attribution_company": "Three Stars Fashion"
+    },
+    "features": {
+        "realtime": {
+            "title": "Real-Time Dashboard",
+            "desc": "Live view of every sewing line performance."
+        },
+        "operator": {
+            "title": "Operator Performance",
+            "desc": "Individual efficiency tracking and incentives."
+        },
+        "inventory": {
+            "title": "WIP Tracking",
+            "desc": "Track bundles as they move through the floor."
+        }
+    },
+    "pricing": {
+        "title": "Simple pricing for",
+        "title_accent": "modern factories.",
+        "subtitle": "Start small and scale as you digitize more lines.",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save_badge": "Save 20%",
+        "plans": {
+            "starter": {
+                "name": "Starter",
+                "description": "Perfect for small pilot lines.",
+                "features": [
+                    "Up to 5 sewing lines",
+                    "Basic Reporting",
+                    "7-day Data Retention",
+                    "Email Support"
+                ],
+                "cta": "Start Free Trial"
+            },
+            "pro": {
+                "name": "Professional",
+                "description": "For growing factories needing full visibility.",
+                "features": [
+                    "Up to 20 sewing lines",
+                    "Advanced Analytics",
+                    "30-day Data Retention",
+                    "Priority Support",
+                    "Operator Tablets"
+                ],
+                "cta": "Upgrade to Team"
+            },
+            "enterprise": {
+                "name": "Enterprise",
+                "description": "Full digitization for large facilities.",
+                "cta": "Contact Sales",
+                "features": [
+                    "Unlimited lines",
+                    "Custom ERP Integration",
+                    "Unlimited History",
+                    "Dedicated Success Manager",
+                    "SLA Guarantee"
+                ]
+            }
+        }
+    },
+    "demo": {
+        "title": "Your Factory,",
+        "title_accent": "Digitized.",
+        "subtitle": "Experience the interface that's replacing spreadsheets in 40+ facilities. Real-time monitoring, auto-generated reports, and zero latency.",
+        "cta": "Try Live Demo",
+        "stats": {
+            "label": "Real-time Efficiency",
+            "value": "94.2%",
+            "change": "+2.1%"
+        }
+    },
+    "waitlist": {
+        "title": "Get early access.",
+        "subtitle": "We are rolling out access gradually. Secure your spot in line today.",
+        "placeholder": "name@company.com",
+        "cta": "Join Waitlist",
+        "cta_loading": "Joining...",
+        "helper": "Get early access before we launch publicly.",
+        "success": {
+            "title": "You're on the list!",
+            "subtitle": "We'll keep you posted at",
+            "vip_title": "You have 3 VIP invitations",
+            "vip_desc": "Extend early access to colleagues in manufacturing, operations, or supply chain. Referred users skip the waitlist but won't receive VIP invitations.",
+            "referral_note": "Referred colleagues skip the waitlist and get immediate early access.",
+            "error_exists": "This email is already on the list!",
+            "error_generic": "Something went wrong. Please try again."
+        }
+    },
+    "cta": {
+        "title": "Ready to digitize your floor?",
+        "subtitle": "Join 40+ factories reducing downtime by an average of 18% in the first 90 days.",
+        "button": "Get Started Now"
+    },
+    "footer": {
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "api": "API",
+        "copyright": "© 2026 LineSight"
+    }
+}

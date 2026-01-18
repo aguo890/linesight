@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Jetzt starten",
+    "subtitle": "Schließen Sie sich über 40 Fabriken an, die ihre Ausfallzeiten in den ersten 90 Tagen um durchschnittlich 18% reduzieren.",
+    "title": "Bereit, Ihre Fabrikhalle zu digitalisieren?"
+  },
+  "demo": {
+    "cta": "Live-Demo testen",
+    "stats": {
+      "change": "+2.1%",
+      "label": "Echtzeit-Effizienz",
+      "value": "94.2%"
+    },
+    "subtitle": "Erleben Sie die Schnittstelle, die Tabellenkalkulationen in über 40 Einrichtungen ersetzt. Echtzeit-Überwachung, automatisch generierte Berichte und null Latenz.",
+    "title": "Ihre Fabrik,",
+    "title_accent": "Digitalisiert."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Verfolgen Sie Bündel auf ihrem Weg durch die Halle.",
+      "title": "WIP-Verfolgung"
+    },
+    "operator": {
+      "desc": "Individuelle Effizienzverfolgung und Anreize.",
+      "title": "Bedienerleistung"
+    },
+    "realtime": {
+      "desc": "Live-Ansicht der Leistung jeder Nählinie.",
+      "title": "Echtzeit-Dashboard"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Datenschutz",
+    "terms": "AGB"
+  },
+  "hero": {
+    "badge": "Live-Produktionsverfolgung",
+    "cta_demo": "Demo ansehen",
+    "cta_trial": "Kostenlose Testversion",
+    "cta_waitlist": "Warteliste beitreten",
+    "headline": "ELIMINIEREN SIE",
+    "headline_accent": "AUSFALLZEITEN.",
+    "subheadline": "Erhalten Sie Echtzeit-Einblicke in jedes Bündel, jeden Bediener und jede Nählinie – ohne die 6-monatige ERP-Einrichtung."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "get_started": "Loslegen",
+    "join_waitlist": "Warteliste beitreten",
+    "platform": "Plattform",
+    "pricing": "Preise",
+    "sign_in": "Anmelden"
+  },
+  "pricing": {
+    "monthly": "Monatlich",
+    "plans": {
+      "enterprise": {
+        "cta": "Vertrieb kontaktieren",
+        "description": "Vollständige Digitalisierung für große Einrichtungen.",
+        "features": [
+          "Unbegrenzte Linien",
+          "Benutzerdefinierte ERP-Integration",
+          "Unbegrenzter Verlauf",
+          "Dedizierter Success Manager",
+          "SLA-Garantie"
+        ],
+        "name": "Enterprise"
+      },
+      "pro": {
+        "cta": "Auf Team upgraden",
+        "description": "Für wachsende Fabriken, die volle Transparenz benötigen.",
+        "features": [
+          "Bis zu 20 Nählinien",
+          "Erweiterte Analysen",
+          "30 Tage Datenaufbewahrung",
+          "Priorisierter Support",
+          "Bediener-Tablets"
+        ],
+        "name": "Professional"
+      },
+      "starter": {
+        "cta": "Kostenlos testen",
+        "description": "Perfekt für kleine Pilotlinien.",
+        "features": [
+          "Bis zu 5 Nählinien",
+          "Basis-Berichterstattung",
+          "7 Tage Datenaufbewahrung",
+          "E-Mail-Support"
+        ],
+        "name": "Starter"
+      }
+    },
+    "save_badge": "20% sparen",
+    "subtitle": "Fangen Sie klein an und skalieren Sie, während Sie mehr Linien digitalisieren.",
+    "title": "Einfache Preise für",
+    "title_accent": "moderne Fabriken.",
+    "yearly": "Jährlich"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Verfolgen Sie Stückraten, Effizienz und Engpässe bis auf die Ebene des einzelnen Bedieners.",
+      "title": "Bedienerverantwortung"
+    },
+    "erp": {
+      "description": "Überspringen Sie die 100.000 $ teure SAP-Implementierung. LineSight funktioniert mit den Tablets, die Sie bereits besitzen, und wird in Tagen statt Monaten bereitgestellt.",
+      "title": "Die ERP-Alternative"
+    },
+    "spreadsheets": {
+      "description": "Hören Sie auf, Ihre Halle mit den Daten von gestern zu betreiben. Eliminieren Sie Papiertickets und das morgendliche Gerangel um Zahlen.",
+      "title": "Tabellenkalkulationen abschaffen"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight gab uns Einblicke, von denen wir nicht wussten, dass sie uns fehlten. Wir haben unsere Ausfallzeiten im ersten Monat um 20% reduziert.",
+    "role": "Werksleiterin, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Betriebsleiter",
+    "quote_part1": "Wir haben über 15 Jahre lang mit Tabellenkalkulationen gearbeitet, und ehrlich gesagt fühlte sich ein sechsstelliges ERP für ein Team, das nur bessere Sichtbarkeit wollte, übertrieben an.",
+    "quote_part2": "Das war das perfekte Upgrade – es gab uns die 'Live'-Daten, die uns fehlten, ohne uns zu zwingen, unsere Arbeitsweise zu ändern."
+  },
+  "trust": {
+    "powering": "Antrieb für die Fertigung von"
+  },
+  "waitlist": {
+    "cta": "Warteliste beitreten",
+    "cta_loading": "Beitreten...",
+    "helper": "Erhalten Sie frühen Zugang, bevor wir öffentlich starten.",
+    "placeholder": "name@firma.com",
+    "subtitle": "Wir geben den Zugang schrittweise frei. Sichern Sie sich noch heute Ihren Platz in der Schlange.",
+    "success": {
+      "error_exists": "Diese E-Mail ist bereits auf der Liste!",
+      "error_generic": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.",
+      "referral_note": "Empfohlene Kollegen überspringen die Warteliste und erhalten sofortigen frühen Zugang.",
+      "subtitle": "Wir halten Sie auf dem Laufenden unter",
+      "title": "Sie sind auf der Liste!",
+      "vip_desc": "Erweitern Sie den frühen Zugang auf Kollegen in Produktion, Betrieb oder Supply Chain. Geworbene Benutzer überspringen die Warteliste, erhalten jedoch keine VIP-Einladungen.",
+      "vip_title": "Sie haben 3 VIP-Einladungen"
+    },
+    "title": "Erhalten Sie frühen Zugang."
+  }
+}

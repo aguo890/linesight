@@ -1,7 +1,8 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
 import { OrganizationProvider } from './contexts/OrganizationContext';
 import { Suspense, lazy } from 'react';
 import { useAuth } from './hooks/useAuth';
+import { LanguageWrapper } from './components/routing/LanguageWrapper';
 
 // Lazy load pages for code splitting
 const LandingPage = lazy(() => import('./features/landing/pages/LandingPage'));
@@ -61,26 +62,39 @@ import ErrorPage from './components/ErrorPage';
 
 // Router configuration
 const router = createBrowserRouter([
+    // === PUBLIC ROUTES WITH LOCALE PREFIX ===
+    // Root redirects to default locale (English)
     {
         path: '/',
-        element: (
-            <Suspense fallback={<PageLoader />}>
-                <LandingPage />
-            </Suspense>
-        ),
-        errorElement: <ErrorPage />,
+        element: <Navigate to="/en" replace />,
     },
+    // Locale-prefixed public routes (/:lang)
     {
-        path: '/login',
-        element: (
-            <PublicRoute>
-                <Suspense fallback={<PageLoader />}>
-                    <LoginPage />
-                </Suspense>
-            </PublicRoute>
-        ),
+        path: '/:lang',
+        element: <LanguageWrapper />,
         errorElement: <ErrorPage />,
+        children: [
+            {
+                index: true,
+                element: (
+                    <Suspense fallback={<PageLoader />}>
+                        <LandingPage />
+                    </Suspense>
+                ),
+            },
+            {
+                path: 'login',
+                element: (
+                    <PublicRoute>
+                        <Suspense fallback={<PageLoader />}>
+                            <LoginPage />
+                        </Suspense>
+                    </PublicRoute>
+                ),
+            },
+        ],
     },
+    // === PROTECTED APP ROUTES (No locale prefix - uses user preference) ===
     {
         path: '/profile',
         element: (

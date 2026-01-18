@@ -1,9 +1,13 @@
 # LineSight Factory Excel Manager - Project Automation
-BACKEND_VENV_PYTHON = backend\venv\Scripts\python
-COMPOSE_FILE := docker-compose.yml
-SERVICE_NAME := backend
 
-.PHONY: default dev run sync sync-check check check-backend check-frontend setup help clean push push-quick migrate branch reconcile reconcile-dry
+# Variables
+COMPOSE_FILE := docker-compose.yml
+# Default service for shell command
+SERVICE ?= backend
+# Use system python for utility scripts (cross-platform)
+PYTHON_CMD := python
+
+.PHONY: default dev up down restart logs shell clean setup help push push-quick migrate branch reconcile reconcile-dry sync-check test test-cov lint lint-fix format check
 
 # Default: List available commands
 default: help
@@ -13,126 +17,135 @@ help:
 	@echo "  LineSight Factory Manager"
 	@echo "  ========================="
 	@echo ""
-	@echo "  Key Workflows:"
-	@echo "    make setup          - FRESH START: Down, Build, Up, Migrate (Data Loss!)"
-	@echo "    make dev            - Daily startup (Docker up + Frontend sync)"
-	@echo "    make migrate        - Generate new Alembic migration (auto)"
-	@echo "    make reconcile      - Sync PROJECT_BOARD.md with Git (DeepSeek)"
+	@echo "  Primary Commands:"
+	@echo "    make up       : Start the app in background (detached)"
+	@echo "    make down     : Stop the app"
+	@echo "    make logs     : Tail logs (Ctrl+C to exit)"
+	@echo "    make shell    : Enter container shell (default: backend)"
+	@echo "    make clean    : Deep clean (removes data/images)"
+	@echo "    make dev      : Start up + Follow logs (Legacy/Convenience)"
 	@echo ""
-	@echo "  Legacy/Dev:"
-	@echo "    make run            - Frontend only"
-	@echo "    make check          - Run items"
+	@echo "  Project Workflows:"
+	@echo "    make setup    : FRESH START (Down, Build, Up, Migrate)"
+	@echo "    make migrate  : Generate new Alembic migration"
+	@echo "    make reconcile: Sync PROJECT_BOARD.md with Git"
+	@echo "    make push     : Reconcile + Push"
 	@echo ""
 
-# ============================================================================
-# CORE WORKFLOWS (DOCKER FIRST)
-# ============================================================================
+# ==========================================
+# Core Lifecycle (Intent-Based)
+# ==========================================
 
-# 1. Setup - The "Fresh Start" command
+.PHONY: up
+up:
+	@echo "🚀 Starting services in background..."
+	# We use --remove-orphans to keep the network clean
+	docker compose up -d --build --remove-orphans
+	@echo "✅ App is running in background. Run 'make logs' to watch."
+
+.PHONY: down
+down:
+	@echo "🛑 Stopping services..."
+	docker compose down
+
+.PHONY: restart
+restart: down up
+
+# ==========================================
+# Interaction & Debugging
+# ==========================================
+
+.PHONY: logs
+logs:
+	# -f follows the log output
+	docker compose logs -f
+
+.PHONY: shell
+shell:
+	# Allows passing specific service, e.g., 'make shell SERVICE=postgres'
+	@echo "🐚 Entering shell for $(SERVICE)..."
+	docker compose exec $(SERVICE) /bin/bash
+
+# ==========================================
+# Maintenance
+# ==========================================
+
+.PHONY: clean
+clean:
+	@$(PYTHON_CMD) scripts/utils.py clean_confirm
+	# -v removes volumes, --rmi local removes images built locally
+	docker compose down -v --rmi local
+	@echo "✨ Environment cleaned."
+
+# ==========================================
+# Workflows / Wrappers
+# ==========================================
+
+# 1. Dev - "Daily Driver"
+# Starts app -> Syncs API types -> Tails logs
+dev: up wait-healthy sync-check logs
+
+# 2. Setup - The "Fresh Start" command
 # Stops everything, removes volumes (cleans DB), rebuilds, starts, and migrates.
 setup:
 	@echo ""
 	@echo "🛑 Stopping containers and removing volumes..."
-	docker-compose down -v
+	docker compose down -v
 	@echo ""
 	@echo "🏗️  Building containers..."
-	docker-compose build
+	docker compose build
 	@echo ""
 	@echo "🚀 Starting services..."
-	docker-compose up -d
+	docker compose up -d
 	@echo ""
 	@echo "⏳ Waiting for Postgres to be ready (5s)..."
-	@timeout /t 5 /nobreak > nul
+	@$(PYTHON_CMD) scripts/utils.py wait_port localhost 5434
 	@echo ""
 	@echo "🔄 Running migrations..."
-	docker-compose exec $(SERVICE_NAME) alembic upgrade head
+	docker compose exec backend alembic upgrade head
 	@echo ""
 	@echo "✅ Setup complete! App is running at http://localhost:5173"
-
-# 2. Dev - Standard daily workflow
-# Starts containers, syncs API types, then shows logs
-dev:
-	@echo ""
-	@echo "🚀 Starting Docker Containers (Recreating)..."
-	docker-compose up -d --force-recreate
-	@echo ""
-	@echo "⏳ Waiting for API to be ready (3s)..."
-	@timeout /t 3 /nobreak > nul
-	@$(MAKE) sync-check
-	@echo ""
-	@echo "   Backend:  http://localhost:8000"
-	@echo "   Frontend: http://localhost:5173"
-	@echo ""
-	@echo "📝 Showing logs (press Ctrl+C to exit logs, containers keep running)..."
-	docker-compose logs -f backend frontend
 
 # 3. Migrate - Generate new migrations
 migrate:
 	@echo ""
 	@echo "🐘 Generating Migration..."
-	@docker-compose exec $(SERVICE_NAME) alembic revision --autogenerate -m "auto_migration"
+	docker compose exec backend alembic revision --autogenerate -m "auto_migration"
 	@echo "✅ Migration created! Check backend/alembic/versions"
 
-# 4. Clean - Deep clean
-clean:
-	@echo ""
-	@echo "🧹 Deep cleaning..."
-	docker-compose down -v
-	@echo "✅ Environment cleaned."
-
-# 5. Seed - Populate Database
+# 4. Seed - Populate Database
 seed:
 	@echo "🌱 Seeding database (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) python seed_cli.py
+	docker compose exec backend python seed_cli.py
 
-# ============================================================================
-# LEGACY & UTILITY COMMANDS (Kept for compatibility)
-# ============================================================================
+# ==========================================
+# PROJECT MANAGEMENT
+# ==========================================
 
-# 5. Testing & Quality
-test:
-	@echo "🧪 Running Tests (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) pytest
+# V2 Code-First Reconciliation
+reconcile:
+	@echo ""
+	@echo "🔍 Running V2 Code-First Reconciliation..."
+	@$(PYTHON_CMD) scripts/reconcile/reconcile_board.py --days 14
+	@echo ""
 
-test-cov:
-	@echo "📊 Running Tests with Coverage (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) pytest --cov=app --cov-report=term-missing
+# Dry-run reconciliation
+reconcile-dry:
+	@echo ""
+	@echo "🔍 Running Reconciliation (Dry Run)..."
+	@$(PYTHON_CMD) scripts/reconcile/reconcile_board.py --days 14 --dry-run
+	@echo ""
 
-lint:
-	@echo "🎨 Linting (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) ruff check .
-
-lint-fix:
-	@echo "🔧 Fixing Lint Errors (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) ruff check . --fix
-
-format:
-	@echo "✨ Formatting Code (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) ruff format .
-
-check:
-	@echo "✅ Running Full Check (in Docker)..."
-	docker-compose exec $(SERVICE_NAME) sh -c "ruff check . && ruff format . --check && mypy app"
-
-run: sync-check
-	cd frontend && npm run dev
-
-sync-check:
-	@echo "🔄 Syncing API types..."
-	@cd frontend && npm run extract-schema 2>nul || (echo "⚠️ Schema failed" && exit /b 1)
-	@cd frontend && npm run generate-api 2>nul
-	@echo "✅ Types synced."
-
-# Push to GitHub - Reconciles board first to prevent drift
-push: reconcile-dry ## 🛡️ Reconcile board, then push (Prevents Ghost Work)
+# Push to GitHub
+push: reconcile-dry ## 🛡️ Reconcile board, then push
 	@echo ""
 	@echo "✅ Board verified. Running smart push..."
-	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
+	@$(PYTHON_CMD) scripts/autocommit.py
 
-# Quick push - Skip reconciliation (use sparingly!)
+# Quick push
 push-quick:
 	@echo "⚡ Quick push (skipping reconciliation)..."
-	@$(BACKEND_VENV_PYTHON) scripts/autocommit.py
+	@$(PYTHON_CMD) scripts/autocommit.py
 
 # Create a new branch
 ifeq (branch,$(firstword $(MAKECMDGOALS)))
@@ -146,21 +159,40 @@ branch:
 	@git checkout -b $(BRANCH_ARGS)
 	@git push --set-upstream origin $(BRANCH_ARGS)
 
-# ============================================================================
-# PROJECT MANAGEMENT
-# ============================================================================
+# ==========================================
+# LEGACY & UTILITY COMMANDS
+# ==========================================
 
-# V2 Code-First Reconciliation - Verifies board against ACTUAL code, not just commits
-reconcile:
-	@echo ""
-	@echo "🔍 Running V2 Code-First Reconciliation..."
-	@echo "   (Commits are claims, code is truth)"
-	@$(BACKEND_VENV_PYTHON) scripts/reconcile/reconcile_board.py --days 14
-	@echo ""
+wait-healthy:
+	# Waits until localhost:8000 is actually accepting connections
+	@$(PYTHON_CMD) scripts/utils.py wait_port localhost 8000
 
-# Dry-run reconciliation (report only, no changes)
-reconcile-dry:
-	@echo ""
-	@echo "🔍 Running Reconciliation (Dry Run)..."
-	@$(BACKEND_VENV_PYTHON) scripts/reconcile/reconcile_board.py --days 14 --dry-run
-	@echo ""
+sync-check:
+	@echo "🔄 Syncing API types..."
+	@cd frontend && npm run extract-schema || (echo "⚠️ Schema failed" && exit 1)
+	@cd frontend && npm run generate-api
+	@echo "✅ Types synced."
+
+test:
+	@echo "🧪 Running Tests (in Docker)..."
+	docker compose exec backend pytest
+
+test-cov:
+	@echo "📊 Running Tests with Coverage (in Docker)..."
+	docker compose exec backend pytest --cov=app --cov-report=term-missing
+
+lint:
+	@echo "🎨 Linting (in Docker)..."
+	docker compose exec backend ruff check .
+
+lint-fix:
+	@echo "🔧 Fixing Lint Errors (in Docker)..."
+	docker compose exec backend ruff check . --fix
+
+format:
+	@echo "✨ Formatting Code (in Docker)..."
+	docker compose exec backend ruff format .
+
+check:
+	@echo "✅ Running Full Check (in Docker)..."
+	docker compose exec backend sh -c "ruff check . && ruff format . --check && mypy app"

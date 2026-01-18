@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Begin Nu",
+    "subtitle": "Sluit je aan bij meer dan 40 fabrieken die de uitvaltijd in de eerste 90 dagen met gemiddeld 18% verminderen.",
+    "title": "Klaar om je vloer te digitaliseren?"
+  },
+  "demo": {
+    "cta": "Probeer Live Demo",
+    "stats": {
+      "change": "+2.1%",
+      "label": "Real-time Efficiëntie",
+      "value": "94.2%"
+    },
+    "subtitle": "Ervaar de interface die spreadsheets vervangt in meer dan 40 faciliteiten. Real-time monitoring, automatisch gegenereerde rapporten en nul latentie.",
+    "title": "Jouw Fabriek,",
+    "title_accent": "Gedigitaliseerd."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Volg bundels terwijl ze door de vloer bewegen.",
+      "title": "WIP Tracking"
+    },
+    "operator": {
+      "desc": "Individuele efficiëntie tracking en incentives.",
+      "title": "Operator Prestaties"
+    },
+    "realtime": {
+      "desc": "Live overzicht van elke naailijn prestatie.",
+      "title": "Real-time Dashboard"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Privacy",
+    "terms": "Voorwaarden"
+  },
+  "hero": {
+    "badge": "Live Productie Tracking",
+    "cta_demo": "Bekijk Demo",
+    "cta_trial": "Start Gratis Proefversie",
+    "cta_waitlist": "Word lid van de Wachtlijst",
+    "headline": "ELIMINEER",
+    "headline_accent": "UITVALTIJD.",
+    "subheadline": "Krijg real-time inzicht in elke bundel, operator en naailijn - zonder de 6 maanden ERP-setup."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "get_started": "Beginnen",
+    "join_waitlist": "Word lid van de lijst",
+    "platform": "Platform",
+    "pricing": "Prijzen",
+    "sign_in": "Inloggen"
+  },
+  "pricing": {
+    "monthly": "Maandelijks",
+    "plans": {
+      "enterprise": {
+        "cta": "Neem contact op met Sales",
+        "description": "Volledige digitalisering voor grote faciliteiten.",
+        "features": [
+          "Onbeperkte lijnen",
+          "Aangepaste ERP-integratie",
+          "Onbeperkte geschiedenis",
+          "Toegewijde Success Manager",
+          "SLA-garantie"
+        ],
+        "name": "Enterprise"
+      },
+      "pro": {
+        "cta": "Upgrade naar Team",
+        "description": "Voor groeiende fabrieken die volledig zicht nodig hebben.",
+        "features": [
+          "Tot 20 naailijnen",
+          "Geavanceerde Analytics",
+          "30 dagen gegevensbewaring",
+          "Prioriteitsondersteuning",
+          "Operator Tablets"
+        ],
+        "name": "Professional"
+      },
+      "starter": {
+        "cta": "Start Gratis Proefversie",
+        "description": "Perfect voor kleine proeflijnen.",
+        "features": [
+          "Tot 5 naailijnen",
+          "Basisrapportage",
+          "7 dagen gegevensbewaring",
+          "E-mailondersteuning"
+        ],
+        "name": "Starter"
+      }
+    },
+    "save_badge": "Bespaar 20%",
+    "subtitle": "Begin klein en schaal op naarmate u meer lijnen digitaliseert.",
+    "title": "Eenvoudige prijzen voor",
+    "title_accent": "moderne fabrieken.",
+    "yearly": "Jaarlijks"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Volg stuktarieven, efficiëntie en knelpunten tot op het individuele operatorniveau.",
+      "title": "Operator Verantwoordelijkheid"
+    },
+    "erp": {
+      "description": "Sla de SAP-implementatie van $100k over. LineSight werkt met de tablets die u al bezit en wordt in dagen uitgerold, niet in maanden.",
+      "title": "Het ERP-alternatief"
+    },
+    "spreadsheets": {
+      "description": "Stop met het runnen van uw vloer op de gegevens van gisteren. Elimineer papieren tickets en het ochtendgevecht om cijfers.",
+      "title": "Weg met Spreadsheets"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight gaf ons de zichtbaarheid waarvan we niet wisten dat we die misten. We hebben onze uitvaltijd in de eerste maand met 20% verminderd.",
+    "role": "Plant Manager, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Operationeel Directeur",
+    "quote_part1": "We werken al meer dan 15 jaar met spreadsheets en eerlijk gezegd voelde een ERP van zes cijfers als overkill voor een team dat gewoon beter zicht wilde.",
+    "quote_part2": "Dit was de perfecte upgrade - het gaf ons de 'live' data die we misten zonder ons te dwingen de manier waarop we ons bedrijf runnen te veranderen."
+  },
+  "trust": {
+    "powering": "Productie aandrijven voor"
+  },
+  "waitlist": {
+    "cta": "Word lid van de Wachtlijst",
+    "cta_loading": "Lid worden...",
+    "helper": "Krijg vroege toegang voordat we publiekelijk lanceren.",
+    "placeholder": "naam@bedrijf.com",
+    "subtitle": "We rollen de toegang geleidelijk uit. Verzeker vandaag nog je plek in de rij.",
+    "success": {
+      "error_exists": "Deze e-mail staat al op de lijst!",
+      "error_generic": "Er is iets misgegaan. Probeer het opnieuw.",
+      "referral_note": "Verwezen collega's slaan de wachtlijst over en krijgen direct vroege toegang.",
+      "subtitle": "We houden je op de hoogte op",
+      "title": "Je staat op de lijst!",
+      "vip_desc": "Breid vroege toegang uit naar collega's in productie, operaties of supply chain. Verwezen gebruikers slaan de wachtlijst over maar ontvangen geen VIP-uitnodigingen.",
+      "vip_title": "Je hebt 3 VIP-uitnodigingen"
+    },
+    "title": "Krijg vroege toegang."
+  }
+}

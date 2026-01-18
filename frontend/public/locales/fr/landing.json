@@ -1,0 +1,145 @@
+{
+  "cta": {
+    "button": "Commencer maintenant",
+    "subtitle": "Rejoignez plus de 40 usines réduisant les temps d'arrêt de 18 % en moyenne au cours des 90 premiers jours.",
+    "title": "Prêt à numériser votre atelier ?"
+  },
+  "demo": {
+    "cta": "Essayer la démo en direct",
+    "stats": {
+      "change": "+2,1 %",
+      "label": "Efficacité en temps réel",
+      "value": "94,2 %"
+    },
+    "subtitle": "Découvrez l'interface qui remplace les feuilles de calcul dans plus de 40 installations. Surveillance en temps réel, rapports générés automatiquement et latence nulle.",
+    "title": "Votre usine,",
+    "title_accent": "Numérisée."
+  },
+  "features": {
+    "inventory": {
+      "desc": "Suivez les paquets lorsqu'ils se déplacent dans l'atelier.",
+      "title": "Suivi des encours (WIP)"
+    },
+    "operator": {
+      "desc": "Suivi de l'efficacité individuelle et incitations.",
+      "title": "Performance des opérateurs"
+    },
+    "realtime": {
+      "desc": "Vue en direct des performances de chaque ligne de couture.",
+      "title": "Tableau de bord en temps réel"
+    }
+  },
+  "footer": {
+    "api": "API",
+    "copyright": "© 2026 LineSight",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
+  },
+  "hero": {
+    "badge": "Suivi de production en direct",
+    "cta_demo": "Voir la démo",
+    "cta_trial": "Essai gratuit",
+    "cta_waitlist": "Rejoindre la liste d'attente",
+    "headline": "ÉLIMINEZ LES",
+    "headline_accent": "TEMPS D'ARRÊT.",
+    "subheadline": "Obtenez une visibilité en temps réel sur chaque paquet, opérateur et ligne de couture, sans la configuration ERP de 6 mois."
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "get_started": "Commencer",
+    "join_waitlist": "Rejoindre la liste",
+    "platform": "Plateforme",
+    "pricing": "Tarifs",
+    "sign_in": "Se connecter"
+  },
+  "pricing": {
+    "monthly": "Mensuel",
+    "plans": {
+      "enterprise": {
+        "cta": "Contacter les ventes",
+        "description": "Numérisation complète pour les grandes installations.",
+        "features": [
+          "Lignes illimitées",
+          "Intégration ERP personnalisée",
+          "Historique illimité",
+          "Responsable de la réussite dédié",
+          "Garantie SLA"
+        ],
+        "name": "Entreprise"
+      },
+      "pro": {
+        "cta": "Passer à l'équipe",
+        "description": "Pour les usines en croissance nécessitant une visibilité totale.",
+        "features": [
+          "Jusqu'à 20 lignes de couture",
+          "Analytique avancée",
+          "Rétention des données de 30 jours",
+          "Support prioritaire",
+          "Tablettes opérateurs"
+        ],
+        "name": "Professionnel"
+      },
+      "starter": {
+        "cta": "Démarrer l'essai gratuit",
+        "description": "Parfait pour les petites lignes pilotes.",
+        "features": [
+          "Jusqu'à 5 lignes de couture",
+          "Rapports de base",
+          "Rétention des données de 7 jours",
+          "Support par e-mail"
+        ],
+        "name": "Démarrage"
+      }
+    },
+    "save_badge": "Économisez 20 %",
+    "subtitle": "Commencez petit et évoluez à mesure que vous numérisez plus de lignes.",
+    "title": "Tarification simple pour",
+    "title_accent": "les usines modernes.",
+    "yearly": "Annuel"
+  },
+  "problems": {
+    "accountability": {
+      "description": "Suivez les tarifs à la pièce, l'efficacité et les goulots d'étranglement jusqu'au niveau de l'opérateur individuel.",
+      "title": "Responsabilité de l'opérateur"
+    },
+    "erp": {
+      "description": "Évitez la mise en œuvre de SAP à 100 000 $. LineSight fonctionne avec les tablettes que vous possédez déjà et se déploie en quelques jours, pas en quelques mois.",
+      "title": "L'alternative ERP"
+    },
+    "spreadsheets": {
+      "description": "Arrêtez de gérer votre atelier avec les données d'hier. Éliminez les tickets papier et la course aux chiffres du matin.",
+      "title": "Tuer les feuilles de calcul"
+    }
+  },
+  "social": {
+    "author": "Sarah Chen",
+    "quote": "LineSight nous a donné une visibilité dont nous ignоrions l'absence. Nous avons réduit nos temps d'arrêt de 20 % le premier mois.",
+    "role": "Directrice d'usine, TexTech Industries"
+  },
+  "social_proof": {
+    "attribution_company": "Three Stars Fashion",
+    "attribution_role": "Directeur des opérations",
+    "quote_part1": "Nous fonctionnons avec des feuilles de calcul depuis plus de 15 ans, et honnêtement, un ERP à six chiffres semblait excessif pour une équipe qui voulait juste une meilleure visibilité.",
+    "quote_part2": "C'était la mise à niveau parfaite : cela nous a donné les données « en direct » qui nous manquaient sans nous obliger à changer notre façon de gérer notre entreprise."
+  },
+  "trust": {
+    "powering": "Propulser la fabrication pour"
+  },
+  "waitlist": {
+    "cta": "Rejoindre la liste d'attente",
+    "cta_loading": "Inscription...",
+    "helper": "Obtenez un accès anticipé avant notre lancement public.",
+    "placeholder": "nom@entreprise.com",
+    "subtitle": "Nous déployons l'accès progressivement. Sécurisez votre place dans la file d'attente dès aujourd'hui.",
+    "success": {
+      "error_exists": "Cet e-mail est déjà sur la liste !",
+      "error_generic": "Une erreur s'est produite. Veuillez réessayer.",
+      "referral_note": "Les collègues parrainés sautent la liste d'attente et obtiennent un accès anticipé immédiat.",
+      "subtitle": "Nous vous tiendrons au courant à",
+      "title": "Vous êtes sur la liste !",
+      "vip_desc": "Étendez l'accès anticipé aux collègues de la fabrication, des opérations ou de la chaîne d'approvisionnement. Les utilisateurs parrainés sautent la liste d'attente mais ne recevront pas d'invitations VIP.",
+      "vip_title": "Vous avez 3 invitations VIP"
+    },
+    "title": "Obtenez un accès anticipé."
+  }
+}
