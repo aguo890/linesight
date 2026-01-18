@@ -30,6 +30,7 @@
 | DATA-001 | **Auto-Link Line Name** | P0 | M | ⬜ Todo | Extract "Line Name" from Excel content during upload |
 | DATA-002 | **Fix Malformed Widget Data** | P0 | M | ⬜ Todo | Add `line_id` synonym to `ProductionRun` model |
 | DATA-003 | **Verify Data Persistence** | P0 | S | ⬜ Todo | Test historical data availability |
+| DATA-004 | **Separate Analytics by Data Source** | P0 | M | ⬜ Todo | Dashboard currently aggregates ALL production runs instead of filtering by `data_source_id`. Analytics endpoints use `line_id` param but should filter on `ProductionRun.data_source_id`. Affected: `analytics.py` (all endpoints), `analytics_service.py` |
 
 ### 💀 Technical Debt: Missing Test Coverage (P0)
 > **⚠️ Warning:** These features exist in code but have NO test files.
@@ -309,6 +310,7 @@
 - [x] UI/UX: Manual popover positioning
 - [x] Settings: User preferences safe sync
 - [x] Localization: RTL support, Multi-language (8 langs)
+  > **📊 Note**: All graphs and charts are **LTR (left-to-right)** regardless of locale. Charts are NOT affected by RTL text direction.
 - [x] Testing: Profile page tests
 - [x] Waitlist Feature with Backend API
 - [x] Dark Mode Support

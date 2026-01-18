@@ -1,6 +1,8 @@
 import sys
 import time
 import socket
+import urllib.request
+import urllib.error
 
 def wait_for_port(host, port, timeout=30):
     """
@@ -22,6 +24,32 @@ def wait_for_port(host, port, timeout=30):
             time.sleep(1)
             print(".", end="", flush=True)
 
+
+def wait_for_http(url, timeout=60):
+    """
+    Wait for an HTTP endpoint to return a successful response.
+    This is more reliable than port checking for FastAPI apps that need
+    time to initialize routes and run startup events.
+    """
+    start_time = time.time()
+    print(f"⏳ Waiting for {url} to respond...", end="", flush=True)
+    
+    while True:
+        try:
+            req = urllib.request.Request(url, method='GET')
+            with urllib.request.urlopen(req, timeout=5) as response:
+                if response.status == 200:
+                    print(f"\n✅ API is ready!")
+                    return True
+        except (urllib.error.URLError, urllib.error.HTTPError, ConnectionResetError, 
+                ConnectionRefusedError, OSError) as e:
+            if time.time() - start_time > timeout:
+                print(f"\n❌ Timeout waiting for {url}")
+                print(f"   Last error: {e}")
+                sys.exit(1)
+            time.sleep(1)
+            print(".", end="", flush=True)
+
 def confirm_clean():
     """
     Cross-platform safety check for the clean command.
@@ -39,7 +67,7 @@ def confirm_clean():
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python utils.py [wait_port|clean_confirm] [args]")
+        print("Usage: python utils.py [wait_port|wait_http|clean_confirm] [args]")
         sys.exit(1)
 
     command = sys.argv[1]
@@ -49,6 +77,11 @@ if __name__ == "__main__":
         host = sys.argv[2] if len(sys.argv) > 2 else "localhost"
         port = sys.argv[3] if len(sys.argv) > 3 else "8000"
         wait_for_port(host, port)
+    
+    elif command == "wait_http":
+        # Usage: python utils.py wait_http http://localhost:8000/api/v1/health
+        url = sys.argv[2] if len(sys.argv) > 2 else "http://localhost:8000/api/v1/health"
+        wait_for_http(url)
     
     elif command == "clean_confirm":
         confirm_clean()

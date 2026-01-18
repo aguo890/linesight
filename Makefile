@@ -163,9 +163,9 @@ branch:
 # LEGACY & UTILITY COMMANDS
 # ==========================================
 
-# Waits until localhost:8000 is actually accepting connections
+# Waits until API is actually responding (not just port open)
 wait-healthy:
-	@$(PYTHON_CMD) scripts/utils.py wait_port localhost 8000
+	@$(PYTHON_CMD) scripts/utils.py wait_http http://localhost:8000/api/v1/openapi.json
 
 sync-check:
 	@echo "🔄 Syncing API types..."
