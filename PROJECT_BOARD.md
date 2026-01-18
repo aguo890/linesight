@@ -30,7 +30,7 @@
 | DATA-001 | **Auto-Link Line Name** | P0 | M | ⬜ Todo | Extract "Line Name" from Excel content during upload |
 | DATA-002 | **Fix Malformed Widget Data** | P0 | M | ⬜ Todo | Add `line_id` synonym to `ProductionRun` model |
 | DATA-003 | **Verify Data Persistence** | P0 | S | ⬜ Todo | Test historical data availability |
-| DATA-004 | **Separate Analytics by Data Source** | P0 | M | ⬜ Todo | Dashboard currently aggregates ALL production runs instead of filtering by `data_source_id`. Analytics endpoints use `line_id` param but should filter on `ProductionRun.data_source_id`. Affected: `analytics.py` (all endpoints), `analytics_service.py` |
+| DATA-004 | **Separate Analytics by Data Source** | P0 | M | ⬜ Todo | Dashboard aggregates ALL production runs instead of filtering by `data_source_id`. **Root Cause**: Code uses `ProductionRun.line_id` (non-existent alias) instead of `ProductionRun.data_source_id`. **Fix Locations**: `analytics_service.py` (L162, L195, L241, L354), `analytics.py` (L520 DHU, L580 SpeedQuality, L642 ComplexityStats, L719/755 Downtime). Some endpoints already fixed (L360, L374, L416 StyleProgress). |
 
 ### 💀 Technical Debt: Missing Test Coverage (P0)
 > **⚠️ Warning:** These features exist in code but have NO test files.
