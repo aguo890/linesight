@@ -18,7 +18,7 @@ from app.models.datasource import DataSource
 from app.models.factory import Factory
 from app.models import ProductionLine  # Alias for DataSource
 from app.models.raw_import import RawImport
-from app.models.user import Organization, SubscriptionTier, User
+from app.models.user import Organization, SubscriptionTier, User, UserScope
 
 router = APIRouter()
 
@@ -76,6 +76,9 @@ async def reset_state(
         # Delete Imports (and Staging)
         await db.execute(delete(RawImport))
 
+        # Delete User Scopes (member assignments to data sources/factories)
+        await db.execute(delete(UserScope))
+
         # Delete Data Sources (and mappings)
         await db.execute(delete(DataSource))
 
@@ -99,7 +102,7 @@ async def reset_state(
 
         return {
             "status": "success",
-            "message": "System state reset. Factories, Lines, Data Sources, and Files deleted.",
+            "message": "System state reset. Factories, Lines, Data Sources, Members, and Files deleted.",
         }
 
     except Exception as e:
