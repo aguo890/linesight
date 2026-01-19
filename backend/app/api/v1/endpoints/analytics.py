@@ -522,20 +522,26 @@ async def get_dhu_trend(
     result = await db.execute(query)
     rows = result.all()
 
-    data = []
+    # Map results by date for lookup
+    dhu_data_map = {}
     for row in rows:
         dhu = Decimal(0)
         if row.total_checked > 0:
             dhu = (Decimal(row.total_defects) / Decimal(row.total_checked)) * 100
+        dhu_data_map[row.report_date] = round(dhu, 1)
 
+    # Iterate through ALL dates in range (matching production-chart/speed-quality behavior)
+    data = []
+    current = query_start
+    while current <= effective_date:
+        dhu_value = dhu_data_map.get(current, Decimal(0))
         data.append(
             DhuPoint(
-                date=row.report_date
-                if isinstance(row.report_date, str)
-                else row.report_date.strftime("%Y-%m-%d"),
-                dhu=round(dhu, 1),
+                date=current.strftime("%Y-%m-%d"),
+                dhu=dhu_value,
             )
         )
+        current += timedelta(days=1)
 
     return data
 
