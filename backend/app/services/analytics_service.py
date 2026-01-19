@@ -159,7 +159,7 @@ class AnalyticsService:
 
         # Only add line_id filter if explicitly provided
         if line_id:
-            query = query.where(ProductionRun.line_id == line_id)
+            query = query.where(ProductionRun.data_source_id == line_id)
 
         result = await self.db.execute(query)
         logs = result.scalars().all()
@@ -192,7 +192,7 @@ class AnalyticsService:
         ).where(func.date(ProductionRun.production_date) == ref_date)
 
         if line_id:
-            query = query.where(ProductionRun.line_id == line_id)
+            query = query.where(ProductionRun.data_source_id == line_id)
 
         result = await self.db.execute(query)
         stats = result.one()
@@ -238,7 +238,7 @@ class AnalyticsService:
             )
 
             if line_id:
-                query = query.where(ProductionRun.line_id == line_id)
+                query = query.where(ProductionRun.data_source_id == line_id)
 
             if start_time:
                 query = query.where(ProductionRun.production_date >= start_time.date())
@@ -351,7 +351,7 @@ class AnalyticsService:
 
                 # Only add line_id filter if explicitly provided
                 if line_id:
-                    query = query.where(ProductionRun.line_id == line_id)
+                    query = query.where(ProductionRun.data_source_id == line_id)
 
                 result = await self.db.execute(query)
                 runs = result.scalars().all()

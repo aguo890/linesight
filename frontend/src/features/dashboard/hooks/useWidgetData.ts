@@ -9,13 +9,14 @@ interface UseWidgetDataOptions<T = any> {
     filters: any;
     settings?: any;
     productionLineId?: string;
+    dataSourceId?: string;
     schema?: ZodSchema<T>;
     refreshInterval?: number;
     enabled?: boolean;
 }
 
 // Helper to map filters to API params (keep this logic centrally or moved to a utility)
-const mapFiltersToParams = (filters: any, productionLineId?: string): FilterParams => {
+const mapFiltersToParams = (filters: any, dataSourceId?: string): FilterParams => {
     const now = new Date();
     const dateFrom = filters.dateRange?.start
         ? filters.dateRange.start.toISOString().split('T')[0]
@@ -32,7 +33,7 @@ const mapFiltersToParams = (filters: any, productionLineId?: string): FilterPara
     else if (filters.shift === 'NIGHT') shift = 'Night';
 
     return {
-        line_id: productionLineId,
+        line_id: dataSourceId,
         date_from: dateFrom,
         date_to: dateTo,
         shift: shift,
@@ -42,7 +43,7 @@ const mapFiltersToParams = (filters: any, productionLineId?: string): FilterPara
 // Map dataId to endpoint path using centralized constants
 const ENDPOINT_MAP: Record<string, string> = {
     // Efficiency & Production
-    'production_hourly': ANALYTICS_ENDPOINTS.productionChart,
+    'production_history': ANALYTICS_ENDPOINTS.productionChart,
     'efficiency_trend': ANALYTICS_ENDPOINTS.overview,
     'efficiency_kpi': ANALYTICS_ENDPOINTS.overview, // Uses same endpoint as trend
     'realization_kpi': ANALYTICS_ENDPOINTS.targetRealization,
@@ -76,7 +77,7 @@ const getMockGeneratorForDataId = (dataId: string): ((filters: any) => any) => {
     // We can use the existing DATA_ADAPTERS logic or a simple switch here to break the dependency on the old file if we want
     // For safety and speed, let's map the ones we know
     const mapping: Record<string, (f: any) => any> = {
-        'production_hourly': mocks.getProductionData,
+        'production_history': mocks.getProductionData,
         'efficiency_trend': mocks.getEfficiencyData,
         'efficiency_kpi': mocks.getEfficiencyKpiData,
         'realization_kpi': mocks.getRealizationData,
@@ -101,18 +102,22 @@ export function useWidgetData<T = any>({
     filters,
     settings,
     productionLineId,
+    dataSourceId,
     schema,
     refreshInterval = 30000,
     enabled = true
 }: UseWidgetDataOptions<T>) {
 
-    // resolve dependencies
-    const params = mapFiltersToParams(filters, productionLineId);
+    // resolve dependencies - use dataSourceId for filtering (line_id param)
+    const params = mapFiltersToParams(filters, dataSourceId);
     const endpoint = dataId ? getEndpointForDataId(dataId) : undefined;
     const mockGenerator = dataId ? getMockGeneratorForDataId(dataId) : () => null;
 
+    // Debug: Log data source being fetched
+    console.log(`[DEBUG] Fetching Widget Data for Source: ${dataSourceId}`);
+
     const queryInfo = useQuery<ServiceResponse<T>, Error>({
-        queryKey: ['widgetData', dataId, filters, settings, productionLineId],
+        queryKey: ['widget-data', dataId, filters, settings, dataSourceId],
         queryFn: () => {
             if (!dataId) throw new Error("No Data ID provided");
             console.log(`[DEBUG][${dataId}] 🎣 Query Function Triggered`, { filters });

@@ -1,6 +1,6 @@
 # 🏭 LineSight Project Board
 
-> **Last Updated**: 2026-01-17
+> **Last Updated**: 2026-01-18
 > **Status**: Active Development
 > **Current Focus**: Frontend Testing & UI Polish
 > **Note**: PostgreSQL migration complete ✅ | Ingestion reliability implemented ✅
@@ -30,6 +30,7 @@
 | DATA-001 | **Auto-Link Line Name** | P0 | M | ⬜ Todo | Extract "Line Name" from Excel content during upload |
 | DATA-002 | **Fix Malformed Widget Data** | P0 | M | ⬜ Todo | Add `line_id` synonym to `ProductionRun` model |
 | DATA-003 | **Verify Data Persistence** | P0 | S | ⬜ Todo | Test historical data availability |
+| DATA-004 | **Separate Analytics by Data Source** | P0 | M | ⬜ Todo | Dashboard aggregates ALL production runs instead of filtering by `data_source_id`. **Root Cause**: Code uses `ProductionRun.line_id` (non-existent alias) instead of `ProductionRun.data_source_id`. **Fix Locations**: `analytics_service.py` (L162, L195, L241, L354), `analytics.py` (L520 DHU, L580 SpeedQuality, L642 ComplexityStats, L719/755 Downtime). Some endpoints already fixed (L360, L374, L416 StyleProgress). |
 
 ### 💀 Technical Debt: Missing Test Coverage (P0)
 > **⚠️ Warning:** These features exist in code but have NO test files.
@@ -55,6 +56,17 @@
 | BUG-BE-03 | **Fix Style Progress Data Mismatch**<br>Return Daily Actual vs Daily Target (not Cumulative) | P0 | M | ⬜ Todo | `getStyleProgress` |
 | REF-FE-01 | **Code Cleanup**<br>Remove debug logs (`console.group`) from `widgetDataService.ts` | P0 | S | ⬜ Todo | Tech debt |
 | REF-FE-04 | **Audit Widget Prop Passing**<br>Check `useWidgetData` props in all widgets (EarnedMinutes, Complexity, etc) | P0 | S | ⬜ Todo | Prevent silent mock fallback |
+| REF-BE-01 | **Modularize `analytics.py`**<br>Break up monolithic analytics module into smaller, focused modules | P1 | M | ⬜ Todo | Improve maintainability |
+
+### 📊 Analytics & API Refactoring (2026-01-18)
+> **Context**: Endpoint refactoring causing breaking changes.
+
+| Change | Old Endpoint | New Endpoint | Notes |
+|--------|--------------|--------------|-------|
+| DHU Quality | `/quality/dhu` | `/dhu` | Simplified path |
+| Speed vs Quality | `/speed-vs-quality` | `/speed-quality` | Simplified path |
+| Complexity Analysis | - | Added `line_id` param | New required parameter |
+| Error Handling | - | Improved | Better debug logging for production writers |
 
 ---
 
@@ -298,6 +310,7 @@
 - [x] UI/UX: Manual popover positioning
 - [x] Settings: User preferences safe sync
 - [x] Localization: RTL support, Multi-language (8 langs)
+  > **📊 Note**: All graphs and charts are **LTR (left-to-right)** regardless of locale. Charts are NOT affected by RTL text direction.
 - [x] Testing: Profile page tests
 - [x] Waitlist Feature with Backend API
 - [x] Dark Mode Support

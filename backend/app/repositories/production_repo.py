@@ -51,7 +51,7 @@ class ProductionRepository:
             Total actual quantity produced
         """
         query = select(func.sum(ProductionRun.actual_qty)).where(
-            ProductionRun.line_id == line_id,
+            ProductionRun.data_source_id == line_id,
             func.date(ProductionRun.production_date) == date_obj,
         )
         result = await self.db.execute(query)
@@ -87,7 +87,7 @@ class ProductionRepository:
         )
 
         if line_id:
-            query = query.where(ProductionRun.line_id == line_id)
+            query = query.where(ProductionRun.data_source_id == line_id)
 
         result = await self.db.execute(query)
         rows = result.all()
@@ -195,7 +195,7 @@ class ProductionRepository:
             func.date(ProductionRun.production_date) == today
         )
         if line_id:
-            check_runs = check_runs.where(ProductionRun.line_id == line_id)
+            check_runs = check_runs.where(ProductionRun.data_source_id == line_id)
 
         res_runs = await self.db.execute(check_runs)
         if (res_runs.scalar() or 0) > 0:
@@ -220,7 +220,7 @@ class ProductionRepository:
         # Latest Run Date (Already Factory Date)
         latest_run_q = select(func.max(func.date(ProductionRun.production_date)))
         if line_id:
-            latest_run_q = latest_run_q.where(ProductionRun.line_id == line_id)
+            latest_run_q = latest_run_q.where(ProductionRun.data_source_id == line_id)
         res_latest_run = await self.db.execute(latest_run_q)
         latest_run_date = res_latest_run.scalar()
         if isinstance(latest_run_date, str):
@@ -320,7 +320,7 @@ class ProductionRepository:
 
         # Apply line_id filter if provided
         if line_id:
-            stats_query = stats_query.where(ProductionRun.line_id == line_id)
+            stats_query = stats_query.where(ProductionRun.data_source_id == line_id)
 
         result = await self.db.execute(stats_query)
         stats = result.one()
@@ -382,7 +382,7 @@ class ProductionRepository:
         Returns:
             List of ProductionRun instances
         """
-        query = select(ProductionRun).where(ProductionRun.line_id == line_id)
+        query = select(ProductionRun).where(ProductionRun.data_source_id == line_id)
 
         if start_date:
             query = query.where(func.date(ProductionRun.production_date) >= start_date)
@@ -409,7 +409,7 @@ class ProductionRepository:
         if order_id:
             query = query.where(ProductionRun.order_id == order_id)
         if line_id:
-            query = query.where(ProductionRun.line_id == line_id)
+            query = query.where(ProductionRun.data_source_id == line_id)
         if date_from:
             query = query.where(func.date(ProductionRun.production_date) >= date_from)
         if date_to:

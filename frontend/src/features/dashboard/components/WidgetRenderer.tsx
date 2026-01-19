@@ -54,6 +54,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         filters: effectiveFilters,
         settings: widget.settings,
         productionLineId,
+        dataSourceId,
         schema: manifest?.dataSchema,
         refreshInterval: (widget.settings?.refreshRate || 0) * 1000
     });

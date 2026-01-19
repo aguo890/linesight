@@ -246,7 +246,7 @@
             "defect_rate": "Tasa de Defectos"
         },
         "titles": {
-            "production_chart": "Producción",
+            "production_chart": "Gráfico de Producción",
             "line_efficiency": "Eficiencia de Línea",
             "earned_minutes": "Minutos Ganados",
             "sam_performance": "Rendimiento SAM",
@@ -306,6 +306,11 @@
         "blocker_cloud": {
             "occurrences": "ocurrencias",
             "view_all_logs": "Ver todos los registros"
+        },
+        "renderer": {
+            "widget_id": "ID del Widget",
+            "unknown_type": "Tipo de Widget Desconocido",
+            "failed_load": "Error al cargar widget"
         }
     },
     "dashboard": {

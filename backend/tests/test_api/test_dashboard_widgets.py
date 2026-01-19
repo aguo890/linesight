@@ -6,7 +6,8 @@ from httpx import AsyncClient
 
 from app.enums import OrderStatus, PeriodType, ShiftType
 from app.models.analytics import DHUReport
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 
 
@@ -46,7 +47,7 @@ async def test_get_dhu_quality_trend(
 
     # 1. Call API
     response = await async_client.get(
-        "/api/v1/analytics/quality/dhu", headers=auth_headers
+        "/api/v1/analytics/dhu", headers=auth_headers
     )
     assert response.status_code == 200
 
@@ -86,7 +87,7 @@ async def test_get_style_progress(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(factory_id=factory.id, name="Line 1", code="L1")
+    line = DataSource(factory_id=factory.id, name="Line 1", code="L1")
     db_session.add(line)
     await db_session.flush()
 
@@ -112,7 +113,7 @@ async def test_get_style_progress(
     run_behind = ProductionRun(
         factory_id=factory.id,
         order_id=order_behind.id,
-        line_id=line.id,
+        data_source_id=line.id,
         production_date=datetime.now().date(),
         actual_qty=200,  # 20% - likely "Behind"
         planned_qty=1000,
@@ -141,7 +142,7 @@ async def test_get_style_progress(
     run_ontrack = ProductionRun(
         factory_id=factory.id,
         order_id=order_ontrack.id,
-        line_id=line.id,
+        data_source_id=line.id,
         production_date=datetime.now().date(),
         actual_qty=250,  # 50%
         planned_qty=500,

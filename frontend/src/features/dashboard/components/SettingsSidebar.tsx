@@ -1,10 +1,12 @@
 import React from 'react';
 import { Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useDashboard } from '../context/DashboardContext';
 import { getWidgetManifest } from '../registry';
 import { RightSidebarShell } from './RightSidebarShell';
 
 export const SettingsSidebar: React.FC = () => {
+    const { t } = useTranslation();
     const { editingWidgetId, activePanel, closePanels, widgets, updateWidgetSettings } = useDashboard();
 
     const isOpen = activePanel === 'settings' && !!editingWidgetId;
@@ -19,7 +21,7 @@ export const SettingsSidebar: React.FC = () => {
             isOpen={isOpen}
             onClose={closePanels}
             title="Widget Settings"
-            subtitle={manifest?.meta?.title}
+            subtitle={manifest?.meta?.title ? t(manifest.meta.title as any) : undefined}
             footer={
                 <button
                     onClick={closePanels}

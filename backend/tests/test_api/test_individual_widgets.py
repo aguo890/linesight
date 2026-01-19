@@ -6,7 +6,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import DHUReport, EfficiencyMetric
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.workforce import ProductionOutput
 
@@ -23,7 +24,7 @@ async def widget_data(db_session: AsyncSession, test_organization):
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id,
         name="Widget Line A",
         code="WL-A",
@@ -56,7 +57,7 @@ async def widget_data(db_session: AsyncSession, test_organization):
     # Run Today
     run_today = ProductionRun(
         factory_id=factory.id,
-        line_id=line.id,
+        data_source_id=line.id,
         order_id=order.id,
         production_date=today,
         actual_qty=1000,
@@ -75,7 +76,7 @@ async def widget_data(db_session: AsyncSession, test_organization):
     # Run Yesterday
     run_yesterday = ProductionRun(
         factory_id=factory.id,
-        line_id=line.id,
+        data_source_id=line.id,
         order_id=order.id,
         production_date=yesterday,
         actual_qty=900,
@@ -250,11 +251,11 @@ async def test_get_dhu_history(
     async_client: AsyncClient, auth_headers: dict, widget_data
 ):
     """
-    Test GET /analytics/quality/dhu
+    Test GET /analytics/dhu
     Should return trend of DHU.
     """
     response = await async_client.get(
-        "/api/v1/analytics/quality/dhu?days=7", headers=auth_headers
+        "/api/v1/analytics/dhu?days=7", headers=auth_headers
     )
     assert response.status_code == 200
     data = response.json()
@@ -284,11 +285,11 @@ async def test_get_speed_vs_quality(
     async_client: AsyncClient, auth_headers: dict, widget_data
 ):
     """
-    Test GET /analytics/speed-vs-quality
+    Test GET /analytics/speed-quality
     Should correlate Efficiency and DHU.
     """
     response = await async_client.get(
-        "/api/v1/analytics/speed-vs-quality", headers=auth_headers
+        "/api/v1/analytics/speed-quality", headers=auth_headers
     )
     assert response.status_code == 200
     data = response.json()

@@ -22,6 +22,7 @@ from sqlalchemy.orm import selectinload
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.raw_import import RawImport
 from app.services.ingestion.date_parser import parse_date
+from app.services.ingestion.date_profiler import detect_column_format
 from app.services.ingestion.validator import RecordValidator
 from app.services.ingestion.writer import ProductionWriter
 from app.services.socket_manager import manager
@@ -230,13 +231,52 @@ class IngestionOrchestrator:
         else:
             df = await run_in_threadpool(pd.read_excel, file_path)
 
+        # =====================================================================
+        # COLUMN-LEVEL DATE FORMAT PROFILING (Constraint Elimination)
+        # =====================================================================
+        # If no explicit date format is configured, profile the date column(s)
+        # to detect whether data is YYYY-MM-DD or YYYY-DD-MM
+        effective_date_format = date_format
+        
+        if not effective_date_format or effective_date_format == "auto":
+            # Find date column(s) from column_map
+            date_source_cols = [
+                src for src, tgt in column_map.items() 
+                if "date" in tgt.lower()
+            ]
+            
+            for date_col in date_source_cols:
+                if date_col in df.columns:
+                    # Extract sample values as strings
+                    sample_values = df[date_col].dropna().astype(str).head(100).tolist()
+                    
+                    if sample_values:
+                        profile_result = detect_column_format(sample_values)
+                        
+                        logger.info(
+                            f"DATE COLUMN PROFILED: '{date_col}' -> "
+                            f"{profile_result.format_label} "
+                            f"(confidence: {profile_result.confidence:.0%})"
+                        )
+                        
+                        if profile_result.ambiguous:
+                            logger.warning(
+                                f"AMBIGUOUS DATE COLUMN '{date_col}': "
+                                f"All sampled values could be YYYY-MM-DD or YYYY-DD-MM. "
+                                f"Defaulting to ISO 8601. Consider configuring explicit format."
+                            )
+                        
+                        # Use the detected format for parsing
+                        effective_date_format = profile_result.format
+                        break  # Use first date column's format for all dates
+
         records = []
         for _, row in df.iterrows():
             record = {}
             for source_col, target_field in column_map.items():
                 if source_col in row and pd.notna(row[source_col]):
                     record[target_field] = self._clean_value(
-                        row[source_col], target_field, date_format
+                        row[source_col], target_field, effective_date_format
                     )
 
             if record:

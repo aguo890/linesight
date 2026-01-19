@@ -37,9 +37,9 @@ help:
 # ==========================================
 
 .PHONY: up
+# We use --remove-orphans to keep the network clean
 up:
 	@echo "🚀 Starting services in background..."
-	# We use --remove-orphans to keep the network clean
 	docker compose up -d --build --remove-orphans
 	@echo "✅ App is running in background. Run 'make logs' to watch."
 
@@ -55,14 +55,14 @@ restart: down up
 # Interaction & Debugging
 # ==========================================
 
+# -f follows the log output
 .PHONY: logs
 logs:
-	# -f follows the log output
 	docker compose logs -f
 
+# Allows passing specific service, e.g., 'make shell SERVICE=postgres'
 .PHONY: shell
 shell:
-	# Allows passing specific service, e.g., 'make shell SERVICE=postgres'
 	@echo "🐚 Entering shell for $(SERVICE)..."
 	docker compose exec $(SERVICE) /bin/bash
 
@@ -70,10 +70,10 @@ shell:
 # Maintenance
 # ==========================================
 
+# -v removes volumes, --rmi local removes images built locally
 .PHONY: clean
 clean:
 	@$(PYTHON_CMD) scripts/utils.py clean_confirm
-	# -v removes volumes, --rmi local removes images built locally
 	docker compose down -v --rmi local
 	@echo "✨ Environment cleaned."
 
@@ -163,9 +163,9 @@ branch:
 # LEGACY & UTILITY COMMANDS
 # ==========================================
 
+# Waits until API is actually responding (not just port open)
 wait-healthy:
-	# Waits until localhost:8000 is actually accepting connections
-	@$(PYTHON_CMD) scripts/utils.py wait_port localhost 8000
+	@$(PYTHON_CMD) scripts/utils.py wait_http http://localhost:8000/api/v1/openapi.json
 
 sync-check:
 	@echo "🔄 Syncing API types..."

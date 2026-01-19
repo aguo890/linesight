@@ -1,8 +1,0 @@
-INFO  [alembic.runtime.migration] Context impl MySQLImpl.
-INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-INFO  [alembic.runtime.migration] Running upgrade  -> 7684e329d9fc, initial_schema_with_rbac
-INFO  [alembic.runtime.migration] Running upgrade 7684e329d9fc -> e4a3e6875704, fix_user_role_enum
-INFO  [alembic.runtime.migration] Running upgrade e4a3e6875704 -> e6be9a70d844, fix_enum_casing
-INFO  [alembic.runtime.migration] Running upgrade e6be9a70d844 -> 9e343c0dcd92, fix_user_scope_role
-INFO  [alembic.runtime.migration] Running upgrade 9e343c0dcd92 -> a129d507b390, fix_remaining_enum_casing
-INFO  [alembic.runtime.migration] Running upgrade a129d507b390 -> c8f4e1a2b3d5, merge_production_lines_into_data_sources

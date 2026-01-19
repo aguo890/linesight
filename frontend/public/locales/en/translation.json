@@ -290,7 +290,7 @@
             "defect_rate": "Defect Rate"
         },
         "titles": {
-            "production_chart": "Production Output",
+            "production_chart": "Production Chart",
             "line_efficiency": "Line Efficiency",
             "earned_minutes": "Earned Minutes",
             "sam_performance": "SAM Performance",
@@ -351,6 +351,11 @@
             "occurrences": "occurrences",
             "view_all_logs": "View all logs",
             "no_blockers": "No blockers recorded"
+        },
+        "renderer": {
+            "widget_id": "Widget ID",
+            "unknown_type": "Unknown Widget Type",
+            "failed_load": "Failed to load widget"
         }
     },
     "common": {

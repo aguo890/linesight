@@ -19,19 +19,16 @@ export const LanguageWrapper: React.FC = () => {
     const { i18n } = useTranslation();
     const location = useLocation();
 
-    // Guard: Redirect invalid locales to default (English)
-    if (!lang || !SUPPORTED_LOCALES.includes(lang as LocaleCode)) {
-        // Preserve the path after the invalid lang for better UX
-        // e.g., /xyz/pricing -> /en/pricing
-        const pathAfterLang = location.pathname.split('/').slice(2).join('/');
-        const redirectPath = pathAfterLang ? `/${DEFAULT_LOCALE}/${pathAfterLang}` : `/${DEFAULT_LOCALE}`;
-        return <Navigate to={redirectPath} replace state={{ from: location }} />;
-    }
-
-    const validLocale = lang as LocaleCode;
+    // Check if locale is valid (used both for redirect logic and effect)
+    const isValidLocale = lang && SUPPORTED_LOCALES.includes(lang as LocaleCode);
+    const validLocale = isValidLocale ? (lang as LocaleCode) : DEFAULT_LOCALE;
 
     // Sync URL language -> i18n state
+    // IMPORTANT: This hook must be called before any early returns (React rules of hooks)
     useEffect(() => {
+        // Only sync if we have a valid locale (redirect will handle invalid cases)
+        if (!isValidLocale) return;
+
         if (lang && i18n.language !== lang) {
             i18n.changeLanguage(lang);
         }
@@ -41,7 +38,16 @@ export const LanguageWrapper: React.FC = () => {
         document.documentElement.dir = localeConfig.dir;
         document.documentElement.lang = validLocale;
 
-    }, [lang, validLocale, i18n]);
+    }, [lang, validLocale, i18n, isValidLocale]);
+
+    // Guard: Redirect invalid locales to default (English)
+    if (!isValidLocale) {
+        // Preserve the path after the invalid lang for better UX
+        // e.g., /xyz/pricing -> /en/pricing
+        const pathAfterLang = location.pathname.split('/').slice(2).join('/');
+        const redirectPath = pathAfterLang ? `/${DEFAULT_LOCALE}/${pathAfterLang}` : `/${DEFAULT_LOCALE}`;
+        return <Navigate to={redirectPath} replace state={{ from: location }} />;
+    }
 
     return <Outlet />;
 };
