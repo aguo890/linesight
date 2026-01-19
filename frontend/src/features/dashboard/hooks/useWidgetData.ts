@@ -42,7 +42,7 @@ const mapFiltersToParams = (filters: any, productionLineId?: string): FilterPara
 // Map dataId to endpoint path using centralized constants
 const ENDPOINT_MAP: Record<string, string> = {
     // Efficiency & Production
-    'production_hourly': ANALYTICS_ENDPOINTS.productionChart,
+    'production_history': ANALYTICS_ENDPOINTS.productionChart,
     'efficiency_trend': ANALYTICS_ENDPOINTS.overview,
     'efficiency_kpi': ANALYTICS_ENDPOINTS.overview, // Uses same endpoint as trend
     'realization_kpi': ANALYTICS_ENDPOINTS.targetRealization,
@@ -76,7 +76,7 @@ const getMockGeneratorForDataId = (dataId: string): ((filters: any) => any) => {
     // We can use the existing DATA_ADAPTERS logic or a simple switch here to break the dependency on the old file if we want
     // For safety and speed, let's map the ones we know
     const mapping: Record<string, (f: any) => any> = {
-        'production_hourly': mocks.getProductionData,
+        'production_history': mocks.getProductionData,
         'efficiency_trend': mocks.getEfficiencyData,
         'efficiency_kpi': mocks.getEfficiencyKpiData,
         'realization_kpi': mocks.getRealizationData,

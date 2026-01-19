@@ -312,7 +312,7 @@ export const ALL_WIDGETS: WidgetManifest[] = [
         component: ProductionChart,
         settingsSchema: ProductionChartSchema,
         initialSettings: ProductionChartSchema.parse({}),
-        dataId: 'production_hourly',
+        dataId: 'production_history',
         dataSchema: ProductionChartDataSchema,
         requirements: { rawColumns: ['actual_qty', 'planned_qty'] },
         filterSubscription: { dateRange: true, productionLine: true },

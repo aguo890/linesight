@@ -1,0 +1,31 @@
+linesight-api  | INFO:     Will watch for changes in these directories: ['/app']
+linesight-api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+linesight-api  | INFO:     Started reloader process [1] using StatReload
+linesight-api  | INFO:     Started server process [8]
+linesight-api  | INFO:     Waiting for application startup.
+linesight-api  | {"timestamp": "2026-01-19T01:08:18.132367Z", "level": "INFO", "logger": "app.main", "message": "Starting LineSight v0.1.0"}
+linesight-api  | {"timestamp": "2026-01-19T01:08:18.132442Z", "level": "INFO", "logger": "app.main", "message": "Database: postgres:5432/linesight"}
+linesight-api  | {"timestamp": "2026-01-19T01:08:18.132468Z", "level": "INFO", "logger": "app.main", "message": "LLM Provider: deepseek"}
+linesight-api  | INFO:     Application startup complete.
+linesight-api  | {"timestamp": "2026-01-19T01:09:21.199897Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | {"timestamp": "2026-01-19T01:09:50.574168Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | {"timestamp": "2026-01-19T01:12:22.837413Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | {"timestamp": "2026-01-19T01:12:25.405084Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | {"timestamp": "2026-01-19T01:12:32.307986Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | 
+linesight-api  | 🛑 DEBUG TRAP: Request received. factory_id=8b657b19-6173-4f45-990a-3c34382d895f
+linesight-api  | 🛑 DEBUG TRAP: current_user.id=7d65d685-80ca-43b8-a057-a9c882a45334, role=UserRole.OWNER
+linesight-api  | 🛑 DEBUG TRAP: Applying factory_id filter...
+linesight-api  | 🛑 DEBUG TRAP: Executing SQL Query...
+linesight-api  | 🛑 DEBUG TRAP: Success! Found 2 dashboards.
+linesight-api  | 
+linesight-api  | {"timestamp": "2026-01-19T01:13:48.502651Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+linesight-api  | INFO:     Will watch for changes in these directories: ['/app']
+linesight-api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+linesight-api  | INFO:     Started reloader process [1] using StatReload
+linesight-api  | INFO:     Started server process [8]
+linesight-api  | INFO:     Waiting for application startup.
+linesight-api  | {"timestamp": "2026-01-19T01:14:27.664638Z", "level": "INFO", "logger": "app.main", "message": "Starting LineSight v0.1.0"}
+linesight-api  | {"timestamp": "2026-01-19T01:14:27.664703Z", "level": "INFO", "logger": "app.main", "message": "Database: postgres:5432/linesight"}
+linesight-api  | {"timestamp": "2026-01-19T01:14:27.664741Z", "level": "INFO", "logger": "app.main", "message": "LLM Provider: deepseek"}
+linesight-api  | INFO:     Application startup complete.
