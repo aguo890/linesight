@@ -102,7 +102,7 @@ async def test_full_data_flow(
     )
 
     # DHU History (Should Fail / Be Empty)
-    resp = await async_client.get("/api/v1/analytics/quality/dhu", headers=auth_headers)
+    resp = await async_client.get("/api/v1/analytics/dhu", headers=auth_headers)
     data = resp.json()
     # If DHUReport is missing (aggregator didn't run), this is empty
     assert len(data) > 0, "DHU History should show data (DHUReport missing!)"

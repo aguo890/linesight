@@ -280,7 +280,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
     print(f"VERIFIED: Found {len(zero_defect_qis)} zero-defect inspections.")
 
     response = await async_client.get(
-        f"/api/v1/analytics/quality/dhu?line_id={line_id}&start_date=2025-01-02&end_date=2025-01-02"
+        f"/api/v1/analytics/dhu?line_id={line_id}&start_date=2025-01-02&end_date=2025-01-02"
     )
     assert response.status_code == 200
     dhu_data = response.json()

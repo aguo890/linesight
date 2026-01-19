@@ -29,8 +29,8 @@ export const ANALYTICS_ENDPOINTS = {
     samPerformance: '/analytics/sam-performance',
 
     // Quality & Defects
-    dhuQuality: '/analytics/quality/dhu',
-    speedQuality: '/analytics/speed-vs-quality',
+    dhuQuality: '/analytics/dhu',
+    speedQuality: '/analytics/speed-quality',
     complexity: '/analytics/complexity',
 
     // Operations
