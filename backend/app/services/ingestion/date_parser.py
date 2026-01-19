@@ -8,7 +8,14 @@ Uses a waterfall approach:
 2. User-configured format (strict)
 3. Excel Serial (int/float)
 4. Intelligent Heuristics (dateutil)
+
+Safe Mode:
+When an ISO-style date (YYYY-XX-XX) has both middle and last parts ≤ 12,
+it's ambiguous (could be YYYY-MM-DD or YYYY-DD-MM). A warning is logged
+but the date is still parsed as ISO standard (YYYY-MM-DD).
 """
+import logging
+import re
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from typing import Any
@@ -16,6 +23,9 @@ from typing import Any
 import pandas as pd
 from dateutil import parser as dateutil_parser
 from pandas.errors import ParserError
+
+# Logger for date parsing warnings (Safe Mode)
+logger = logging.getLogger(__name__)
 
 
 # Common format specifications to Python strptime format mapping
@@ -51,6 +61,33 @@ class DateParseResult:
     value: datetime | None
     tier_used: str  # "format", "native", "excel_serial", "heuristic", "failed"
     warning: str | None = None
+
+
+def parse_date_column_with_format(
+    series: pd.Series,
+    strptime_format: str,
+) -> pd.Series:
+    """
+    Parse a pandas Series using a strict format derived from profiling.
+    
+    This is the connector between the date profiler and batch date parsing.
+    The profiler detects the format, then this function applies it strictly.
+    
+    Args:
+        series: Pandas Series containing date strings
+        strptime_format: Python strptime format string (e.g., "%Y-%m-%d")
+        
+    Returns:
+        Pandas Series with datetime values (unparseable dates become NaT)
+    """
+    try:
+        # Using the specific format allows pandas to be much faster than infer mode
+        # errors='coerce' turns unparseable dates to NaT (Not a Time)
+        return pd.to_datetime(series, format=strptime_format, errors='coerce')
+    except Exception as e:
+        logger.error(f"Failed to parse date column with format {strptime_format}: {e}")
+        # Fallback: return original series unchanged
+        return series
 
 
 def normalize_format(format_spec: str | None) -> str | None:
@@ -170,6 +207,40 @@ def parse_date(
     # Tier 4: Heuristic detection with dateutil
     # Determine dayfirst from factory locale if not specified
     # Defaulting to True (International/British) as it's more common globally than US
+    
+    # [FIX] STRICT ISO 8601 CHECK
+    # Before falling back to ambiguous guessing, check for unambiguous ISO 8601 (YYYY-MM-DD).
+    # This prevents 'dayfirst=True' from corrupting Year-First dates like 2025-01-02.
+    iso_pattern = re.match(r'^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:\s|T|$)', str_val)
+    if iso_pattern:
+        try:
+            year = int(iso_pattern.group(1))
+            month = int(iso_pattern.group(2))
+            day = int(iso_pattern.group(3))
+            
+            # [SAFE MODE] Ambiguity detection
+            # If both parts are ≤ 12, this could be YYYY-MM-DD or YYYY-DD-MM
+            if month <= 12 and day <= 12:
+                logger.warning(
+                    f"AMBIGUOUS DATE DETECTED: '{str_val}' - "
+                    f"Both values ({month}, {day}) are ≤ 12. "
+                    f"Interpreting as YYYY-MM-DD (ISO 8601): {year}-{month:02d}-{day:02d}. "
+                    f"If this is YYYY-DD-MM format, configure explicit format in data source."
+                )
+                result.warning = (
+                    f"Ambiguous date: '{str_val}' interpreted as YYYY-MM-DD. "
+                    f"Could also be YYYY-DD-MM."
+                )
+            
+            # Validate and create date - force ISO interpretation (Year-Month-Day)
+            parsed = datetime(year, month, day)
+            result.value = parsed
+            result.tier_used = "iso_explicit"
+            return result if return_diagnostics else parsed
+        except ValueError:
+            # If values are out of bounds (e.g., month=13), fall through to heuristics
+            pass
+
     effective_dayfirst = dayfirst if dayfirst is not None else True
 
     try:
