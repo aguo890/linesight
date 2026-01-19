@@ -25,7 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  DataSourceCreate,
+  AppSchemasDatasourceDataSourceCreate,
   DataSourceRead,
   DataSourceUpdate,
   FactoryCreate,
@@ -529,7 +529,7 @@ export function useListDataSourcesApiV1FactoriesFactoryIdDataSourcesGet<TData = 
  */
 export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPost = (
     factoryId: string,
-    dataSourceCreate: DataSourceCreate,
+    appSchemasDatasourceDataSourceCreate: AppSchemasDatasourceDataSourceCreate,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
@@ -537,7 +537,7 @@ export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPost = (
       return customInstance<DataSourceRead>(
       {url: `/api/v1/factories/${factoryId}/data-sources`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: dataSourceCreate, signal
+      data: appSchemasDatasourceDataSourceCreate, signal
     },
       options);
     }
@@ -545,8 +545,8 @@ export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPost = (
 
 
 export const getCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: DataSourceCreate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext> => {
 
 const mutationKey = ['createDataSourceApiV1FactoriesFactoryIdDataSourcesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -558,7 +558,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, {factoryId: string;data: DataSourceCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, {factoryId: string;data: AppSchemasDatasourceDataSourceCreate}> = (props) => {
           const {factoryId,data} = props ?? {};
 
           return  createDataSourceApiV1FactoriesFactoryIdDataSourcesPost(factoryId,data,requestOptions)
@@ -570,18 +570,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>>
-    export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationBody = DataSourceCreate
+    export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationBody = AppSchemasDatasourceDataSourceCreate
     export type CreateDataSourceApiV1FactoriesFactoryIdDataSourcesPostMutationError = HTTPValidationError
 
     /**
  * @summary Create Data Source
  */
 export const useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>, TError,{factoryId: string;data: AppSchemasDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createDataSourceApiV1FactoriesFactoryIdDataSourcesPost>>,
         TError,
-        {factoryId: string;data: DataSourceCreate},
+        {factoryId: string;data: AppSchemasDatasourceDataSourceCreate},
         TContext
       > => {
 
