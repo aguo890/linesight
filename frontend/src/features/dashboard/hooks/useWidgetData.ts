@@ -3,6 +3,7 @@ import { type ZodSchema } from 'zod';
 import { fetchWidgetData, type ServiceResponse } from '../services/widgetDataService';
 import * as mocks from '../services/mockData'; // We still need the mock generators
 import { type FilterParams, type ShiftType, ANALYTICS_ENDPOINTS } from '../services/analyticsApi';
+import { useDashboardSafe } from '../context/DashboardContext';
 
 interface UseWidgetDataOptions<T = any> {
     dataId?: string;
@@ -101,12 +102,16 @@ export function useWidgetData<T = any>({
     dataId,
     filters,
     settings,
-    productionLineId,
     dataSourceId,
     schema,
     refreshInterval = 30000,
     enabled = true
 }: UseWidgetDataOptions<T>) {
+
+    // Get refresh timestamp from context for cache-busting on manual refresh
+    // Uses "safe" version to work outside DashboardProvider (previews, tests)
+    const dashboardContext = useDashboardSafe();
+    const lastRefreshAt = dashboardContext?.lastRefreshAt ?? 0;
 
     // resolve dependencies - use dataSourceId for filtering (line_id param)
     const params = mapFiltersToParams(filters, dataSourceId);
@@ -117,7 +122,8 @@ export function useWidgetData<T = any>({
     console.log(`[DEBUG] Fetching Widget Data for Source: ${dataSourceId}`);
 
     const queryInfo = useQuery<ServiceResponse<T>, Error>({
-        queryKey: ['widget-data', dataId, filters, settings, dataSourceId],
+        // Include lastRefreshAt to force hard refresh when user clicks the refresh button
+        queryKey: ['widget-data', dataId, filters, settings, dataSourceId, lastRefreshAt],
         queryFn: () => {
             if (!dataId) throw new Error("No Data ID provided");
             console.log(`[DEBUG][${dataId}] 🎣 Query Function Triggered`, { filters });

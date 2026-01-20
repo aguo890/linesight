@@ -93,14 +93,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                             {editMode && (
                                 <motion.div
                                     key="add-widget-wrapper"
-                                    initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: "auto", opacity: 1 }}
-                                    exit={{ width: 0, opacity: 0 }}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
                                     transition={{
-                                        type: "spring",
-                                        stiffness: 500,
-                                        damping: 30,
-                                        mass: 1
+                                        opacity: { duration: 0.2 },
+                                        layout: { type: "spring", bounce: 0, duration: 0.3 }
                                     }}
                                     style={{ overflow: "hidden" }}
                                     className="flex-shrink-0"
