@@ -1,6 +1,6 @@
 import React, { Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, LayoutGrid, Move } from 'lucide-react'; // Removed Maximize2
+import { AlertCircle } from 'lucide-react'; // Removed Maximize2, LayoutGrid, Move
 import type { ValidatedWidgetConfig } from '../services/WidgetService';
 import type { GlobalFilters } from '../config';
 import { getWidgetManifest } from '../registry';
@@ -235,14 +235,6 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                     </WidgetErrorBoundary>
                 </Suspense>
 
-                {/* Drag Overlay (Visual Cue + Interaction Blocker) */}
-                {editMode && (
-                    <div className="absolute inset-0 z-10 bg-transparent cursor-move group hover:bg-white/5 transition-colors border-2 border-transparent hover:border-primary/20 rounded-lg">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface shadow-sm rounded-full p-2 text-primary">
-                            <Move className="w-4 h-4" />
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );

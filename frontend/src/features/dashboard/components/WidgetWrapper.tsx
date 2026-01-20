@@ -1,4 +1,4 @@
-import { Settings, Trash2 } from 'lucide-react';
+import { Settings, Trash2, Move } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { useDashboardSafe } from '../context/DashboardContext';
 import { useTranslation } from 'react-i18next';
@@ -77,7 +77,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 {/* Overlay icon with tooltip */}
                 {icon && (
                     <div
-                        className="absolute top-2 end-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-10 group/icon"
+                        className="absolute top-2 end-2 p-1 bg-surface/80 rounded opacity-50 hover:opacity-100 transition-opacity cursor-help z-30 group/icon"
                         title={t(title as any) || title}
                     >
                         <div className="w-3.5 h-3.5 text-text-muted">
@@ -91,7 +91,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 )}
                 {/* Action Group - Top Left (Minimal) */}
                 {canSettings && (
-                    <div className="absolute top-2 start-2 flex items-center gap-1 z-10 opacity-0 group-hover:opacity-100 transition-all">
+                    <div className="absolute top-2 start-2 flex items-center gap-1 z-30 opacity-0 group-hover:opacity-100 transition-all">
                         <button
                             onClick={() => id && handleOpenSettings(id)}
                             className="p-1 hover:bg-surface-subtle rounded text-text-muted hover:text-text-main"
@@ -113,6 +113,15 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 <div className="h-full p-3">
                     {children}
                 </div>
+
+                {/* Drag Overlay (Visual Cue + Interaction Blocker) */}
+                {editMode && (
+                    <div className="absolute inset-0 z-10 bg-transparent cursor-move group hover:bg-white/5 transition-colors border-2 border-transparent hover:border-primary/20 rounded-lg pointer-events-auto">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface shadow-sm rounded-full p-2 text-primary">
+                            <Move className="w-4 h-4" />
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -128,12 +137,12 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     <span className="text-xs font-semibold text-text-main truncate">
                         {t(title as any) || title}
                     </span>
-                    <div className="flex items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0 relative z-30">
                         {canSettings && (
                             <button
                                 onClick={() => id && handleOpenSettings(id)}
                                 className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-subtle rounded transition-all"
-                                title={t('widgets.common.settings')}
+                                title={t('widgets.common.settings' as any)}
                             >
                                 <Settings size={14} className="text-text-muted hover:text-text-main" />
                             </button>
@@ -157,7 +166,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         )}
                         {isMock && (
                             <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded uppercase">
-                                {t('widgets.common.demo')}
+                                {t('widgets.common.demo' as any)}
                             </span>
                         )}
                     </div>
@@ -165,6 +174,15 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                 <div className="flex-1 min-h-[100px] px-3 pb-2.5">
                     {children}
                 </div>
+
+                {/* Drag Overlay (Visual Cue + Interaction Blocker) */}
+                {editMode && (
+                    <div className="absolute inset-0 z-10 bg-transparent cursor-move group hover:bg-white/5 transition-colors border-2 border-transparent hover:border-primary/20 rounded-lg pointer-events-auto">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface shadow-sm rounded-full p-2 text-primary">
+                            <Move className="w-4 h-4" />
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
@@ -195,7 +213,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                         )}
                     </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1 shrink-0 relative z-30">
                     {canSettings && (
                         <button
                             onClick={() => id && handleOpenSettings(id)}
@@ -216,7 +234,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     )}
                     {isMock && (
                         <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider text-warning bg-warning/10 border border-warning/20 rounded-full uppercase">
-                            {t('widgets.common.demo_mode')}
+                            {t('widgets.common.demo_mode' as any)}
                         </span>
                     )}
                     {actions && (
@@ -226,9 +244,18 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
                     )}
                 </div>
             </div>
-            <div className="flex-1 min-h-[150px] px-6 pb-6">
+            <div className="flex-1 min-h-[150px] px-6 pb-6 relative z-0">
                 {children}
             </div>
+
+            {/* Drag Overlay (Visual Cue + Interaction Blocker) */}
+            {editMode && (
+                <div className="absolute inset-0 z-10 bg-transparent cursor-move group hover:bg-white/5 transition-colors border-2 border-transparent hover:border-primary/20 rounded-lg pointer-events-auto">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface shadow-sm rounded-full p-2 text-primary">
+                        <Move className="w-4 h-4" />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
