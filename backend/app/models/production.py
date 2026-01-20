@@ -13,11 +13,13 @@ from sqlalchemy import (
     CheckConstraint,
     Computed,
     DateTime,
+    Float,
     ForeignKey,
     Integer,
     Numeric,
     String,
     Text,
+    Time,
     UniqueConstraint,
     case,
 )
@@ -298,6 +300,26 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
 
     # Notes
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    # --- DENORMALIZED COLUMNS (for widget sync) ---
+    # Timestamps
+    start_time: Mapped[datetime | None] = mapped_column(Time, nullable=True)
+    end_time: Mapped[datetime | None] = mapped_column(Time, nullable=True)
+
+    # Order Details (denormalized for direct widget access)
+    style_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    buyer: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    season: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    po_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    color: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    size: Mapped[str | None] = mapped_column(String(50), nullable=True)
+
+    # Quality Metrics (denormalized)
+    defects: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    dhu: Mapped[Decimal | None] = mapped_column(Numeric(6, 2), nullable=True)
+
+    # Efficiency Override (for explicit storage vs computed)
+    line_efficiency: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
 
     # Relationships
     order: Mapped["Order"] = relationship("Order", back_populates="production_runs")

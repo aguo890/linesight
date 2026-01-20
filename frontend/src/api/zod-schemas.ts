@@ -1729,6 +1729,8 @@ export const listRunsApiV1ProductionRunsGetResponseHelpersPresentMin = 0;export 
 export const listRunsApiV1ProductionRunsGetResponseShadeBandMaxOne = 10;
 export const listRunsApiV1ProductionRunsGetResponseShadeBandRegExpOne = new RegExp('^[A-Z0-9]+$');
 export const listRunsApiV1ProductionRunsGetResponseBatchNumberMaxOne = 50;export const listRunsApiV1ProductionRunsGetResponseEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const listRunsApiV1ProductionRunsGetResponseDefectsDefault = 0;export const listRunsApiV1ProductionRunsGetResponseDhuRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const listRunsApiV1ProductionRunsGetResponseLineEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 export const listRunsApiV1ProductionRunsGetResponseEarnedMinutesRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 
 
@@ -1753,6 +1755,17 @@ export const listRunsApiV1ProductionRunsGetResponseItem = zod.object({
   "efficiency": zod.union([zod.string().regex(listRunsApiV1ProductionRunsGetResponseEfficiencyRegExpOne),zod.null()]).optional().describe('Computed: (Earned / Available) * 100'),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({}),
+  "start_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production start time'),
+  "end_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production end time'),
+  "style_number": zod.union([zod.string(),zod.null()]).optional().describe('Style number (denormalized)'),
+  "buyer": zod.union([zod.string(),zod.null()]).optional().describe('Buyer/customer name (denormalized)'),
+  "season": zod.union([zod.string(),zod.null()]).optional().describe('Season code (denormalized)'),
+  "po_number": zod.union([zod.string(),zod.null()]).optional().describe('PO number (denormalized)'),
+  "color": zod.union([zod.string(),zod.null()]).optional().describe('Color/colorway (denormalized)'),
+  "size": zod.union([zod.string(),zod.null()]).optional().describe('Size (denormalized)'),
+  "defects": zod.number().optional().describe('Number of defects found'),
+  "dhu": zod.union([zod.string().regex(listRunsApiV1ProductionRunsGetResponseDhuRegExpOne),zod.null()]).optional().describe('Defects per Hundred Units'),
+  "line_efficiency": zod.union([zod.string().regex(listRunsApiV1ProductionRunsGetResponseLineEfficiencyRegExpOne),zod.null()]).optional().describe('Explicit line efficiency value'),
   "earned_minutes": zod.string().regex(listRunsApiV1ProductionRunsGetResponseEarnedMinutesRegExp).describe('Computed: Actual Qty * SAM')
 })
 export const listRunsApiV1ProductionRunsGetResponse = zod.array(listRunsApiV1ProductionRunsGetResponseItem)
@@ -1811,6 +1824,8 @@ export const getRunApiV1ProductionRunsRunIdGetResponseHelpersPresentMin = 0;expo
 export const getRunApiV1ProductionRunsRunIdGetResponseShadeBandMaxOne = 10;
 export const getRunApiV1ProductionRunsRunIdGetResponseShadeBandRegExpOne = new RegExp('^[A-Z0-9]+$');
 export const getRunApiV1ProductionRunsRunIdGetResponseBatchNumberMaxOne = 50;export const getRunApiV1ProductionRunsRunIdGetResponseEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getRunApiV1ProductionRunsRunIdGetResponseDefectsDefault = 0;export const getRunApiV1ProductionRunsRunIdGetResponseDhuRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const getRunApiV1ProductionRunsRunIdGetResponseLineEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 export const getRunApiV1ProductionRunsRunIdGetResponseEarnedMinutesRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 
 
@@ -1835,6 +1850,17 @@ export const getRunApiV1ProductionRunsRunIdGetResponse = zod.object({
   "efficiency": zod.union([zod.string().regex(getRunApiV1ProductionRunsRunIdGetResponseEfficiencyRegExpOne),zod.null()]).optional().describe('Computed: (Earned / Available) * 100'),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({}),
+  "start_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production start time'),
+  "end_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production end time'),
+  "style_number": zod.union([zod.string(),zod.null()]).optional().describe('Style number (denormalized)'),
+  "buyer": zod.union([zod.string(),zod.null()]).optional().describe('Buyer/customer name (denormalized)'),
+  "season": zod.union([zod.string(),zod.null()]).optional().describe('Season code (denormalized)'),
+  "po_number": zod.union([zod.string(),zod.null()]).optional().describe('PO number (denormalized)'),
+  "color": zod.union([zod.string(),zod.null()]).optional().describe('Color/colorway (denormalized)'),
+  "size": zod.union([zod.string(),zod.null()]).optional().describe('Size (denormalized)'),
+  "defects": zod.number().optional().describe('Number of defects found'),
+  "dhu": zod.union([zod.string().regex(getRunApiV1ProductionRunsRunIdGetResponseDhuRegExpOne),zod.null()]).optional().describe('Defects per Hundred Units'),
+  "line_efficiency": zod.union([zod.string().regex(getRunApiV1ProductionRunsRunIdGetResponseLineEfficiencyRegExpOne),zod.null()]).optional().describe('Explicit line efficiency value'),
   "earned_minutes": zod.string().regex(getRunApiV1ProductionRunsRunIdGetResponseEarnedMinutesRegExp).describe('Computed: Actual Qty * SAM')
 })
 
@@ -1869,6 +1895,8 @@ export const updateRunApiV1ProductionRunsRunIdPatchResponseHelpersPresentMin = 0
 export const updateRunApiV1ProductionRunsRunIdPatchResponseShadeBandMaxOne = 10;
 export const updateRunApiV1ProductionRunsRunIdPatchResponseShadeBandRegExpOne = new RegExp('^[A-Z0-9]+$');
 export const updateRunApiV1ProductionRunsRunIdPatchResponseBatchNumberMaxOne = 50;export const updateRunApiV1ProductionRunsRunIdPatchResponseEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const updateRunApiV1ProductionRunsRunIdPatchResponseDefectsDefault = 0;export const updateRunApiV1ProductionRunsRunIdPatchResponseDhuRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
+export const updateRunApiV1ProductionRunsRunIdPatchResponseLineEfficiencyRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 export const updateRunApiV1ProductionRunsRunIdPatchResponseEarnedMinutesRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
 
 
@@ -1893,6 +1921,17 @@ export const updateRunApiV1ProductionRunsRunIdPatchResponse = zod.object({
   "efficiency": zod.union([zod.string().regex(updateRunApiV1ProductionRunsRunIdPatchResponseEfficiencyRegExpOne),zod.null()]).optional().describe('Computed: (Earned / Available) * 100'),
   "created_at": zod.iso.datetime({}),
   "updated_at": zod.iso.datetime({}),
+  "start_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production start time'),
+  "end_time": zod.union([zod.iso.time({}),zod.null()]).optional().describe('Production end time'),
+  "style_number": zod.union([zod.string(),zod.null()]).optional().describe('Style number (denormalized)'),
+  "buyer": zod.union([zod.string(),zod.null()]).optional().describe('Buyer/customer name (denormalized)'),
+  "season": zod.union([zod.string(),zod.null()]).optional().describe('Season code (denormalized)'),
+  "po_number": zod.union([zod.string(),zod.null()]).optional().describe('PO number (denormalized)'),
+  "color": zod.union([zod.string(),zod.null()]).optional().describe('Color/colorway (denormalized)'),
+  "size": zod.union([zod.string(),zod.null()]).optional().describe('Size (denormalized)'),
+  "defects": zod.number().optional().describe('Number of defects found'),
+  "dhu": zod.union([zod.string().regex(updateRunApiV1ProductionRunsRunIdPatchResponseDhuRegExpOne),zod.null()]).optional().describe('Defects per Hundred Units'),
+  "line_efficiency": zod.union([zod.string().regex(updateRunApiV1ProductionRunsRunIdPatchResponseLineEfficiencyRegExpOne),zod.null()]).optional().describe('Explicit line efficiency value'),
   "earned_minutes": zod.string().regex(updateRunApiV1ProductionRunsRunIdPatchResponseEarnedMinutesRegExp).describe('Computed: Actual Qty * SAM')
 })
 

@@ -1296,7 +1296,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceCreate"
+                "$ref": "#/components/schemas/DataSourceCreate"
               }
             }
           }
@@ -1400,7 +1400,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceUpdate"
+                "$ref": "#/components/schemas/DataSourceUpdate"
               }
             }
           }
@@ -3956,7 +3956,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataSourceCreate"
+                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceCreate"
               }
             }
           }
@@ -4121,7 +4121,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataSourceUpdate"
+                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceUpdate"
               }
             }
           }
@@ -5735,12 +5735,86 @@
       },
       "DataSourceCreate": {
         "properties": {
-          "production_line_id": {
+          "name": {
             "type": "string",
-            "title": "Production Line Id"
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "factory_id": {
+            "type": "string",
+            "title": "Factory Id",
+            "description": "ID of the factory this data source belongs to"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "source_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Source Name"
           },
           "description": {
@@ -5754,23 +5828,38 @@
             ],
             "title": "Description"
           },
-          "initial_mapping": {
+          "time_column": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/SchemaMappingCreate"
+                "type": "string",
+                "maxLength": 100
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
           }
         },
         "type": "object",
         "required": [
-          "production_line_id",
-          "source_name"
+          "name",
+          "factory_id"
         ],
-        "title": "DataSourceCreate"
+        "title": "DataSourceCreate",
+        "description": "Schema for creating a data source."
       },
       "DataSourceRead": {
         "properties": {
@@ -6110,7 +6199,9 @@
           "name": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
               },
               {
                 "type": "null"
@@ -6143,7 +6234,8 @@
           "target_operators": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -6154,7 +6246,9 @@
           "target_efficiency_pct": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
               },
               {
                 "type": "null"
@@ -6176,6 +6270,9 @@
           "settings": {
             "anyOf": [
               {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
                 "additionalProperties": true,
                 "type": "object"
               },
@@ -6184,6 +6281,28 @@
               }
             ],
             "title": "Settings"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
           },
           "time_column": {
             "anyOf": [
@@ -6206,33 +6325,11 @@
               }
             ],
             "title": "Time Format"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "source_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Name"
           }
         },
         "type": "object",
         "title": "DataSourceUpdate",
-        "description": "Schema for updating DataSource configuration."
+        "description": "Schema for updating a data source."
       },
       "DhuPoint": {
         "properties": {
@@ -8333,6 +8430,136 @@
             "format": "date-time",
             "title": "Updated At"
           },
+          "start_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time",
+            "description": "Production start time"
+          },
+          "end_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Time",
+            "description": "Production end time"
+          },
+          "style_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style Number",
+            "description": "Style number (denormalized)"
+          },
+          "buyer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer",
+            "description": "Buyer/customer name (denormalized)"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Season",
+            "description": "Season code (denormalized)"
+          },
+          "po_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Po Number",
+            "description": "PO number (denormalized)"
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Color",
+            "description": "Color/colorway (denormalized)"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size",
+            "description": "Size (denormalized)"
+          },
+          "defects": {
+            "type": "integer",
+            "title": "Defects",
+            "description": "Number of defects found",
+            "default": 0
+          },
+          "dhu": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dhu",
+            "description": "Defects per Hundred Units"
+          },
+          "line_efficiency": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line Efficiency",
+            "description": "Explicit line efficiency value"
+          },
           "earned_minutes": {
             "type": "string",
             "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
@@ -9862,88 +10089,14 @@
         "title": "WorkforceStats",
         "description": "Workforce attendance statistics."
       },
-      "app__schemas__datasource__DataSourceCreate": {
+      "app__api__v1__endpoints__datasource__DataSourceCreate": {
         "properties": {
-          "name": {
+          "production_line_id": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "factory_id": {
-            "type": "string",
-            "title": "Factory Id",
-            "description": "ID of the factory this data source belongs to"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DataSourceSettings"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "title": "Production Line Id"
           },
           "source_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Source Name"
           },
           "description": {
@@ -9957,47 +10110,30 @@
             ],
             "title": "Description"
           },
-          "time_column": {
+          "initial_mapping": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 100
+                "$ref": "#/components/schemas/SchemaMappingCreate"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Time Column"
-          },
-          "time_format": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Format"
+            ]
           }
         },
         "type": "object",
         "required": [
-          "name",
-          "factory_id"
+          "production_line_id",
+          "source_name"
         ],
-        "title": "DataSourceCreate",
-        "description": "Schema for creating a data source."
+        "title": "DataSourceCreate"
       },
-      "app__schemas__datasource__DataSourceUpdate": {
+      "app__api__v1__endpoints__datasource__DataSourceUpdate": {
         "properties": {
           "name": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 100,
-                "minLength": 1
+                "type": "string"
               },
               {
                 "type": "null"
@@ -10030,8 +10166,7 @@
           "target_operators": {
             "anyOf": [
               {
-                "type": "integer",
-                "minimum": 0.0
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -10042,9 +10177,7 @@
           "target_efficiency_pct": {
             "anyOf": [
               {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -10066,9 +10199,6 @@
           "settings": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/DataSourceSettings"
-              },
-              {
                 "additionalProperties": true,
                 "type": "object"
               },
@@ -10077,28 +10207,6 @@
               }
             ],
             "title": "Settings"
-          },
-          "source_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Name"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
           },
           "time_column": {
             "anyOf": [
@@ -10121,11 +10229,33 @@
               }
             ],
             "title": "Time Format"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
           }
         },
         "type": "object",
         "title": "DataSourceUpdate",
-        "description": "Schema for updating a data source."
+        "description": "Schema for updating DataSource configuration."
       }
     },
     "securitySchemes": {

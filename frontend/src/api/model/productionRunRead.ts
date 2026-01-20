@@ -12,6 +12,16 @@ import type { ProductionRunReadLotNumber } from './productionRunReadLotNumber';
 import type { ProductionRunReadShadeBand } from './productionRunReadShadeBand';
 import type { ProductionRunReadBatchNumber } from './productionRunReadBatchNumber';
 import type { ProductionRunReadEfficiency } from './productionRunReadEfficiency';
+import type { ProductionRunReadStartTime } from './productionRunReadStartTime';
+import type { ProductionRunReadEndTime } from './productionRunReadEndTime';
+import type { ProductionRunReadStyleNumber } from './productionRunReadStyleNumber';
+import type { ProductionRunReadBuyer } from './productionRunReadBuyer';
+import type { ProductionRunReadSeason } from './productionRunReadSeason';
+import type { ProductionRunReadPoNumber } from './productionRunReadPoNumber';
+import type { ProductionRunReadColor } from './productionRunReadColor';
+import type { ProductionRunReadSize } from './productionRunReadSize';
+import type { ProductionRunReadDhu } from './productionRunReadDhu';
+import type { ProductionRunReadLineEfficiency } from './productionRunReadLineEfficiency';
 
 export interface ProductionRunRead {
   /** UUID of the factory */
@@ -67,6 +77,28 @@ export interface ProductionRunRead {
   efficiency?: ProductionRunReadEfficiency;
   created_at: string;
   updated_at: string;
+  /** Production start time */
+  start_time?: ProductionRunReadStartTime;
+  /** Production end time */
+  end_time?: ProductionRunReadEndTime;
+  /** Style number (denormalized) */
+  style_number?: ProductionRunReadStyleNumber;
+  /** Buyer/customer name (denormalized) */
+  buyer?: ProductionRunReadBuyer;
+  /** Season code (denormalized) */
+  season?: ProductionRunReadSeason;
+  /** PO number (denormalized) */
+  po_number?: ProductionRunReadPoNumber;
+  /** Color/colorway (denormalized) */
+  color?: ProductionRunReadColor;
+  /** Size (denormalized) */
+  size?: ProductionRunReadSize;
+  /** Number of defects found */
+  defects?: number;
+  /** Defects per Hundred Units */
+  dhu?: ProductionRunReadDhu;
+  /** Explicit line efficiency value */
+  line_efficiency?: ProductionRunReadLineEfficiency;
   /**
    * Computed: Actual Qty * SAM
    * @pattern ^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$

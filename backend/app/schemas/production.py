@@ -9,7 +9,7 @@ This module defines Pydantic models for:
 These schemas handle validation, serialization, and API documentation.
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 
 from pydantic import (
@@ -365,3 +365,23 @@ class ProductionRunRead(ProductionRunBase):
     )
     created_at: datetime
     updated_at: datetime
+
+    # --- DENORMALIZED FIELDS (Phase 3) ---
+    # Timestamps
+    start_time: time | None = Field(None, description="Production start time")
+    end_time: time | None = Field(None, description="Production end time")
+
+    # Order Details
+    style_number: str | None = Field(None, description="Style number (denormalized)")
+    buyer: str | None = Field(None, description="Buyer/customer name (denormalized)")
+    season: str | None = Field(None, description="Season code (denormalized)")
+    po_number: str | None = Field(None, description="PO number (denormalized)")
+    color: str | None = Field(None, description="Color/colorway (denormalized)")
+    size: str | None = Field(None, description="Size (denormalized)")
+
+    # Quality Metrics
+    defects: int = Field(0, description="Number of defects found")
+    dhu: Decimal | None = Field(None, description="Defects per Hundred Units")
+
+    # Efficiency Override
+    line_efficiency: Decimal | None = Field(None, description="Explicit line efficiency value")
