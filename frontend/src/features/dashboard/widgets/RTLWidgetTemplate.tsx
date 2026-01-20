@@ -4,6 +4,7 @@ import {
     ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
 import type { SmartWidgetProps } from '../config';
 import { useThemeColors } from '@/hooks/useThemeColor';
 import { z } from 'zod';
@@ -29,11 +30,10 @@ const RTLWidgetTemplate: React.FC<SmartWidgetProps<WidgetData, WidgetSettings>> 
     data,
     settings
 }) => {
-    // A. Hook into i18n for RTL Detection
+    // A. Hook into i18n for RTL Detection (Text only)
     const { i18n } = useTranslation();
     const isRTL = i18n.dir() === 'rtl';
 
-    // B. Hooks for Formatting and Theming
     // B. Hooks for Formatting and Theming
     const themeColors = useThemeColors(['--text-main', '--text-muted', '--border', '--surface', '--color-primary', '--color-danger']);
 
@@ -58,67 +58,70 @@ const RTLWidgetTemplate: React.FC<SmartWidgetProps<WidgetData, WidgetSettings>> 
             </div>
 
             <div className="flex-1 min-h-0 w-full relative">
-                <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart
-                        data={chartData}
-                        margin={{
-                            top: 10,
-                            right: isRTL ? -10 : 10, // D. Flip Margins
-                            bottom: 0,
-                            left: isRTL ? 10 : -10
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors['--border']} />
-
-                        {/* E. X-Axis: Reversed in RTL */}
-                        <XAxis
-                            dataKey="label"
-                            tick={{ fontSize: 10, fill: themeColors['--text-muted'] }}
-                            axisLine={false}
-                            tickLine={false}
-                            reversed={isRTL}
-                        />
-
-                        {/* F. Y-Axis: Flip Orientation */}
-                        <YAxis
-                            orientation={isRTL ? 'right' : 'left'}
-                            tick={{ fontSize: 10, fill: themeColors['--text-main'] }}
-                            axisLine={false}
-                            tickLine={false}
-                        />
-
-                        {/* G. Tooltip: Align Text */}
-                        <Tooltip
-                            contentStyle={{
-                                borderRadius: '8px',
-                                border: '1px solid var(--color-border)',
-                                backgroundColor: themeColors['--surface'],
-                                color: themeColors['--text-main'],
-                                textAlign: isRTL ? 'right' : 'left' // <-- Critical for RTL text
+                {/* D. Charts are ALWAYS LTR */}
+                <ChartDirectionIsolator>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <ComposedChart
+                            data={chartData}
+                            margin={{
+                                top: 10,
+                                right: 10,
+                                bottom: 0,
+                                left: -10
                             }}
-                            itemStyle={{
-                                textAlign: isRTL ? 'right' : 'left'
-                            }}
-                            formatter={(value: number | undefined) => [value != null ? formatNumber(value) : '', 'Value']}
-                        />
+                        >
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors['--border']} />
 
-                        {/* H. Legend: Flip Direction */}
-                        {showLegend && <Legend
-                            wrapperStyle={{
-                                fontSize: '11px',
-                                paddingTop: '5px',
-                                direction: isRTL ? 'rtl' : 'ltr'
-                            }}
-                        />}
+                            {/* E. X-Axis: Standard LTR */}
+                            <XAxis
+                                dataKey="label"
+                                tick={{ fontSize: 10, fill: themeColors['--text-muted'] }}
+                                axisLine={false}
+                                tickLine={false}
+                                reversed={false}
+                            />
 
-                        <Bar
-                            dataKey="value"
-                            name={'Value'}
-                            fill={themeColors['--color-primary']}
-                            radius={[4, 4, 0, 0]}
-                        />
-                    </ComposedChart>
-                </ResponsiveContainer>
+                            {/* F. Y-Axis: Standard Left */}
+                            <YAxis
+                                orientation="left"
+                                tick={{ fontSize: 10, fill: themeColors['--text-main'] }}
+                                axisLine={false}
+                                tickLine={false}
+                            />
+
+                            {/* G. Tooltip: Inherit LTR but allow content flow if needed */}
+                            <Tooltip
+                                contentStyle={{
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--color-border)',
+                                    backgroundColor: themeColors['--surface'],
+                                    color: themeColors['--text-main'],
+                                    textAlign: 'inherit'
+                                }}
+                                itemStyle={{
+                                    textAlign: 'inherit'
+                                }}
+                                formatter={(value: number | undefined) => [value != null ? formatNumber(value) : '', 'Value']}
+                            />
+
+                            {/* H. Legend: LTR */}
+                            {showLegend && <Legend
+                                wrapperStyle={{
+                                    fontSize: '11px',
+                                    paddingTop: '5px',
+                                    direction: 'ltr'
+                                }}
+                            />}
+
+                            <Bar
+                                dataKey="value"
+                                name={'Value'}
+                                fill={themeColors['--color-primary']}
+                                radius={[4, 4, 0, 0]}
+                            />
+                        </ComposedChart>
+                    </ResponsiveContainer>
+                </ChartDirectionIsolator>
             </div>
         </div>
     );

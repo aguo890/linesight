@@ -77,6 +77,7 @@
 
 - [ ] Sub-Task 2c: Implement PO safety (UNKNOWN_PO_{hash})
 - [ ] Frontend unit tests - 8/10 passing (2 minor timing issues in FilePreviewModal)
+- [ ] FE-UI-05: Enforce LTR Layout for Analytics Charts (5 widgets)
 - [ ] Frontend UI for AI Decision Timeline
 - [ ] Implement dev-only endpoints for AI schema introspection
 - [ ] AI decision feedback loop (user ratings)
