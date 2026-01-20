@@ -98,6 +98,15 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     )
 
     # ==========================================================================
+    # Schema Configuration (Schema-First Architecture)
+    # ==========================================================================
+    schema_config: Mapped[dict | None] = mapped_column(
+        JSON,
+        nullable=True,
+        doc="Master schema configuration (e.g., {'Date': 'date', 'Qty': 'int'}). Enforces homogeneity.",
+    )
+
+    # ==========================================================================
     # Hierarchy Support (for append feature)
     # ==========================================================================
     parent_data_source_id: Mapped[str | None] = mapped_column(

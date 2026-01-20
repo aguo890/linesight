@@ -180,6 +180,87 @@ async def upload_file_for_ingestion(
         }
     # ---------------------------
 
+    # ==========================================================================
+    # SCHEMA-FIRST VALIDATION ("Master File Lock")
+    # ==========================================================================
+    # 1. Read file headers immediately for validation
+    from io import BytesIO
+    import pandas as pd  # type: ignore[import-untyped]
+    from fastapi.concurrency import run_in_threadpool
+
+    try:
+        # We need to read the headers from the content bytes
+        # Using a small nrows to just get headers
+        content_io = BytesIO(content)
+        if file_ext == ".csv":
+            # Detect encoding again or reuse? Reuse is safer but we need to re-detect if we used detection lib
+            # We already detected 'encoding' variable above
+            df_preview = await run_in_threadpool(
+                pd.read_csv, content_io, nrows=0, encoding=encoding
+            )
+        else:
+            df_preview = await run_in_threadpool(pd.read_excel, content_io, nrows=0)
+        
+        file_headers = [str(h) for h in df_preview.columns.tolist()]
+    except Exception as e:
+        raise HTTPException(400, f"Failed to read file headers for validation: {str(e)}")
+
+    if data_source_id:
+        ds_result = await db.execute(select(DataSource).where(DataSource.id == data_source_id))
+        data_source = ds_result.scalar_one_or_none()
+        
+        if data_source:
+            # SCENARIO 1: Schema Exists -> Strict Validation
+            if data_source.schema_config:
+                expected_columns = list(data_source.schema_config.keys())
+                
+                # Check for mismatch (Set comparison for Order-agnostic or List for Strict Order? 
+                # Excel usually implies order matters, but for safety lets check strict set presence first.
+                # User prompt said "Expected [Date, Qty], Found [Date, Amount]" which implies structure.)
+                # Let's check if all expected columns are present. Extra columns in file might be okay? 
+                # Plan said "Homogeneity Check". Usually means EXACT match or SUPERSET. 
+                # Let's enforce that ALL expected columns must be in the file.
+                
+                missing_cols = list(set(expected_columns) - set(file_headers))
+                extra_cols = list(set(file_headers) - set(expected_columns))
+                
+                if missing_cols:
+                     # Structured error for Frontend "Diff" UI
+                     raise HTTPException(
+                        400,
+                        detail={
+                            "message": "File structure mismatch.",
+                            "errors": [f"Missing columns: {', '.join(missing_cols)}"],
+                            "expected": expected_columns,
+                            "found": file_headers
+                        }
+                    )
+            
+            # SCENARIO 2: No Schema, Files Pending -> "Master File Lock"
+            else:
+                # Check for unmapped files given we have NO schema yet
+                # Query for any RawImport for this DS that is NOT confirmed.
+                pending_query = select(RawImport).where(
+                    RawImport.data_source_id == data_source_id,
+                    RawImport.status != "confirmed"
+                )
+                pending_result = await db.execute(pending_query)
+                pending_files = pending_result.scalars().all()
+                
+                if pending_files:
+                     raise HTTPException(
+                        400,
+                        detail={
+                            "message": "Setup in progress.",
+                            "instruction": "A file is already uploaded but not mapped. Please complete the column mapping for the first file to establish the Master Schema before uploading additional files."
+                        }
+                    )
+                
+            # SCENARIO 3: No Schema, No Files -> Allow (Candidate for Master)
+            # Fall through to save logic
+    
+    # ==========================================================================
+
     # Determined Storage Path
     # Structure: uploads / factory_id / line_id / year / month / hash_filename
     root_dir = Path(settings.UPLOAD_DIR)
@@ -203,10 +284,14 @@ async def upload_file_for_ingestion(
     with open(file_path, "wb") as f:
         f.write(content)
 
-    # Parse file to extract headers and sample data (non-blocking)
+    # Parse file to extract headers and sample data (non-blocking) - RE-USING calculated vars
+    # We already parsed headers for validation, but we need sample data now.
     from fastapi.concurrency import run_in_threadpool
 
     try:
+        # We can re-read for sample data, or just assume the previous read for headers was cheap.
+        # But we need sample data for the preview.
+        # Since we only read nrows=0 above, we need to read again with rows.
         if file_ext == ".csv":
             df = await run_in_threadpool(
                 pd.read_csv, file_path, nrows=20, encoding=encoding
@@ -216,7 +301,15 @@ async def upload_file_for_ingestion(
 
         headers = [str(h) for h in df.columns.tolist()]
         sample_data = df.head(10).values.tolist()
-        row_count = len(df)
+        row_count = len(df) # Approximate from head? No, len(df) is only 20 here. 
+        # The original code calculated len(df) from the sample read which is confusing if it was only reading head.
+        # Re-reading original implementation: 
+        # "df = await run_in_threadpool(pd.read_excel, file_path, nrows=20)"
+        # "row_count = len(df)" -> This would only be 20. 
+        # The original code had a bug or 'nrows=20' was intentional for speed, but row_count would be wrong.
+        # Let's keep existing behavior for now but note it.
+        # Actually validation above uses content_io, here we use file_path.
+        
         column_count = len(headers)
 
     except Exception as e:
@@ -487,6 +580,26 @@ async def confirm_mapping(
     # Link RawImport to DataSource
     raw_import.data_source_id = data_source_id
     raw_import.time_column_used = request.time_column
+
+    # ==========================================================================
+    # SCHEMA LOCKING (Post-Mapping)
+    # ==========================================================================
+    # If the DataSource doesn't have a schema_config yet, we LOCK it now.
+    if not data_source.schema_config:
+        # Construct the schema configuration from the mapping
+        # We want to store the "Expected Source Columns" mostly, 
+        # or the mapping of Source -> Canonical?
+        # The schema_config is used for Homogeneity checks on Upload.
+        # So we simply need the set of Source Columns that are valid.
+        # But we might also want to know the detected types.
+        # For MVP, let's store the map of {source_col: canonical_field}
+        # This defines what the "Master File" looked like.
+        
+        # We use column_map which contains {source: target}
+        data_source.schema_config = column_map
+        logger.info(f"Schema Locked for DataSource {data_source_id}: {column_map.keys()}")
+    
+    # ==========================================================================
 
     # Deactivate existing mappings for this data source (versioning)
     await db.execute(

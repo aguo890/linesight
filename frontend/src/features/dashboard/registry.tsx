@@ -517,7 +517,7 @@ export const ALL_WIDGETS: WidgetManifest[] = [
             iconColor: 'text-danger',
             bgColor: 'bg-danger/10'
         },
-        layout: { w: 6, h: 6, minW: 4, minH: 4 },
+        layout: { w: 3, h: 6, minW: 2, minH: 6 },
         component: BlockerCloudWidget,
         settingsSchema: BlockerCloudSchema,
         initialSettings: BlockerCloudSchema.parse({}),
