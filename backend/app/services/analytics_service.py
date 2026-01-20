@@ -292,8 +292,7 @@ class AnalyticsService:
             return results
 
         except Exception as e:
-            # We don't have logger here, but we should handle it or let it bubble
-            print(f"Error calculating complexity analysis: {e}")
+            logger.error(f"Error calculating complexity analysis: {e}")
             return []
 
     async def get_sam_performance_metrics(

@@ -5,7 +5,8 @@
  * and edit mode controls. Extracted from DynamicDashboardPage for modularity.
  */
 import React from 'react';
-import { LayoutGrid, Loader2, Settings, Plus, RefreshCw } from 'lucide-react';
+import { LayoutGrid, Loader2, Settings, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next'; // [I18N]
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 
@@ -32,10 +33,6 @@ export interface DashboardHeaderProps {
     isSaving: boolean;
     /** Last update timestamp */
     lastUpdated: string;
-    /** Optional: Global refresh handler */
-    onRefresh?: () => void;
-    /** Optional: Reset layout handler */
-    onReset?: () => void;
 }
 
 // =============================================================================
@@ -52,8 +49,6 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     onOpenLibrary,
     isSaving,
     lastUpdated,
-    onRefresh,
-    onReset,
 }) => {
     const { t } = useTranslation(); // [I18N]
 
@@ -94,53 +89,48 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {onRefresh && (
-                            <button
-                                onClick={onRefresh}
-                                className="flex items-center px-4 py-2 bg-surface border border-border text-text-main rounded-full text-sm font-medium hover:bg-surface-subtle hover:border-border transition-all shadow-sm hover:shadow"
-                                title={t('dashboard_header.actions.refresh')}
-                            >
-                                <RefreshCw className="w-4 h-4 me-2" />
-                                {t('dashboard_header.actions.refresh')}
-                            </button>
-                        )}
-                        {onReset && (
-                            <button
-                                onClick={() => {
-                                    if (confirm(t('dashboard_header.actions.reset_confirm'))) {
-                                        onReset();
-                                    }
-                                }}
-                                className="flex items-center px-3 py-2 bg-surface border border-border text-text-muted rounded-full text-xs font-medium hover:bg-danger/10 hover:border-danger/30 hover:text-danger transition-all"
-                                title={t('dashboard_header.actions.reset_layout')}
-                            >
-                                {t('dashboard_header.actions.reset_layout')}
-                            </button>
-                        )}
-                        {editMode && (
-                            <button
-                                onClick={onOpenLibrary}
-                                className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-lg"
-                            >
-                                <Plus className="w-4 h-4 me-2" />
-                                {t('dashboard_header.actions.add_widget')}
-                            </button>
-                        )}
-                        <button
-                            onClick={onEditModeToggle}
-                            disabled={isSaving}
-                            className={`flex items-center px-5 py-2 rounded-full text-sm font-bold transition-all ${editMode
-                                ? 'bg-brand/10 text-brand ring-2 ring-brand/20 shadow-inner'
-                                : 'bg-surface border border-border text-text-main hover:border-border hover:shadow-sm'
-                                } ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
-                        >
-                            {isSaving ? (
-                                <Loader2 className="w-4 h-4 me-2 animate-spin" />
-                            ) : (
-                                <LayoutGrid className="w-4 h-4 me-2" />
+                        <AnimatePresence mode="popLayout">
+                            {editMode && (
+                                <motion.div
+                                    key="add-widget-wrapper"
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{
+                                        opacity: { duration: 0.2 },
+                                        layout: { type: "spring", bounce: 0, duration: 0.3 }
+                                    }}
+                                    style={{ overflow: "hidden" }}
+                                    className="flex-shrink-0"
+                                >
+                                    <button
+                                        onClick={onOpenLibrary}
+                                        className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-colors shadow-lg whitespace-nowrap"
+                                    >
+                                        <Plus className="w-4 h-4 me-2" />
+                                        {t('dashboard_header.actions.add_widget')}
+                                    </button>
+                                </motion.div>
                             )}
-                            {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
-                        </button>
+                        </AnimatePresence>
+                        <motion.div layout>
+                            <button
+                                onClick={onEditModeToggle}
+                                disabled={isSaving}
+                                className={`flex items-center justify-center min-w-[12rem] px-5 py-2 rounded-full text-sm font-bold transition-all ${editMode
+                                    ? 'bg-brand/10 text-brand ring-2 ring-inset ring-brand/20 shadow-inner'
+                                    : 'bg-surface text-text-main ring-1 ring-inset ring-border hover:shadow-sm'
+                                    } ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
+                            >
+                                {isSaving ? (
+                                    <Loader2 className="w-4 h-4 me-2 animate-spin" />
+                                ) : (
+                                    <LayoutGrid className="w-4 h-4 me-2" />
+                                )}
+                                {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
+                            </button>
+                        </motion.div>
                     </div>
                 </div>
             </div>

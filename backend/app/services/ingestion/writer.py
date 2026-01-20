@@ -28,6 +28,28 @@ logger = logging.getLogger(__name__)
 BATCH_SIZE = 1000
 
 
+def _parse_time(value: Any) -> time | None:
+    """Parse time string (e.g., '08:00', '14:30:00') to Python time object."""
+    if value is None:
+        return None
+    if isinstance(value, time):
+        return value
+    if isinstance(value, datetime):
+        return value.time()
+    if isinstance(value, str):
+        value = value.strip()
+        if not value:
+            return None
+        # Try common formats
+        for fmt in ("%H:%M:%S", "%H:%M", "%I:%M %p", "%I:%M:%S %p"):
+            try:
+                return datetime.strptime(value, fmt).time()
+            except ValueError:
+                continue
+        logger.warning(f"Could not parse time value: {value}")
+    return None
+
+
 class ProductionWriter:
     """
     Handles all database writes for ingestion with atomic transactions.
@@ -176,6 +198,18 @@ class ProductionWriter:
             "downtime_minutes": record.get("downtime_minutes"),
             "downtime_reason": record.get("downtime_reason"),
             "updated_at": now,
+            # --- DENORMALIZED FIELDS (Phase 2) ---
+            "start_time": _parse_time(record.get("start_time")),
+            "end_time": _parse_time(record.get("end_time")),
+            "style_number": sn,  # From style lookup
+            "buyer": style.buyer if style else record.get("buyer"),
+            "season": style.season if style else record.get("season"),
+            "po_number": po,  # From order lookup
+            "color": order.color if order else record.get("color"),
+            "size": record.get("size"),
+            "defects": int(record.get("defects", 0)),
+            "dhu": Decimal(str(record.get("dhu", 0))) if record.get("dhu") else None,
+            "line_efficiency": Decimal(str(record.get("line_efficiency", 0))) if record.get("line_efficiency") else None,
         }
 
         # Physics validation
@@ -340,6 +374,18 @@ class ProductionWriter:
                             "lot_number": stmt.excluded.lot_number,
                             "shade_band": stmt.excluded.shade_band,
                             "batch_number": stmt.excluded.batch_number,
+                            # DENORMALIZED FIELDS
+                            "start_time": stmt.excluded.start_time,
+                            "end_time": stmt.excluded.end_time,
+                            "style_number": stmt.excluded.style_number,
+                            "buyer": stmt.excluded.buyer,
+                            "season": stmt.excluded.season,
+                            "po_number": stmt.excluded.po_number,
+                            "color": stmt.excluded.color,
+                            "size": stmt.excluded.size,
+                            "defects": stmt.excluded.defects,
+                            "dhu": stmt.excluded.dhu,
+                            "line_efficiency": stmt.excluded.line_efficiency,
                         }
                     )
                     

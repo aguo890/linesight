@@ -5,7 +5,6 @@ Provides CRUD operations and widget configuration management.
 
 import json
 import logging
-import sys
 import traceback
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -179,9 +178,7 @@ async def list_dashboards(
     from app.models.datasource import DataSource
     from app.models.factory import Factory
 
-    # 1. DEBUG: Print to stderr to confirm code is loaded and request is hitting
-    print(f"\n🛑 DEBUG TRAP: Request received. factory_id={factory_id}", file=sys.stderr)
-    print(f"🛑 DEBUG TRAP: current_user.id={current_user.id}, role={current_user.role}", file=sys.stderr)
+    logger.debug(f"Dashboard list requested. factory_id={factory_id}, user_id={current_user.id}, role={current_user.role}")
 
     try:
         # Start with base query
@@ -192,7 +189,7 @@ async def list_dashboards(
 
         # Factory filter - always requires joining DataSource -> Factory
         if factory_id:
-            print("🛑 DEBUG TRAP: Applying factory_id filter...", file=sys.stderr)
+            logger.debug("Applying factory_id filter")
             stmt = (
                 stmt.join(DataSource, Dashboard.data_source_id == DataSource.id)
                 .join(Factory, DataSource.factory_id == Factory.id)
@@ -202,7 +199,7 @@ async def list_dashboards(
 
         # RBAC: Managers only see dashboards for lines they are assigned to
         if current_user.role == UserRole.LINE_MANAGER:
-            print("🛑 DEBUG TRAP: Applying LINE_MANAGER RBAC filter...", file=sys.stderr)
+            logger.debug("Applying LINE_MANAGER RBAC filter")
             # Line Manager: filter by assigned lines
             scope_query = select(UserScope.production_line_id).where(
                 UserScope.user_id == current_user.id,
@@ -221,7 +218,7 @@ async def list_dashboards(
             )
             
         elif current_user.role == UserRole.FACTORY_MANAGER:
-            print("🛑 DEBUG TRAP: Applying FACTORY_MANAGER RBAC filter...", file=sys.stderr)
+            logger.debug("Applying FACTORY_MANAGER RBAC filter")
             # Factory Manager: filter by assigned factories
             factory_scope_query = select(UserScope.factory_id).where(
                 UserScope.user_id == current_user.id
@@ -246,11 +243,9 @@ async def list_dashboards(
 
         stmt = stmt.order_by(Dashboard.updated_at.desc())
 
-        print("🛑 DEBUG TRAP: Executing SQL Query...", file=sys.stderr)
         result = await db.execute(stmt)
         dashboards = result.scalars().all()
-        
-        print(f"🛑 DEBUG TRAP: Success! Found {len(dashboards)} dashboards.\n", file=sys.stderr)
+        logger.debug(f"Found {len(dashboards)} dashboards")
         return {
             "dashboards": dashboards,
             "count": len(dashboards),

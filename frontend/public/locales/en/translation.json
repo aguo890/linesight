@@ -287,7 +287,9 @@
             "status": "Status",
             "on_target": "ON TARGET",
             "below_target": "BELOW TARGET",
-            "defect_rate": "Defect Rate"
+            "defect_rate": "Defect Rate",
+            "settings": "Widget Settings",
+            "remove_widget": "Remove Widget"
         },
         "titles": {
             "production_chart": "Production Chart",

@@ -57,7 +57,7 @@ export const SettingsSidebar: React.FC = () => {
                                         type="number"
                                         value={currentValue ?? ''}
                                         onChange={(e) => widget && updateWidgetSettings(widget.i, { [key]: Number(e.target.value) })}
-                                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                                        className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                                     />
                                 ) :
                                     (
@@ -65,7 +65,7 @@ export const SettingsSidebar: React.FC = () => {
                                             type="text"
                                             value={currentValue ?? ''}
                                             onChange={(e) => widget && updateWidgetSettings(widget.i, { [key]: e.target.value })}
-                                            className="w-full bg-slate-50 border border-slate-200 p-3 rounded-lg text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                                            className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                                         />
                                     )}
                         </div>
