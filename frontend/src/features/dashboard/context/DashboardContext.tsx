@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { DashboardWidgetConfig, GlobalFilters } from '../config';
 import type { DateRange } from 'react-day-picker';
@@ -179,15 +180,21 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
         return () => clearTimeout(timer);
     }, [widgets, layout, globalFilters, productionLineId, dataSourceId]);
 
+    const queryClient = useQueryClient();
+
     const triggerRefresh = () => {
         console.log('[DashboardContext] Refresh triggered');
+        queryClient.invalidateQueries({ queryKey: ['widget-data'] });
         setLastRefreshAt(Date.now());
     };
 
     const resetDashboard = () => {
         console.log('[DashboardContext] Resetting dashboard state');
-        localStorage.removeItem(STORAGE_KEY);
-        window.location.reload();
+        // Reset to defaults but preserve context (Production Line / Data Source)
+        setWidgets(DEFAULT_WIDGETS);
+        setLayout(DEFAULT_LAYOUT);
+        setGlobalFilters(DEFAULT_FILTERS);
+        // Clear local storage logic will handle the update via the useEffect
     };
 
     const openSettings = (id: string) => {

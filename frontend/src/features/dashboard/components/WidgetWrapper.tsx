@@ -19,6 +19,7 @@ export interface WidgetWrapperProps {
     actions?: React.ReactNode;
     iconBgColor?: string;
     className?: string;
+    isLoading?: boolean;
     children: React.ReactNode;
 }
 
@@ -42,6 +43,7 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     actions,
     iconBgColor = 'bg-surface-subtle',
     className,
+    isLoading = false,
     children,
 }) => {
     const { t } = useTranslation();
@@ -56,10 +58,22 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     // Standard Card Classes - Uses semantic colors for dark mode
     const cardClasses = "bg-surface text-text-main border border-border shadow-sm";
 
+    // Reusable Loading Overlay
+    const LoadingOverlay = () => (
+        <div className="absolute inset-0 bg-surface/50 backdrop-blur-[1px] z-20 flex items-center justify-center rounded-lg transition-all duration-300">
+            <div className="flex flex-col items-center gap-2">
+                <div className="w-5 h-5 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        </div>
+    );
+
     // Minimal mode: Overlay icon in corner
     if (density === 'minimal') {
         return (
             <div className={cn(cardClasses, "rounded-lg h-full relative overflow-hidden group", className)}>
+                {/* Loading Overlay */}
+                {isLoading && <LoadingOverlay />}
+
                 {/* Overlay icon with tooltip */}
                 {icon && (
                     <div
@@ -107,6 +121,9 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     if (density === 'compact') {
         return (
             <div className={cn(cardClasses, "rounded-lg h-full flex flex-col overflow-hidden group", className)}>
+                {/* Loading Overlay */}
+                {isLoading && <LoadingOverlay />}
+
                 <div className="flex items-center justify-between gap-1.5 px-3 py-1.5 shrink-0 border-b border-transparent">
                     <span className="text-xs font-semibold text-text-main truncate">
                         {t(title as any) || title}
@@ -155,6 +172,9 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     // Default mode: Full header
     return (
         <div className={cn(cardClasses, "rounded-lg h-full flex flex-col overflow-hidden group", className)}>
+            {/* Loading Overlay */}
+            {isLoading && <LoadingOverlay />}
+
             <div className="flex items-center justify-between gap-2 px-6 pt-6 pb-2 shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                     {icon && (

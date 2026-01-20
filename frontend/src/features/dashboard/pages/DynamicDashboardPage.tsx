@@ -32,7 +32,6 @@ const DashboardPageContent = () => {
     // NEW: Consume DashboardContext
     const {
         widgets, setWidgets,
-        triggerRefresh, resetDashboard,
         activePanel, openLibrary, closePanels,
         productionLineId, setProductionLineId
     } = useDashboard();
@@ -385,8 +384,6 @@ const DashboardPageContent = () => {
                     onOpenLibrary={openLibrary}
                     isSaving={isSaving}
                     lastUpdated={lastUpdated}
-                    onRefresh={triggerRefresh}
-                    onReset={resetDashboard}
                 />
 
                 {/* Global Filter Bar (Phase 5) - Persisted Logic */}

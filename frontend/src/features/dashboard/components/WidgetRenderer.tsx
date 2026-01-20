@@ -138,6 +138,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 density={widget.h <= 2 ? 'compact' : 'default'}
                                 icon={iconElement}
                                 iconBgColor={manifest.meta.bgColor}
+                                isLoading={loading}
                             >
                                 {/* Cast to any because TS doesn't know this specific component is V2-ready yet */}
                                 <Component

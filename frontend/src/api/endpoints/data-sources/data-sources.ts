@@ -25,7 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  DataSourceCreate,
+  AppApiV1EndpointsDatasourceDataSourceCreate,
   DataSourceResponse,
   DataSourceUpdate,
   GetDataSourceByLineApiV1DataSourcesLineLineIdGet200,
@@ -48,7 +48,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary Create Data Source
  */
 export const createDataSourceApiV1DataSourcesPost = (
-    dataSourceCreate: DataSourceCreate,
+    appApiV1EndpointsDatasourceDataSourceCreate: AppApiV1EndpointsDatasourceDataSourceCreate,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
@@ -56,7 +56,7 @@ export const createDataSourceApiV1DataSourcesPost = (
       return customInstance<DataSourceResponse>(
       {url: `/api/v1/data-sources`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: dataSourceCreate, signal
+      data: appApiV1EndpointsDatasourceDataSourceCreate, signal
     },
       options);
     }
@@ -64,8 +64,8 @@ export const createDataSourceApiV1DataSourcesPost = (
 
 
 export const getCreateDataSourceApiV1DataSourcesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext> => {
 
 const mutationKey = ['createDataSourceApiV1DataSourcesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -77,7 +77,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, {data: DataSourceCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, {data: AppApiV1EndpointsDatasourceDataSourceCreate}> = (props) => {
           const {data} = props ?? {};
 
           return  createDataSourceApiV1DataSourcesPost(data,requestOptions)
@@ -89,18 +89,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateDataSourceApiV1DataSourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>>
-    export type CreateDataSourceApiV1DataSourcesPostMutationBody = DataSourceCreate
+    export type CreateDataSourceApiV1DataSourcesPostMutationBody = AppApiV1EndpointsDatasourceDataSourceCreate
     export type CreateDataSourceApiV1DataSourcesPostMutationError = HTTPValidationError
 
     /**
  * @summary Create Data Source
  */
 export const useCreateDataSourceApiV1DataSourcesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>,
         TError,
-        {data: DataSourceCreate},
+        {data: AppApiV1EndpointsDatasourceDataSourceCreate},
         TContext
       > => {
 
