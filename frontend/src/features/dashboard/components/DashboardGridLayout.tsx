@@ -1,5 +1,7 @@
-import React, { useMemo, forwardRef } from 'react';
-import { Responsive, useContainerWidth } from 'react-grid-layout';
+import React, { useMemo, forwardRef, useRef } from 'react';
+import { Responsive } from 'react-grid-layout';
+import { useContainerWidth } from '@/hooks/useContainerWidth';
+import { useLayout } from '@/contexts/LayoutContext';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import type { ValidatedWidgetConfig } from '../services/WidgetService';
@@ -47,7 +49,9 @@ export const DashboardGridLayout = ({
     renderWidget,
     isRTL = false
 }: DashboardGridLayoutProps) => {
-    const { width, containerRef, mounted } = useContainerWidth();
+    const { isSidebarTransitioning } = useLayout();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { width, mounted } = useContainerWidth(containerRef, isSidebarTransitioning);
 
     // Memoize layouts to prevent infinite render loops with RGL
     // We only provide 'lg' so that RGL auto-calculates the changes for smaller breakpoints
@@ -56,7 +60,21 @@ export const DashboardGridLayout = ({
     }), [widgets]);
 
     return (
-        <div ref={containerRef} dir={isRTL ? 'rtl' : 'ltr'} className="max-w-[1600px] mx-auto min-h-[500px]">
+        <div
+            ref={containerRef}
+            dir={isRTL ? 'rtl' : 'ltr'}
+            style={{
+                // GOOGLE RAIL OPTIMIZATION: 
+                // 'strict' containment isolates the element's layout/paint/size from the rest of the DOM.
+                // The browser treats the grid as a static texture during the transition.
+                contain: isSidebarTransitioning ? 'strict' : 'none',
+
+                // PERFORMANCE FIX: Compositor hint
+                // Tells browser to optimize for width changes during the transition only
+                willChange: isSidebarTransitioning ? 'width' : 'auto'
+            }}
+            className={`max-w-[1600px] mx-auto min-h-[500px] transition-all duration-300 ease-in-out ${isSidebarTransitioning ? 'overflow-hidden pointer-events-none' : ''}`}
+        >
             {/* Force RGL styles for placeholder and resize handles */}
             <style>{`
                 .react-grid-placeholder {

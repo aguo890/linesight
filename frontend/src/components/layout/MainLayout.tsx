@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import TopNav from './TopNav';
 import { Sidebar } from './Sidebar';
+import { LayoutProvider } from '../../contexts/LayoutContext';
 
+
+
+export const SIDEBAR_TRANSITION_MS = 300;
 
 export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: boolean }> = ({ children, disablePadding = false }) => {
     // Lazy initialization to prevent layout shift
@@ -22,15 +26,39 @@ export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: 
         return saved !== null ? JSON.parse(saved) : true;
     });
 
+    const [isSidebarTransitioning, setIsSidebarTransitioning] = useState(false);
+
     const toggleSidebar = () => {
-        setIsSidebarOpen((prev: boolean) => {
-            const newState = !prev;
-            // Only persist preference if we are in desktop mode
-            if (!isMobile) {
-                localStorage.setItem('sidebar-desktop-preference', JSON.stringify(newState));
-            }
-            return newState;
+        // STEP 1: Pre-Flight Optimization
+        // Signal the "Freeze" immediately. This stops the ResizeObserver 
+        // and applies 'will-change' / 'contain: strict' to the grid.
+        setIsSidebarTransitioning(true);
+
+        // STEP 2: Defer the Layout Change
+        // We use a double requestAnimationFrame (rAF) to ensure the 'Transitioning' 
+        // state has fully propagated to the DOM and the browser has painted that frame 
+        // BEFORE we start moving the heavy sidebar.
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                setIsSidebarOpen((prev: boolean) => {
+                    const newState = !prev;
+                    // Only persist preference if we are in desktop mode
+                    if (!isMobile) {
+                        localStorage.setItem('sidebar-desktop-preference', JSON.stringify(newState));
+                    }
+                    return newState;
+                });
+            });
         });
+
+        // STEP 3: Cleanup
+        // Clear transition state after animation finishes
+        setTimeout(() => {
+            // PERFORMANCE FIX: Align state update with the next paint frame
+            requestAnimationFrame(() => {
+                setIsSidebarTransitioning(false);
+            });
+        }, SIDEBAR_TRANSITION_MS);
     };
 
     useEffect(() => {
@@ -70,25 +98,28 @@ export const MainLayout: React.FC<{ children: React.ReactNode; disablePadding?: 
         setIsSidebarOpen(false);
     };
 
-
-
     return (
-        <div className="h-screen w-full overflow-hidden block md:grid md:grid-cols-[auto_1fr] text-[var(--color-text)] bg-[var(--color-background)] relative">
-            {/* Mobile Backdrop */}
-            {isSidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black/50 z-40 md:hidden animate-in fade-in duration-300"
-                    onClick={closeSidebar}
-                />
-            )}
-            <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
-            <div className="flex flex-col h-screen overflow-hidden">
-                <TopNav />
-                <main className={`flex-1 overflow-y-auto bg-[var(--color-background)] ${disablePadding ? '' : 'p-6'}`}>
-                    {children}
-                </main>
+        <LayoutProvider
+            isSidebarOpen={isSidebarOpen}
+            isSidebarTransitioning={isSidebarTransitioning}
+        >
+            <div className="h-screen w-full overflow-hidden block md:grid md:grid-cols-[auto_1fr] text-[var(--color-text)] bg-[var(--color-background)] relative">
+                {/* Mobile Backdrop */}
+                {isSidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black/50 z-40 md:hidden animate-in fade-in duration-300"
+                        onClick={closeSidebar}
+                    />
+                )}
+                <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
+                <div className="flex flex-col h-screen overflow-hidden">
+                    <TopNav />
+                    <main className={`flex-1 overflow-y-auto bg-[var(--color-background)] ${disablePadding ? '' : 'p-6'}`}>
+                        {children}
+                    </main>
+                </div>
             </div>
-        </div>
+        </LayoutProvider>
     );
 };
 
