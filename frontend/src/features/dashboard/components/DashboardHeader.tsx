@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { LayoutGrid, Loader2, Settings, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next'; // [I18N]
 import { Breadcrumb } from '../../../components/ui/Breadcrumb';
 
@@ -88,30 +89,49 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {editMode && (
-                            <button
-                                onClick={onOpenLibrary}
-                                className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-lg"
-                            >
-                                <Plus className="w-4 h-4 me-2" />
-                                {t('dashboard_header.actions.add_widget')}
-                            </button>
-                        )}
-                        <button
-                            onClick={onEditModeToggle}
-                            disabled={isSaving}
-                            className={`flex items-center justify-center min-w-[12rem] px-5 py-2 rounded-full text-sm font-bold transition-all ${editMode
-                                ? 'bg-brand/10 text-brand ring-2 ring-inset ring-brand/20 shadow-inner'
-                                : 'bg-surface text-text-main ring-1 ring-inset ring-border hover:shadow-sm'
-                                } ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
-                        >
-                            {isSaving ? (
-                                <Loader2 className="w-4 h-4 me-2 animate-spin" />
-                            ) : (
-                                <LayoutGrid className="w-4 h-4 me-2" />
+                        <AnimatePresence mode="popLayout">
+                            {editMode && (
+                                <motion.div
+                                    key="add-widget-wrapper"
+                                    initial={{ width: 0, opacity: 0 }}
+                                    animate={{ width: "auto", opacity: 1 }}
+                                    exit={{ width: 0, opacity: 0 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 500,
+                                        damping: 30,
+                                        mass: 1
+                                    }}
+                                    style={{ overflow: "hidden" }}
+                                    className="flex-shrink-0"
+                                >
+                                    <button
+                                        onClick={onOpenLibrary}
+                                        className="flex items-center px-4 py-2 bg-text-main text-surface rounded-full text-sm font-semibold hover:opacity-90 transition-colors shadow-lg whitespace-nowrap"
+                                    >
+                                        <Plus className="w-4 h-4 me-2" />
+                                        {t('dashboard_header.actions.add_widget')}
+                                    </button>
+                                </motion.div>
                             )}
-                            {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
-                        </button>
+                        </AnimatePresence>
+                        <motion.div layout>
+                            <button
+                                onClick={onEditModeToggle}
+                                disabled={isSaving}
+                                className={`flex items-center justify-center min-w-[12rem] px-5 py-2 rounded-full text-sm font-bold transition-all ${editMode
+                                    ? 'bg-brand/10 text-brand ring-2 ring-inset ring-brand/20 shadow-inner'
+                                    : 'bg-surface text-text-main ring-1 ring-inset ring-border hover:shadow-sm'
+                                    } ${isSaving ? 'opacity-50 cursor-wait' : ''}`}
+                            >
+                                {isSaving ? (
+                                    <Loader2 className="w-4 h-4 me-2 animate-spin" />
+                                ) : (
+                                    <LayoutGrid className="w-4 h-4 me-2" />
+                                )}
+                                {editMode ? (isSaving ? t('dashboard_header.status.saving') : t('dashboard_header.actions.save_layout')) : t('dashboard_header.actions.design_layout')}
+                            </button>
+                        </motion.div>
                     </div>
                 </div>
             </div>
