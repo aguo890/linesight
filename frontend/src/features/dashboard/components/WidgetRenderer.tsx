@@ -1,6 +1,6 @@
 import React, { Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, LayoutGrid } from 'lucide-react';
 import type { ValidatedWidgetConfig } from '../services/WidgetService';
 import type { GlobalFilters } from '../config';
 import { getWidgetManifest } from '../registry';
@@ -12,6 +12,7 @@ import { useWidgetData } from '../hooks/useWidgetData';
 import { WidgetWrapper } from './WidgetWrapper';
 import { ComingSoonWidget } from '../widgets/ComingSoonWidget';
 import { getWidgetIcon } from '../utils/iconMap';
+import { useDebouncedDimensions } from '../../../hooks/useDebouncedDimensions';
 
 interface WidgetRendererProps {
     widget: ValidatedWidgetConfig;
@@ -20,6 +21,8 @@ interface WidgetRendererProps {
     dataSourceId?: string;
     globalFilters?: GlobalFilters; // Optional override
     onDelete?: () => void;
+    width?: number;
+    height?: number;
 }
 
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
@@ -27,7 +30,9 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     editMode,
     productionLineId,
     dataSourceId,
-    onDelete
+    onDelete,
+    width,
+    height
 }) => {
     const { t } = useTranslation();
     // 1. Get Global Context
@@ -59,6 +64,23 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         refreshInterval: (widget.settings?.refreshRate || 0) * 1000
     });
 
+    // 6. DEBOUNCED UPDATE LOGIC ("Smart Freeze") -----------------------------------
+    // Injected by DashboardGridLayout via cloneElement
+    const parentWidth = width || 0;
+    const parentHeight = height || 0;
+
+    // Use the hook to debounce dimensions ONLY when in edit mode
+    // If not in edit mode, we want instant resizing (delay: 0)
+    const { width: debouncedW, height: debouncedH } = useDebouncedDimensions(
+        parentWidth,
+        parentHeight,
+        editMode ? 200 : 0
+    );
+
+    const effectiveWidth = editMode ? debouncedW : parentWidth;
+    const effectiveHeight = editMode ? debouncedH : parentHeight;
+    // ------------------------------------------------------------------------------
+
     if (!manifest) {
         return (
             <div className="p-4 bg-error/10 border border-error/30 rounded text-error">
@@ -67,18 +89,16 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         );
     }
 
-    const Component = manifest.component;
     const title = widget.settings?.customTitle || manifest.meta.title;
     const IconComponent = useMemo(() => manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest.meta.icon]);
     const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest.meta.iconColor]);
 
-    // 6. Centralized Loading State (Initial Load Only)
-    // Allows background refreshing for existing data
+    // 7. Centralized Loading State
     if (loading && !data && manifest.dataId) {
         return <WidgetSkeleton />;
     }
 
-    // 7. Centralized Error State
+    // 8. Centralized Error State
     if (error) {
         return (
             <WidgetWrapper id={widget.i} title={title} isMock={isMock} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
@@ -91,23 +111,61 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         );
     }
 
-    // 8. Locked / Coming Soon State
-    // We allow editing logic to bypass this if needed, but usually we want to see the lock even in edit mode
-    // or maybe show a translucent version. For now, strictly locked.
+    // 9. Locked State
     if (manifest.locked && !widget.settings?.unlockPreview) {
         return (
-            <ComingSoonWidget
-                {...{
-                    id: widget.i,
-                    w: widget.w,
-                    h: widget.h,
-                    settings: widget.settings,
-                    demoData: false, // or use this to toggle "Internal Preview"
-                    description: manifest.meta.description
-                } as any}
-            />
+            <WidgetWrapper id={widget.i} title={title} isMock={isMock} editMode={editMode} onRemove={onDelete} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
+                <ComingSoonWidget
+                    id={widget.i}
+                    w={widget.w}
+                    h={widget.h}
+                    settings={widget.settings}
+                    demoData={false}
+                    description={manifest.meta.description}
+                />
+            </WidgetWrapper>
         );
     }
+
+    // 10. Memoized Inner Widget Wrapper
+    // Prevents heavy chart re-renders unless critical props change
+    const MemoizedInnerWidget = React.memo(({
+        component: Component,
+        w, h, // Grid units
+        width, height, // Pixels
+        data,
+        settings,
+        globalFilters,
+        editMode,
+        onRemove,
+        isLoading,
+        error,
+        isMock
+    }: any) => {
+        return <Component
+            id={widget.i}
+            data={data}
+            settings={settings}
+            globalFilters={globalFilters}
+            w={w} h={h}
+            width={width} height={height} // Pass pixel dims to chart (e.g. for canvas)
+            editMode={editMode}
+            onRemove={onRemove}
+            isLoading={isLoading}
+            error={error}
+            isMock={isMock}
+        />;
+    }, (prev, next) => {
+        // CUSTOM EQUALITY CHECK
+        // 1. Dimensions Check (< 2px difference ignored)
+        const isSameSize = Math.abs(prev.width - next.width) < 2 && Math.abs(prev.height - next.height) < 2;
+        // 2. Data Check
+        const isSameData = prev.data === next.data;
+        // 3. Settings Check
+        const isSameSettings = prev.settings === next.settings;
+
+        return isSameSize && isSameData && isSameSettings;
+    });
 
     return (
         <>
@@ -120,15 +178,43 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                 </div>
             )}
 
-            {/* Widget Content */}
-            <div className="flex-1 w-full overflow-hidden min-h-0 relative h-full">
+            {/* Widget Content Container */}
+            <div
+                className="flex-1 w-full overflow-hidden min-h-0 relative h-full"
+                // Although parent sets size via RGL, we ensure this container matches to be safe
+                style={{ width: effectiveWidth || '100%', height: effectiveHeight || '100%' }}
+            >
                 <Suspense fallback={<WidgetSkeleton />}>
                     <WidgetErrorBoundary
                         widgetId={widget.i}
                         widgetType={widget.widget}
                         onError={logError}
                     >
-                        {manifest.dataSchema ? (
+                        {/* PERFORMANCE OPTIMIZATION: Render lightweight placeholder in Edit Mode */}
+                        {editMode ? (
+                            <WidgetWrapper
+                                id={widget.i}
+                                title={title}
+                                isMock={isMock}
+                                editMode={editMode}
+                                onRemove={onDelete}
+                                density={widget.h <= 2 ? 'compact' : 'default'}
+                                icon={iconElement}
+                                iconBgColor={manifest.meta.bgColor}
+                            >
+                                <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-2 p-4 select-none animate-in fade-in duration-300">
+                                    <div className="p-3 bg-slate-50/50 rounded-xl mb-1">
+                                        {iconElement || <LayoutGrid className="w-6 h-6 opacity-50" />}
+                                    </div>
+                                    <span className="text-xs font-semibold uppercase tracking-wider opacity-70">
+                                        {manifest.meta.title}
+                                    </span>
+                                    <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full text-slate-500">
+                                        {widget.w}x{widget.h} • {t('common.edit_mode', 'Edit Mode')}
+                                    </span>
+                                </div>
+                            </WidgetWrapper>
+                        ) : manifest.dataSchema ? (
                             <WidgetWrapper
                                 id={widget.i}
                                 title={title}
@@ -140,26 +226,23 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 iconBgColor={manifest.meta.bgColor}
                                 isLoading={loading}
                             >
-                                {/* Cast to any because TS doesn't know this specific component is V2-ready yet */}
-                                <Component
-                                    {...{
-                                        id: widget.i,
-                                        data,
-                                        settings: widget.settings,
-                                        globalFilters: effectiveFilters,
-                                        w: widget.w,
-                                        h: widget.h,
-                                        editMode,
-                                        onRemove: onDelete,
-                                        isLoading: loading,
-                                        error,
-                                        isMock
-                                    } as any}
+                                <MemoizedInnerWidget
+                                    component={manifest.component}
+                                    w={widget.w} h={widget.h}
+                                    width={effectiveWidth} height={effectiveHeight}
+                                    data={data}
+                                    settings={widget.settings}
+                                    globalFilters={effectiveFilters}
+                                    editMode={editMode}
+                                    onRemove={onDelete}
+                                    isLoading={loading}
+                                    error={error}
+                                    isMock={isMock}
                                 />
                             </WidgetWrapper>
                         ) : (
                             // Legacy V1 Fallback
-                            <Component
+                            <manifest.component
                                 id={widget.i}
                                 w={widget.w}
                                 h={widget.h}
@@ -171,9 +254,13 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 globalFilters={effectiveFilters}
                             />
                         )}
-
                     </WidgetErrorBoundary>
                 </Suspense>
+
+                {/* Drag Overlay (Prevents Chart Interaction) */}
+                {editMode && (
+                    <div className="absolute inset-0 z-10 bg-transparent cursor-move" />
+                )}
             </div>
         </>
     );

@@ -22,7 +22,18 @@ const WidgetWrapper = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEle
                 className={`${className} absolute top-0 left-0`}
                 {...props}
             >
-                {children}
+                {/* Parse dimensions from style (provided by RGL) and pass to child */}
+                {React.Children.map(children, child => {
+                    if (React.isValidElement(child)) {
+                        // RGL provides width/height in style as string "NNpx"
+                        const width = style?.width ? parseInt(String(style.width), 10) : undefined;
+                        const height = style?.height ? parseInt(String(style.height), 10) : undefined;
+
+                        // @ts-ignore - Injecting props dynamically
+                        return React.cloneElement(child, { width, height });
+                    }
+                    return child;
+                })}
             </div>
         );
     }
