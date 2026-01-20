@@ -5,12 +5,34 @@
  * LineSight: AI-driven Semantic ETL platform for SMB apparel manufacturing. Parse messy Excel files, track SAM/DHU metrics, and ensure UFLPA compliance.
  * OpenAPI spec version: 0.1.0
  */
+import type { DataSourceCreateCode } from './dataSourceCreateCode';
+import type { DataSourceCreateSpecialty } from './dataSourceCreateSpecialty';
+import type { DataSourceCreateTargetOperators } from './dataSourceCreateTargetOperators';
+import type { DataSourceCreateTargetEfficiencyPct } from './dataSourceCreateTargetEfficiencyPct';
+import type { DataSourceCreateSettings } from './dataSourceCreateSettings';
+import type { DataSourceCreateSourceName } from './dataSourceCreateSourceName';
 import type { DataSourceCreateDescription } from './dataSourceCreateDescription';
-import type { DataSourceCreateInitialMapping } from './dataSourceCreateInitialMapping';
+import type { DataSourceCreateTimeColumn } from './dataSourceCreateTimeColumn';
+import type { DataSourceCreateTimeFormat } from './dataSourceCreateTimeFormat';
 
+/**
+ * Schema for creating a data source.
+ */
 export interface DataSourceCreate {
-  production_line_id: string;
-  source_name: string;
+  /**
+   * @minLength 1
+   * @maxLength 100
+   */
+  name: string;
+  code?: DataSourceCreateCode;
+  specialty?: DataSourceCreateSpecialty;
+  target_operators?: DataSourceCreateTargetOperators;
+  target_efficiency_pct?: DataSourceCreateTargetEfficiencyPct;
+  /** ID of the factory this data source belongs to */
+  factory_id: string;
+  settings?: DataSourceCreateSettings;
+  source_name?: DataSourceCreateSourceName;
   description?: DataSourceCreateDescription;
-  initial_mapping?: DataSourceCreateInitialMapping;
+  time_column?: DataSourceCreateTimeColumn;
+  time_format?: DataSourceCreateTimeFormat;
 }

@@ -12,13 +12,13 @@ import type { DataSourceUpdateTargetOperators } from './dataSourceUpdateTargetOp
 import type { DataSourceUpdateTargetEfficiencyPct } from './dataSourceUpdateTargetEfficiencyPct';
 import type { DataSourceUpdateIsActive } from './dataSourceUpdateIsActive';
 import type { DataSourceUpdateSettings } from './dataSourceUpdateSettings';
-import type { DataSourceUpdateSourceName } from './dataSourceUpdateSourceName';
-import type { DataSourceUpdateDescription } from './dataSourceUpdateDescription';
 import type { DataSourceUpdateTimeColumn } from './dataSourceUpdateTimeColumn';
 import type { DataSourceUpdateTimeFormat } from './dataSourceUpdateTimeFormat';
+import type { DataSourceUpdateDescription } from './dataSourceUpdateDescription';
+import type { DataSourceUpdateSourceName } from './dataSourceUpdateSourceName';
 
 /**
- * Schema for updating a data source.
+ * Schema for updating DataSource configuration.
  */
 export interface DataSourceUpdate {
   name?: DataSourceUpdateName;
@@ -28,8 +28,8 @@ export interface DataSourceUpdate {
   target_efficiency_pct?: DataSourceUpdateTargetEfficiencyPct;
   is_active?: DataSourceUpdateIsActive;
   settings?: DataSourceUpdateSettings;
-  source_name?: DataSourceUpdateSourceName;
-  description?: DataSourceUpdateDescription;
   time_column?: DataSourceUpdateTimeColumn;
   time_format?: DataSourceUpdateTimeFormat;
+  description?: DataSourceUpdateDescription;
+  source_name?: DataSourceUpdateSourceName;
 }

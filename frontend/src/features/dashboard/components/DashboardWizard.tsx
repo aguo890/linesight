@@ -56,6 +56,9 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     // Widget Selection State (Lifted for Sidebar Preview)
     const [selectedWidgets, setSelectedWidgets] = useState<string[]>([]);
 
+    // Option A: Track if we skipped upload/mapping steps (for back button handling)
+    const [skippedToWidgets, setSkippedToWidgets] = useState(false);
+
     // Steps Configuration
     const steps = mode === 'create' ? [
         { id: 'upload', label: t('wizard.steps.upload.label'), description: t('wizard.steps.upload.desc'), icon: Upload },
@@ -149,7 +152,46 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
         checkExistingData();
     }, [selectedDataSourceId]);
 
-    // --- Handlers (Kept existing logic) ---
+    // --- Handlers ---
+
+    /**
+     * Skip to widget configuration for mature data sources.
+     * OPTION A: Called when user clicks "Configure Widgets" on a source with active schema.
+     */
+    const handleSkipToWidgets = React.useCallback((sourceId: string, sourceName: string, dashName: string) => {
+        console.log(`[Wizard] Skipping to widgets for mature source: ${sourceName}`);
+
+        setDashboardName(dashName);
+        setDataSourceId(sourceId);
+        setSelectedDataSourceId(sourceId);
+        setSkippedToWidgets(true);
+
+        // Auto-recommend widgets based on available data (empty mappings = show all compatible)
+        const recommendations = WIDGET_DEFINITIONS
+            .filter(w => w.tags.includes('essential') && !w.locked)
+            .sort((a, b) => (b.priority || 0) - (a.priority || 0))
+            .map(w => w.id);
+        setSelectedWidgets(recommendations);
+
+        setCurrentStep('widgets');
+    }, []);
+
+    /**
+     * Handle back button from widgets step.
+     * GUARDRAIL: If we skipped steps, go back to source selection, not mapping.
+     */
+    const handleBackFromWidgets = React.useCallback(() => {
+        if (skippedToWidgets) {
+            // We skipped upload/mapping, go back to source selection
+            setCurrentStep('upload');
+            setDataSourceId(null);
+            setSelectedDataSourceId('');
+            setSkippedToWidgets(false);
+        } else {
+            // Normal flow - go back to mapping
+            setCurrentStep('mapping');
+        }
+    }, [skippedToWidgets]);
 
 
     /**
@@ -467,6 +509,48 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                     </div>
                                 )}
 
+                                {/* OPTION A: Skip to Widgets for Mature Data Sources */}
+                                {(() => {
+                                    const selectedSource = dataSources.find(ds => ds.id === selectedDataSourceId);
+                                    if (selectedSource?.has_active_schema && isSelectionComplete) {
+                                        return (
+                                            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-5 space-y-3">
+                                                <div className="flex items-center text-emerald-700 dark:text-emerald-400">
+                                                    <CheckCircle className="w-5 h-5 me-2" />
+                                                    <span className="font-semibold">{t('wizard.mature_source.title', 'Schema Ready')}</span>
+                                                </div>
+                                                <p className="text-sm text-emerald-600 dark:text-emerald-300">
+                                                    {t('wizard.mature_source.description', 'This data source has a confirmed schema. You can skip directly to widget configuration.')}
+                                                </p>
+                                                <div className="flex items-center gap-3">
+                                                    <input
+                                                        type="text"
+                                                        placeholder={t('wizard.step1.dashboard_name_placeholder', 'Enter dashboard name')}
+                                                        value={dashboardName}
+                                                        onChange={(e) => setDashboardName(e.target.value)}
+                                                        className="flex-1 px-3 py-2 border border-emerald-300 dark:border-emerald-700 rounded-lg text-sm bg-surface text-text-main focus:ring-2 focus:ring-emerald-500"
+                                                    />
+                                                    <button
+                                                        onClick={() => {
+                                                            if (!dashboardName.trim()) {
+                                                                alert(t('wizard.step1.name_error_tooltip', 'Please enter a dashboard name'));
+                                                                return;
+                                                            }
+                                                            handleSkipToWidgets(selectedSource.id, selectedSource.name, dashboardName);
+                                                        }}
+                                                        disabled={!dashboardName.trim()}
+                                                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                                    >
+                                                        {t('wizard.mature_source.continue_button', 'Configure Widgets')}
+                                                        <ChevronRight className="w-4 h-4 ms-1 rtl:rotate-180" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                    return null;
+                                })()}
+
                                 {/* 
                                     GRACEFUL HANDLING:
                                     We wrap the Upload component in a div.
@@ -541,7 +625,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                             alert("Failed to create dashboard");
                                         }
                                     }}
-                                    onBack={() => setCurrentStep('mapping')}
+                                    onBack={handleBackFromWidgets}
                                 />
                             </div>
                         )}
