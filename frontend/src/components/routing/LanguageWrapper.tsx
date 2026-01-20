@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LOCALES, SUPPORTED_LOCALES, type LocaleCode, DEFAULT_LOCALE } from '../../config/locales';
+import { LOCALES, SUPPORTED_LOCALES, type LocaleCode, DEFAULT_LOCALE } from '../../context/config/locales';
 
 /**
  * LanguageWrapper - Wraps public routes with locale-based routing
