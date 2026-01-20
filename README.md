@@ -21,20 +21,21 @@ You can see your asssembly line, because its the heartbeat of your operations.
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | React 18, TypeScript, Vite |
+| **Frontend** | React 19, TypeScript, Vite 7 |
 | **Backend** | Python 3.11+, FastAPI, Uvicorn |
-| **Database** | MySQL 8.0+, SQLAlchemy 2.0 |
+| **Database** | PostgreSQL 15+, SQLAlchemy 2.0 |
 | **Migrations** | Alembic |
 | **LLM Engine** | DeepSeek-V3 (primary), OpenAI GPT-4o (fallback) |
 | **PII Protection** | Microsoft Presidio |
 | **Containers** | Docker, Docker Compose |
+| **Automation** | GNU Make (Makefile) |
 | **Background Jobs** | Celery + Redis |
 
 ## 📁 Project Structure
 
 ```
 FactoryExcelManager/
-├── backend/
+├── backend/            # FastAPI, PostgreSQL, Celery
 │   ├── app/
 │   │   ├── api/           # FastAPI endpoints
 │   │   ├── core/          # Config, security, database
@@ -44,54 +45,74 @@ FactoryExcelManager/
 │   ├── alembic/           # Database migrations
 │   ├── Dockerfile         # Backend container
 │   └── requirements.txt
-├── frontend/
+├── frontend/           # React 19 + Vite 7
 │   ├── Dockerfile         # Frontend container
 │   └── package.json
-├── docker/
-│   └── mysql/init.sql     # DB initialization
+├── scripts/            # Automation utilities
 ├── docker-compose.yml     # Full stack orchestration
 └── README.md
 ```
 
 ## 🐳 Docker Quick Start (Recommended)
 
-The fastest way to get LineSight running:
+The fastest way to get LineSight running is using the included **Makefile**.
 
 ```bash
-# Clone and enter directory
+# 1. Clone and enter directory
 cd FactoryExcelManager
 
-# Copy environment template
-copy .env.docker.example .env
+# 2. Copy environment template
+# Windows: copy .env.docker.example .env
+# Linux/Mac/WSL2: cp .env.docker.example .env
+cp .env.docker.example .env
 
-# Edit .env with your API keys
+# 3. Edit .env with your API keys
 # - DEEPSEEK_API_KEY (required for LLM features)
-# - SECRET_KEY (generate with: openssl rand -hex 32)
 
-# Start all services
-docker-compose up -d
+# 4. Fresh Start (Build, Up, Migrate)
+make setup
 
-# View logs
-docker-compose logs -f backend
-
-# Run migrations
-docker-compose exec backend alembic upgrade head
+# 5. Tail logs
+make logs
 ```
 
+<details>
+<summary><b>Manual Setup (No Make)</b></summary>
+
+If you don't have `make` installed, use these raw commands:
+
+```bash
+# 1. Build and start containers
+docker compose up -d --build
+
+# 2. Run database migrations
+docker compose exec backend alembic upgrade head
+
+# 3. View logs
+docker compose logs -f
+```
+</details>
+
 **Services Available:**
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
-- Frontend: http://localhost:5173
-- MySQL: localhost:3306
-- Redis: localhost:6379
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+- **Postgres**: localhost:5434 (Mapped to 5434 to avoid conflicts with local instances on 5432)
+- **Redis**: localhost:6379
 
 ## 💻 Local Development Setup
 
 ### Prerequisites
 
-- Python 3.11+
-- MySQL 8.0+
-- Node.js 18+ (for frontend)
+- **Python 3.11+**
+- **PostgreSQL 15+**
+- **Node.js 18+** (for frontend)
+- **Docker & Docker Compose**
+- **GNU Make** (Required for the recommended workflow)
+- **GCC / Build Essentials** (Required for some Python dependencies)
+
+> [!IMPORTANT]
+> **Windows Users**: It is highly recommended to use **WSL2** (Ubuntu) for local development to ensure compatibility with `make` and Docker. If you are not using WSL2, you can install `make` via [Chocolatey](https://community.chocolatey.org/packages/make) or [MingW](http://www.mingw.org/), or use the raw Docker commands provided in the **Manual Setup** section below.
 
 ### Backend Setup
 
@@ -108,11 +129,12 @@ venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 
 # Copy and configure environment
-copy .env.example .env
-# Edit .env with your MySQL credentials and API keys
+cp .env.example .env
+# Edit .env with your PostgreSQL credentials (default port: 5434) and API keys
 
 # Create database
-mysql -u root -p -e "CREATE DATABASE linesight CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+# Using psql:
+# psql -U postgres -c "CREATE DATABASE linesight;"
 
 # Run migrations
 alembic upgrade head
@@ -123,9 +145,11 @@ uvicorn app.main:app --reload --port 8000
 
 ### API Documentation
 
-Once running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+The API is fully documented with OpenAPI/Swagger. Once the backend is running, visit:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
+These docs are auto-generated from the code and always reflect the current API state.
 
 ## 📊 Database Schema
 
@@ -221,12 +245,12 @@ LineSight will:
 
 ## 📈 Roadmap
 
-- [ ] API endpoints for all entities
+- [x] API endpoints for core entities
 - [x] Excel upload and processing service (FlexibleExcelParser)
 - [x] LLM agent for schema inference (SemanticETLAgent)
-- [ ] React frontend dashboard
-- [ ] Real-time WebSocket updates
-- [x] Background job processing (Celery config)
+- [x] React frontend dashboard (V1)
+- [ ] Real-time WebSocket updates (In-progress)
+- [x] Background job processing (Celery + Redis)
 - [ ] EU Digital Product Passport support
 
 ---
