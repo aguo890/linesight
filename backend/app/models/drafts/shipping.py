@@ -15,8 +15,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    # from app.models.compliance import TraceabilityRecord
     from app.models.production import Order
+    from app.models.traceability import TraceabilityRecord
 
 
 class ShipmentStatus(str, PyEnum):

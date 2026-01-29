@@ -3,7 +3,7 @@ Unit tests for Date Format Profiler - Constraint Elimination Algorithm.
 
 Tests edge cases including:
 - Clear ISO format (middle > 12)
-- Clear SWAP format (last > 12) 
+- Clear SWAP format (last > 12)
 - Ambiguous data (all values ≤ 12)
 - Invalid dates (e.g., 2025-13-13, 2025-02-30)
 - Empty lists

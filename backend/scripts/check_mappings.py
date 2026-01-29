@@ -4,7 +4,7 @@ import os
 import sys
 
 # Fix path
-sys.path.append(os.getcwd())
+sys.path.append(os.getcwd())  # noqa: E402
 
 from app.db.session import AsyncSessionLocal
 from sqlalchemy import select
@@ -17,7 +17,7 @@ async def check_mappings():
         stmt = (
             select(DataSource, SchemaMapping)
             .join(SchemaMapping, DataSource.id == SchemaMapping.data_source_id)
-            .where(SchemaMapping.is_active == True)
+            .where(SchemaMapping.is_active)
         )
         result = await db.execute(stmt)
         rows = result.all()

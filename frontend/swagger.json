@@ -1296,7 +1296,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataSourceCreate"
+                "$ref": "#/components/schemas/app__schemas__datasource__DataSourceCreate"
               }
             }
           }
@@ -3956,7 +3956,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceCreate"
+                "$ref": "#/components/schemas/DataSourceCreate"
               }
             }
           }
@@ -5735,86 +5735,12 @@
       },
       "DataSourceCreate": {
         "properties": {
-          "name": {
+          "production_line_id": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 100
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 100.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "factory_id": {
-            "type": "string",
-            "title": "Factory Id",
-            "description": "ID of the factory this data source belongs to"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DataSourceSettings"
-              },
-              {
-                "type": "null"
-              }
-            ]
+            "title": "Production Line Id"
           },
           "source_name": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 255
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "string",
             "title": "Source Name"
           },
           "description": {
@@ -5828,38 +5754,23 @@
             ],
             "title": "Description"
           },
-          "time_column": {
+          "initial_mapping": {
             "anyOf": [
               {
-                "type": "string",
-                "maxLength": 100
+                "$ref": "#/components/schemas/SchemaMappingCreate"
               },
               {
                 "type": "null"
               }
-            ],
-            "title": "Time Column"
-          },
-          "time_format": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 50
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Format"
+            ]
           }
         },
         "type": "object",
         "required": [
-          "name",
-          "factory_id"
+          "production_line_id",
+          "source_name"
         ],
-        "title": "DataSourceCreate",
-        "description": "Schema for creating a data source."
+        "title": "DataSourceCreate"
       },
       "DataSourceRead": {
         "properties": {
@@ -10086,14 +9997,88 @@
         "title": "WorkforceStats",
         "description": "Workforce attendance statistics."
       },
-      "app__api__v1__endpoints__datasource__DataSourceCreate": {
+      "app__schemas__datasource__DataSourceCreate": {
         "properties": {
-          "production_line_id": {
+          "name": {
             "type": "string",
-            "title": "Production Line Id"
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "factory_id": {
+            "type": "string",
+            "title": "Factory Id",
+            "description": "ID of the factory this data source belongs to"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DataSourceSettings"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "source_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Source Name"
           },
           "description": {
@@ -10107,23 +10092,38 @@
             ],
             "title": "Description"
           },
-          "initial_mapping": {
+          "time_column": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/SchemaMappingCreate"
+                "type": "string",
+                "maxLength": 100
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
           }
         },
         "type": "object",
         "required": [
-          "production_line_id",
-          "source_name"
+          "name",
+          "factory_id"
         ],
-        "title": "DataSourceCreate"
+        "title": "DataSourceCreate",
+        "description": "Schema for creating a data source."
       },
       "app__schemas__datasource__DataSourceUpdate": {
         "properties": {

@@ -31,7 +31,6 @@ class TestDateParser:
         assert parse_date("01/06/2025", format_spec="MM/DD/YYYY") == datetime(2025, 1, 6)
 
         # Short format MM-DD (assume current year)
-        current_year = datetime.now().year
         assert parse_date("01-06", format_spec="MM-DD", assume_year=2025) == datetime(2025, 1, 6)
 
     def test_excel_serials(self):

@@ -13,7 +13,7 @@ from app.core.config import settings
 
 # Synchronous engine (for Alembic migrations)
 sync_engine = create_engine(
-    settings.SYNC_DATABASE_URL,
+    settings.sync_database_url,
     echo=False,
     pool_pre_ping=True,
     pool_size=10,
@@ -22,7 +22,7 @@ sync_engine = create_engine(
 
 # Async engine (for FastAPI)
 async_engine = create_async_engine(
-    settings.ASYNC_DATABASE_URL,
+    settings.async_database_url,
     echo=False,
     pool_pre_ping=True,
     pool_size=10,

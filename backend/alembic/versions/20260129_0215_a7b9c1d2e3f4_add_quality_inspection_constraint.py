@@ -18,7 +18,7 @@ depends_on: str | Sequence[str] | None = None
 
 def upgrade() -> None:
     """Add composite unique constraint on (production_run_id, inspection_type).
-    
+
     This enables UPSERT operations on quality_inspections to work correctly.
     Each production run can have one inspection per type (INLINE, ENDLINE, FINAL, AQL).
     """

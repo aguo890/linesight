@@ -27,7 +27,6 @@ from app.schemas.analytics import (
     ComplexityPoint,
     DhuPoint,
     DiscrepanciesResponse,
-    DiscrepancyItem,
     DowntimeAnalysisResponse,
     DowntimeReason,
     EarnedMinutesStats,
@@ -135,10 +134,6 @@ async def get_overview_stats(
     discrepancies_count = disc_result.scalar() or 0
 
     last_updated = "Just now"
-    try:
-        from zoneinfo import ZoneInfo
-    except ImportError:
-        pass
 
     today = datetime.now(timezone.utc).date()
     if effective_date != today:
@@ -284,43 +279,45 @@ async def get_discrepancies(
     """
     Get detected data discrepancies based on TraceabilityRecords.
     """
-    query = (
-        select(TraceabilityRecord)
-        .where(
-            TraceabilityRecord.verification_status.in_(
-                [
-                    VerificationStatus.FLAGGED,
-                    VerificationStatus.REJECTED,
-                    VerificationStatus.PENDING,
-                ]
-            )
-        )
-        .order_by(desc(TraceabilityRecord.created_at))
-        .limit(20)
-    )
+    # TODO: Compliance module is currently archived/draft.
+    # Re-enable this when app.models.compliance is restored.
+    # query = (
+    #     select(TraceabilityRecord)
+    #     .where(
+    #         TraceabilityRecord.verification_status.in_(
+    #             [
+    #                 VerificationStatus.FLAGGED,
+    #                 VerificationStatus.REJECTED,
+    #                 VerificationStatus.PENDING,
+    #             ]
+    #         )
+    #     )
+    #     .order_by(desc(TraceabilityRecord.created_at))
+    #     .limit(20)
+    # )
 
-    result = await db.execute(query)
-    records = result.scalars().all()
+    # result = await db.execute(query)
+    # records = result.scalars().all()
 
     discrepancies = []
-    for rec in records:
-        severity = "Medium"
-        if (
-            rec.verification_status == VerificationStatus.REJECTED
-            or rec.verification_status == VerificationStatus.FLAGGED
-        ):
-            severity = "High"
+    # for rec in records:
+    #     severity = "Medium"
+    #     if (
+    #         rec.verification_status == VerificationStatus.REJECTED
+    #         or rec.verification_status == VerificationStatus.FLAGGED
+    #     ):
+    #         severity = "High"
 
-        discrepancies.append(
-            DiscrepancyItem(
-                id=rec.id,
-                severity=severity,
-                issue_title=f"Compliance {rec.verification_status.value.title()}",
-                issue_description=rec.risk_notes
-                or "Verification incomplete or failed.",
-                source_file="Traceability Record",  # Placeholder
-            )
-        )
+    #     discrepancies.append(
+    #         DiscrepancyItem(
+    #             id=rec.id,
+    #             severity=severity,
+    #             issue_title=f"Compliance {rec.verification_status.value.title()}",
+    #             issue_description=rec.risk_notes
+    #             or "Verification incomplete or failed.",
+    #             source_file="Traceability Record",  # Placeholder
+    #         )
+    #     )
 
     return DiscrepanciesResponse(
         discrepancies=discrepancies,

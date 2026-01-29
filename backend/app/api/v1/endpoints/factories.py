@@ -42,7 +42,7 @@ async def list_factories(
 ):
     """
     Get all factories for the current user's organization.
-    
+
     RBAC:
     - OWNER/ADMIN: See all active factories in organization.
     - MANAGER: Only see factories where they have assigned lines.
@@ -80,7 +80,7 @@ async def get_factory(
 ):
     """
     Get a specific factory with its production lines.
-    
+
     RBAC Filtering:
     - SYSTEM_ADMIN/OWNER: See all lines
     - MANAGER: Only see lines assigned via UserScope
@@ -275,7 +275,7 @@ async def list_data_sources(
 ):
     """
     Get data sources for a factory.
-    
+
     RBAC Filtering:
     - SYSTEM_ADMIN/OWNER: See all data sources in the factory
     - MANAGER: Only see data sources assigned via UserScope

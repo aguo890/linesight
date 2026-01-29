@@ -3,6 +3,7 @@ User management endpoints.
 """
 
 import json
+from contextlib import suppress
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -52,10 +53,8 @@ async def update_user_me(
             # 1. Load existing preferences
             current_prefs = {}
             if current_user.preferences:
-                try:
+                with suppress(Exception):
                     current_prefs = json.loads(current_user.preferences)
-                except Exception:
-                    pass
 
             # 2. Merge new values (value is a dict because of exclude_unset=True)
             # Pydantic's model_dump(exclude_unset=True) means 'value' only contains

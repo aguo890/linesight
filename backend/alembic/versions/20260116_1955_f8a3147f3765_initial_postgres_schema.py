@@ -1,7 +1,7 @@
 """initial_postgres_schema
 
 Revision ID: f8a3147f3765
-Revises: 
+Revises:
 Create Date: 2026-01-16 19:55:16.243951+00:00
 
 """

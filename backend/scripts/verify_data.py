@@ -7,7 +7,7 @@ import os
 import sys
 
 # Add backend to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # noqa: E402
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -17,15 +17,15 @@ from app.core.config import settings
 
 def check_database():
     """Check database for production data."""
-    db_url = settings.DATABASE_URL
+    db_url = settings.database_url
     print(f"\n{'=' * 60}")
     print("DATABASE VERIFICATION")
     print(f"{'=' * 60}")
     print(f"Database URL: {db_url[:50]}...")
 
     engine = create_engine(db_url)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session_factory = sessionmaker(bind=engine)
+    session = session_factory()
 
     try:
         # 1. ProductionRun records
@@ -33,10 +33,10 @@ def check_database():
         result = session.execute(
             text("""
             SELECT production_date, COUNT(*) as count, SUM(actual_qty) as total_qty
-            FROM production_runs 
+            FROM production_runs
             WHERE production_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
-            GROUP BY production_date 
-            ORDER BY production_date DESC 
+            GROUP BY production_date
+            ORDER BY production_date DESC
             LIMIT 10
         """)
         )
@@ -51,7 +51,7 @@ def check_database():
         print("\n📊 SAM Values in ProductionRuns:")
         result = session.execute(
             text("""
-            SELECT 
+            SELECT
                 COUNT(*) as total_runs,
                 SUM(CASE WHEN sam IS NOT NULL AND sam > 0 THEN 1 ELSE 0 END) as with_sam,
                 SUM(CASE WHEN available_minutes > 0 THEN 1 ELSE 0 END) as with_avail_mins
@@ -70,10 +70,10 @@ def check_database():
         result = session.execute(
             text("""
             SELECT DATE(timestamp) as event_date, COUNT(*) as count, SUM(quantity) as total_qty
-            FROM production_events 
+            FROM production_events
             WHERE timestamp >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-            GROUP BY DATE(timestamp) 
-            ORDER BY event_date DESC 
+            GROUP BY DATE(timestamp)
+            ORDER BY event_date DESC
             LIMIT 5
         """)
         )
@@ -91,8 +91,8 @@ def check_database():
         result = session.execute(
             text("""
             SELECT report_date, avg_dhu
-            FROM dhu_reports 
-            ORDER BY report_date DESC 
+            FROM dhu_reports
+            ORDER BY report_date DESC
             LIMIT 5
         """)
         )
@@ -107,10 +107,10 @@ def check_database():
         print("\n📊 Workforce Data (operators_present/helpers_present):")
         result = session.execute(
             text("""
-            SELECT production_date, 
+            SELECT production_date,
                    SUM(COALESCE(operators_present, 0)) as ops,
                    SUM(COALESCE(helpers_present, 0)) as helpers
-            FROM production_runs 
+            FROM production_runs
             WHERE production_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
             GROUP BY production_date
             ORDER BY production_date DESC
@@ -129,7 +129,7 @@ def check_database():
         result = session.execute(
             text("""
             SELECT downtime_reason, COUNT(*) as count
-            FROM production_runs 
+            FROM production_runs
             WHERE downtime_reason IS NOT NULL AND downtime_reason != ''
             GROUP BY downtime_reason
             ORDER BY count DESC
@@ -147,7 +147,7 @@ def check_database():
         print("\n📊 EfficiencyMetric Records:")
         result = session.execute(
             text("""
-            SELECT COUNT(*) as total, 
+            SELECT COUNT(*) as total,
                    AVG(efficiency_pct) as avg_eff
             FROM efficiency_metrics
         """)
@@ -164,7 +164,7 @@ def check_database():
         result = session.execute(
             text("""
             SELECT status, COUNT(*) as count, SUM(quantity) as total_qty
-            FROM orders 
+            FROM orders
             GROUP BY status
         """)
         )

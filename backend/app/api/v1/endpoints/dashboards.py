@@ -5,6 +5,7 @@ Provides CRUD operations and widget configuration management.
 
 import json
 import logging
+import sys
 import traceback
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -261,7 +262,7 @@ async def list_dashboards(
         print("-------------------", file=sys.stderr)
 
         # Re-raise so the 500 error still happens (we just wanted to read it)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # Proably needs to update/refactored since we need to make sure that the root dashboard isnt

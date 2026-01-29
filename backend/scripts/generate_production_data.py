@@ -716,7 +716,7 @@ async def generate_production_runs(
             random.seed(day_seed)
 
             # Generate realistic values with daily variance
-            base_planned = 200
+            # Generate realistic values with daily variance
             # Add some weekly trends (efficiency dips on Sundays/Mondays)
             weekday_factor = 1.0 if current_date.weekday() not in [0, 6] else 0.9
 
@@ -1210,7 +1210,7 @@ async def main(cleanup: bool = False):
             data_source = await create_data_source(db, line)
 
             # Create schema mapping (mirrors confirm-mapping step)
-            schema_mapping = await create_schema_mapping(db, data_source)
+            await create_schema_mapping(db, data_source)
 
             # Create fake file upload record
             raw_import = await create_raw_import(db, user, factory, line, data_source)

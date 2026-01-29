@@ -256,8 +256,8 @@ ANOMALY-001,PO-BAD,{today},1000,1000,10.0,2,0,60
     # ========================================================================
     result = await db_session.execute(
         text("""
-            SELECT * FROM data_quality_issues 
-            WHERE raw_import_id = :import_id 
+            SELECT * FROM data_quality_issues
+            WHERE raw_import_id = :import_id
             AND issue_type = 'PHYSICS_VIOLATION'
         """),
         {"import_id": raw_import_id},

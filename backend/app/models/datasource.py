@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 class DataSource(Base, UUIDMixin, TimestampMixin):
     """
     Unified entity representing a production line and its data configuration.
-    
+
     This model combines what was previously split between ProductionLine and DataSource:
     - Physical line attributes (name, code, target_operators, specialty)
     - Data configuration (time_column, time_format, schema_mappings)

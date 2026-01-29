@@ -219,8 +219,8 @@ VERSION-TEST-002,PO-V2,200,1.5,2026-01-05
         print(f"""
 Run this query in DBeaver to verify:
 
-SELECT id, version, is_active, created_at 
-FROM schema_mappings 
+SELECT id, version, is_active, created_at
+FROM schema_mappings
 WHERE data_source_id = '{data_source_id}'
 ORDER BY version DESC;
 

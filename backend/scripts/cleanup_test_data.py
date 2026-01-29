@@ -30,7 +30,7 @@ try:
             lines = db.execute(
                 text(f"SELECT id FROM production_lines WHERE factory_id = '{fac_id}'")
             ).fetchall()
-            line_ids = [l[0] for l in lines]
+            line_ids = [line_row[0] for line_row in lines]
 
             for line_id in line_ids:
                 print(f"  Deleting line data: {line_id}")

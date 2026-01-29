@@ -264,7 +264,7 @@ class TestDataCleaning:
 
     def test_clean_date_messy_format(self, service):
         """Test cleaning messy date formats like '12-19'.
-        
+
         Refactored: The new robust parse_date uses dateutil heuristics which correctly
         identifies '12-19' as December 19th (current year).
         """
@@ -335,7 +335,7 @@ class TestDataCleaning:
 
 class TestProductionRunInsertion:
     """Test the production run insertion logic.
-    
+
     NOTE: After refactoring, the _insert_production_runs method was moved to
     app.services.ingestion.writer.ProductionWriter. These tests now validate
     that the orchestrator correctly delegates to the writer.

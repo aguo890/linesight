@@ -3,6 +3,7 @@ Authentication endpoints for LineSight.
 Handles user login, registration, and token management.
 """
 
+import json
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status

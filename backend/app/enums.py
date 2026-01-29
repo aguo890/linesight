@@ -90,12 +90,12 @@ class SubscriptionTier(str, Enum):
 
 class UserRole(str, Enum):
     """User roles for RBAC.
-    
+
     Hierarchy:
     - SYSTEM_ADMIN: Platform-level admin (developer). Can see all organizations.
     - OWNER: Organization owner/CEO. Full access to all factories/lines in their org.
              Can create factories, add lines, assign managers.
-    - FACTORY_MANAGER: Assigned to specific factories by owner. 
+    - FACTORY_MANAGER: Assigned to specific factories by owner.
              Can add/edit lines within assigned factory, upload to any line in factory.
     - LINE_MANAGER: Assigned to specific lines by owner/factory manager.
              STRICT ACCESS: Can ONLY view/upload to explicitly assigned lines.
@@ -114,7 +114,7 @@ class UserRole(str, Enum):
 
 class RoleScope(str, Enum):
     """Scope levels for user permissions.
-    
+
     DATA_SOURCE replaces LINE after the refactor.
     """
 

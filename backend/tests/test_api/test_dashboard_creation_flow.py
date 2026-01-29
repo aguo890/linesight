@@ -65,7 +65,7 @@ async def test_complete_dashboard_creation_flow(
     db_session.add(data_source)
     await db_session.commit()
     await db_session.refresh(data_source)
-    line_id = data_source.id
+
 
     # =========================================================================
     # Step 3: Upload File

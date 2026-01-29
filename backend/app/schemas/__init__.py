@@ -131,6 +131,7 @@ __all__ = [
     "RawImportUploadResponse",
 
     # DataSource
+    "DataSourceCreate",
     "DataSourceRead",
     "DataSourceSettings",
     "DataSourceUpdate",

@@ -69,14 +69,14 @@ def parse_date_column_with_format(
 ) -> pd.Series:
     """
     Parse a pandas Series using a strict format derived from profiling.
-    
+
     This is the connector between the date profiler and batch date parsing.
     The profiler detects the format, then this function applies it strictly.
-    
+
     Args:
         series: Pandas Series containing date strings
         strptime_format: Python strptime format string (e.g., "%Y-%m-%d")
-        
+
     Returns:
         Pandas Series with datetime values (unparseable dates become NaT)
     """

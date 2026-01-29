@@ -33,7 +33,7 @@ target_metadata = Base.metadata
 
 def get_url() -> str:
     """Get database URL from settings."""
-    return settings.SYNC_DATABASE_URL
+    return settings.sync_database_url
 
 
 def run_migrations_offline() -> None:

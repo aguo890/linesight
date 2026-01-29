@@ -6,7 +6,7 @@ Instead of guessing row-by-row, we scan a sample and eliminate impossible format
 
 Usage:
     from app.services.ingestion.date_profiler import detect_column_format
-    
+
     result = detect_column_format(date_strings)
     print(result.format)  # "YYYY-MM-DD" or "YYYY-DD-MM"
     print(result.confidence)  # 1.0 = certain, 0.5 = ambiguous
@@ -47,18 +47,18 @@ def detect_column_format(
 ) -> FormatDetectionResult:
     """
     Detect date format from a column of values using constraint elimination.
-    
+
     Algorithm:
     1. Start with two hypotheses: ISO (YYYY-MM-DD) and SWAP (YYYY-DD-MM)
     2. Scan values looking for "constraint violations":
        - If middle value > 12: ISO impossible (month cannot be > 12)
        - If last value > 12: SWAP impossible (month cannot be > 12)
     3. Return the surviving hypothesis
-    
+
     Args:
         date_values: List of date strings to analyze
         max_sample: Maximum number of values to check (for performance)
-        
+
     Returns:
         FormatDetectionResult with detected format and confidence
     """
@@ -176,14 +176,14 @@ def profile_date_column(
 ) -> dict:
     """
     Profile a date column and return detection results as a dict.
-    
+
     Convenience wrapper for detect_column_format that returns a dict
     suitable for logging or API responses.
-    
+
     Args:
         date_values: List of date strings
         column_name: Name of column for logging
-        
+
     Returns:
         Dict with format info and profiling metadata
     """

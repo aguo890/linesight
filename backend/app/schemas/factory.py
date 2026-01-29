@@ -15,8 +15,10 @@ except ImportError:
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.schemas.datasource import DataSourceRead
+
 if TYPE_CHECKING:
-    from app.schemas.datasource import DataSourceRead
+    pass
 
 # =============================================================================
 # Core Config Schemas

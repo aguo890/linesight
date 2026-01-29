@@ -206,7 +206,7 @@ class FileProcessingService:
     ) -> dict[str, Any]:
         """
         Final Step: Writes data to ProductionRun table.
-        
+
         REFACTORED: Now delegates to IngestionOrchestrator which coordinates:
         - RecordValidator: Style/Order/Run resolution
         - ProductionWriter: Atomic database writes

@@ -49,8 +49,8 @@ def verify_phase_2():
         logger.info("\n--- TEST 1b: Verify New Columns Exist ---")
         try:
             result = db.execute(text("""
-                SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
-                WHERE TABLE_SCHEMA = DATABASE() 
+                SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = DATABASE()
                 AND TABLE_NAME = 'data_sources'
                 AND COLUMN_NAME IN ('factory_id', 'name', 'parent_data_source_id', 'is_segment', 'date_range_start')
             """))

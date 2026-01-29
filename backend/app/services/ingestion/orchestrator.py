@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 class IngestionOrchestrator:
     """
     Orchestrates the promote_to_production flow.
-    
+
     Responsibilities:
     1. Read file and transform data using schema mapping
     2. Coordinate RecordValidator for relationship resolution
@@ -53,7 +53,7 @@ class IngestionOrchestrator:
     ) -> dict[str, Any]:
         """
         Main entry point for promoting staged data to production.
-        
+
         Steps:
         1. Load RawImport and validate state
         2. Read file and transform using active schema mapping

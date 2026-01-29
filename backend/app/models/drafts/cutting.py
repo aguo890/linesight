@@ -22,9 +22,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    # from app.models.compliance import TraceabilityRecord
     from app.models.factory import Factory
     from app.models.production import Order, ProductionRun
+    from app.models.traceability import TraceabilityRecord
     from app.models.workforce import Worker
 
 

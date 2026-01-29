@@ -29,10 +29,10 @@ async def test_quality_inspection_allows_different_types_per_run(
     db_session, test_factory
 ):
     """
-    Verify that a ProductionRun CAN have multiple QualityInspections 
+    Verify that a ProductionRun CAN have multiple QualityInspections
     of DIFFERENT types (e.g., ENDLINE and INLINE).
-    
-    This is valid per the domain model: multiple inspection checkpoints 
+
+    This is valid per the domain model: multiple inspection checkpoints
     occur during manufacturing.
     """
     # Setup: Create DataSource (replaces deprecated ProductionLine)
@@ -119,13 +119,13 @@ async def test_quality_inspection_rejects_duplicate_type_per_run(
     db_session, test_factory
 ):
     """
-    Verify that a ProductionRun CANNOT have multiple QualityInspections 
+    Verify that a ProductionRun CANNOT have multiple QualityInspections
     of the SAME type (e.g., two ENDLINE inspections).
-    
-    This constraint prevents accidental data duplication and enables 
+
+    This constraint prevents accidental data duplication and enables
     atomic UPSERT operations.
-    
-    CRITICAL: If this test fails, the uq_quality_inspection_run_type 
+
+    CRITICAL: If this test fails, the uq_quality_inspection_run_type
     constraint may have been removed, which will break production ingestion.
     """
     # Setup: Create DataSource

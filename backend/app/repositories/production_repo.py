@@ -6,11 +6,6 @@ Separates data access logic from business logic for better testability and maint
 """
 
 from datetime import date, datetime, timezone
-
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    pass
 from decimal import Decimal
 
 from sqlalchemy import case, desc, func, select
@@ -106,23 +101,6 @@ class ProductionRepository:
             for row in rows
         ]
 
-    async def get_overview_stats(
-        self,
-        today: date,
-        yesterday: date,
-        line_id: str | None = None,
-    ) -> dict:
-        """
-        Get aggregated overview statistics for dashboard.
-
-        Args:
-            today: Today's date
-            yesterday: Yesterday's date
-            line_id: Optional production line filter
-
-        Returns:
-            Dictionary with output and efficiency stats for today and yesterday
-        """
 
     async def get_effective_date(
         self, line_id: str | None = None, timezone_str: str = "UTC"
@@ -157,19 +135,19 @@ class ProductionRepository:
             from backports.zoneinfo import ZoneInfo
 
         try:
-            FACTORY_TZ = ZoneInfo(timezone_str)
+            factory_tz = ZoneInfo(timezone_str)
         except Exception:
             # Fallback if invalid timezone string provided
-            FACTORY_TZ = ZoneInfo("UTC")
+            factory_tz = ZoneInfo("UTC")
 
         # 1. Get truly "Today" relative to the factory context
         now_utc = datetime.now(timezone.utc)
-        factory_time = now_utc.astimezone(FACTORY_TZ)
+        factory_time = now_utc.astimezone(factory_tz)
         today = factory_time.date()
 
         # Define "Today" range in UTC
         start_of_day_factory = datetime.combine(today, time.min).replace(
-            tzinfo=FACTORY_TZ
+            tzinfo=factory_tz
         )
         # Use next day for exclusive upper bound
         start_of_next_day_utc = (start_of_day_factory + timedelta(days=1)).astimezone(
@@ -215,7 +193,7 @@ class ProductionRepository:
             # Ensure UTC awareness (SQLAlchemy/Driver nuance)
             if latest_ts.tzinfo is None:
                 latest_ts = latest_ts.replace(tzinfo=timezone.utc)
-            latest_event_date = latest_ts.astimezone(FACTORY_TZ).date()
+            latest_event_date = latest_ts.astimezone(factory_tz).date()
 
         # Latest Run Date (Already Factory Date)
         latest_run_q = select(func.max(func.date(ProductionRun.production_date)))

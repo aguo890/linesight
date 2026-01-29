@@ -8,7 +8,7 @@ from app.services.matching.engine import HybridMatchingEngine
 @pytest.mark.asyncio
 async def test_mapping_engine_intelligence(db_session, test_factory):
     """
-    Verifies that the Matching Engine correctly identifies columns 
+    Verifies that the Matching Engine correctly identifies columns
     using Hash, Fuzzy, and Alias logic.
     """
 

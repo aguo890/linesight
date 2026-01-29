@@ -44,19 +44,19 @@ class Settings(BaseSettings):
         return f"{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
     @property
-    def SYNC_DATABASE_URL(self) -> str:
+    def sync_database_url(self) -> str:
         """Construct synchronous (Alembic) connection URL."""
         return f"postgresql+psycopg2://{self._base_url}"
 
     @property
-    def ASYNC_DATABASE_URL(self) -> str:
+    def async_database_url(self) -> str:
         """Construct asynchronous (FastAPI) connection URL."""
         return f"postgresql+asyncpg://{self._base_url}"
 
     @property
-    def DATABASE_URL(self) -> str:
+    def database_url(self) -> str:
         """Legacy alias for default async connection (backwards campat compatibility)."""
-        return self.ASYNC_DATABASE_URL
+        return self.async_database_url
 
     # LLM Configuration
     LLM_PROVIDER: str = "deepseek"  # or "openai"

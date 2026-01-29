@@ -272,8 +272,8 @@ async def test_widget_endpoint_with_line_filter(
     # Get a line that has production runs
     result = await db_session.execute(
         text("""
-            SELECT DISTINCT pr.line_id, COUNT(*) as run_count 
-            FROM production_runs pr 
+            SELECT DISTINCT pr.line_id, COUNT(*) as run_count
+            FROM production_runs pr
             GROUP BY pr.line_id
         """)
     )

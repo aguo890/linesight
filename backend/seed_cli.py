@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 # Add the current directory to sys.path so we can import 'app'
 sys.path.append(".")
 
-from app.core.database import AsyncSessionLocal, async_engine
-from app.db.seed import seed_data
+from app.core.database import AsyncSessionLocal, async_engine  # noqa: E402
+from app.db.seed import seed_data  # noqa: E402
 
 
 async def main():

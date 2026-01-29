@@ -2,7 +2,7 @@ import asyncio
 import sys
 
 # Ensure /app is in python path (for Docker environment)
-sys.path.append('/app')
+sys.path.append('/app')  # noqa: E402
 
 from sqlalchemy import text
 
@@ -16,7 +16,7 @@ async def check_duplicates():
 
             # SQL to find duplicates based on logical key: (order_id, data_source_id, date(production_date), shift)
             query = text("""
-                SELECT 
+                SELECT
                     p.data_source_id,
                     p.order_id,
                     DATE(p.production_date) as p_date,
@@ -29,7 +29,7 @@ async def check_duplicates():
             """)
 
             result = await db.execute(query)
-            rows = result.fetchall()
+            result.fetchall()
 
             # Check for suspicious shifts
             print("\nAnalyzing Shift values...")
@@ -42,7 +42,7 @@ async def check_duplicates():
             # Logic: If we have multiple rows for same Date/Order, listing them might reveal the pattern
             print("\nSample of multi-row days (potential double counting):")
             sample_query = text("""
-                SELECT 
+                SELECT
                     data_source_id, DATE(production_date) as d, order_id, array_agg(shift) as shifts, sum(actual_qty) as total_qty
                 FROM production_runs
                 GROUP BY data_source_id, order_id, DATE(production_date)

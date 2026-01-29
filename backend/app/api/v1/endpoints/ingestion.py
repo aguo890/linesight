@@ -37,6 +37,9 @@ from app.schemas.ingestion import (
 )
 from app.services.matching import HybridMatchingEngine
 
+# ProductionLine is an alias for DataSource after the refactor
+ProductionLine = DataSource
+
 router = APIRouter(prefix="/ingestion", tags=["ingestion"])
 
 
@@ -203,7 +206,7 @@ async def upload_file_for_ingestion(
 
         file_headers = [str(h) for h in df_preview.columns.tolist()]
     except Exception as e:
-        raise HTTPException(400, f"Failed to read file headers for validation: {str(e)}")
+        raise HTTPException(400, f"Failed to read file headers for validation: {str(e)}") from e
 
     if data_source_id:
         ds_result = await db.execute(select(DataSource).where(DataSource.id == data_source_id))
@@ -222,7 +225,7 @@ async def upload_file_for_ingestion(
                 # Let's enforce that ALL expected columns must be in the file.
 
                 missing_cols = list(set(expected_columns) - set(file_headers))
-                extra_cols = list(set(file_headers) - set(expected_columns))
+                # Note: extra_cols computed but intentionally not used here
 
                 if missing_cols:
                      # Structured error for Frontend "Diff" UI
@@ -606,7 +609,7 @@ async def confirm_mapping(
         update(SchemaMapping)
         .where(
             SchemaMapping.data_source_id == data_source_id,
-            SchemaMapping.is_active == True,
+            SchemaMapping.is_active,
         )
         .values(is_active=False)
     )
@@ -717,7 +720,7 @@ async def get_available_fields():
 async def get_date_formats():
     """
     Get list of available date format options for UI dropdown.
-    
+
     Returns list of {value, label} objects for select component.
     The 'value' should be stored in DataSource.time_format.
     """

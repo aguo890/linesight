@@ -23,7 +23,7 @@ async def test_list_dashboards_by_factory_id_crash(
     """
     REPRO: This test attempts to fetch dashboards filtered by factory_id.
     If the 'Ambiguous Join' bug exists, this will fail with status 500.
-    
+
     The join path is: Dashboard -> DataSource (via data_source_id) -> Factory
     """
 

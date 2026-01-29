@@ -96,7 +96,7 @@ STYLE-001,PO-ABC,100,2026-01-05
     # Verify v1 mapping is active
     mapping_v1 = await db_session.get(SchemaMapping, schema_mapping_id_v1)
     assert mapping_v1 is not None
-    assert mapping_v1.is_active == True
+    assert mapping_v1.is_active
     assert mapping_v1.version == 1
 
     # ========================================================================
@@ -151,14 +151,14 @@ STYLE-002,PO-DEF,200,1.5,2026-01-05
     await db_session.refresh(mapping_v1)
 
     # V1 should now be INACTIVE
-    assert mapping_v1.is_active == False, (
+    assert not mapping_v1.is_active, (
         f"Previous mapping should be deactivated, got is_active={mapping_v1.is_active}"
     )
 
     # V2 should be ACTIVE with incremented version
     mapping_v2 = await db_session.get(SchemaMapping, schema_mapping_id_v2)
     assert mapping_v2 is not None
-    assert mapping_v2.is_active == True, (
+    assert mapping_v2.is_active, (
         f"New mapping should be active, got is_active={mapping_v2.is_active}"
     )
     assert mapping_v2.version == 2, f"Version should be 2, got {mapping_v2.version}"
@@ -167,7 +167,7 @@ STYLE-002,PO-DEF,200,1.5,2026-01-05
     result = await db_session.execute(
         select(SchemaMapping).where(
             SchemaMapping.data_source_id == data_source_id_v1,
-            SchemaMapping.is_active == True,
+            SchemaMapping.is_active,
         )
     )
     active_mappings = result.scalars().all()

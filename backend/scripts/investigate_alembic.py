@@ -6,14 +6,14 @@ from sqlalchemy import create_engine, text
 # Add the parent directory to sys.path to allow importing from 'app'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
+sys.path.append(parent_dir)  # noqa: E402
 
-from app.core.config import settings
+from app.core.config import settings  # noqa: E402
 
 
 def check_alembic_version():
-    print(f"Connecting to: {settings.DATABASE_URL}")
-    engine = create_engine(settings.DATABASE_URL)
+    print(f"Connecting to: {settings.database_url}")
+    engine = create_engine(settings.database_url)
 
     with engine.connect() as conn:
         print("\n--- Checking Tables ---")

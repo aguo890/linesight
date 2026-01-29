@@ -37,7 +37,7 @@ async def list_organization_members(
         .options(selectinload(User.scopes))
         .where(
             User.organization_id == current_user.organization_id,
-            User.is_active == True,
+            User.is_active,
         )
         .order_by(User.full_name, User.email)
     )

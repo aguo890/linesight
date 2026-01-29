@@ -53,7 +53,7 @@ def _parse_time(value: Any) -> time | None:
 class ProductionWriter:
     """
     Handles all database writes for ingestion with atomic transactions.
-    
+
     Responsibilities:
     - Prepare ProductionRun inserts/updates
     - Create ProductionEvents for audit trail
@@ -76,7 +76,7 @@ class ProductionWriter:
     ) -> dict[str, Any]:
         """
         Process all records and write to database atomically.
-        
+
         Returns dict with:
             - inserted: count of new runs
             - updated: count of updated runs
@@ -347,11 +347,11 @@ class ProductionWriter:
     ) -> dict[str, str]:
         """
         Execute all database writes atomically.
-        
+
         CRITICAL: Uses RETURNING to get actual IDs from UPSERT operations,
         then remaps child records (events, metrics, quality) to use the
         real IDs (which may differ from proposed IDs on conflict resolution).
-        
+
         Returns:
             Dict mapping proposed_id -> actual_id for all runs
         """
