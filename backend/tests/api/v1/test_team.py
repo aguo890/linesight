@@ -9,7 +9,8 @@ from httpx import AsyncClient
 from app.core.config import settings
 from app.core.security import create_access_token, hash_password
 from app.enums import RoleScope, UserRole
-from app.models.factory import Factory, ProductionLine
+from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import Organization, User, UserScope
 
 # =============================================================================
@@ -117,8 +118,8 @@ async def test_factory_for_team(db_session, owner_org):
 
 @pytest_asyncio.fixture
 async def test_line_for_team(db_session, test_factory_for_team):
-    """Create a test production line."""
-    line = ProductionLine(
+    """Create a test data source (production line)."""
+    line = DataSource(
         factory_id=test_factory_for_team.id,
         name="Team Test Line",
         code="TL-TEAM",
@@ -199,14 +200,14 @@ async def test_assign_user_to_line(
         f"{settings.API_V1_PREFIX}/organizations/members/{manager_user.id}/scopes",
         headers=owner_headers,
         json={
-            "production_line_id": str(test_line_for_team.id),
+            "data_source_id": str(test_line_for_team.id),
             "role": "manager",
         },
     )
 
     assert response.status_code == 201
     scope = response.json()
-    assert scope["production_line_id"] == str(test_line_for_team.id)
+    assert scope["data_source_id"] == str(test_line_for_team.id)
     assert scope["scope_type"] == "line"
     assert scope["role"] == "manager"
 
@@ -229,7 +230,7 @@ async def test_remove_user_scope(
         scope_type=RoleScope.LINE,
         organization_id=owner_org.id,
         factory_id=test_factory_for_team.id,
-        production_line_id=test_line_for_team.id,
+        data_source_id=test_line_for_team.id,
         role=UserRole.MANAGER,
     )
     db_session.add(scope)
@@ -258,7 +259,7 @@ async def test_cannot_assign_cross_org_user(
         f"{settings.API_V1_PREFIX}/organizations/members/{other_org_user.id}/scopes",
         headers=owner_headers,
         json={
-            "production_line_id": str(test_line_for_team.id),
+            "data_source_id": str(test_line_for_team.id),
             "role": "manager",
         },
     )
