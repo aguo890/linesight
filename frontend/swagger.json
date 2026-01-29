@@ -6039,6 +6039,11 @@
             "type": "boolean",
             "title": "Is Active"
           },
+          "has_active_schema": {
+            "type": "boolean",
+            "title": "Has Active Schema",
+            "default": false
+          },
           "schema_mappings": {
             "items": {
               "$ref": "#/components/schemas/SchemaMappingResponse"

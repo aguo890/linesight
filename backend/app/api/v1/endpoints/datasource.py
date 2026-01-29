@@ -78,6 +78,7 @@ class DataSourceResponse(BaseModel):
     time_column: str | None = None
     time_format: str | None = None
     is_active: bool
+    has_active_schema: bool = False  # Computed from schema_mappings
     schema_mappings: list[SchemaMappingResponse] = []
     created_at: datetime
 

@@ -1975,7 +1975,7 @@ export const listDataSourcesApiV1DataSourcesGetQueryParams = zod.object({
   "limit": zod.number().default(listDataSourcesApiV1DataSourcesGetQueryLimitDefault)
 })
 
-export const listDataSourcesApiV1DataSourcesGetResponseSchemaMappingsDefault = [];
+export const listDataSourcesApiV1DataSourcesGetResponseHasActiveSchemaDefault = false;export const listDataSourcesApiV1DataSourcesGetResponseSchemaMappingsDefault = [];
 
 export const listDataSourcesApiV1DataSourcesGetResponseItem = zod.object({
   "id": zod.string(),
@@ -1985,6 +1985,7 @@ export const listDataSourcesApiV1DataSourcesGetResponseItem = zod.object({
   "time_column": zod.union([zod.string(),zod.null()]).optional(),
   "time_format": zod.union([zod.string(),zod.null()]).optional(),
   "is_active": zod.boolean(),
+  "has_active_schema": zod.boolean().optional(),
   "schema_mappings": zod.array(zod.object({
   "id": zod.string(),
   "version": zod.number(),
@@ -2008,7 +2009,7 @@ export const getDataSourceApiV1DataSourcesDataSourceIdGetParams = zod.object({
   "data_source_id": zod.string()
 })
 
-export const getDataSourceApiV1DataSourcesDataSourceIdGetResponseSchemaMappingsDefault = [];
+export const getDataSourceApiV1DataSourcesDataSourceIdGetResponseHasActiveSchemaDefault = false;export const getDataSourceApiV1DataSourcesDataSourceIdGetResponseSchemaMappingsDefault = [];
 
 export const getDataSourceApiV1DataSourcesDataSourceIdGetResponse = zod.object({
   "id": zod.string(),
@@ -2018,6 +2019,7 @@ export const getDataSourceApiV1DataSourcesDataSourceIdGetResponse = zod.object({
   "time_column": zod.union([zod.string(),zod.null()]).optional(),
   "time_format": zod.union([zod.string(),zod.null()]).optional(),
   "is_active": zod.boolean(),
+  "has_active_schema": zod.boolean().optional(),
   "schema_mappings": zod.array(zod.object({
   "id": zod.string(),
   "version": zod.number(),
@@ -2054,7 +2056,7 @@ export const updateDataSourceApiV1DataSourcesDataSourceIdPutBody = zod.object({
   "source_name": zod.union([zod.string(),zod.null()]).optional()
 }).describe('Schema for updating DataSource configuration.')
 
-export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponseSchemaMappingsDefault = [];
+export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponseHasActiveSchemaDefault = false;export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponseSchemaMappingsDefault = [];
 
 export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponse = zod.object({
   "id": zod.string(),
@@ -2064,6 +2066,7 @@ export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponse = zod.objec
   "time_column": zod.union([zod.string(),zod.null()]).optional(),
   "time_format": zod.union([zod.string(),zod.null()]).optional(),
   "is_active": zod.boolean(),
+  "has_active_schema": zod.boolean().optional(),
   "schema_mappings": zod.array(zod.object({
   "id": zod.string(),
   "version": zod.number(),
@@ -2095,7 +2098,7 @@ export const getDataSourceByLineApiV1DataSourcesLineLineIdGetParams = zod.object
   "line_id": zod.string()
 })
 
-export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponseSchemaMappingsDefault = [];
+export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponseHasActiveSchemaDefault = false;export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponseSchemaMappingsDefault = [];
 
 export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
@@ -2105,6 +2108,7 @@ export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponse = zod.unio
   "time_column": zod.union([zod.string(),zod.null()]).optional(),
   "time_format": zod.union([zod.string(),zod.null()]).optional(),
   "is_active": zod.boolean(),
+  "has_active_schema": zod.boolean().optional(),
   "schema_mappings": zod.array(zod.object({
   "id": zod.string(),
   "version": zod.number(),
@@ -2129,7 +2133,7 @@ export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGe
   "production_line_id": zod.string()
 })
 
-export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponseSchemaMappingsDefault = [];
+export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponseHasActiveSchemaDefault = false;export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponseSchemaMappingsDefault = [];
 
 export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
@@ -2139,6 +2143,7 @@ export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGe
   "time_column": zod.union([zod.string(),zod.null()]).optional(),
   "time_format": zod.union([zod.string(),zod.null()]).optional(),
   "is_active": zod.boolean(),
+  "has_active_schema": zod.boolean().optional(),
   "schema_mappings": zod.array(zod.object({
   "id": zod.string(),
   "version": zod.number(),

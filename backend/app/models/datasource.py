@@ -171,6 +171,17 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
         lazy="selectin",
     )
 
+    @property
+    def has_active_schema(self) -> bool:
+        """
+        Efficient check for whether this DataSource has a confirmed schema.
+        Uses the already-loaded schema_mappings relationship (lazy='selectin')
+        to avoid N+1 queries. Returns True if any mapping is active.
+        """
+        if self.schema_mappings:
+            return any(mapping.is_active for mapping in self.schema_mappings)
+        return False
+
     def __repr__(self) -> str:
         return f"<DataSource(id={self.id}, name={self.name}, factory_id={self.factory_id})>"
 

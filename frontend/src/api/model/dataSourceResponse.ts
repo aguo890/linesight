@@ -20,6 +20,7 @@ export interface DataSourceResponse {
   time_column?: DataSourceResponseTimeColumn;
   time_format?: DataSourceResponseTimeFormat;
   is_active: boolean;
+  has_active_schema?: boolean;
   schema_mappings?: SchemaMappingResponse[];
   created_at: string;
 }

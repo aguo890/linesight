@@ -132,8 +132,8 @@ class ProductionWriter:
                 logger.error(f"Internal error processing row {idx}: {e}")
                 raise
 
-        # Execute all writes atomically
-        await self._execute_writes(
+        # Execute all writes atomically, getting actual IDs from RETURNING
+        id_map = await self._execute_writes(
             runs_to_insert=runs_to_insert,
             runs_to_update=runs_to_update,
             production_events=production_events,
@@ -344,118 +344,185 @@ class ProductionWriter:
         efficiency_metrics: list[dict],
         quality_inspections: list[dict],
         quality_issues: list[dict],
-    ) -> None:
+    ) -> dict[str, str]:
         """
-        Execute all database writes.
-        Note: Caller should wrap in transaction context for atomicity.
+        Execute all database writes atomically.
+        
+        CRITICAL: Uses RETURNING to get actual IDs from UPSERT operations,
+        then remaps child records (events, metrics, quality) to use the
+        real IDs (which may differ from proposed IDs on conflict resolution).
+        
+        Returns:
+            Dict mapping proposed_id -> actual_id for all runs
         """
-        # Insert new runs (with UPSERT Fallback)
-        if runs_to_insert:
-            logger.info(f"Inserting/Upserting {len(runs_to_insert)} runs...")
-            
-            for i, row in enumerate(runs_to_insert):
-                try:
-                    # Construct Upsert Statement
-                    stmt = pg_insert(ProductionRun).values([row])
-                    stmt = stmt.on_conflict_do_update(
-                        constraint="uq_production_run",
-                        set_={
-                            "actual_qty": stmt.excluded.actual_qty,
-                            "planned_qty": stmt.excluded.planned_qty,
-                            "sam": stmt.excluded.sam,
-                            "shift": stmt.excluded.shift,
-                            "operators_present": stmt.excluded.operators_present,
-                            "helpers_present": stmt.excluded.helpers_present,
-                            "worked_minutes": stmt.excluded.worked_minutes,
-                            "downtime_minutes": stmt.excluded.downtime_minutes,
-                            "downtime_reason": stmt.excluded.downtime_reason,
-                            "updated_at": stmt.excluded.updated_at,
-                            "source_import_id": stmt.excluded.source_import_id,
-                            "lot_number": stmt.excluded.lot_number,
-                            "shade_band": stmt.excluded.shade_band,
-                            "batch_number": stmt.excluded.batch_number,
-                            # DENORMALIZED FIELDS
-                            "start_time": stmt.excluded.start_time,
-                            "end_time": stmt.excluded.end_time,
-                            "style_number": stmt.excluded.style_number,
-                            "buyer": stmt.excluded.buyer,
-                            "season": stmt.excluded.season,
-                            "po_number": stmt.excluded.po_number,
-                            "color": stmt.excluded.color,
-                            "size": stmt.excluded.size,
-                            "defects": stmt.excluded.defects,
-                            "dhu": stmt.excluded.dhu,
-                            "line_efficiency": stmt.excluded.line_efficiency,
-                        }
-                    )
-                    
-                    await self.db.execute(stmt)
-                    await self.db.flush()
-                except Exception as e:
-                    logger.error(f"❌ CRASH ON ProductionRun UPSERT (Row {i+1})")
-                    logger.error(f"DATA: {row}")
-                    logger.error(f"ERROR: {str(e)}")
-                    # Intentionally re-raise to rollback transaction
-                    raise e
+        id_map: dict[str, str] = {}  # proposed_id -> actual_id
+        
+        try:
+            # 1. Insert new runs (with UPSERT + RETURNING)
+            if runs_to_insert:
+                logger.info(f"Inserting/Upserting {len(runs_to_insert)} runs...")
+                for idx, row in enumerate(runs_to_insert):
+                    proposed_id = row["id"]
+                    try:
+                        stmt = pg_insert(ProductionRun).values([row])
+                        stmt = stmt.on_conflict_do_update(
+                            constraint="uq_production_run",
+                            set_={
+                                "actual_qty": stmt.excluded.actual_qty,
+                                "planned_qty": stmt.excluded.planned_qty,
+                                "sam": stmt.excluded.sam,
+                                "shift": stmt.excluded.shift,
+                                "operators_present": stmt.excluded.operators_present,
+                                "helpers_present": stmt.excluded.helpers_present,
+                                "worked_minutes": stmt.excluded.worked_minutes,
+                                "downtime_minutes": stmt.excluded.downtime_minutes,
+                                "downtime_reason": stmt.excluded.downtime_reason,
+                                "updated_at": stmt.excluded.updated_at,
+                                "source_import_id": stmt.excluded.source_import_id,
+                                "lot_number": stmt.excluded.lot_number,
+                                "shade_band": stmt.excluded.shade_band,
+                                "batch_number": stmt.excluded.batch_number,
+                                # DENORMALIZED FIELDS
+                                "start_time": stmt.excluded.start_time,
+                                "end_time": stmt.excluded.end_time,
+                                "style_number": stmt.excluded.style_number,
+                                "buyer": stmt.excluded.buyer,
+                                "season": stmt.excluded.season,
+                                "po_number": stmt.excluded.po_number,
+                                "color": stmt.excluded.color,
+                                "size": stmt.excluded.size,
+                                "defects": stmt.excluded.defects,
+                                "dhu": stmt.excluded.dhu,
+                                "line_efficiency": stmt.excluded.line_efficiency,
+                            }
+                        ).returning(ProductionRun.id)
+                        
+                        result = await self.db.execute(stmt)
+                        actual_id = result.scalar_one()
+                        id_map[proposed_id] = actual_id
+                        
+                        if proposed_id != actual_id:
+                            logger.info(f"UPSERT conflict: {proposed_id} -> {actual_id}")
+                            
+                    except Exception as e:
+                        logger.error(f"❌ CRASH ON ProductionRun UPSERT (Row {idx})")
+                        logger.error(f"DATA: {row}")
+                        logger.error(f"ERROR: {e}")
+                        raise
 
-        # Update existing runs
-        if runs_to_update:
-            logger.info(f"Updating {len(runs_to_update)} existing runs...")
-            await self.db.execute(update(ProductionRun), runs_to_update)
-
-        # Insert events
-        if production_events:
-            logger.info(f"Inserting {len(production_events)} events...")
-            for i in range(0, len(production_events), BATCH_SIZE):
-                batch = production_events[i : i + BATCH_SIZE]
+            # 2. Update existing runs (these already have correct IDs)
+            if runs_to_update:
+                logger.info(f"Updating {len(runs_to_update)} existing runs...")
                 try:
-                    await self.db.execute(pg_insert(ProductionEvent).values(batch))
-                    await self.db.flush()
+                    await self.db.execute(update(ProductionRun), runs_to_update)
+                    # Map updates to themselves (ID doesn't change)
+                    for row in runs_to_update:
+                        id_map[row["id"]] = row["id"]
                 except Exception as e:
-                    logger.error(f"❌ CRASH ON ProductionEvent BATCH INSERT (Indices {i} to {i+len(batch)})")
-                    logger.error(f"ERROR: {str(e)}")
-                    # Row-level debug fallback
-                    logger.info("Retrying row-by-row to pinpoint the 'smoking gun'...")
-                    for idx, row in enumerate(batch):
-                        try:
-                            await self.db.execute(pg_insert(ProductionEvent).values([row]))
-                            await self.db.flush()
-                        except Exception as row_err:
-                            logger.error(f"CRITICAL: ProductionEvent Row {i+idx} failed")
-                            logger.error(f"FAILING DATA: {row}")
-                            logger.error(f"ROW ERROR: {str(row_err)}")
-                            raise row_err
-                    raise e
+                    logger.error(f"❌ CRASH ON ProductionRun UPDATE")
+                    logger.error(f"DATA (first 3): {runs_to_update[:3]}")
+                    logger.error(f"ERROR: {e}")
+                    raise
 
-        # Insert efficiency metrics
-        if efficiency_metrics:
-            logger.info(f"Inserting {len(efficiency_metrics)} efficiency metrics...")
-            for i in range(0, len(efficiency_metrics), BATCH_SIZE):
-                batch = efficiency_metrics[i : i + BATCH_SIZE]
-                try:
-                    await self.db.execute(pg_insert(EfficiencyMetric).values(batch))
-                except Exception as e:
-                    logger.error(f"❌ EfficiencyMetric Batch Error: {str(e)}")
-                    raise e
+            # CRITICAL: Flush to make ProductionRuns visible for FK constraints
+            if runs_to_insert or runs_to_update:
+                logger.info("Flushing ProductionRun writes before inserting children...")
+                await self.db.flush()
 
-        # Insert quality inspections
-        if quality_inspections:
-            logger.info(f"Inserting {len(quality_inspections)} quality inspections...")
-            for i in range(0, len(quality_inspections), BATCH_SIZE):
-                batch = quality_inspections[i : i + BATCH_SIZE]
-                try:
-                    await self.db.execute(pg_insert(QualityInspection).values(batch))
-                except Exception as e:
-                    logger.error(f"❌ QualityInspection Batch Error: {str(e)}")
-                    raise e
+            # 3. REMAP child records to use actual IDs
+            def remap_run_id(records: list[dict], field: str = "production_run_id") -> list[dict]:
+                """Replace proposed IDs with actual IDs from database."""
+                remapped = []
+                for rec in records:
+                    proposed = rec.get(field)
+                    if proposed and proposed in id_map:
+                        rec = rec.copy()
+                        rec[field] = id_map[proposed]
+                    remapped.append(rec)
+                return remapped
 
-        # Insert data quality issues
-        if quality_issues:
-            logger.info(f"Persisting {len(quality_issues)} data quality issues...")
-            for i in range(0, len(quality_issues), BATCH_SIZE):
-                batch = quality_issues[i : i + BATCH_SIZE]
-                try:
-                    await self.db.execute(pg_insert(DataQualityIssue).values(batch))
-                except Exception as e:
-                    logger.error(f"❌ DataQualityIssue Batch Error: {str(e)}")
-                    raise e
+            production_events = remap_run_id(production_events)
+            efficiency_metrics = remap_run_id(efficiency_metrics)
+            quality_inspections = remap_run_id(quality_inspections)
+
+            # 4. Insert events
+            if production_events:
+                logger.info(f"Inserting {len(production_events)} events...")
+                for i in range(0, len(production_events), BATCH_SIZE):
+                    batch = production_events[i : i + BATCH_SIZE]
+                    try:
+                        await self.db.execute(pg_insert(ProductionEvent).values(batch))
+                    except Exception as e:
+                        logger.error(f"❌ CRASH ON ProductionEvent INSERT (Batch {i // BATCH_SIZE})")
+                        logger.error(f"DATA (first record): {batch[0] if batch else 'empty'}")
+                        logger.error(f"ERROR: {e}")
+                        raise
+
+            # 5. Insert/Update efficiency metrics (UPSERT to handle existing runs)
+            if efficiency_metrics:
+                logger.info(f"Upserting {len(efficiency_metrics)} efficiency metrics...")
+                for i in range(0, len(efficiency_metrics), BATCH_SIZE):
+                    batch = efficiency_metrics[i : i + BATCH_SIZE]
+                    try:
+                        stmt = pg_insert(EfficiencyMetric).values(batch)
+                        stmt = stmt.on_conflict_do_update(
+                            index_elements=["production_run_id"],
+                            set_={
+                                "efficiency_pct": stmt.excluded.efficiency_pct,
+                                "sam_target": stmt.excluded.sam_target,
+                                "sam_actual": stmt.excluded.sam_actual,
+                                "calculated_at": stmt.excluded.calculated_at,
+                                "updated_at": stmt.excluded.updated_at,
+                            }
+                        )
+                        await self.db.execute(stmt)
+                    except Exception as e:
+                        logger.error(f"❌ CRASH ON EfficiencyMetric UPSERT (Batch {i // BATCH_SIZE})")
+                        logger.error(f"DATA (first record): {batch[0] if batch else 'empty'}")
+                        logger.error(f"ERROR: {e}")
+                        raise
+
+            # 6. Insert/Update quality inspections (UPSERT to handle existing runs)
+            if quality_inspections:
+                logger.info(f"Upserting {len(quality_inspections)} quality inspections...")
+                for i in range(0, len(quality_inspections), BATCH_SIZE):
+                    batch = quality_inspections[i : i + BATCH_SIZE]
+                    try:
+                        stmt = pg_insert(QualityInspection).values(batch)
+                        stmt = stmt.on_conflict_do_update(
+                            index_elements=["production_run_id"],
+                            set_={
+                                "units_checked": stmt.excluded.units_checked,
+                                "defects_found": stmt.excluded.defects_found,
+                                "dhu": stmt.excluded.dhu,
+                                "inspected_at": stmt.excluded.inspected_at,
+                                "updated_at": stmt.excluded.updated_at,
+                            }
+                        )
+                        await self.db.execute(stmt)
+                    except Exception as e:
+                        logger.error(f"❌ CRASH ON QualityInspection UPSERT (Batch {i // BATCH_SIZE})")
+                        logger.error(f"DATA (first record): {batch[0] if batch else 'empty'}")
+                        logger.error(f"ERROR: {e}")
+                        raise
+
+            # 6. Insert data quality issues
+            if quality_issues:
+                logger.info(f"Persisting {len(quality_issues)} data quality issues...")
+                for i in range(0, len(quality_issues), BATCH_SIZE):
+                    batch = quality_issues[i : i + BATCH_SIZE]
+                    try:
+                        await self.db.execute(pg_insert(DataQualityIssue).values(batch))
+                    except Exception as e:
+                        logger.error(f"❌ CRASH ON DataQualityIssue INSERT (Batch {i // BATCH_SIZE})")
+                        logger.error(f"DATA (first record): {batch[0] if batch else 'empty'}")
+                        logger.error(f"ERROR: {e}")
+                        raise
+
+            return id_map
+
+        except Exception as e:
+            # Rollback to reset transaction state before re-raising
+            logger.error("Rolling back transaction due to write failure...")
+            await self.db.rollback()
+            raise

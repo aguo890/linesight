@@ -40,6 +40,8 @@ help:
 # We use --remove-orphans to keep the network clean
 up:
 	@echo "🚀 Starting services in background..."
+	@$(PYTHON_CMD) scripts/utils.py kill_port 8000 || echo "⚠️ Port 8000 cleanup skipped..."
+	@$(PYTHON_CMD) scripts/utils.py kill_port 5173 || echo "⚠️ Port 5173 cleanup skipped..."
 	docker compose up -d --build --remove-orphans
 	@echo "✅ App is running in background. Run 'make logs' to watch."
 
