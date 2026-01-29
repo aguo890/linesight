@@ -3,8 +3,8 @@ from datetime import date
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models import ProductionLine  # Alias for DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 from app.repositories.production_repo import ProductionRepository
 from app.schemas.production import (

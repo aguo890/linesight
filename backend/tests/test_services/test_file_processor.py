@@ -3,7 +3,6 @@ Tests for FileProcessingService - focusing on HITL dry run preview system.
 """
 
 from datetime import date, datetime
-from decimal import Decimal
 from unittest.mock import AsyncMock, MagicMock
 
 import pandas as pd
@@ -270,7 +269,7 @@ class TestDataCleaning:
         identifies '12-19' as December 19th (current year).
         """
         result = service._clean_value("12-19", "production_date")
-        
+
         # Now returns a date object thanks to Tier 4 (Heuristics)
         assert isinstance(result, (date, datetime))
         assert result.month == 12

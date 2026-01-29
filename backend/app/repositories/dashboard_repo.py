@@ -8,9 +8,9 @@ from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
-from app.models import ProductionLine  # Alias for DataSource
 
 
 class DashboardRepository:

@@ -116,7 +116,7 @@ async def create_dashboard(
             # So we don't have Factory.id easily unless we explicitly select it or access via relationship?
             # Relationships might not be loaded.
             # But we filtered by Factory.organization_id.
-            
+
             # Let's check UserScope for this factory.
             # We explicitly fetch the line -> factory relationship to be safe.
             scope_check = await db.execute(
@@ -183,7 +183,7 @@ async def list_dashboards(
     try:
         # Start with base query
         stmt = select(Dashboard).where(Dashboard.user_id == current_user.id)
-        
+
         # Track if we've joined DataSource to avoid duplicate joins
         datasource_joined = False
 
@@ -211,12 +211,12 @@ async def list_dashboards(
             # Only join DataSource if NOT already joined
             if not datasource_joined:
                 stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)
-            
+
             stmt = stmt.where(
-                (Dashboard.data_source_id.is_(None)) | 
+                (Dashboard.data_source_id.is_(None)) |
                 (DataSource.id.in_(allowed_ids))
             )
-            
+
         elif current_user.role == UserRole.FACTORY_MANAGER:
             logger.debug("Applying FACTORY_MANAGER RBAC filter")
             # Factory Manager: filter by assigned factories
@@ -235,9 +235,9 @@ async def list_dashboards(
                 # No factory_id filter - join DataSource if not already joined
                 if not datasource_joined:
                     stmt = stmt.outerjoin(DataSource, Dashboard.data_source_id == DataSource.id)
-                
+
                 stmt = stmt.where(
-                    (Dashboard.data_source_id.is_(None)) | 
+                    (Dashboard.data_source_id.is_(None)) |
                     (DataSource.factory_id.in_(allowed_factory_ids))
                 )
 
@@ -259,7 +259,7 @@ async def list_dashboards(
         print("--- STACK TRACE ---", file=sys.stderr)
         traceback.print_exc(file=sys.stderr)
         print("-------------------", file=sys.stderr)
-        
+
         # Re-raise so the 500 error still happens (we just wanted to read it)
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -307,7 +307,7 @@ async def get_dashboard(
             )
             if not scope_check.scalar_one_or_none():
                  raise HTTPException(status_code=403, detail="Forbidden")
-        
+
         elif current_user.role == UserRole.FACTORY_MANAGER:
             scope_check = await db.execute(
                 select(UserScope).where(

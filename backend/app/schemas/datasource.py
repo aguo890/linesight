@@ -10,7 +10,6 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # =============================================================================
 # DataSource Settings
 # =============================================================================
@@ -53,7 +52,7 @@ class DataSourceCreate(DataSourceBase):
 
     factory_id: str = Field(..., description="ID of the factory this data source belongs to")
     settings: DataSourceSettings | None = None
-    
+
     # Data source configuration
     source_name: str | None = Field(None, max_length=255)
     description: str | None = None
@@ -71,7 +70,7 @@ class DataSourceUpdate(BaseModel):
     target_efficiency_pct: int | None = Field(None, ge=0, le=100)
     is_active: bool | None = None
     settings: DataSourceSettings | dict[str, Any] | None = None
-    
+
     # Data source configuration
     source_name: str | None = None
     description: str | None = None

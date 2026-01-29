@@ -10,8 +10,8 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import AdminUser, CurrentUser, get_db
-from app.models.factory import Factory
 from app.models import ProductionLine  # Alias for DataSource
+from app.models.factory import Factory
 from app.models.user import Organization
 from app.schemas.user import OrganizationRead, OrganizationUpdate
 

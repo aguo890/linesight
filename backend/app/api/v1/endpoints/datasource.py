@@ -12,9 +12,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
+from app.models import ProductionLine  # Alias for DataSource
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
-from app.models import ProductionLine  # Alias for DataSource
 from app.models.user import User
 
 router = APIRouter()

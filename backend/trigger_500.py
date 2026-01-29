@@ -1,17 +1,20 @@
 
-import httpx
 import asyncio
+import json
+
+import httpx
+
 
 async def test_endpoint():
     base_url = "http://localhost:8000/api/v1"
-    
+
     # 1. Login
     login_url = f"{base_url}/auth/login"
     login_data = {
         "email": "admin@linesight.dev",
         "password": "admin123"
     }
-    
+
     print(f"Logging in to {login_url}...")
     async with httpx.AsyncClient() as client:
         try:
@@ -20,7 +23,7 @@ async def test_endpoint():
             if auth_resp.status_code != 200:
                 print(f"Auth failed: {auth_resp.text}")
                 return
-                
+
             token = auth_resp.json()["access_token"]
             print("Got access token.")
             headers = {"Authorization": f"Bearer {token}"}
@@ -49,7 +52,7 @@ async def test_endpoint():
                 "shift": "ALL"
             }
             headers = {"Authorization": f"Bearer {token}"}
-            
+
             print(f"Requesting {url} with params {params}")
             response = await client.get(url, params=params, headers=headers, timeout=30.0)
             print(f"Status Code: {response.status_code}")
@@ -61,9 +64,9 @@ async def test_endpoint():
                 print(data.get("traceback"))
                 print("=== DEBUG LOG ===")
                 print(json.dumps(data.get("debug_log"), indent=2))
-            except:
+            except Exception:
                 print(f"Response Body: {response.text}")
-            
+
         except Exception as e:
             print(f"Request failed: {e}")
 

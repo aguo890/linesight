@@ -342,10 +342,10 @@ async def get_style_progress(
     Optionally filter by production line ID.
     """
     import traceback
-    
+
     # Initialize debug log explicitly to prevent UnboundLocalError
     debug_log = []
-    
+
     try:
         debug_log.append("Started get_style_progress")
 
@@ -355,10 +355,10 @@ async def get_style_progress(
                 func.date(ProductionRun.production_date) >= date_from,
                 func.date(ProductionRun.production_date) <= date_to
             )
-            
+
             if line_id:
                 run_query = run_query.where(ProductionRun.data_source_id == line_id)
-            
+
             # Use IN_ to avoid JOIN duplication and bad DISTINCT on JSON columns
             query = (
                 select(Order)
@@ -373,7 +373,7 @@ async def get_style_progress(
                 run_query = select(ProductionRun.order_id).where(
                     ProductionRun.data_source_id == line_id
                 )
-                
+
                 query = (
                     select(Order)
                     .where(Order.id.in_(run_query))
@@ -458,6 +458,7 @@ async def get_style_progress(
     except Exception as e:
         # Keep debug response in case of other errors during verification
         import traceback
+
         from fastapi.responses import JSONResponse
         return JSONResponse(
             status_code=500,

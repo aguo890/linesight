@@ -16,7 +16,7 @@ def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") ->
     """Fetch OpenAPI schema from running API and save to file."""
     openapi_url = f"{api_url}/api/v1/openapi.json"
     print(f"Fetching OpenAPI schema from {openapi_url}...")
-    
+
     try:
         response = requests.get(openapi_url, timeout=10)
         response.raise_for_status()
@@ -24,50 +24,50 @@ def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") ->
     except requests.RequestException as e:
         print(f"❌ Failed to fetch schema from {openapi_url}")
         print(f"   Error: {e}")
-        print(f"   Make sure the API is running (docker-compose up -d)")
+        print("   Make sure the API is running (docker-compose up -d)")
         sys.exit(1)
 
     # --- Schema Simplification Logic ---
     print("✂️  Simplifying schema names...")
-    
+
     components = schema.get("components", {})
     schemas = components.get("schemas", {})
-    
+
     # 1. Calculate Renaming Map
     renaming_map = {} # old_long_name -> new_short_name
     used_names = set()
-    
+
     # Sort keys to ensure deterministic ordering for collision resolution
     sorted_schema_names = sorted(schemas.keys())
 
     for schema_name in sorted_schema_names:
         # Split name by dots
         parts = schema_name.split(".")
-        
+
         # Try shortest name (last segment)
         candidate_name = parts[-1]
-        
+
         # Collision Handling
         if candidate_name in used_names:
             # Fallback: prepend parent module to make unique (e.g., Datasource_DataSourceCreate)
             # If parts has at least 2 segments
             if len(parts) >= 2:
                 candidate_name = parts[-2] + "_" + parts[-1]
-            
+
             # (Safety) If still collision, keep original (rare but possible)
             if candidate_name in used_names:
                 candidate_name = schema_name.replace(".", "_") # Sanitize dots if keeping full name
 
         used_names.add(candidate_name)
         renaming_map[schema_name] = candidate_name
-        
+
     print(f"   Renamed {len(renaming_map)} schemas.")
 
     # Helper function to recursively update refs
     def recursive_update_refs(node, map_lookup):
         if isinstance(node, list):
             return [recursive_update_refs(item, map_lookup) for item in node]
-        
+
         if isinstance(node, dict):
             new_node = {}
             for key, value in node.items():
@@ -84,7 +84,7 @@ def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") ->
                 else:
                     new_node[key] = recursive_update_refs(value, map_lookup)
             return new_node
-        
+
         return node
 
     # 2. Update Schema Definitions
@@ -94,7 +94,7 @@ def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") ->
         # Recursively fix internal refs inside this schema immediately
         fixed_schema_body = recursive_update_refs(schema_body, renaming_map)
         new_schemas[new_name] = fixed_schema_body
-    
+
     components["schemas"] = new_schemas
     schema["components"] = components
 

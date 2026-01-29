@@ -10,12 +10,10 @@ Tests edge cases including:
 - Mixed separators
 - Non-date strings
 """
-import pytest
 
 from app.services.ingestion.date_profiler import (
     detect_column_format,
     profile_date_column,
-    FormatDetectionResult,
 )
 
 
@@ -37,7 +35,7 @@ class TestDetectColumnFormat:
             "2025-06-28",
         ]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%m-%d"
         assert result.format_label == "YYYY-MM-DD"
         assert result.confidence == 1.0
@@ -55,7 +53,7 @@ class TestDetectColumnFormat:
             "2025-28-06",
         ]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%d-%m"
         assert result.format_label == "YYYY-DD-MM"
         assert result.confidence == 1.0
@@ -68,7 +66,7 @@ class TestDetectColumnFormat:
             "2025-13-01",  # Would prove SWAP if reached (but shouldn't be)
         ]
         result = detect_column_format(dates)
-        
+
         # ISO should win because it's found first
         assert result.format == "%Y-%m-%d"
         assert result.sample_size == 1  # Stopped after first proof
@@ -86,7 +84,7 @@ class TestDetectColumnFormat:
             "2025-10-11",  # Could be Oct 11 or Nov 10
         ]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%m-%d"  # Default to ISO
         assert result.confidence == 0.5
         assert result.ambiguous is True
@@ -96,7 +94,7 @@ class TestDetectColumnFormat:
         """Single ambiguous value should still default to ISO."""
         dates = ["2025-06-06"]
         result = detect_column_format(dates)
-        
+
         assert result.ambiguous is True
         assert result.format == "%Y-%m-%d"
 
@@ -110,7 +108,7 @@ class TestDetectColumnFormat:
             "2025-13-14",  # Middle=13, Last=14 -> both > 12, impossible!
         ]
         result = detect_column_format(dates)
-        
+
         # Should return UNKNOWN with 0 confidence
         assert result.confidence == 0.0
         assert result.format_label == "UNKNOWN"
@@ -123,7 +121,7 @@ class TestDetectColumnFormat:
             "2025-15-01",  # Proves SWAP (middle > 12) - conflict!
         ]
         result = detect_column_format(dates)
-        
+
         # First proof wins (ISO), but this is technically bad data
         assert result.format == "%Y-%m-%d"
 
@@ -131,7 +129,7 @@ class TestDetectColumnFormat:
         """Feb 30 is invalid but profiler only checks numeric ranges, not calendar validity."""
         dates = ["2025-02-30"]  # Invalid date, but profiler should still work
         result = detect_column_format(dates)
-        
+
         # Last > 12, so this proves ISO
         assert result.format == "%Y-%m-%d"
         assert result.confidence == 1.0
@@ -143,7 +141,7 @@ class TestDetectColumnFormat:
     def test_empty_list(self):
         """Empty list should return ambiguous default."""
         result = detect_column_format([])
-        
+
         assert result.format == "%Y-%m-%d"
         assert result.ambiguous is True
         assert result.sample_size == 0
@@ -152,7 +150,7 @@ class TestDetectColumnFormat:
         """None values should be skipped gracefully."""
         dates = [None, "", "2025-01-15", None]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%m-%d"
         assert result.sample_size == 1
 
@@ -165,7 +163,7 @@ class TestDetectColumnFormat:
             "abc123",
         ]
         result = detect_column_format(dates)
-        
+
         assert result.sample_size == 1
         assert result.format == "%Y-%m-%d"
 
@@ -177,7 +175,7 @@ class TestDetectColumnFormat:
         """Should work with slash separators."""
         dates = ["2025/01/15", "2025/03/22"]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%m-%d"  # Returns standard format
         assert result.confidence == 1.0
 
@@ -185,7 +183,7 @@ class TestDetectColumnFormat:
         """Should work with dot separators."""
         dates = ["2025.01.15", "2025.03.22"]
         result = detect_column_format(dates)
-        
+
         assert result.format == "%Y-%m-%d"
         assert result.confidence == 1.0
 
@@ -193,7 +191,7 @@ class TestDetectColumnFormat:
         """Mixed separators in same column (unusual but handled)."""
         dates = ["2025-01-15", "2025/03/22", "2025.06.28"]
         result = detect_column_format(dates)
-        
+
         assert result.confidence == 1.0
         assert result.format == "%Y-%m-%d"
 
@@ -205,9 +203,9 @@ class TestDetectColumnFormat:
         """Should limit analysis to max_sample values."""
         # Create 200 ambiguous dates
         dates = [f"2025-0{i % 9 + 1}-0{(i + 1) % 9 + 1}" for i in range(200)]
-        
+
         result = detect_column_format(dates, max_sample=50)
-        
+
         # Should only have analyzed up to 50
         assert result.sample_size <= 50
 
@@ -219,11 +217,11 @@ class TestProfileDateColumn:
         """Should return dict with all expected keys."""
         dates = ["2025-01-15", "2025-03-22"]
         profile = profile_date_column(dates, column_name="test_date")
-        
+
         expected_keys = {
             "column",
             "detected_format",
-            "strptime_format", 
+            "strptime_format",
             "confidence",
             "ambiguous",
             "sample_size",
@@ -235,10 +233,10 @@ class TestProfileDateColumn:
     def test_profile_matches_detect_result(self):
         """Profile dict should match detect_column_format result."""
         dates = ["2025-01-15"]
-        
+
         detect_result = detect_column_format(dates)
         profile = profile_date_column(dates)
-        
+
         assert profile["strptime_format"] == detect_result.format
         assert profile["detected_format"] == detect_result.format_label
         assert profile["confidence"] == detect_result.confidence

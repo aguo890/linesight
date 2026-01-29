@@ -6,8 +6,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import DHUReport, EfficiencyMetric
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 from app.models.workforce import ProductionOutput
 

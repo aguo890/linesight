@@ -207,7 +207,7 @@ def parse_date(
     # Tier 4: Heuristic detection with dateutil
     # Determine dayfirst from factory locale if not specified
     # Defaulting to True (International/British) as it's more common globally than US
-    
+
     # [FIX] STRICT ISO 8601 CHECK
     # Before falling back to ambiguous guessing, check for unambiguous ISO 8601 (YYYY-MM-DD).
     # This prevents 'dayfirst=True' from corrupting Year-First dates like 2025-01-02.
@@ -217,7 +217,7 @@ def parse_date(
             year = int(iso_pattern.group(1))
             month = int(iso_pattern.group(2))
             day = int(iso_pattern.group(3))
-            
+
             # [SAFE MODE] Ambiguity detection
             # If both parts are ≤ 12, this could be YYYY-MM-DD or YYYY-DD-MM
             if month <= 12 and day <= 12:
@@ -231,7 +231,7 @@ def parse_date(
                     f"Ambiguous date: '{str_val}' interpreted as YYYY-MM-DD. "
                     f"Could also be YYYY-DD-MM."
                 )
-            
+
             # Validate and create date - force ISO interpretation (Year-Month-Day)
             parsed = datetime(year, month, day)
             result.value = parsed

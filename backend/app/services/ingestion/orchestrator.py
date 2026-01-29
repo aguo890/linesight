@@ -5,21 +5,21 @@ Extracted from file_processor.py to provide a clean separation of concerns.
 This is the main entry point for the promote_to_production flow,
 coordinating RecordValidator and ProductionWriter.
 """
+import contextlib
 import logging
 from collections.abc import Callable
-from datetime import date, datetime, timedelta
-from decimal import Decimal, InvalidOperation
+from datetime import datetime
+from decimal import InvalidOperation
 from pathlib import Path
 from typing import Any
 
 import pandas as pd  # type: ignore[import-untyped]
 from fastapi.concurrency import run_in_threadpool
-from pandas.errors import ParserError  # type: ignore[import-untyped]
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 from app.services.ingestion.date_parser import parse_date
 from app.services.ingestion.date_profiler import detect_column_format
@@ -75,13 +75,13 @@ class IngestionOrchestrator:
 
         # --- DEEP DEBUGGING START ---
         print(f"\n{'='*50}")
-        print(f"🚀 DEBUG: promote_to_production CALLED")
+        print("🚀 DEBUG: promote_to_production CALLED")
         print(f"🆔 raw_import_id: {raw_import_id}")
-        
+
         # 1. Enable SQL Echo
         # This forces SQLAlchemy to print every SQL statement to stdout/stderr
         self.db.bind.echo = True
-        print(f"🔊 SQL Logging Enabled")
+        print("🔊 SQL Logging Enabled")
         print(f"{'='*50}\n")
         # --- DEEP DEBUGGING END ---
 
@@ -119,7 +119,7 @@ class IngestionOrchestrator:
         column_map = active_map.column_map
         factory_id = raw_import.factory_id
         data_source_id = raw_import.data_source_id
-        
+
         # Get date format from DataSource configuration
         date_format = raw_import.data_source.time_format
 
@@ -187,7 +187,7 @@ class IngestionOrchestrator:
 
         # Broadcast if events occurred
         if write_result["events"] > 0:
-            try:
+            with contextlib.suppress(Exception):
                 await manager.broadcast(
                     {
                         "type": "DATA_UPDATE",
@@ -197,8 +197,6 @@ class IngestionOrchestrator:
                     },
                     line_id=data_source_id,
                 )
-            except Exception:
-                pass
 
         # Cache invalidation
         try:
@@ -223,7 +221,7 @@ class IngestionOrchestrator:
     ) -> list[dict[str, Any]]:
         """Read file and transform data using schema mapping."""
         file_path = Path(raw_import.file_path)
-        
+
         if file_path.suffix.lower() == ".csv":
             df = await run_in_threadpool(
                 pd.read_csv, file_path, encoding=raw_import.encoding_detected or "utf-8"
@@ -237,35 +235,35 @@ class IngestionOrchestrator:
         # If no explicit date format is configured, profile the date column(s)
         # to detect whether data is YYYY-MM-DD or YYYY-DD-MM
         effective_date_format = date_format
-        
+
         if not effective_date_format or effective_date_format == "auto":
             # Find date column(s) from column_map
             date_source_cols = [
-                src for src, tgt in column_map.items() 
+                src for src, tgt in column_map.items()
                 if "date" in tgt.lower()
             ]
-            
+
             for date_col in date_source_cols:
                 if date_col in df.columns:
                     # Extract sample values as strings
                     sample_values = df[date_col].dropna().astype(str).head(100).tolist()
-                    
+
                     if sample_values:
                         profile_result = detect_column_format(sample_values)
-                        
+
                         logger.info(
                             f"DATE COLUMN PROFILED: '{date_col}' -> "
                             f"{profile_result.format_label} "
                             f"(confidence: {profile_result.confidence:.0%})"
                         )
-                        
+
                         if profile_result.ambiguous:
                             logger.warning(
                                 f"AMBIGUOUS DATE COLUMN '{date_col}': "
                                 f"All sampled values could be YYYY-MM-DD or YYYY-DD-MM. "
                                 f"Defaulting to ISO 8601. Consider configuring explicit format."
                             )
-                        
+
                         # Use the detected format for parsing
                         effective_date_format = profile_result.format
                         break  # Use first date column's format for all dates

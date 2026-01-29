@@ -315,7 +315,7 @@ class AnalyticsService:
 
         # Calculate duration of the period
         duration = (end_date - start_date).days + 1
-        
+
         # Calculate Previous Period (Same duration immediately before)
         prev_end = start_date - timedelta(days=1)
         prev_start = prev_end - timedelta(days=duration - 1)

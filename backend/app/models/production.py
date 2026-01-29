@@ -13,7 +13,6 @@ from sqlalchemy import (
     CheckConstraint,
     Computed,
     DateTime,
-    Float,
     ForeignKey,
     Integer,
     Numeric,

@@ -1,7 +1,9 @@
+
 import pytest
-import json
-from app.services.matching.engine import HybridMatchingEngine
+
 from app.schemas.ingestion import ColumnMappingResult
+from app.services.matching.engine import HybridMatchingEngine
+
 
 @pytest.mark.asyncio
 async def test_mapping_engine_intelligence(db_session, test_factory):
@@ -9,14 +11,14 @@ async def test_mapping_engine_intelligence(db_session, test_factory):
     Verifies that the Matching Engine correctly identifies columns 
     using Hash, Fuzzy, and Alias logic.
     """
-    
+
     # 1. ARRANGE: Define 'Tricky' Headers commonly found in Excel
     # "Prod Date" -> Fuzzy match for 'production_date'
     # "Qty"       -> Alias/Fuzzy for 'actual_qty'
     # "Style#"    -> Fuzzy for 'style_number'
     # "Efficiency" -> Exact match (if field exists) or Fuzzy
     headers = ["Prod Date", "Qty", "Style#", "UnknownColumn123"]
-    
+
     # Sample data helps the engine type-check (e.g. identify Dates)
     sample_data = {
         "Prod Date": ["2024-01-01", "2024-01-02"],
@@ -32,15 +34,15 @@ async def test_mapping_engine_intelligence(db_session, test_factory):
         llm_enabled=False # Test core logic first, deterministic
     )
     await engine.initialize()
-    
+
     results: list[ColumnMappingResult] = engine.match_columns(headers, sample_data)
-    
+
     # Helper to find result by header name
     def get_mapping(header):
         return next((r for r in results if r.source_column == header), None)
 
     # 3. ASSERT: Verify the AI's guesses
-    
+
     # Check Date Match
     date_map = get_mapping("Prod Date")
     assert date_map is not None
@@ -65,6 +67,6 @@ async def test_mapping_engine_intelligence(db_session, test_factory):
     # Should either be None (ignored) or very low confidence/needs review
     if unknown_map.target_field:
         assert unknown_map.status == "needs_review"
-        print(f"[OK] 'UnknownColumn123' correctly flagged for review")
+        print("[OK] 'UnknownColumn123' correctly flagged for review")
     else:
-        print(f"[OK] 'UnknownColumn123' correctly ignored")
+        print("[OK] 'UnknownColumn123' correctly ignored")

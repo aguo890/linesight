@@ -22,6 +22,7 @@ logger = get_logger(__name__)
 # Silence SQLAlchemy's SQL statement logging in production
 # Even with echo=False, the logging module can capture engine events at INFO level
 import logging as _logging
+
 _logging.getLogger("sqlalchemy.engine").setLevel(_logging.WARNING)
 
 

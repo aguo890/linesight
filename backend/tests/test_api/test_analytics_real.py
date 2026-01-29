@@ -6,11 +6,11 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import EfficiencyMetric
-# from app.models.compliance import (
-#     ComplianceStandard,
-#     TraceabilityRecord,
-#     VerificationStatus,
-# )
+from app.models.drafts.compliance import (
+    ComplianceStandard,
+    TraceabilityRecord,
+    VerificationStatus,
+)
 from app.models.factory import Factory, ProductionLine
 from app.models.production import Order, ProductionRun, Style
 from app.models.workforce import Worker, WorkerSkill

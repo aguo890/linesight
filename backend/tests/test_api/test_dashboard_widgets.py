@@ -6,8 +6,8 @@ from httpx import AsyncClient
 
 from app.enums import OrderStatus, PeriodType, ShiftType
 from app.models.analytics import DHUReport
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 
 

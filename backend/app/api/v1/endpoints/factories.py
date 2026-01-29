@@ -57,14 +57,14 @@ async def list_factories(
         scope_query = select(UserScope.factory_id).where(
             UserScope.user_id == current_user.id
         ).distinct()
-        
+
         scope_result = await db.execute(scope_query)
         allowed_factory_ids = {row[0] for row in scope_result.fetchall() if row[0]}
-        
+
         # If no assignments, they see no factories
         if not allowed_factory_ids:
             return []
-            
+
         query = query.where(Factory.id.in_(allowed_factory_ids))
 
     result = await db.execute(query.order_by(Factory.name))
@@ -108,10 +108,10 @@ async def get_factory(
             .where(UserScope.data_source_id.isnot(None))
         )
         allowed_ds_ids = {row[0] for row in scope_result.fetchall()}
-        
+
         # Filter data_sources to only allowed ones
         factory.data_sources = [
-            ds for ds in factory.data_sources 
+            ds for ds in factory.data_sources
             if ds.id in allowed_ds_ids and ds.is_active
         ]
 
@@ -311,7 +311,7 @@ async def list_data_sources(
             .where(UserScope.data_source_id.isnot(None))
         )
         allowed_ds_ids = [row[0] for row in scope_result.fetchall()]
-        
+
         # Filter to only allowed data sources
         query = query.where(DataSource.id.in_(allowed_ds_ids))
 

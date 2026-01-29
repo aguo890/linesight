@@ -4,7 +4,7 @@ Pydantic schemas for Factory and ProductionLine.
 
 import re
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 try:
     from zoneinfo import available_timezones
@@ -13,8 +13,10 @@ except ImportError:
         available_timezones,  # Fallback for older python if needed
     )
 
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+if TYPE_CHECKING:
+    from app.schemas.datasource import DataSourceRead
 
 # =============================================================================
 # Core Config Schemas
@@ -65,16 +67,6 @@ class FactorySettings(BaseModel):
 
 # Import DataSource schemas for use in FactoryWithLines
 # Legacy ProductionLine aliases are also available from datasource.py
-from app.schemas.datasource import (
-    DataSourceRead,
-    DataSourceSettings,
-    # Legacy aliases for backward compatibility
-    ProductionLineBase,
-    ProductionLineCreate,
-    ProductionLineRead,
-    ProductionLineSettings,
-    ProductionLineUpdate,
-)
 
 
 # =============================================================================
@@ -94,11 +86,10 @@ class FactoryBase(BaseModel):
     @field_validator("country")
     @classmethod
     def validate_country_code(cls, v: str | None) -> str | None:
-        if v is not None:
-            if not re.match(r"^[A-Z]{2}$", v):
-                raise ValueError(
-                    "Country must be a 2-letter ISO 3166-1 alpha-2 code (e.g., US, EG)"
-                )
+        if v is not None and not re.match(r"^[A-Z]{2}$", v):
+            raise ValueError(
+                "Country must be a 2-letter ISO 3166-1 alpha-2 code (e.g., US, EG)"
+            )
         return v
 
     @field_validator("timezone")
@@ -171,7 +162,7 @@ class FactoryRead(FactoryBase):
 class FactoryWithDataSources(FactoryRead):
     """Factory with its data sources."""
 
-    data_sources: list[DataSourceRead] = []
+    data_sources: list["DataSourceRead"] = []
 
 
 # Backward compatibility alias

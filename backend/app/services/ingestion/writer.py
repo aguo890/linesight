@@ -106,11 +106,11 @@ class ProductionWriter:
                     raw_import_id=raw_import_id,
                     now=now,
                 )
-                
+
                 if result is None:
                     error_count += 1
                     continue
-                
+
                 # Collect prepared data
                 if result.get("run_insert"):
                     runs_to_insert.append(result["run_insert"])
@@ -124,7 +124,7 @@ class ProductionWriter:
                     quality_inspections.append(result["quality"])
                 if result.get("issues"):
                     quality_issues.extend(result["issues"])
-                    
+
             except (ValueError, TypeError, KeyError) as e:
                 logger.warning(f"Data error in row {idx}: {e}")
                 error_count += 1
@@ -133,7 +133,7 @@ class ProductionWriter:
                 raise
 
         # Execute all writes atomically, getting actual IDs from RETURNING
-        id_map = await self._execute_writes(
+        await self._execute_writes(
             runs_to_insert=runs_to_insert,
             runs_to_update=runs_to_update,
             production_events=production_events,
@@ -356,7 +356,7 @@ class ProductionWriter:
             Dict mapping proposed_id -> actual_id for all runs
         """
         id_map: dict[str, str] = {}  # proposed_id -> actual_id
-        
+
         try:
             # 1. Insert new runs (with UPSERT + RETURNING)
             if runs_to_insert:
@@ -396,14 +396,14 @@ class ProductionWriter:
                                 "line_efficiency": stmt.excluded.line_efficiency,
                             }
                         ).returning(ProductionRun.id)
-                        
+
                         result = await self.db.execute(stmt)
                         actual_id = result.scalar_one()
                         id_map[proposed_id] = actual_id
-                        
+
                         if proposed_id != actual_id:
                             logger.info(f"UPSERT conflict: {proposed_id} -> {actual_id}")
-                            
+
                     except Exception as e:
                         logger.error(f"❌ CRASH ON ProductionRun UPSERT (Row {idx})")
                         logger.error(f"DATA: {row}")
@@ -419,7 +419,7 @@ class ProductionWriter:
                     for row in runs_to_update:
                         id_map[row["id"]] = row["id"]
                 except Exception as e:
-                    logger.error(f"❌ CRASH ON ProductionRun UPDATE")
+                    logger.error("❌ CRASH ON ProductionRun UPDATE")
                     logger.error(f"DATA (first 3): {runs_to_update[:3]}")
                     logger.error(f"ERROR: {e}")
                     raise
@@ -521,7 +521,7 @@ class ProductionWriter:
 
             return id_map
 
-        except Exception as e:
+        except Exception:
             # Rollback to reset transaction state before re-raising
             logger.error("Rolling back transaction due to write failure...")
             await self.db.rollback()

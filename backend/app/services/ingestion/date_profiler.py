@@ -13,9 +13,9 @@ Usage:
 """
 import logging
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
 from enum import Enum
-from typing import Sequence
 
 logger = logging.getLogger(__name__)
 
@@ -65,28 +65,28 @@ def detect_column_format(
     # Track which hypotheses are still valid
     iso_valid = True   # YYYY-MM-DD
     swap_valid = True  # YYYY-DD-MM
-    
+
     eliminating_value: str | None = None
     analyzed_count = 0
-    
+
     for value in date_values[:max_sample]:
         if not value or not isinstance(value, str):
             continue
-            
+
         str_val = str(value).strip()
         match = ISO_STYLE_PATTERN.match(str_val)
-        
+
         if not match:
             continue  # Not a YYYY-XX-XX format, skip
-            
+
         analyzed_count += 1
-        
+
         try:
             middle_val = int(match.group(2))
             last_val = int(match.group(3))
         except ValueError:
             continue
-        
+
         # Constraint check for ISO (YYYY-MM-DD): middle is month, must be ≤ 12
         if middle_val > 12:
             iso_valid = False
@@ -96,7 +96,7 @@ def detect_column_format(
                     f"Format detection: '{str_val}' has middle={middle_val} > 12, "
                     f"eliminating YYYY-MM-DD hypothesis"
                 )
-        
+
         # Constraint check for SWAP (YYYY-DD-MM): last is month, must be ≤ 12
         if last_val > 12:
             swap_valid = False
@@ -106,11 +106,11 @@ def detect_column_format(
                     f"Format detection: '{str_val}' has last={last_val} > 12, "
                     f"eliminating YYYY-DD-MM hypothesis"
                 )
-        
+
         # Early exit if we've eliminated one option
         if iso_valid != swap_valid:
             break
-    
+
     # Determine result based on surviving hypotheses
     if iso_valid and not swap_valid:
         # YYYY-MM-DD confirmed
@@ -122,7 +122,7 @@ def detect_column_format(
             eliminating_value=eliminating_value,
             ambiguous=False,
         )
-    
+
     elif swap_valid and not iso_valid:
         # YYYY-DD-MM confirmed (rare but possible)
         logger.warning(
@@ -136,7 +136,7 @@ def detect_column_format(
             eliminating_value=eliminating_value,
             ambiguous=False,
         )
-    
+
     elif iso_valid and swap_valid:
         # Both still valid - genuinely ambiguous data
         # Default to ISO 8601 (industry standard) with warning
@@ -153,7 +153,7 @@ def detect_column_format(
             eliminating_value=None,
             ambiguous=True,
         )
-    
+
     else:
         # Neither valid - malformed data
         logger.error(
@@ -188,7 +188,7 @@ def profile_date_column(
         Dict with format info and profiling metadata
     """
     result = detect_column_format(date_values)
-    
+
     profile = {
         "column": column_name,
         "detected_format": result.format_label,
@@ -198,6 +198,6 @@ def profile_date_column(
         "sample_size": result.sample_size,
         "proof_value": result.eliminating_value,
     }
-    
+
     logger.info(f"Date column '{column_name}' profiled: {profile}")
     return profile

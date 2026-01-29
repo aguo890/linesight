@@ -1,10 +1,12 @@
 import secrets
 import string
+
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.repositories.waitlist_repository import WaitlistRepository
 from app.schemas.waitlist import WaitlistCreate, WaitlistResponse
+
 
 class WaitlistService:
     """Service for handling waitlist business logic."""
@@ -39,10 +41,10 @@ class WaitlistService:
         """Generate a random 8-character string and ensure uniqueness."""
         chars = string.ascii_uppercase + string.digits
         max_retries = 10
-        
+
         for _ in range(max_retries):
             code = ''.join(secrets.choice(chars) for _ in range(8))
             if not await self.repo.get_by_referral_code(code):
                 return code
-        
+
         raise HTTPException(status_code=500, detail="Could not generate unique referral code.")

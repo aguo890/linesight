@@ -12,7 +12,6 @@ from app.enums import RoleScope, UserRole
 from app.models.factory import Factory, ProductionLine
 from app.models.user import Organization, User, UserScope
 
-
 # =============================================================================
 # Fixtures
 # =============================================================================
@@ -161,10 +160,10 @@ async def test_list_members_as_owner(
         f"{settings.API_V1_PREFIX}/organizations/members",
         headers=owner_headers,
     )
-    
+
     assert response.status_code == 200
     members = response.json()
-    
+
     # Should include both owner and manager
     assert len(members) >= 2
     emails = [m["email"] for m in members]
@@ -183,7 +182,7 @@ async def test_list_members_as_manager_forbidden(
         f"{settings.API_V1_PREFIX}/organizations/members",
         headers=manager_headers,
     )
-    
+
     assert response.status_code == 403
 
 
@@ -204,7 +203,7 @@ async def test_assign_user_to_line(
             "role": "manager",
         },
     )
-    
+
     assert response.status_code == 201
     scope = response.json()
     assert scope["production_line_id"] == str(test_line_for_team.id)
@@ -236,13 +235,13 @@ async def test_remove_user_scope(
     db_session.add(scope)
     await db_session.commit()
     await db_session.refresh(scope)
-    
+
     # Now remove it
     response = await async_client.delete(
         f"{settings.API_V1_PREFIX}/organizations/members/{manager_user.id}/scopes/{scope.id}",
         headers=owner_headers,
     )
-    
+
     assert response.status_code == 204
 
 
@@ -263,6 +262,6 @@ async def test_cannot_assign_cross_org_user(
             "role": "manager",
         },
     )
-    
+
     assert response.status_code == 403
     assert "different organization" in response.json()["detail"]

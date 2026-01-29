@@ -185,7 +185,7 @@ async def upload_file_for_ingestion(
     # ==========================================================================
     # 1. Read file headers immediately for validation
     from io import BytesIO
-    import pandas as pd  # type: ignore[import-untyped]
+
     from fastapi.concurrency import run_in_threadpool
 
     try:
@@ -200,7 +200,7 @@ async def upload_file_for_ingestion(
             )
         else:
             df_preview = await run_in_threadpool(pd.read_excel, content_io, nrows=0)
-        
+
         file_headers = [str(h) for h in df_preview.columns.tolist()]
     except Exception as e:
         raise HTTPException(400, f"Failed to read file headers for validation: {str(e)}")
@@ -208,22 +208,22 @@ async def upload_file_for_ingestion(
     if data_source_id:
         ds_result = await db.execute(select(DataSource).where(DataSource.id == data_source_id))
         data_source = ds_result.scalar_one_or_none()
-        
+
         if data_source:
             # SCENARIO 1: Schema Exists -> Strict Validation
             if data_source.schema_config:
                 expected_columns = list(data_source.schema_config.keys())
-                
-                # Check for mismatch (Set comparison for Order-agnostic or List for Strict Order? 
+
+                # Check for mismatch (Set comparison for Order-agnostic or List for Strict Order?
                 # Excel usually implies order matters, but for safety lets check strict set presence first.
                 # User prompt said "Expected [Date, Qty], Found [Date, Amount]" which implies structure.)
-                # Let's check if all expected columns are present. Extra columns in file might be okay? 
-                # Plan said "Homogeneity Check". Usually means EXACT match or SUPERSET. 
+                # Let's check if all expected columns are present. Extra columns in file might be okay?
+                # Plan said "Homogeneity Check". Usually means EXACT match or SUPERSET.
                 # Let's enforce that ALL expected columns must be in the file.
-                
+
                 missing_cols = list(set(expected_columns) - set(file_headers))
                 extra_cols = list(set(file_headers) - set(expected_columns))
-                
+
                 if missing_cols:
                      # Structured error for Frontend "Diff" UI
                      raise HTTPException(
@@ -235,7 +235,7 @@ async def upload_file_for_ingestion(
                             "found": file_headers
                         }
                     )
-            
+
             # SCENARIO 2: No Schema, Files Pending -> "Master File Lock"
             else:
                 # Check for unmapped files given we have NO schema yet
@@ -246,7 +246,7 @@ async def upload_file_for_ingestion(
                 )
                 pending_result = await db.execute(pending_query)
                 pending_files = pending_result.scalars().all()
-                
+
                 if pending_files:
                      raise HTTPException(
                         400,
@@ -255,10 +255,10 @@ async def upload_file_for_ingestion(
                             "instruction": "A file is already uploaded but not mapped. Please complete the column mapping for the first file to establish the Master Schema before uploading additional files."
                         }
                     )
-                
+
             # SCENARIO 3: No Schema, No Files -> Allow (Candidate for Master)
             # Fall through to save logic
-    
+
     # ==========================================================================
 
     # Determined Storage Path
@@ -301,15 +301,15 @@ async def upload_file_for_ingestion(
 
         headers = [str(h) for h in df.columns.tolist()]
         sample_data = df.head(10).values.tolist()
-        row_count = len(df) # Approximate from head? No, len(df) is only 20 here. 
+        row_count = len(df) # Approximate from head? No, len(df) is only 20 here.
         # The original code calculated len(df) from the sample read which is confusing if it was only reading head.
-        # Re-reading original implementation: 
+        # Re-reading original implementation:
         # "df = await run_in_threadpool(pd.read_excel, file_path, nrows=20)"
-        # "row_count = len(df)" -> This would only be 20. 
+        # "row_count = len(df)" -> This would only be 20.
         # The original code had a bug or 'nrows=20' was intentional for speed, but row_count would be wrong.
         # Let's keep existing behavior for now but note it.
         # Actually validation above uses content_io, here we use file_path.
-        
+
         column_count = len(headers)
 
     except Exception as e:
@@ -587,18 +587,18 @@ async def confirm_mapping(
     # If the DataSource doesn't have a schema_config yet, we LOCK it now.
     if not data_source.schema_config:
         # Construct the schema configuration from the mapping
-        # We want to store the "Expected Source Columns" mostly, 
+        # We want to store the "Expected Source Columns" mostly,
         # or the mapping of Source -> Canonical?
         # The schema_config is used for Homogeneity checks on Upload.
         # So we simply need the set of Source Columns that are valid.
         # But we might also want to know the detected types.
         # For MVP, let's store the map of {source_col: canonical_field}
         # This defines what the "Master File" looked like.
-        
+
         # We use column_map which contains {source: target}
         data_source.schema_config = column_map
         logger.info(f"Schema Locked for DataSource {data_source_id}: {column_map.keys()}")
-    
+
     # ==========================================================================
 
     # Deactivate existing mappings for this data source (versioning)

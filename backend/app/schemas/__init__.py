@@ -11,11 +11,16 @@ from app.schemas.dashboard import (
     WidgetConfig,
     WidgetSuggestionsResponse,
 )
+
+# ProductionLine* aliases are in datasource.py
 from app.schemas.datasource import (
     DataSourceCreate,
     DataSourceRead,
-    DataSourceUpdate,
     DataSourceSettings,
+    DataSourceUpdate,
+    ProductionLineCreate,
+    ProductionLineRead,
+    ProductionLineUpdate,
 )
 from app.schemas.factory import (
     FactoryCreate,
@@ -23,9 +28,6 @@ from app.schemas.factory import (
     FactoryUpdate,
     FactoryWithDataSources,
     FactoryWithLines,  # Backward compatibility alias
-    ProductionLineCreate,
-    ProductionLineRead,
-    ProductionLineUpdate,
 )
 from app.schemas.ingestion import (
     AvailableField,
@@ -85,6 +87,7 @@ __all__ = [
     "FactoryRead",
     "FactoryUpdate",
     "FactoryWithLines",
+    "FactoryWithDataSources",
     "ProductionLineCreate",
     "ProductionLineRead",
     "ProductionLineUpdate",
@@ -126,4 +129,9 @@ __all__ = [
     "DryRunRow",
     "DryRunResponse",
     "RawImportUploadResponse",
+
+    # DataSource
+    "DataSourceRead",
+    "DataSourceSettings",
+    "DataSourceUpdate",
 ]

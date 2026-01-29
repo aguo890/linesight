@@ -7,7 +7,7 @@ from app.services.ingestion.writer import ProductionWriter
 
 __all__ = [
     "IngestionOrchestrator",
-    "RecordValidator", 
+    "RecordValidator",
     "ProductionWriter",
     "parse_date",
     "get_format_options",

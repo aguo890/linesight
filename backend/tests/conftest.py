@@ -326,14 +326,18 @@ async def test_factory(db_session: AsyncSession, test_organization):
 
 @pytest_asyncio.fixture
 async def test_line(db_session: AsyncSession, test_factory):
-    """Create a test production line."""
-    from app.models.factory import ProductionLine
+    """Create a test data source (formerly production line)."""
+    from app.models.datasource import DataSource
 
-    line = ProductionLine(factory_id=test_factory.id, name="Test Line 1", code="TL1")
-    db_session.add(line)
+    # DataSource replaces the deprecated ProductionLine model
+    data_source = DataSource(
+        factory_id=test_factory.id,
+        name="Test Line 1",
+    )
+    db_session.add(data_source)
     await db_session.commit()
-    await db_session.refresh(line)
-    return line
+    await db_session.refresh(data_source)
+    return data_source
 
 
 @pytest_asyncio.fixture

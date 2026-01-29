@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from sqlalchemy import String, DateTime
+from sqlalchemy import DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
 
+
 class Waitlist(Base):
     """Waitlist model for capturing user interest."""
-    
+
     __tablename__ = "waitlist"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

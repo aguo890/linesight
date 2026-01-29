@@ -64,7 +64,7 @@ class Factory(Base, UUIDMixin, TimestampMixin):
     # Configuration (New Field)
     # Stores operating shifts, custom alerts, or UI preferences
     settings: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    
+
     # Display Preference
     # Default 'en-US' or derived from country (e.g., 'vi-VN' if Country='VN')
     locale: Mapped[str] = mapped_column(String(20), default="en-US", nullable=False)

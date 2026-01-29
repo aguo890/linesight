@@ -15,6 +15,7 @@ sys.path.append(".")
 from app.core.database import AsyncSessionLocal, async_engine
 from app.db.seed import seed_data
 
+
 async def main():
     try:
         async with AsyncSessionLocal() as db:

@@ -118,7 +118,7 @@ class UserUpdate(BaseModel):
 
                 zoneinfo.ZoneInfo(v)
             except Exception:
-                raise ValueError("Invalid IANA timezone string")
+                raise ValueError("Invalid IANA timezone string") from None
         return v
 
 

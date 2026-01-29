@@ -50,19 +50,19 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     # ==========================================================================
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     code: Mapped[str | None] = mapped_column(String(50), nullable=True)
-    
+
     # Capacity
     target_operators: Mapped[int | None] = mapped_column(Integer, nullable=True)
     target_efficiency_pct: Mapped[int | None] = mapped_column(Integer, nullable=True)
-    
+
     # Configuration
     settings: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
-    
+
     # Specialization
     specialty: Mapped[str | None] = mapped_column(
         String(100), nullable=True
     )  # e.g., 'Knits', 'Wovens'
-    
+
     # Supervisor
     supervisor_id: Mapped[str | None] = mapped_column(
         CHAR(36),
@@ -73,14 +73,14 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     # ==========================================================================
     # Data Source Configuration (original DataSource fields)
     # ==========================================================================
-    
+
     # Legacy reference to old production_lines table (nullable, for migration)
     production_line_id: Mapped[str | None] = mapped_column(
         CHAR(36),
         nullable=True,
         index=True,
     )
-    
+
     # Source Metadata
     source_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
@@ -156,7 +156,7 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
         back_populates="data_source",
         lazy="selectin",
     )
-    
+
     # Self-referential hierarchy
     parent: Mapped[Optional["DataSource"]] = relationship(
         "DataSource",

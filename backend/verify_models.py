@@ -3,8 +3,8 @@
 Phase 2 Verification Script: Database-Model Handshake Test
 """
 
-import sys
 import logging
+import sys
 
 # Required for imports to work when running from this directory
 sys.path.insert(0, ".")
@@ -13,11 +13,11 @@ from sqlalchemy import text
 
 from app.core.database import SyncSessionLocal
 from app.models.datasource import DataSource
-from app.models.factory import Factory
-from app.models.user import UserScope
-from app.models.production import ProductionRun
-from app.models.workforce import Worker
 from app.models.events import ProductionEvent
+from app.models.factory import Factory
+from app.models.production import ProductionRun
+from app.models.user import UserScope
+from app.models.workforce import Worker
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -27,12 +27,12 @@ logger = logging.getLogger(__name__)
 def verify_phase_2():
     db = SyncSessionLocal()
     all_passed = True
-    
+
     try:
         logger.info("=" * 60)
         logger.info("PHASE 2 VERIFICATION: Database-Model Handshake Test")
         logger.info("=" * 60)
-        
+
         # =====================================================================
         # TEST 1: Raw SQL Connection
         # =====================================================================
@@ -44,7 +44,7 @@ def verify_phase_2():
         except Exception as e:
             logger.error(f"❌ SQL query failed: {e}")
             all_passed = False
-            
+
         # Verify new columns exist
         logger.info("\n--- TEST 1b: Verify New Columns Exist ---")
         try:
@@ -72,7 +72,7 @@ def verify_phase_2():
         logger.info("\n--- TEST 2: SQLAlchemy Model Mapping ---")
         try:
             ds = db.query(DataSource).first()
-            
+
             if not ds:
                 logger.warning("⚠️ No DataSources found (DB is empty). Checking model attributes...")
                 # Verify model has expected attributes
@@ -89,19 +89,19 @@ def verify_phase_2():
                 logger.info(f"   - ID: {ds.id}")
                 logger.info(f"   - Factory ID: {ds.factory_id}")
                 logger.info(f"   - Name: {ds.name}")
-                logger.info(f"   - Is Segment: {ds.is_segment}") 
+                logger.info(f"   - Is Segment: {ds.is_segment}")
                 logger.info(f"   - Parent ID: {ds.parent_data_source_id}")
                 logger.info(f"   - Date Range Start: {ds.date_range_start}")
-                
+
         except Exception as e:
             logger.error(f"❌ Model mapping failed: {e}")
             all_passed = False
-            
+
         # =====================================================================
         # TEST 3: Relationships
         # =====================================================================
         logger.info("\n--- TEST 3: Relationships ---")
-        
+
         # Factory -> DataSource relationship
         try:
             factory = db.query(Factory).first()
@@ -117,7 +117,7 @@ def verify_phase_2():
         except Exception as e:
             logger.error(f"❌ Factory relationship test failed: {e}")
             all_passed = False
-            
+
         # DataSource self-referential hierarchy
         try:
             if hasattr(DataSource, 'parent') and hasattr(DataSource, 'segments'):
@@ -133,7 +133,7 @@ def verify_phase_2():
         # TEST 4: Renamed FK Columns
         # =====================================================================
         logger.info("\n--- TEST 4: Renamed FK Columns ---")
-        
+
         # UserScope.data_source_id
         try:
             if hasattr(UserScope, 'data_source_id'):
@@ -144,7 +144,7 @@ def verify_phase_2():
         except Exception as e:
             logger.error(f"❌ UserScope check failed: {e}")
             all_passed = False
-            
+
         # ProductionRun.data_source_id
         try:
             if hasattr(ProductionRun, 'data_source_id'):
@@ -155,7 +155,7 @@ def verify_phase_2():
         except Exception as e:
             logger.error(f"❌ ProductionRun check failed: {e}")
             all_passed = False
-            
+
         # Worker.data_source_id
         try:
             if hasattr(Worker, 'data_source_id'):
@@ -166,7 +166,7 @@ def verify_phase_2():
         except Exception as e:
             logger.error(f"❌ Worker check failed: {e}")
             all_passed = False
-            
+
         # ProductionEvent.data_source_id
         try:
             if hasattr(ProductionEvent, 'data_source_id'):
@@ -187,7 +187,7 @@ def verify_phase_2():
         else:
             logger.error("❌ SOME TESTS FAILED - Review errors above")
         logger.info("=" * 60)
-        
+
         return all_passed
 
     except Exception as e:
