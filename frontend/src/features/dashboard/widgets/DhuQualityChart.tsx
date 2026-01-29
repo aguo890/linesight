@@ -6,6 +6,7 @@ import type { SmartWidgetProps } from '../config';
 import { z } from 'zod';
 import { DhuQualityDataSchema } from '../registry';
 import { useThemeColors } from '@/hooks/useThemeColor';
+import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 
 // Input type inferred from Zod Schema
 type DhuData = z.infer<typeof DhuQualityDataSchema>;
@@ -24,6 +25,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
     h: _h
 }) => {
     const { t } = useTranslation();
+    const { formatDate } = useFactoryFormat();
 
 
     // Extract settings with defaults
@@ -102,6 +104,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 tickLine={false}
                                 axisLine={false}
                                 reversed={false}
+                                tickFormatter={(val) => formatDate(val)}
                             />
                             <YAxis
                                 tick={{ fontSize: 10, fill: axisColor }}
@@ -123,6 +126,7 @@ export const DhuQualityChart: React.FC<SmartWidgetProps<DhuData, DhuQualitySetti
                                 labelStyle={{ color: 'var(--color-text-main)', fontSize: '12px', marginBottom: '4px', fontWeight: 600 }}
                                 itemStyle={{ textAlign: 'inherit' }}
                                 cursor={{ stroke: gridColor, strokeWidth: 1, strokeDasharray: '5 5' }}
+                                labelFormatter={(label) => formatDate(label)}
                             />
                             {showThresholdLine && (
                                 <ReferenceLine
