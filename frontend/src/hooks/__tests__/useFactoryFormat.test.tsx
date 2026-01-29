@@ -17,7 +17,9 @@ const createMockFactory = (settings: any = {}): Factory => ({
         date_format: 'MM/DD/YYYY',
         default_currency: 'USD',
         ...settings
-    }
+    },
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
 });
 
 // Mock Context Wrapper

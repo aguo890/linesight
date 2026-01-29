@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../hooks/useAuth';
@@ -13,9 +13,6 @@ import {
     Users,
     Quote,
     BarChart3,
-    CheckCircle2,
-    Layout,
-    Smartphone
 } from 'lucide-react';
 import { MiniDashboard } from '../components/simulation/MiniDashboard';
 import { PARTNER_LOGOS } from '../components/PartnerLogos';
@@ -210,7 +207,6 @@ const LogoSet = ({ logos, ariaHidden }: { logos: string[], ariaHidden?: boolean 
 const LandingPage: React.FC = () => {
     const { t } = useTranslation('landing');
     const { lang = 'en' } = useParams<{ lang: string }>();
-    const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
     const { resolvedTheme } = useTheme();
     // --- CONFIGURATION ---

@@ -1,9 +1,9 @@
-import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
 import { MemberDetailsDrawer } from '../MemberDetailsDrawer';
-import { MemberRead } from '../../../../api/endpoints/team/teamApi';
+import type { MemberRead } from '../../../../api/endpoints/team/teamApi';
 
 // Mock Lucide icons to avoid render issues in tests
 vi.mock('lucide-react', () => ({
@@ -25,18 +25,16 @@ describe('MemberDetailsDrawer Smart Lookup', () => {
         scopes: [
             {
                 id: 'scope-1',
-                user_id: 'user-123',
                 production_line_id: 'line-uuid-1', // Matches context line
                 role: 'manager',
                 created_at: '2023-01-01'
-            },
+            } as any,
             {
                 id: 'scope-2',
-                user_id: 'user-123',
                 production_line_id: 'line-uuid-2', // Does NOT match context (External)
                 role: 'manager',
                 created_at: '2023-01-01'
-            }
+            } as any
         ]
     };
 

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { OrganizationProvider } from './contexts/OrganizationContext';
 import { Suspense, lazy } from 'react';
 import { useAuth } from './hooks/useAuth';

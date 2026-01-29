@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useFactories } from './useFactory'; // Corrected import path
+import { useFactoryContext } from '../contexts/FactoryContext';
 // import { parseDate } from '@/types/date'; // Can import if needed for strict parsing
 
 /**
@@ -10,7 +10,7 @@ import { useFactories } from './useFactory'; // Corrected import path
  * <span>{formatDate(upload.created_at)}</span>
  */
 export function useDateFormatter() {
-    const { activeFactory } = useFactories();
+    const { activeFactory } = useFactoryContext();
 
     // 1. Get Locale (Format: DD/MM vs MM/DD)
     // Fallback to browser locale if no factory selected, or factory has no locale

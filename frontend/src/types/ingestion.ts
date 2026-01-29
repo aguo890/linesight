@@ -209,3 +209,18 @@ export interface DryRunResponse {
     column_mapping_used: Record<string, string>;
     overall_status: DryRunOverallStatus;
 }
+
+// =============================================================================
+// AI Types
+// =============================================================================
+
+export interface AILayoutAnalysisResponse {
+    raw_import_id: string;
+    detected_layout: Record<string, any>;
+    confidence: number;
+}
+
+export interface AIPreviewResponse {
+    records: Record<string, any>[];
+    total_records: number;
+}

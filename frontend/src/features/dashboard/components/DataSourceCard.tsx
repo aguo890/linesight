@@ -5,7 +5,7 @@
  * Allows uploading data and managing the source (permission-aware).
  */
 import React from 'react';
-import { Settings, Edit2, Trash2, Activity, Upload, Lock, Database } from 'lucide-react';
+import { Edit2, Trash2, Activity, Upload, Lock, Database } from 'lucide-react';
 import type { DataSource } from '../../../lib/factoryApi';
 import { usePermissions } from '../../../hooks/usePermissions';
 

@@ -289,7 +289,12 @@
             "below_target": "BELOW TARGET",
             "defect_rate": "Defect Rate",
             "settings": "Widget Settings",
-            "remove_widget": "Remove Widget"
+            "remove_widget": "Remove Widget",
+            "error": "Widget Error",
+            "retry": "Retry"
+        },
+        "error_boundary": {
+            "default_message": "An error has occurred in this widget."
         },
         "titles": {
             "production_chart": "Production Chart",
@@ -358,6 +363,25 @@
             "widget_id": "Widget ID",
             "unknown_type": "Unknown Widget Type",
             "failed_load": "Failed to load widget"
+        },
+        "coming_soon": {
+            "title": "Coming Soon",
+            "description": "This widget is under development.",
+            "locked": "Locked"
+        },
+        "kpi_summary": {
+            "vs_last_period": "vs Last Period",
+            "total_output": "Total Output",
+            "units_produced": "Units Produced",
+            "efficiency": "Efficiency",
+            "aggregate_average": "Aggregate Average",
+            "oee": "OEE",
+            "oee_full": "Overall Equipment Effectiveness"
+        },
+        "workforce_attendance": {
+            "attendance_rate": "Attendance Rate",
+            "present": "Present",
+            "absent": "Absent"
         }
     },
     "common": {

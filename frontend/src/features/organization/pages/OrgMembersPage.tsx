@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search, Plus, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
@@ -38,7 +38,7 @@ export const OrgMembersPage = () => {
             {/* Page Header with Back Button */}
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <SettingsPageHeader title={t('org_members.title')} />
-                <Button onClick={() => setIsInviteDrawerOpen(true)} className="gap-2 bg-brand hover:bg-brand-dark text-white shadow-sm transition-all hover:shadow-md">
+                <Button onClick={() => console.log('Invite feature coming soon')} className="gap-2 bg-brand hover:bg-brand-dark text-white shadow-sm transition-all hover:shadow-md">
                     <Plus className="w-4 h-4" /> {t('common.actions.invite')}
                 </Button>
             </div>

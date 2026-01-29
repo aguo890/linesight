@@ -71,21 +71,9 @@
  * [ ] Re-export all selectors from selectors.ts
  */
 
-import { create } from 'zustand';
-import { createServerSlice, type ServerSlice } from './serverSlice';
-import { createPendingSlice, type PendingSlice } from './pendingSlice';
-
 // Re-export types
 export * from './types';
 
-// Re-export selectors (the primary consumer API)
-export * from './selectors';
+// Store implementation is pending migration/re-implementation
+// Previous implementation depended on missing modules (serverSlice, pendingSlice, selectors)
 
-// Combined store type
-export type MachineStore = ServerSlice & PendingSlice;
-
-// Create the store
-export const useMachineStore = create<MachineStore>()((...a) => ({
-    ...createServerSlice(...a),
-    ...createPendingSlice(...a),
-}));
