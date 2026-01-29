@@ -17,6 +17,7 @@ from sqlalchemy import (
     Numeric,
     String,
     Text,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -59,6 +60,12 @@ class QualityInspection(Base, UUIDMixin, TimestampMixin):
     """
 
     __tablename__ = "quality_inspections"
+    __table_args__ = (
+        UniqueConstraint(
+            "production_run_id", "inspection_type",
+            name="uq_quality_inspection_run_type"
+        ),
+    )
 
     # Production Run FK
     production_run_id: Mapped[str] = mapped_column(

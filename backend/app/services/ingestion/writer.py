@@ -490,7 +490,7 @@ class ProductionWriter:
                     try:
                         stmt = pg_insert(QualityInspection).values(batch)
                         stmt = stmt.on_conflict_do_update(
-                            index_elements=["production_run_id"],
+                            constraint="uq_quality_inspection_run_type",
                             set_={
                                 "units_checked": stmt.excluded.units_checked,
                                 "defects_found": stmt.excluded.defects_found,
