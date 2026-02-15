@@ -1,0 +1,160 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.1.0, langsmith-0.6.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 4 items
+
+backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real ERROR [ 25%]
+backend\tests\test_api\test_analytics_real.py::test_get_production_chart_real ERROR [ 50%]
+backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real ERROR [ 75%]
+backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real ERROR [100%]
+
+=================================== ERRORS ====================================
+_______________ ERROR at setup of test_get_overview_stats_real ________________
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2531: in get_property
+    return self._props[key]
+           ^^^^^^^^^^^^^^^^
+E   KeyError: 'fabric_lots'
+
+The above exception was the direct cause of the following exception:
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:458: in setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:743: in pytest_fixture_setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:361: in _async_fixture_wrapper
+    ???
+C:\Python313\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:357: in setup
+    ???
+backend\tests\conftest.py:240: in test_organization
+    org = Organization(
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:591: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\event\attr.py:515: in __call__
+    fn(*args, **kw)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4419: in _event_on_init
+    instrumenting_mapper._check_configure()
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2410: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4227: in _configure_registries
+    _do_configure_registries(registries, cascade)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4268: in _do_configure_registries
+    mapper._post_configure_properties()
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2427: in _post_configure_properties
+    prop.init()
+backend\venv\Lib\site-packages\sqlalchemy\orm\interfaces.py:595: in init
+    self.do_init()
+backend\venv\Lib\site-packages\sqlalchemy\orm\relationships.py:1660: in do_init
+    self._generate_backref()
+backend\venv\Lib\site-packages\sqlalchemy\orm\relationships.py:2144: in _generate_backref
+    self._add_reverse_property(self.back_populates)
+backend\venv\Lib\site-packages\sqlalchemy\orm\relationships.py:1591: in _add_reverse_property
+    other = self.mapper.get_property(key, _configure_mappers=False)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2533: in get_property
+    raise sa_exc.InvalidRequestError(
+E   sqlalchemy.exc.InvalidRequestError: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+______________ ERROR at setup of test_get_production_chart_real _______________
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:458: in setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:743: in pytest_fixture_setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:361: in _async_fixture_wrapper
+    ???
+C:\Python313\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:357: in setup
+    ???
+backend\tests\conftest.py:240: in test_organization
+    org = Organization(
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:591: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\event\attr.py:515: in __call__
+    fn(*args, **kw)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4419: in _event_on_init
+    instrumenting_mapper._check_configure()
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2410: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4227: in _configure_registries
+    _do_configure_registries(registries, cascade)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4264: in _do_configure_registries
+    raise e
+E   sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+______________ ERROR at setup of test_get_lowest_performers_real ______________
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:458: in setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:743: in pytest_fixture_setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:361: in _async_fixture_wrapper
+    ???
+C:\Python313\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:357: in setup
+    ???
+backend\tests\conftest.py:240: in test_organization
+    org = Organization(
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:591: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\event\attr.py:515: in __call__
+    fn(*args, **kw)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4419: in _event_on_init
+    instrumenting_mapper._check_configure()
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2410: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4227: in _configure_registries
+    _do_configure_registries(registries, cascade)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4264: in _do_configure_registries
+    raise e
+E   sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+________________ ERROR at setup of test_get_discrepancies_real ________________
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:458: in setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:743: in pytest_fixture_setup
+    ???
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:361: in _async_fixture_wrapper
+    ???
+C:\Python313\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+C:\Users\19803\business\FactoryExcelManager\backend\venv\Lib\site-packages\pytest_asyncio\plugin.py:357: in setup
+    ???
+backend\tests\conftest.py:240: in test_organization
+    org = Organization(
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:591: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\event\attr.py:515: in __call__
+    fn(*args, **kw)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4419: in _event_on_init
+    instrumenting_mapper._check_configure()
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:2410: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4227: in _configure_registries
+    _do_configure_registries(registries, cascade)
+backend\venv\Lib\site-packages\sqlalchemy\orm\mapper.py:4264: in _do_configure_registries
+    raise e
+E   sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+=========================== short test summary info ===========================
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real - sqlalchemy.exc.InvalidRequestError: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_production_chart_real - sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real - sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real - sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[FabricLot(fabric_lots)]'. Original exception was: Mapper 'Mapper[Factory(factories)]' has no property 'fabric_lots'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+============================== 4 errors in 3.22s ==============================

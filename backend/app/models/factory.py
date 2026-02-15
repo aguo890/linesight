@@ -10,6 +10,7 @@ Note: ProductionLine has been consolidated into DataSource as of the
 data-source refactor. See models/datasource.py for the unified entity.
 """
 
+import uuid
 from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import JSON, Boolean, ForeignKey, Integer, String, Text
@@ -49,7 +50,9 @@ class Factory(Base, UUIDMixin, TimestampMixin):
 
     # Basic Info
     name: Mapped[str] = mapped_column(String(255), nullable=False)
-    code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    code: Mapped[str] = mapped_column(
+        String(50), unique=True, nullable=False, default=lambda: f"F-{uuid.uuid4().hex[:8].upper()}"
+    )
 
     # Location
     country: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -114,9 +117,7 @@ class Factory(Base, UUIDMixin, TimestampMixin):
 # =============================================================================
 # The ProductionLine model has been removed. All its functionality is now
 # in the DataSource model (models/datasource.py).
-#
-# For backward compatibility during migration, you can use:
-#   from app.models.datasource import DataSource as ProductionLine
-#
-# But prefer updating all references to use DataSource directly.
-# =============================================================================
+# Backward compatibility alias:
+from app.models.datasource import DataSource as ProductionLine  # noqa: F811
+
+__all__ = ["Factory", "ProductionLine"]

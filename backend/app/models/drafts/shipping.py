@@ -91,7 +91,6 @@ class PackingList(Base, UUIDMixin, TimestampMixin):
     # Relationships
     order: Mapped["Order"] = relationship(
         "Order",
-        back_populates="packing_lists",
     )
     cartons: Mapped[list["Carton"]] = relationship(
         "Carton",

@@ -15,7 +15,7 @@ sys.path.append(str(Path(__file__).parent))
 from openpyxl import load_workbook
 
 from app.services.excel_parser import FlexibleExcelParser
-from app.services.llm_agent import SemanticETLAgent
+from app.private_core.etl_agent import SemanticETLAgent
 
 
 def test_file(file_path: Path, use_ai: bool = False):

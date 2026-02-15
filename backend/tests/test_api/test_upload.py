@@ -12,7 +12,7 @@ import pandas as pd
 import pytest
 from httpx import AsyncClient
 
-from app.models.factory import ProductionLine
+from app.models.datasource import DataSource
 
 
 class TestUploadEndpoints:
@@ -41,7 +41,7 @@ class TestUploadEndpoints:
     ):
         """Test that non-Excel files are rejected."""
         # Create a line to satisfy the endpoint requirement
-        line = ProductionLine(
+        line = DataSource(
             factory_id=test_factory.id, name="Test Line 1", code="TL-1"
         )
         db_session.add(line)
@@ -62,7 +62,7 @@ class TestUploadEndpoints:
     ):
         """Test that .xlsx files are accepted."""
         # Create a line to satisfy the endpoint requirement
-        line = ProductionLine(
+        line = DataSource(
             factory_id=test_factory.id, name="Test Line 2", code="TL-2"
         )
         db_session.add(line)

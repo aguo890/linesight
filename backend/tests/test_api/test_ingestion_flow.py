@@ -10,7 +10,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 from app.schemas.ingestion import ColumnMappingResult, MatchTier
 
@@ -41,7 +42,7 @@ async def test_full_ingestion_flow(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Test Line 1", code="TL-01", is_active=True
     )
     db_session.add(line)
@@ -245,7 +246,7 @@ async def test_schema_evolution(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Evo Line", code="EL-01", is_active=True
     )
     db_session.add(line)

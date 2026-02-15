@@ -1,0 +1,81 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.1.0, langsmith-0.6.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 4 items
+
+backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real ERROR [ 25%]
+backend\tests\test_api\test_analytics_real.py::test_get_production_chart_real ERROR [ 50%]
+backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real ERROR [ 75%]
+backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real ERROR [100%]
+
+=================================== ERRORS ====================================
+_______________ ERROR at setup of test_get_overview_stats_real ________________
+backend\tests\test_api\test_analytics_real.py:92: in analytics_data
+    worker1 = Worker(
+<string>:4: in __init__
+    ???
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2179: in _declarative_constructor
+    raise TypeError(
+E   TypeError: 'line_id' is an invalid keyword argument for Worker
+______________ ERROR at setup of test_get_production_chart_real _______________
+backend\tests\test_api\test_analytics_real.py:92: in analytics_data
+    worker1 = Worker(
+<string>:4: in __init__
+    ???
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2179: in _declarative_constructor
+    raise TypeError(
+E   TypeError: 'line_id' is an invalid keyword argument for Worker
+______________ ERROR at setup of test_get_lowest_performers_real ______________
+backend\tests\test_api\test_analytics_real.py:92: in analytics_data
+    worker1 = Worker(
+<string>:4: in __init__
+    ???
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2179: in _declarative_constructor
+    raise TypeError(
+E   TypeError: 'line_id' is an invalid keyword argument for Worker
+________________ ERROR at setup of test_get_discrepancies_real ________________
+backend\tests\test_api\test_analytics_real.py:92: in analytics_data
+    worker1 = Worker(
+<string>:4: in __init__
+    ???
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+backend\venv\Lib\site-packages\sqlalchemy\orm\state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+backend\venv\Lib\site-packages\sqlalchemy\orm\decl_base.py:2179: in _declarative_constructor
+    raise TypeError(
+E   TypeError: 'line_id' is an invalid keyword argument for Worker
+=========================== short test summary info ===========================
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real - TypeError: 'line_id' is an invalid keyword argument for Worker
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_production_chart_real - TypeError: 'line_id' is an invalid keyword argument for Worker
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real - TypeError: 'line_id' is an invalid keyword argument for Worker
+ERROR backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real - TypeError: 'line_id' is an invalid keyword argument for Worker
+============================== 4 errors in 4.16s ==============================

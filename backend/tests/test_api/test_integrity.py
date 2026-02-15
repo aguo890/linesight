@@ -87,7 +87,7 @@ async def test_production_run_constraints(db_session, test_factory, test_line):
     run_invalid = ProductionRun(
         id=str(uuid.uuid4()),
         factory_id=test_factory.id,
-        line_id=test_line.id,
+        data_source_id=test_line.id,
         order_id=order.id,
         actual_qty=-10,
         operators_present=10,

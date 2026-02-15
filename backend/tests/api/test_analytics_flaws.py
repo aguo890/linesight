@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.events import ProductionEvent
 from app.models.production import ProductionRun
+from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio
@@ -30,7 +31,7 @@ async def test_hourly_production_no_events_returns_zeros(
     today = date.today()
     run = ProductionRun(
         production_date=today,
-        line_id=test_line.id,
+        data_source_id=test_line.id,
         factory_id=test_factory.id,
         order_id=test_order.id,
         actual_qty=1000,
@@ -81,9 +82,8 @@ async def test_midnight_boundary_respects_timezone(
         from backports.zoneinfo import ZoneInfo
 
     # Create a UNIQUE line for this test to avoid bleeding state from previous tests
-    from app.models.factory import ProductionLine
 
-    unique_line = ProductionLine(
+    unique_line = DataSource(
         factory_id=test_factory.id, name="Timezone Test Line", code="TZ-LINE"
     )
     db_session.add(unique_line)
@@ -113,7 +113,7 @@ async def test_midnight_boundary_respects_timezone(
 
     event_late = ProductionEvent(
         timestamp=near_midnight_utc.replace(tzinfo=None),
-        line_id=unique_line.id,
+        data_source_id=unique_line.id,
         order_id=test_order.id,
         style_id=test_order.style_id,
         quantity=10,
@@ -131,7 +131,7 @@ async def test_midnight_boundary_respects_timezone(
 
     event_early = ProductionEvent(
         timestamp=just_after_midnight_utc.replace(tzinfo=None),
-        line_id=unique_line.id,
+        data_source_id=unique_line.id,
         order_id=test_order.id,
         style_id=test_order.style_id,
         quantity=20,

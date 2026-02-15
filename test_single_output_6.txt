@@ -1,0 +1,265 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.1.0, langsmith-0.6.1, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 4 items
+
+backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real FAILED [ 25%]
+backend\tests\test_api\test_analytics_real.py::test_get_production_chart_real PASSED [ 50%]
+backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real FAILED [ 75%]
+backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real FAILED [100%]
+
+================================== FAILURES ===================================
+________________________ test_get_overview_stats_real _________________________
+backend\tests\test_api\test_analytics_real.py:132: in test_get_overview_stats_real
+    response = await async_client.get(
+backend\venv\Lib\site-packages\httpx\_client.py:1768: in get
+    return await self.request(
+backend\venv\Lib\site-packages\httpx\_client.py:1540: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_client.py:1629: in send
+    response = await self._send_handling_auth(
+backend\venv\Lib\site-packages\httpx\_client.py:1657: in _send_handling_auth
+    response = await self._send_handling_redirects(
+backend\venv\Lib\site-packages\httpx\_client.py:1694: in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_client.py:1730: in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_transports\asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\fastapi\applications.py:1135: in __call__
+    await super().__call__(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+backend\venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+backend\venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\fastapi\routing.py:115: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\venv\Lib\site-packages\fastapi\routing.py:101: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\fastapi\routing.py:355: in app
+    raw_response = await run_endpoint_function(
+backend\venv\Lib\site-packages\fastapi\routing.py:243: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\v1\endpoints\analytics.py:101: in get_overview_stats
+    current_stats = await analytics_service.get_aggregated_stats(
+backend\app\services\analytics_service.py:171: in get_aggregated_stats
+    stats = self.aggregate_production_stats(logs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\analytics_service.py:96: in aggregate_production_stats
+    earned = cls.calculate_earned_minutes(qty, sam)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\analytics_service.py:38: in calculate_earned_minutes
+    return float(produced_qty) * float(sam)
+                                 ^^^^^^^^^^
+E   TypeError: float() argument must be a string or a real number, not 'NoneType'
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-15T15:34:36.941380Z", "level": "INFO", "logger": "app.api.v1.endpoints.analytics", "message": "[DIAG] get_overview_stats called with line_id=None"}
+{"timestamp": "2026-02-15T15:34:36.959049Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: float() argument must be a string or a real number, not 'NoneType'", "exception": "Traceback (most recent call last):\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\errors.py\", line 164, in __call__\n    await self.app(scope, receive, _send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\cors.py\", line 85, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\exceptions.py\", line 63, in __call__\n    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\middleware\\asyncexitstack.py\", line 18, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 716, in __call__\n    await self.middleware_stack(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 736, in app\n    await route.handle(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 290, in handle\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 115, in app\n    await wrap_app_handling_exceptions(app, request)(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 101, in app\n    response = await f(request)\n               ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 355, in app\n    raw_response = await run_endpoint_function(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 243, in run_endpoint_function\n    return await dependant.call(**values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\api\\v1\\endpoints\\analytics.py\", line 101, in get_overview_stats\n    current_stats = await analytics_service.get_aggregated_stats(\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        line_id=line_id, start_date=current_start, end_date=current_end\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\services\\analytics_service.py\", line 171, in get_aggregated_stats\n    stats = self.aggregate_production_stats(logs)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\services\\analytics_service.py\", line 96, in aggregate_production_stats\n    earned = cls.calculate_earned_minutes(qty, sam)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\services\\analytics_service.py\", line 38, in calculate_earned_minutes\n    return float(produced_qty) * float(sam)\n                                 ~~~~~^^^^^\nTypeError: float() argument must be a string or a real number, not 'NoneType'"}
+------------------------------ Captured log call ------------------------------
+INFO     app.api.v1.endpoints.analytics:analytics.py:72 [DIAG] get_overview_stats called with line_id=None
+ERROR    app.main:main.py:100 Unhandled exception: float() argument must be a string or a real number, not 'NoneType'
+Traceback (most recent call last):
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 115, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\endpoints\analytics.py", line 101, in get_overview_stats
+    current_stats = await analytics_service.get_aggregated_stats(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        line_id=line_id, start_date=current_start, end_date=current_end
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\services\analytics_service.py", line 171, in get_aggregated_stats
+    stats = self.aggregate_production_stats(logs)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\services\analytics_service.py", line 96, in aggregate_production_stats
+    earned = cls.calculate_earned_minutes(qty, sam)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\services\analytics_service.py", line 38, in calculate_earned_minutes
+    return float(produced_qty) * float(sam)
+                                 ~~~~~^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'
+_______________________ test_get_lowest_performers_real _______________________
+backend\tests\test_api\test_analytics_real.py:179: in test_get_lowest_performers_real
+    response = await async_client.get(
+backend\venv\Lib\site-packages\httpx\_client.py:1768: in get
+    return await self.request(
+backend\venv\Lib\site-packages\httpx\_client.py:1540: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_client.py:1629: in send
+    response = await self._send_handling_auth(
+backend\venv\Lib\site-packages\httpx\_client.py:1657: in _send_handling_auth
+    response = await self._send_handling_redirects(
+backend\venv\Lib\site-packages\httpx\_client.py:1694: in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_client.py:1730: in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\httpx\_transports\asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\fastapi\applications.py:1135: in __call__
+    await super().__call__(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+backend\venv\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+backend\venv\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+backend\venv\Lib\site-packages\fastapi\routing.py:115: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+backend\venv\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+backend\venv\Lib\site-packages\fastapi\routing.py:101: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+backend\venv\Lib\site-packages\fastapi\routing.py:355: in app
+    raw_response = await run_endpoint_function(
+backend\venv\Lib\site-packages\fastapi\routing.py:243: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\v1\endpoints\analytics.py:249: in get_lowest_performers
+    .outerjoin(ProductionLine, Worker.line_id == ProductionLine.id)
+                               ^^^^^^^^^^^^^^
+E   AttributeError: type object 'Worker' has no attribute 'line_id'
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-15T15:34:38.174953Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: type object 'Worker' has no attribute 'line_id'", "exception": "Traceback (most recent call last):\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\errors.py\", line 164, in __call__\n    await self.app(scope, receive, _send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\cors.py\", line 85, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\middleware\\exceptions.py\", line 63, in __call__\n    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\middleware\\asyncexitstack.py\", line 18, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 716, in __call__\n    await self.middleware_stack(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 736, in app\n    await route.handle(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\routing.py\", line 290, in handle\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 115, in app\n    await wrap_app_handling_exceptions(app, request)(scope, receive, send)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 101, in app\n    response = await f(request)\n               ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 355, in app\n    raw_response = await run_endpoint_function(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\venv\\Lib\\site-packages\\fastapi\\routing.py\", line 243, in run_endpoint_function\n    return await dependant.call(**values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\api\\v1\\endpoints\\analytics.py\", line 249, in get_lowest_performers\n    .outerjoin(ProductionLine, Worker.line_id == ProductionLine.id)\n                               ^^^^^^^^^^^^^^\nAttributeError: type object 'Worker' has no attribute 'line_id'"}
+------------------------------ Captured log call ------------------------------
+ERROR    app.main:main.py:100 Unhandled exception: type object 'Worker' has no attribute 'line_id'
+Traceback (most recent call last):
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 115, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\endpoints\analytics.py", line 249, in get_lowest_performers
+    .outerjoin(ProductionLine, Worker.line_id == ProductionLine.id)
+                               ^^^^^^^^^^^^^^
+AttributeError: type object 'Worker' has no attribute 'line_id'
+_________________________ test_get_discrepancies_real _________________________
+backend\tests\test_api\test_analytics_real.py:203: in test_get_discrepancies_real
+    assert len(discrepancies) >= 1
+E   assert 0 >= 1
+E    +  where 0 = len([])
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-15T15:34:38.787029Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/discrepancies \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/discrepancies "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_analytics_real.py::test_get_overview_stats_real - TypeError: float() argument must be a string or a real number, not 'NoneType'
+FAILED backend\tests\test_api\test_analytics_real.py::test_get_lowest_performers_real - AttributeError: type object 'Worker' has no attribute 'line_id'
+FAILED backend\tests\test_api\test_analytics_real.py::test_get_discrepancies_real - assert 0 >= 1
+ +  where 0 = len([])
+========================= 3 failed, 1 passed in 3.66s =========================

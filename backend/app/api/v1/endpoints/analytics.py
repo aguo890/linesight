@@ -21,7 +21,7 @@ from app.api.deps import CurrentUser, get_db
 from app.models import ProductionLine  # Alias for DataSource
 from app.models.analytics import DHUReport, EfficiencyMetric
 
-# from app.models.compliance import TraceabilityRecord, VerificationStatus
+from app.models.drafts.compliance import TraceabilityRecord, VerificationStatus
 from app.models.events import ProductionEvent
 from app.models.factory import Factory
 from app.models.production import Order, OrderStatus, ProductionRun, Style
@@ -47,6 +47,7 @@ from app.schemas.analytics import (
     TargetRealizationResponse,
     WorkerPerformance,
     WorkforceStats,
+    DiscrepancyItem,
 )
 from app.services.analytics_service import AnalyticsService
 
@@ -130,10 +131,9 @@ async def get_overview_stats(
     total_lines = lines_stats.total or 0
 
     # 3. Discrepancies (Separate as it's a different table hierarchy)
-    # disc_query = select(func.count(TraceabilityRecord.id)).where(
-    #     TraceabilityRecord.verification_status != VerificationStatus.VERIFIED
-    # )
-    disc_query = select(literal(0)) # Return 0 for now
+    disc_query = select(func.count(TraceabilityRecord.id)).where(
+        TraceabilityRecord.verification_status != VerificationStatus.VERIFIED
+    )
     disc_result = await db.execute(disc_query)
     discrepancies_count = disc_result.scalar() or 0
 
@@ -246,7 +246,7 @@ async def get_lowest_performers(
     query = (
         select(Worker, WorkerSkill, ProductionLine.name.label("line_name"))
         .join(WorkerSkill, Worker.id == WorkerSkill.worker_id)
-        .outerjoin(ProductionLine, Worker.line_id == ProductionLine.id)
+        .outerjoin(ProductionLine, Worker.data_source_id == ProductionLine.id)
         .where(Worker.is_active)
         .order_by(WorkerSkill.efficiency_pct.asc())
         .limit(limit)
@@ -285,43 +285,43 @@ async def get_discrepancies(
     """
     # TODO: Compliance module is currently archived/draft.
     # Re-enable this when app.models.compliance is restored.
-    # query = (
-    #     select(TraceabilityRecord)
-    #     .where(
-    #         TraceabilityRecord.verification_status.in_(
-    #             [
-    #                 VerificationStatus.FLAGGED,
-    #                 VerificationStatus.REJECTED,
-    #                 VerificationStatus.PENDING,
-    #             ]
-    #         )
-    #     )
-    #     .order_by(desc(TraceabilityRecord.created_at))
-    #     .limit(20)
-    # )
+    query = (
+        select(TraceabilityRecord)
+        .where(
+            TraceabilityRecord.verification_status.in_(
+                [
+                    VerificationStatus.FLAGGED,
+                    VerificationStatus.REJECTED,
+                    VerificationStatus.PENDING,
+                ]
+            )
+        )
+        .order_by(desc(TraceabilityRecord.created_at))
+        .limit(20)
+    )
 
-    # result = await db.execute(query)
-    # records = result.scalars().all()
+    result = await db.execute(query)
+    records = result.scalars().all()
 
     discrepancies = []
-    # for rec in records:
-    #     severity = "Medium"
-    #     if (
-    #         rec.verification_status == VerificationStatus.REJECTED
-    #         or rec.verification_status == VerificationStatus.FLAGGED
-    #     ):
-    #         severity = "High"
+    for rec in records:
+        severity = "Medium"
+        if (
+            rec.verification_status == VerificationStatus.REJECTED
+            or rec.verification_status == VerificationStatus.FLAGGED
+        ):
+            severity = "High"
 
-    #     discrepancies.append(
-    #         DiscrepancyItem(
-    #             id=rec.id,
-    #             severity=severity,
-    #             issue_title=f"Compliance {rec.verification_status.value.title()}",
-    #             issue_description=rec.risk_notes
-    #             or "Verification incomplete or failed.",
-    #             source_file="Traceability Record",  # Placeholder
-    #         )
-    #     )
+        discrepancies.append(
+            DiscrepancyItem(
+                id=rec.id,
+                severity=severity,
+                issue_title=f"Compliance {rec.verification_status.value.title()}",
+                issue_description=rec.risk_notes
+                or "Verification incomplete or failed.",
+                source_file="Traceability Record",  # Placeholder
+            )
+        )
 
     return DiscrepanciesResponse(
         discrepancies=discrepancies,
@@ -820,7 +820,7 @@ async def get_hourly_production(
     ).where(func.date(ProductionEvent.timestamp) == effective_date)
 
     if line_id:
-        query = query.where(ProductionEvent.line_id == line_id)
+        query = query.where(ProductionEvent.data_source_id == line_id)
 
     query = query.group_by("hour").order_by("hour")
 
@@ -925,7 +925,7 @@ async def get_production_events(
     )
 
     if line_id:
-        query = query.where(ProductionEvent.line_id == line_id)
+        query = query.where(ProductionEvent.data_source_id == line_id)
 
     result = await db.execute(query)
     events = result.scalars().all()

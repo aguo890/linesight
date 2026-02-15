@@ -8,7 +8,8 @@ from zoneinfo import ZoneInfo
 
 import pytest
 
-from app.models.factory import Factory, ProductionLine
+from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 
 # Setup Logger
@@ -37,7 +38,7 @@ async def judge_data(db_session, test_organization):
     await db_session.refresh(factory)
 
     # 2. Line A (The Subject)
-    line_a = ProductionLine(
+    line_a = DataSource(
         factory_id=factory.id,
         name="Line A",
         code="L-A",
@@ -47,7 +48,7 @@ async def judge_data(db_session, test_organization):
     db_session.add(line_a)
 
     # 3. Line B (The Ghost)
-    line_b = ProductionLine(
+    line_b = DataSource(
         factory_id=factory.id,
         name="Line B",
         code="L-B",
@@ -76,7 +77,7 @@ async def judge_data(db_session, test_organization):
 
     run_a = ProductionRun(
         factory_id=factory.id,
-        line_id=line_a.id,
+        data_source_id=line_a.id,
         order_id=order.id,
         production_date=tokyo_today,
         shift="day",
@@ -93,7 +94,7 @@ async def judge_data(db_session, test_organization):
     # Should NOT appear when querying Line A
     run_b = ProductionRun(
         factory_id=factory.id,
-        line_id=line_b.id,
+        data_source_id=line_b.id,
         order_id=order.id,
         production_date=tokyo_today,
         shift="day",

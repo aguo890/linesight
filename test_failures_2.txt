@@ -1,0 +1,296 @@
+backend\tests\api\test_analytics_flaws.py::test_hourly_production_no_events_returns_zeros FAILED [  0%]
+backend\tests\api\test_analytics_flaws.py::test_midnight_boundary_respects_timezone FAILED [  0%]
+backend\tests\api\v1\test_factory_settings.py::test_factory_settings_localization_and_snapshot FAILED [  1%]
+backend\tests\api\v1\test_users.py::test_update_user_invalid_preference_type FAILED [  5%]
+backend\tests\test_api\test_ai_decisions.py::test_get_data_source_ai_decisions FAILED [  7%]
+backend\tests\test_api\test_auth.py::test_login_success FAILED           [ 10%]
+backend\tests\test_api\test_auth.py::test_login_invalid_password FAILED  [ 11%]
+backend\tests\test_api\test_dashboard_creation_flow.py::test_complete_dashboard_creation_flow FAILED [ 12%]
+backend\tests\test_api\test_dashboard_creation_flow.py::test_dashboard_creation_blocked_by_factory_quota FAILED [ 12%]
+backend\tests\test_api\test_dashboard_creation_flow.py::test_multiple_dashboards_same_data_source FAILED [ 13%]
+backend\tests\test_api\test_dashboard_creation_flow.py::test_list_dashboards_filtered_by_factory FAILED [ 14%]
+backend\tests\test_api\test_dashboard_widgets.py::test_get_dhu_quality_trend FAILED [ 16%]
+backend\tests\test_api\test_dashboard_widgets.py::test_get_style_progress FAILED [ 16%]
+backend\tests\test_api\test_datasource.py::test_create_data_source FAILED [ 21%]
+backend\tests\test_api\test_destructive_flows.py::test_delete_datasource_cascade FAILED [ 25%]
+backend\tests\test_api\test_destructive_flows.py::test_clear_history_file_cleanup FAILED [ 26%]
+backend\tests\test_api\test_destructive_flows.py::test_clear_history_missing_file FAILED [ 26%]
+backend\tests\test_api\test_destructive_flows.py::test_permissions_restricted_delete FAILED [ 27%]
+backend\tests\test_api\test_destructive_flows.py::test_deep_data_cleanup FAILED [ 27%]
+backend\tests\test_api\test_destructive_flows.py::test_cross_tenant_isolation FAILED [ 28%]
+backend\tests\test_api\test_destructive_flows.py::test_audit_logging_mock FAILED [ 28%]
+backend\tests\test_api\test_dry_run_flow.py::test_dry_run_preview_structure FAILED [ 28%]
+backend\tests\test_api\test_dry_run_flow.py::test_date_auto_fixing_detection FAILED [ 29%]
+backend\tests\test_api\test_dry_run_flow.py::test_efficiency_percentage_cleaning FAILED [ 29%]
+backend\tests\test_api\test_dry_run_flow.py::test_decimal_field_handling FAILED [ 30%]
+backend\tests\test_api\test_dry_run_flow.py::test_integer_field_cleaning FAILED [ 30%]
+backend\tests\test_api\test_dry_run_flow.py::test_column_mapping_application FAILED [ 30%]
+backend\tests\test_api\test_dry_run_flow.py::test_overall_status_with_warnings FAILED [ 31%]
+backend\tests\test_api\test_dry_run_flow.py::test_overall_status_all_valid FAILED [ 31%]
+backend\tests\test_api\test_dry_run_flow.py::test_promotion_after_dry_run_approval FAILED [ 32%]
+backend\tests\test_api\test_dry_run_flow.py::test_dry_run_limits_to_20_rows FAILED [ 33%]
+backend\tests\test_api\test_dry_run_flow.py::test_raw_data_preserved_in_preview FAILED [ 33%]
+backend\tests\test_api\test_error_handling.py::test_delete_204_response FAILED [ 35%]
+backend\tests\test_api\test_excel_to_widget_integrity.py::test_golden_master_excel_to_overview_widget FAILED [ 35%]
+backend\tests\test_api\test_excel_to_widget_integrity.py::test_golden_master_physics_validation_triggers FAILED [ 35%]
+backend\tests\test_api\test_factories.py::test_create_factory FAILED     [ 36%]
+backend\tests\test_api\test_factories.py::test_list_factories FAILED     [ 36%]
+backend\tests\test_api\test_factories.py::test_production_line_crud FAILED [ 37%]
+backend\tests\test_api\test_fallback_logic.py::test_overview_fallback FAILED [ 37%]
+backend\tests\test_api\test_fallback_logic.py::test_sam_performance_fallback FAILED [ 38%]
+backend\tests\test_api\test_fallback_logic.py::test_hourly_fallback FAILED [ 38%]
+backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production FAILED [ 39%]
+backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance FAILED [ 39%]
+backend\tests\test_api\test_individual_widgets.py::test_get_dhu_history FAILED [ 40%]
+backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality FAILED [ 41%]
+backend\tests\test_api\test_ingestion_deduplication.py::test_ingestion_deduplication FAILED [ 42%]
+backend\tests\test_api\test_ingestion_deduplication.py::test_mapping_state_endpoint FAILED [ 42%]
+backend\tests\test_api\test_ingestion_deduplication.py::test_process_idempotency FAILED [ 43%]
+backend\tests\test_api\test_ingestion_flow.py::test_full_ingestion_flow FAILED [ 43%]
+backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution FAILED [ 43%]
+backend\tests\test_api\test_line_management.py::test_reset_schema_configuration FAILED [ 46%]
+backend\tests\test_api\test_line_management.py::test_clear_upload_history FAILED [ 46%]
+backend\tests\test_api\test_preview.py::test_preview_endpoint_success FAILED [ 48%]
+backend\tests\test_api\test_preview.py::test_list_uploads_includes_datasource_id FAILED [ 48%]
+backend\tests\test_api\test_preview_dry_run_endpoint.py::test_preview_dry_run_endpoint FAILED [ 48%]
+backend\tests\test_api\test_production.py::test_production_run_lifecycle FAILED [ 50%]
+backend\tests\test_api\test_promotion.py::test_promotion_logic_full_cycle FAILED [ 51%]
+backend\tests\test_api\test_quota_enforcement.py::test_factory_quota_enforced FAILED [ 53%]
+backend\tests\test_api\test_quota_enforcement.py::test_soft_deleted_factories_not_counted FAILED [ 53%]
+backend\tests\test_api\test_quota_enforcement.py::test_enterprise_tier_quotas FAILED [ 54%]
+backend\tests\test_api\test_quota_enforcement.py::test_quota_at_exact_limit FAILED [ 55%]
+backend\tests\test_api\test_quota_enforcement.py::test_zero_quota_blocks_creation FAILED [ 55%]
+backend\tests\test_api\test_repro_500.py::test_list_dashboards_by_factory_id_crash FAILED [ 56%]
+backend\tests\test_api\test_samples.py::test_list_sample_files FAILED    [ 56%]
+backend\tests\test_api\test_samples.py::test_download_sample_file FAILED [ 56%]
+backend\tests\test_api\test_samples.py::test_download_csv_sample_file FAILED [ 57%]
+backend\tests\test_api\test_schema_config.py::test_schema_configuration_flow FAILED [ 58%]
+backend\tests\test_api\test_schema_mapping_reuse.py::test_confirm_mapping_deactivates_previous FAILED [ 59%]
+backend\tests\test_api\test_schema_mapping_reuse.py::test_schema_mapping_version_increments_correctly FAILED [ 59%]
+backend\tests\test_api\test_storage_separation.py::test_storage_segmentation FAILED [ 60%]
+backend\tests\test_api\test_style_progress.py::test_get_style_progress_with_pending_orders FAILED [ 60%]
+backend\tests\test_api\test_upload.py::TestUploadEndpoints::test_upload_rejects_non_excel FAILED [ 61%]
+backend\tests\test_api\test_upload.py::TestUploadEndpoints::test_upload_accepts_xlsx FAILED [ 61%]
+backend\tests\test_api\test_upload_history.py::test_upload_history_segmentation FAILED [ 62%]
+backend\tests\test_api\test_upload_preview.py::test_upload_csv_file FAILED [ 62%]
+backend\tests\test_api\test_upload_preview.py::test_preview_csv_file FAILED [ 63%]
+backend\tests\test_api\test_upload_preview.py::test_preview_excel_file FAILED [ 63%]
+backend\tests\test_api\test_verification_cascade.py::test_factory_deletion_cascade_behavior FAILED [ 64%]
+backend\tests\test_api\test_widget_data_e2e.py::test_full_widget_data_flow FAILED [ 65%]
+backend\tests\test_api\test_widget_data_e2e.py::test_widget_endpoint_with_line_filter FAILED [ 65%]
+backend\tests\test_async_flow.py::test_datasource_lifecycle FAILED       [ 66%]
+backend\tests\test_datasource_flow.py::test_datasource_flow FAILED       [ 66%]
+backend\tests\test_ingestion\test_full_flow.py::test_full_data_flow FAILED [ 66%]
+backend\tests\test_sequential_ingestion.py::test_jan_feb_march_continuity FAILED [ 67%]
+backend\tests\test_services\test_ai_decision_logging.py::test_schema_inference_logging FAILED [ 68%]
+backend\tests\test_services\test_ai_decision_logging.py::test_code_generation_logging FAILED [ 69%]
+backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_data_source_relationship FAILED [ 69%]
+backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_confidence_calculation FAILED [ 70%]
+backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_metadata_completeness FAILED [ 70%]
+backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_parse_mm_dd_format FAILED [ 87%]
+backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_parse_mm_slash_dd_format FAILED [ 87%]
+backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_edge_case_dates FAILED [ 91%]
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+E   AssertionError: Failed to create test data source: {"detail":"Not Found"}
+E   AssertionError: Failed to create test data source: {"detail":"Not Found"}
+E   AssertionError: Failed to create test data source: {"detail":"Not Found"}
+E   AssertionError: Failed to create test data source: {"detail":"Not Found"}
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+E   AssertionError: Failed to create factory: {"detail":[{"type":"value_error","loc":["body","country"],"msg":"Value error, Country must be a 2-letter
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\api\v1\test_factory_settings.py:66: AssertionError: Failed to create factory: {"detail":[{"t
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.locale
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.locale
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.locale
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.locale
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+ERROR    app.main:main.py:100 Unhandled exception: 'line_id' is an invalid keyword argument for ProductionRun
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.code
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.code
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   socket.gaierror: [Errno 11001] getaddrinfo failed
+{"timestamp": "2026-02-15T15:49:29.975003Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: [Errno 11001] getaddrinfo failed
+ERROR    app.main:main.py:100 Unhandled exception: [Errno 11001] getaddrinfo failed
+socket.gaierror: [Errno 11001] getaddrinfo failed
+C:\Python313\Lib\socket.py:977: socket.gaierror: [Errno 11001] getaddrinfo failed
+E   socket.gaierror: [Errno 11001] getaddrinfo failed
+{"timestamp": "2026-02-15T15:49:32.736632Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: [Errno 11001] getaddrinfo failed
+ERROR    app.main:main.py:100 Unhandled exception: [Errno 11001] getaddrinfo failed
+socket.gaierror: [Errno 11001] getaddrinfo failed
+C:\Python313\Lib\socket.py:977: socket.gaierror: [Errno 11001] getaddrinfo failed
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+ERROR    app.main:main.py:100 Unhandled exception: cannot access local variable 'data_source' where it is not associated with a value
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+E   sqlite3.IntegrityError: NOT NULL constraint failed: data_sources.factory_id
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: data_sources.factory_id
+C:\Users\19803\Projects\FactoryExcelManager\backend\venv\Lib\site-packages\aiosqlite\core.py:63: sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityErro
+FAILED backend\tests\api\test_analytics_flaws.py::test_hourly_production_no_events_returns_zeros - TypeError: 'line_id' is an invalid keyword argument
+FAILED backend\tests\api\test_analytics_flaws.py::test_midnight_boundary_respects_timezone - TypeError: 'line_id' is an invalid keyword argument for P
+FAILED backend\tests\api\v1\test_factory_settings.py::test_factory_settings_localization_and_snapshot - AssertionError: Failed to create factory: {"de
+FAILED backend\tests\api\v1\test_users.py::test_update_user_invalid_preference_type - assert 200 == 422
+FAILED backend\tests\test_api\test_ai_decisions.py::test_get_data_source_ai_decisions - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NU
+FAILED backend\tests\test_api\test_auth.py::test_login_success - AttributeError: type object 'UserRole' has no attribute 'ADMIN'
+FAILED backend\tests\test_api\test_auth.py::test_login_invalid_password - AttributeError: type object 'UserRole' has no attribute 'ADMIN'
+FAILED backend\tests\test_api\test_dashboard_creation_flow.py::test_complete_dashboard_creation_flow - assert 422 == 201
+FAILED backend\tests\test_api\test_dashboard_creation_flow.py::test_dashboard_creation_blocked_by_factory_quota - assert 422 == 403
+FAILED backend\tests\test_api\test_dashboard_creation_flow.py::test_multiple_dashboards_same_data_source - KeyError: 'id'
+FAILED backend\tests\test_api\test_dashboard_creation_flow.py::test_list_dashboards_filtered_by_factory - assert 422 == 201
+FAILED backend\tests\test_api\test_dashboard_widgets.py::test_get_dhu_quality_trend - AssertionError: assert 0.0 > 1.0
+FAILED backend\tests\test_api\test_dashboard_widgets.py::test_get_style_progress - AssertionError: assert 'On Track' in ['In Progress', 'In Progress']
+FAILED backend\tests\test_api\test_datasource.py::test_create_data_source - AssertionError: Expected 201, got 404: {"detail":"Not Found"}
+FAILED backend\tests\test_api\test_destructive_flows.py::test_delete_datasource_cascade - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT 
+FAILED backend\tests\test_api\test_destructive_flows.py::test_clear_history_file_cleanup - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT
+FAILED backend\tests\test_api\test_destructive_flows.py::test_clear_history_missing_file - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT
+FAILED backend\tests\test_api\test_destructive_flows.py::test_permissions_restricted_delete - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) 
+FAILED backend\tests\test_api\test_destructive_flows.py::test_deep_data_cleanup - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL con
+FAILED backend\tests\test_api\test_destructive_flows.py::test_cross_tenant_isolation - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NUL
+FAILED backend\tests\test_api\test_destructive_flows.py::test_audit_logging_mock - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL co
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_dry_run_preview_structure - assert 'preview' in {'preview_records': [{'row': 0, 'raw': {'Date
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_date_auto_fixing_detection - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_efficiency_percentage_cleaning - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_decimal_field_handling - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_integer_field_cleaning - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_column_mapping_application - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_overall_status_with_warnings - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_overall_status_all_valid - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_promotion_after_dry_run_approval - KeyError: 'records_processed'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_dry_run_limits_to_20_rows - KeyError: 'preview'
+FAILED backend\tests\test_api\test_dry_run_flow.py::test_raw_data_preserved_in_preview - KeyError: 'preview'
+FAILED backend\tests\test_api\test_error_handling.py::test_delete_204_response - assert 422 == 201
+FAILED backend\tests\test_api\test_excel_to_widget_integrity.py::test_golden_master_excel_to_overview_widget - NameError: name 'ProductionLine' is not
+FAILED backend\tests\test_api\test_excel_to_widget_integrity.py::test_golden_master_physics_validation_triggers - NameError: name 'ProductionLine' is 
+FAILED backend\tests\test_api\test_factories.py::test_create_factory - assert 422 == 201
+FAILED backend\tests\test_api\test_factories.py::test_list_factories - assert 0 >= 1
+FAILED backend\tests\test_api\test_factories.py::test_production_line_crud - assert 422 == 201
+FAILED backend\tests\test_api\test_fallback_logic.py::test_overview_fallback - AssertionError: assert 10.0 == 100.0
+FAILED backend\tests\test_api\test_fallback_logic.py::test_sam_performance_fallback - AssertionError: assert 0.0 == 100.0
+FAILED backend\tests\test_api\test_fallback_logic.py::test_hourly_fallback - assert 404 == 200
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production - assert 404 == 200
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance - AssertionError: assert 6.0 == 90.0
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_dhu_history - AssertionError: assert 0.0 == 2.5
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality - assert None is not None
+FAILED backend\tests\test_api\test_ingestion_deduplication.py::test_ingestion_deduplication - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_ingestion_deduplication.py::test_mapping_state_endpoint - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_ingestion_deduplication.py::test_process_idempotency - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_ingestion_flow.py::test_full_ingestion_flow - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_line_management.py::test_reset_schema_configuration - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT N
+FAILED backend\tests\test_api\test_line_management.py::test_clear_upload_history - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL co
+FAILED backend\tests\test_api\test_preview.py::test_preview_endpoint_success - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_preview.py::test_list_uploads_includes_datasource_id - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_preview_dry_run_endpoint.py::test_preview_dry_run_endpoint - assert 'preview' in {'preview_records': [{'row': 0, 'r
+FAILED backend\tests\test_api\test_production.py::test_production_run_lifecycle - TypeError: 'line_id' is an invalid keyword argument for ProductionRu
+FAILED backend\tests\test_api\test_promotion.py::test_promotion_logic_full_cycle - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_quota_enforcement.py::test_factory_quota_enforced - assert 422 == 201
+FAILED backend\tests\test_api\test_quota_enforcement.py::test_soft_deleted_factories_not_counted - assert 422 == 201
+FAILED backend\tests\test_api\test_quota_enforcement.py::test_enterprise_tier_quotas - assert 422 == 201
+FAILED backend\tests\test_api\test_quota_enforcement.py::test_quota_at_exact_limit - assert 422 == 201
+FAILED backend\tests\test_api\test_quota_enforcement.py::test_zero_quota_blocks_creation - assert 422 == 403
+FAILED backend\tests\test_api\test_repro_500.py::test_list_dashboards_by_factory_id_crash - assert 422 == 201
+FAILED backend\tests\test_api\test_samples.py::test_list_sample_files - AssertionError: assert 'perfect_production.xlsx' in ['EdgeCase_Abbreviated_Hea
+FAILED backend\tests\test_api\test_samples.py::test_download_sample_file - assert 404 == 200
+FAILED backend\tests\test_api\test_samples.py::test_download_csv_sample_file - assert 404 == 200
+FAILED backend\tests\test_api\test_schema_config.py::test_schema_configuration_flow - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_schema_mapping_reuse.py::test_confirm_mapping_deactivates_previous - NameError: name 'ProductionLine' is not define
+FAILED backend\tests\test_api\test_schema_mapping_reuse.py::test_schema_mapping_version_increments_correctly - NameError: name 'ProductionLine' is not
+FAILED backend\tests\test_api\test_storage_separation.py::test_storage_segmentation - AssertionError: Path C:\Users\19803\AppData\Local\Temp\pytest-of
+FAILED backend\tests\test_api\test_style_progress.py::test_get_style_progress_with_pending_orders - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityE
+FAILED backend\tests\test_api\test_upload.py::TestUploadEndpoints::test_upload_rejects_non_excel - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_upload.py::TestUploadEndpoints::test_upload_accepts_xlsx - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_upload_history.py::test_upload_history_segmentation - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_upload_preview.py::test_upload_csv_file - FileNotFoundError: [Errno 2] No such file or directory: 'tests\\data\\per
+FAILED backend\tests\test_api\test_upload_preview.py::test_preview_csv_file - FileNotFoundError: [Errno 2] No such file or directory: 'tests\\data\\pe
+FAILED backend\tests\test_api\test_upload_preview.py::test_preview_excel_file - FileNotFoundError: [Errno 2] No such file or directory: 'tests\\data\\
+FAILED backend\tests\test_api\test_verification_cascade.py::test_factory_deletion_cascade_behavior - assert 422 == 201
+FAILED backend\tests\test_api\test_widget_data_e2e.py::test_full_widget_data_flow - NameError: name 'ProductionLine' is not defined
+FAILED backend\tests\test_api\test_widget_data_e2e.py::test_widget_endpoint_with_line_filter - sqlalchemy.exc.OperationalError: (sqlite3.OperationalEr
+FAILED backend\tests\test_async_flow.py::test_datasource_lifecycle - socket.gaierror: [Errno 11001] getaddrinfo failed
+FAILED backend\tests\test_datasource_flow.py::test_datasource_flow - socket.gaierror: [Errno 11001] getaddrinfo failed
+FAILED backend\tests\test_ingestion\test_full_flow.py::test_full_data_flow - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constrai
+FAILED backend\tests\test_sequential_ingestion.py::test_jan_feb_march_continuity - UnboundLocalError: cannot access local variable 'data_source' where
+FAILED backend\tests\test_services\test_ai_decision_logging.py::test_schema_inference_logging - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError
+FAILED backend\tests\test_services\test_ai_decision_logging.py::test_code_generation_logging - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError)
+FAILED backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_data_source_relationship - sqlalchemy.exc.IntegrityError: (sqlite3.In
+FAILED backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_confidence_calculation - sqlalchemy.exc.IntegrityError: (sqlite3.Inte
+FAILED backend\tests\test_services\test_ai_decision_logging.py::test_ai_decision_metadata_completeness - sqlalchemy.exc.IntegrityError: (sqlite3.Integ
+FAILED backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_parse_mm_dd_format - pydantic_core._pydantic_core.Vali
+FAILED backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_parse_mm_slash_dd_format - pydantic_core._pydantic_cor
+FAILED backend\tests\test_services\test_production_schema.py::TestProductionDateValidator::test_edge_case_dates - pydantic_core._pydantic_core.Validat
+ERROR backend\tests\api\v1\test_team.py::test_list_members_as_owner - AttributeError: type object 'UserRole' has no attribute 'MANAGER'
+ERROR backend\tests\api\v1\test_team.py::test_list_members_as_manager_forbidden - AttributeError: type object 'UserRole' has no attribute 'MANAGER'
+ERROR backend\tests\api\v1\test_team.py::test_assign_user_to_line - AttributeError: type object 'UserRole' has no attribute 'MANAGER'
+ERROR backend\tests\api\v1\test_team.py::test_remove_user_scope - AttributeError: type object 'UserRole' has no attribute 'MANAGER'
+ERROR backend\tests\api\v1\test_team.py::test_cannot_assign_cross_org_user - AttributeError: type object 'UserRole' has no attribute 'MANAGER'
+ERROR backend\tests\e2e\test_excel_to_dashboard.py::test_e2e_excel_ingestion_and_dashboard - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) N
+ERROR backend\tests\test_api\test_dashboard_flow.py::test_edit_configuration - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_dashboard_flow.py::test_view_uploaded_files - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_dashboard_flow.py::test_upload_history_isolation - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_dashboard_flow.py::test_upload_history_simple_endpoint - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_value_preservation_through_pipeline - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_date_format_handling - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_efficiency_normalization - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_null_handling - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_data_integrity_across_multiple_rows - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_style_and_order_creation - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_duplicate_upload_handling - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_multiple_widgets_receive_correct_data - NameError: name 'ProductionLine' is not define
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_invalid_data_handling - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_data_pipeline_robust.py::test_analytics_sum_matches_database - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_datasource.py::test_get_data_source - AssertionError: Failed to create test data source: {"detail":"Not Found"}
+ERROR backend\tests\test_api\test_datasource.py::test_get_data_source_by_line - AssertionError: Failed to create test data source: {"detail":"Not Foun
+ERROR backend\tests\test_api\test_datasource.py::test_update_schema_mapping - AssertionError: Failed to create test data source: {"detail":"Not Found"
+ERROR backend\tests\test_api\test_datasource.py::test_create_duplicate_data_source_fails - AssertionError: Failed to create test data source: {"detail
+ERROR backend\tests\test_api\test_datasources_by_line.py::test_get_datasource_by_line_exists - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_datasources_by_line.py::test_get_datasource_by_line_none - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_datasources_by_line.py::test_get_datasource_cross_line_isolation - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_datasources_by_line.py::test_update_datasource - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_demo_pipeline.py::test_demo_full_pipeline_with_excel_file - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_demo_pipeline.py::test_demo_data_values_integrity - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_quality_import.py::test_quality_data_promotion - NameError: name 'ProductionLine' is not defined
+ERROR backend\tests\test_api\test_quota_enforcement.py::test_line_quota_enforced - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL co
+ERROR backend\tests\test_api\test_quota_enforcement.py::test_quota_status_endpoint - sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL 
+ERROR backend\tests\test_widget_judge.py::test_judge_workforce_integrity_and_scope - NameError: name 'Factory' is not defined
+ERROR backend\tests\test_widget_judge.py::test_judge_overview_timezone_and_scope - NameError: name 'Factory' is not defined
+ERROR backend\tests\test_widget_judge.py::test_judge_no_fake_simulation - NameError: name 'Factory' is not defined
+======= 92 failed, 110 passed, 1 skipped, 36 errors in 94.70s (0:01:34) =======

@@ -11,7 +11,7 @@ import pytest
 from sqlalchemy import select
 
 from app.models.ai_decision import AgentType, AIDecision
-from app.services.llm_agent import SemanticETLAgent
+from app.private_core.etl_agent import SemanticETLAgent
 
 
 @pytest.fixture
@@ -38,7 +38,7 @@ def mock_llm_response(mocker):
     mock_client.chat.completions.create.return_value = mock_response
 
     mocker.patch(
-        "app.services.llm_agent.SemanticETLAgent._init_client", return_value=mock_client
+        "app.private_core.etl_agent.SemanticETLAgent._init_client", return_value=mock_client
     )
 
     return mock_client
@@ -127,7 +127,7 @@ async def test_schema_inference_logging(db_session, mock_llm_response, test_line
 async def test_code_generation_logging(db_session, mock_llm_response, test_line):
     """Test that code generation logs decisions to database."""
     from app.models.datasource import DataSource
-    from app.services.llm_agent import SchemaInference
+    from app.private_core.etl_agent import SchemaInference
 
     # Create valid data source
     ds = DataSource(

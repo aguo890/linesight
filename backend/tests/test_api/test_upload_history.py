@@ -7,7 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 
 
@@ -33,8 +34,8 @@ async def test_upload_history_segmentation(
     db_session.add(factory)
     await db_session.flush()
 
-    line_a = ProductionLine(factory_id=factory.id, name="Line A", code="LA")
-    line_b = ProductionLine(factory_id=factory.id, name="Line B", code="LB")
+    line_a = DataSource(factory_id=factory.id, name="Line A", code="LA")
+    line_b = DataSource(factory_id=factory.id, name="Line B", code="LB")
     db_session.add_all([line_a, line_b])
     await db_session.commit()
     await db_session.refresh(line_a)

@@ -16,7 +16,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 
 
@@ -52,7 +53,7 @@ async def test_golden_master_excel_to_overview_widget(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Golden Master Line", code="GOLD-L1", is_active=True
     )
     db_session.add(line)
@@ -125,7 +126,7 @@ GOLD-002,PO-GOLD-B,{today},300,400,1.5,8,2,480
     # Verify ProductionRuns in DB
     db_session.expire_all()
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
     assert len(runs) >= 2, f"Expected at least 2 runs, got {len(runs)}"
@@ -192,7 +193,7 @@ async def test_golden_master_physics_validation_triggers(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Physics Test Line", code="PHY-L1", is_active=True
     )
     db_session.add(line)

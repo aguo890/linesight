@@ -23,7 +23,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
@@ -52,7 +53,7 @@ async def demo_factory_line(db_session: AsyncSession, test_organization):
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id,
         name="Demo Line A",
         code=f"DLA-{int(date.today().strftime('%Y%m%d%H%M%S'))}",

@@ -7,7 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio
@@ -37,7 +38,7 @@ async def test_schema_configuration_flow(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Schema Line 1", code="SL-01", is_active=True
     )
     db_session.add(line)

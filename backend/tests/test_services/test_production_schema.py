@@ -21,6 +21,7 @@ REQUIRED_FIELDS = {
     "sam": "2.5",
     "operators_present": 25,
     "worked_minutes": "12000",
+    "production_date": "2024-01-01",
 }
 
 
@@ -32,7 +33,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "12-19",
             "actual_qty": 100,
         }
@@ -49,7 +50,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "12/19",
             "actual_qty": 100,
         }
@@ -66,7 +67,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "2025-12-19",
             "actual_qty": 100,
         }
@@ -80,7 +81,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": date(2025, 12, 19),
             "actual_qty": 100,
         }
@@ -94,7 +95,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "2025-12-19",
             "Target_Qty": 1000,  # Excel column name
             "actual_qty": 950,
@@ -109,7 +110,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "2025-12-19",
             "planned_qty": 1000,
             "actual_qty": 950,
@@ -124,7 +125,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "invalid-date",
             "actual_qty": 100,
         }
@@ -137,7 +138,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "2025-12-19",
             "actual_qty": 100,
             "operators_present": 25,
@@ -156,7 +157,7 @@ class TestProductionDateValidator:
         data = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "2025-12-19",
             # actual_qty should default to 0
             # shift should default to "day"
@@ -173,7 +174,7 @@ class TestProductionDateValidator:
         data1 = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "12-31",
             "actual_qty": 100,
         }
@@ -184,7 +185,7 @@ class TestProductionDateValidator:
         data2 = {
             **REQUIRED_FIELDS,
             "order_id": "order-1",
-            "line_id": "line-1",
+            "data_source_id": "ds-1",
             "production_date": "01-01",
             "actual_qty": 100,
         }

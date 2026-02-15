@@ -14,7 +14,8 @@ from sqlalchemy.future import select
 
 from app.core.config import settings
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 from app.models.user import User, UserRole
 
@@ -42,7 +43,7 @@ async def create_production_line(db_session, test_organization):
         db_session.add(factory)
         await db_session.flush()
 
-        line = ProductionLine(factory_id=factory.id, name=f"Line {name_suffix}")
+        line = DataSource(factory_id=factory.id, name=f"Line {name_suffix}")
         db_session.add(line)
         await db_session.commit()
         await db_session.refresh(line)

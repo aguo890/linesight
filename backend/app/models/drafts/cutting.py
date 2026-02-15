@@ -105,7 +105,6 @@ class FabricLot(Base, UUIDMixin, TimestampMixin):
     # Relationships
     factory: Mapped["Factory"] = relationship(
         "Factory",
-        back_populates="fabric_lots",
     )
     cut_tickets: Mapped[list["CutTicket"]] = relationship(
         "CutTicket",
@@ -184,16 +183,10 @@ class CutTicket(Base, UUIDMixin, TimestampMixin):
     )
     order: Mapped["Order"] = relationship(
         "Order",
-        back_populates="cut_tickets",
     )
     cutter: Mapped[Optional["Worker"]] = relationship(
         "Worker",
         foreign_keys=[cutter_id],
-    )
-    production_runs: Mapped[list["ProductionRun"]] = relationship(
-        "ProductionRun",
-        back_populates="cut_ticket",
-        lazy="selectin",
     )
     traceability_records: Mapped[list["TraceabilityRecord"]] = relationship(
         "TraceabilityRecord",

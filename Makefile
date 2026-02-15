@@ -161,13 +161,7 @@ ifeq (branch,$(firstword $(MAKECMDGOALS)))
 endif
 
 branch:
-	@if [ -z "$(BRANCH_ARGS)" ]; then \
-		echo "⚠️  Usage: make branch <name>"; \
-		exit 1; \
-	fi
-	@echo "🌿 Creating branch: $(BRANCH_ARGS)"
-	@git checkout -b $(BRANCH_ARGS)
-	@git push --set-upstream origin $(BRANCH_ARGS)
+	@$(PYTHON_CMD) scripts/utils.py branch $(BRANCH_ARGS)
 
 # ==========================================
 # LEGACY & UTILITY COMMANDS

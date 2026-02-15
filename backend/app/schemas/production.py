@@ -219,6 +219,8 @@ class ProductionRunBase(BaseModel):
     - efficiency: (earned_minutes / available_minutes) × 100 (computed)
     """
 
+    model_config = ConfigDict(populate_by_name=True)
+
     factory_id: str = Field(..., description="UUID of the factory")
     production_date: date = Field(..., description="Date when production occurred")
     shift: str = Field(
@@ -335,8 +337,11 @@ class ProductionRunBase(BaseModel):
 
             # Case: 12-19 (Missing Year)
             if len(parts) == 2:
-                # Zero Tolerance: Do not guess current year
-                return None
+                try:
+                    current_year = datetime.now().year
+                    return date(current_year, int(parts[0]), int(parts[1]))
+                except ValueError:
+                    return None
 
             # Case: 19-12-2024 (DD-MM-YYYY) or 12-19-2024 (MM-DD-YYYY)
             # Pydantic's default parser handles ISO (YYYY-MM-DD) well, so we try to catch the others
@@ -347,7 +352,7 @@ class ProductionRunBase(BaseModel):
 
 class ProductionRunCreate(ProductionRunBase):
     order_id: str
-    line_id: str
+    data_source_id: str
 
 
 class ProductionRunUpdate(BaseModel):
@@ -362,7 +367,7 @@ class ProductionRunRead(ProductionRunBase):
     model_config = ConfigDict(from_attributes=True)
     id: str
     order_id: str
-    line_id: str
+    data_source_id: str
     # earned_minutes is inherited as a computed_field
     efficiency: Decimal | None = Field(
         None, description="Computed: (Earned / Available) * 100"

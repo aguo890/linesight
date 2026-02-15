@@ -22,7 +22,7 @@ async def setup_e2e_environment(db_session):
 
     from app.core.security import hash_password
     from app.models.datasource import DataSource
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
     from app.models.user import Organization, User
 
     # 0. Ensure Demo User & Org
@@ -65,8 +65,8 @@ async def setup_e2e_environment(db_session):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    # 2. Line
-    line = ProductionLine(
+    # 2. Line (Data Source)
+    line = DataSource(
         factory_id=factory.id,
         name="Verifiable Line 1",
         code="V-LINE-1",

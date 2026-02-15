@@ -9,7 +9,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.enums import OrderStatus
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 
 
@@ -54,7 +55,7 @@ async def test_get_style_progress_with_pending_orders(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(name="Line B", factory_id=factory.id)
+    line = DataSource(name="Line B", factory_id=factory.id)
     db_session.add(line)
     await db_session.flush()
 
@@ -72,7 +73,7 @@ async def test_get_style_progress_with_pending_orders(
     # Create Production Run linking them
     run = ProductionRun(
         factory_id=factory.id,
-        line_id=line.id,
+        data_source_id=line.id,
         order_id=order.id,
         production_date=date.today(),
         actual_qty=150,

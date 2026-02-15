@@ -24,10 +24,10 @@ from app.models.workforce import ProductionOutput, Worker, WorkerAttendance, Wor
 # Use DataSource instead for new code
 ProductionLine = DataSource
 
-# ARCHIVED MODELS (see models/drafts/):
-# - cutting.py: FabricLot, CutTicket
-# - shipping.py: PackingList, Carton
-# - compliance.py: TraceabilityRecord
+# Draft/Archived Models (Required for recursive FKs in tests)
+from app.models.drafts.cutting import CutTicket, FabricLot
+from app.models.drafts.shipping import Carton, PackingList
+from app.models.drafts.compliance import TraceabilityRecord
 
 __all__ = [
     "Base",

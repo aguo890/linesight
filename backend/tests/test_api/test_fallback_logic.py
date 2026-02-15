@@ -9,7 +9,8 @@ from decimal import Decimal
 import pytest
 from httpx import AsyncClient
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 
 
@@ -25,7 +26,7 @@ async def historical_data(db_session, test_organization):
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id,
         name="Fallback Line",
         code="FL-1",
@@ -59,7 +60,7 @@ async def historical_data(db_session, test_organization):
     run = ProductionRun(
         id=str(uuid.uuid4()),
         factory_id=factory.id,
-        line_id=line.id,
+        data_source_id=line.id,
         order_id=order.id,
         production_date=past_date,
         actual_qty=100,

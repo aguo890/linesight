@@ -301,7 +301,7 @@ def mock_env_vars(monkeypatch, mocker):
 
     # Mock fallback for DeepSeek if needed
     mocker.patch(
-        "app.services.llm_agent.SemanticETLAgent._init_client", return_value=MagicMock()
+        "app.private_core.etl_agent.SemanticETLAgent._init_client", return_value=MagicMock()
     )
 
 
@@ -321,6 +321,7 @@ async def test_factory(db_session: AsyncSession, test_organization):
         code="TF001",
         country="Test Country",
         timezone="UTC",
+        locale="en-US",
     )
     db_session.add(factory)
     await db_session.commit()
@@ -408,27 +409,25 @@ def sample_production_run_data():
 async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     """Create comprehensive test data for dry-run testing."""
     from app.models.datasource import DataSource, SchemaMapping
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
 
-    # 1. Setup Factory & Line
+    # 1. Setup Factory
     factory = Factory(
         name="Dry Run Test Factory",
         organization_id=test_organization.id,
         code="DRT1",
         country="US",
+        locale="en-US",
     )
     db_session.add(factory)
     await db_session.commit()
     await db_session.refresh(factory)
 
-    line = ProductionLine(name="Test Line A", factory_id=factory.id)
-    db_session.add(line)
-    await db_session.commit()
-    await db_session.refresh(line)
-
-    # 2. Create a DataSource with SchemaMapping
+    # 2. Create DataSource (replaces separate ProductionLine + DataSource)
+    # DataSource now IS the production line with data config
     ds = DataSource(
-        production_line_id=line.id,
+        name="Test Line A",
+        factory_id=factory.id,
         source_name="Test Production Data",
         time_column="Date",
         description="Test data source with messy dates",
@@ -436,6 +435,9 @@ async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     db_session.add(ds)
     await db_session.commit()
     await db_session.refresh(ds)
+
+    # line is the same as ds after the merge
+    line = ds
 
     # 3. Create SchemaMapping with typical production columns
     column_map = {

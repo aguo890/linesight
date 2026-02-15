@@ -7989,9 +7989,9 @@
             "type": "string",
             "title": "Order Id"
           },
-          "line_id": {
+          "data_source_id": {
             "type": "string",
-            "title": "Line Id"
+            "title": "Data Source Id"
           }
         },
         "type": "object",
@@ -8001,7 +8001,7 @@
           "operators_present",
           "worked_minutes",
           "order_id",
-          "line_id"
+          "data_source_id"
         ],
         "title": "ProductionRunCreate"
       },
@@ -8143,9 +8143,9 @@
             "type": "string",
             "title": "Order Id"
           },
-          "line_id": {
+          "data_source_id": {
             "type": "string",
-            "title": "Line Id"
+            "title": "Data Source Id"
           },
           "efficiency": {
             "anyOf": [
@@ -8316,7 +8316,7 @@
           "worked_minutes",
           "id",
           "order_id",
-          "line_id",
+          "data_source_id",
           "created_at",
           "updated_at",
           "earned_minutes"

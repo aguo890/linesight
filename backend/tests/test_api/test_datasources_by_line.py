@@ -13,7 +13,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 
 
 @pytest.fixture
@@ -31,7 +32,7 @@ async def setup_line(db_session: AsyncSession, test_organization):
     await db_session.refresh(factory)
 
     # 2. Create Production Line
-    line = ProductionLine(name="Line A", factory_id=factory.id)
+    line = DataSource(name="Line A", factory_id=factory.id)
     db_session.add(line)
     await db_session.commit()
     await db_session.refresh(line)
@@ -104,7 +105,7 @@ async def test_get_datasource_cross_line_isolation(
     )
     factory = factory_result.scalar_one()
 
-    line_b = ProductionLine(name="Line B", factory_id=factory.id)
+    line_b = DataSource(name="Line B", factory_id=factory.id)
     db_session.add(line_b)
     await db_session.commit()
     await db_session.refresh(line_b)

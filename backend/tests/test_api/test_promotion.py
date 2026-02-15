@@ -7,7 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
@@ -45,7 +46,7 @@ async def test_promotion_logic_full_cycle(
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Promotion Line A", code="PLA-01", is_active=True
     )
     db_session.add(line)

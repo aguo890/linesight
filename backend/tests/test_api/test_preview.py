@@ -6,7 +6,8 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import StagingRecord
 
 
@@ -26,7 +27,7 @@ async def test_preview_endpoint_success(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Test Preview Line", code="TPL-01", is_active=True
     )
     db_session.add(line)
@@ -86,7 +87,7 @@ async def test_list_uploads_includes_datasource_id(
     )
     db_session.add(factory)
     await db_session.flush()
-    line = ProductionLine(factory_id=factory.id, name="Line 1", code="L1")
+    line = DataSource(factory_id=factory.id, name="Line 1", code="L1")
     db_session.add(line)
     await db_session.commit()
 

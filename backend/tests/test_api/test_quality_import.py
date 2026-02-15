@@ -15,7 +15,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 
 # Mock file for quality data
@@ -36,7 +37,7 @@ async def setup_quality_test_data(db_session, test_organization):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    line = ProductionLine(
+    line = DataSource(
         name="Line A",  # Matches CSV Line column
         factory_id=factory.id,
     )

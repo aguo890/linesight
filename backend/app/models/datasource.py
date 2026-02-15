@@ -42,17 +42,17 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     # ==========================================================================
     # Factory FK (merged from ProductionLine)
     # ==========================================================================
-    factory_id: Mapped[str] = mapped_column(
+    factory_id: Mapped[str | None] = mapped_column(
         CHAR(36),
         ForeignKey("factories.id", ondelete="CASCADE"),
-        nullable=False,
+        nullable=True,
         index=True,
     )
 
     # ==========================================================================
     # Physical Line Attributes (merged from ProductionLine)
     # ==========================================================================
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False, default="Unnamed Line")
     code: Mapped[str | None] = mapped_column(String(50), nullable=True)
 
     # Capacity

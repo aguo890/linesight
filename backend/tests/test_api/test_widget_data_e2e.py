@@ -20,7 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 from app.models.raw_import import RawImport
 
@@ -62,7 +63,7 @@ async def test_full_widget_data_flow(
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="E2E Test Line", code="E2E-L1", is_active=True
     )
     db_session.add(line)

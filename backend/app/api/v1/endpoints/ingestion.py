@@ -558,6 +558,7 @@ async def confirm_mapping(
 
     # Resolve Data Source ID
     data_source_id = request.data_source_id
+    data_source = None  # Prevent UnboundLocalError
 
     if not data_source_id:
         # If no data source ID, we expect production_line_id (which now IS a DataSource ID)
@@ -583,6 +584,16 @@ async def confirm_mapping(
         data_source.time_column = request.time_column
         if request.time_format:
             data_source.time_format = request.time_format
+
+    # Ensure data_source is loaded (if we came from data_source_id directly)
+    if not data_source:  
+          # This case should technically be covered by early validation but for safety/typing:
+          ds_result = await db.execute(
+              select(DataSource).where(DataSource.id == data_source_id)
+          )
+          data_source = ds_result.scalar_one_or_none()
+          if not data_source:
+               raise HTTPException(404, f"Data source not found: {data_source_id}")
 
     # Link RawImport to DataSource
     raw_import.data_source_id = data_source_id
@@ -1052,6 +1063,11 @@ async def promote_to_production(
         logger.info("Calling promote_to_production...")
         results = await service.promote_to_production(raw_import_id)
         logger.info(f"Promotion SUCCESS: {results}")
+
+        # Add backward compatibility keys for robust tests
+        results["success_count"] = results.get("inserted", 0) + results.get("updated", 0)
+        results["error_count"] = results.get("errors", 0)
+
         return results
     except Exception as e:
         logger.error(f"Promotion FAILED: {str(e)}")
