@@ -1,6 +1,6 @@
 import React from 'react';
 import type { LucideIcon, LucideProps } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 
 interface AutoFlipIconProps extends LucideProps {
     icon: LucideIcon;

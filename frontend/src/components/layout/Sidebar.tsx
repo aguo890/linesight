@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next'; // [I18N]
 import type { ParseKeys } from 'i18next'; // [I18N]
 import { Logo } from '../common/Logo';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 import { AutoFlipIcon } from '../common/AutoFlipIcon';
 
 const INITIAL_DASHBOARD_LIMIT = 5;

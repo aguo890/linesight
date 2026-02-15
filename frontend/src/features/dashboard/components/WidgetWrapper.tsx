@@ -1,5 +1,5 @@
 import { Settings, Trash2, Move } from 'lucide-react';
-import { cn } from '../../../lib/utils';
+import { cn } from '@/lib/utils';
 import { useDashboardSafe } from '../context/DashboardContext';
 import { useTranslation } from 'react-i18next';
 
