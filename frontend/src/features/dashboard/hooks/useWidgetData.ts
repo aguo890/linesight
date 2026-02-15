@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import { useQuery } from '@tanstack/react-query';
 import { type ZodSchema } from 'zod';
 import { fetchWidgetData, type ServiceResponse } from '../services/widgetDataService';

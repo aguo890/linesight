@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 export const SUPPORTED_LOCALES = [
     { label: 'English (US)', value: 'en-US', short: 'en' },
     { label: 'Español', value: 'es-ES', short: 'es' },

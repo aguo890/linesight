@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 // Use standard imports (Vite will return the URL string)
 import NikeLogo from '../../../assets/landing_page_brands/nike.svg?url';
 import CostcoLogo from '../../../assets/landing_page_brands/costco-wholesale.svg?url';

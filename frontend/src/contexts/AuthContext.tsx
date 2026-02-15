@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import { createContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import api from '@/lib/api';
 import { authStorage } from '@/lib/authStorage';

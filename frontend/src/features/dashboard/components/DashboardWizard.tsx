@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { X, Upload, CheckCircle, Layout, Factory, ChevronRight, Settings, AlertCircle, Loader2 } from 'lucide-react';
 // Note: useNavigate and canManageInfrastructure removed - no longer navigating to add line from wizard

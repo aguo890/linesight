@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { X, Eye, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

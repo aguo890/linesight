@@ -1,3 +1,7 @@
+# Copyright (c) 2026 Aaron Guo. All rights reserved.
+# Use of this source code is governed by the proprietary license
+# found in the LICENSE file in the root directory of this source tree.
+
 """
 Header detection logic for Excel files.
 Handles finding headers anywhere in the first few rows of a worksheet.

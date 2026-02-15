@@ -1,3 +1,7 @@
+# Copyright (c) 2026 Aaron Guo. All rights reserved.
+# Use of this source code is governed by the proprietary license
+# found in the LICENSE file in the root directory of this source tree.
+
 """
 Dashboard API endpoints for managing user-created custom dashboards.
 Provides CRUD operations and widget configuration management.

@@ -1,3 +1,7 @@
+# Copyright (c) 2026 Aaron Guo. All rights reserved.
+# Use of this source code is governed by the proprietary license
+# found in the LICENSE file in the root directory of this source tree.
+
 """
 Generate complex Excel test files to mimic chaotic factory environments.
 Tests the LineSight parser's ability to handle real-world messy data.

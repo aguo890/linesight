@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2026 Aaron Guo. All rights reserved.
+ * Use of this source code is governed by the proprietary license
+ * found in the LICENSE file in the root directory of this source tree.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, CheckCircle, AlertTriangle, Info, AlertCircle } from 'lucide-react';
