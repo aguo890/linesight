@@ -22,8 +22,8 @@ import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/tea
 import { useOrganization } from '@/contexts/OrganizationContext';
 
 // Components
-import { FactoryCreationModal } from '@/components/FactoryCreationModal';
-import { FactoryEditModal } from '@/components/FactoryEditModal';
+import { FactoryCreationModal } from '@/features/organization/components/FactoryCreationModal';
+import { FactoryEditModal } from '@/features/organization/components/FactoryEditModal';
 
 // Types
 type ViewMode = 'grid' | 'list';

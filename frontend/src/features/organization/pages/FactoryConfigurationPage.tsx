@@ -7,11 +7,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 // Custom Components
-import { DataSourceRow } from '@/components/DataSourceRow';
-import { CreateDataSourceModal } from '@/components/CreateDataSourceModal';
-import { UserSearchCommand } from '@/components/UserSearchCommand';
-import { DataSourceDetailsDrawer } from '@/components/DataSourceDetailsDrawer';
-import { MemberDetailsDrawer } from '@/components/MemberDetailsDrawer';
+import { DataSourceRow } from '@/features/organization/components/DataSourceRow';
+import { CreateDataSourceModal } from '@/features/organization/components/CreateDataSourceModal';
+import { UserSearchCommand } from '@/features/organization/components/UserSearchCommand';
+import { DataSourceDetailsDrawer } from '@/features/organization/components/DataSourceDetailsDrawer';
+import { MemberDetailsDrawer } from '@/features/organization/components/MemberDetailsDrawer';
 
 // API & Types
 import { useGetFactoryApiV1FactoriesFactoryIdGet } from '../../../api/endpoints/factories/factories';

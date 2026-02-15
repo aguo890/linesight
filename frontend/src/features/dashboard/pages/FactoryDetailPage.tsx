@@ -29,15 +29,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { DataSourceCard } from '@/components/DataSourceCard';
+import { DataSourceCard } from '@/features/dashboard/components/DataSourceCard';
 import { CreateDataSourceModal } from '../../organization/components/CreateDataSourceModal';
-import { DataSourceUploadModal } from '@/components/DataSourceUploadModal';
-import { MappingFlowModal } from '@/components/MappingFlowModal';
-import { DashboardWizard } from '@/components/DashboardWizard';
+import { DataSourceUploadModal } from '@/features/dashboard/components/DataSourceUploadModal';
+import { MappingFlowModal } from '@/features/dashboard/components/MappingFlowModal';
+import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard';
 
 import { Skeleton } from '@/components/ui/Skeleton';
-import { DashboardCard } from '@/components/DashboardCard';
-import { FactorySettingsModal } from '@/components/FactorySettingsModal';
+import { DashboardCard } from '@/features/dashboard/components/DashboardCard';
+import { FactorySettingsModal } from '@/features/dashboard/components/FactorySettingsModal';
 import { dashboardStorage } from '../storage';
 
 import { useOrganization } from '@/contexts/OrganizationContext';

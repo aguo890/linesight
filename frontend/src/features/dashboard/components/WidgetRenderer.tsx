@@ -8,7 +8,7 @@ import WidgetErrorBoundary from './WidgetErrorBoundary';
 import { useWidgetLogger } from '@/hooks/useWidgetLogger';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import { useDashboard } from '../context/DashboardContext';
-import { useWidgetData } from '@/hooks/useWidgetData';
+import { useWidgetData } from '@/features/dashboard/hooks/useWidgetData';
 import { WidgetWrapper } from './WidgetWrapper';
 import { ComingSoonWidget } from '../widgets/ComingSoonWidget';
 import { getWidgetIcon } from '../utils/iconMap';

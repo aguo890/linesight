@@ -22,7 +22,7 @@ import {
 // Using new hooks/APIs where possible
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { FilePreviewModal } from '@/components/FilePreviewModal';
-import { MappingEditModal } from '@/components/MappingEditModal';
+import { MappingEditModal } from '@/features/dashboard/components/MappingEditModal';
 import { updateSchemaMapping, getAvailableFields, type AvailableField } from '@/lib/datasourceApi';
 
 /**
