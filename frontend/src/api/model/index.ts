@@ -449,6 +449,7 @@ export * from './userUpdatePreferencesAnyOf';
 export * from './userUpdateRole';
 export * from './userUpdateTimezone';
 export * from './validationError';
+export * from './validationErrorCtx';
 export * from './validationErrorLocItem';
 export * from './waitlistCreate';
 export * from './waitlistResponse';

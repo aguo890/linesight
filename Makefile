@@ -101,7 +101,8 @@ setup:
 	docker compose up -d
 	@echo ""
 	@echo "⏳ Waiting for Postgres to be ready (5s)..."
-	@$(PYTHON_CMD) scripts/utils.py wait_port localhost 5434
+	@echo "⏳ Waiting for Postgres to be ready (30s)..."
+	@docker compose exec backend python wait_for_db.py
 	@echo ""
 	@echo "🔄 Running migrations..."
 	docker compose exec backend alembic upgrade head

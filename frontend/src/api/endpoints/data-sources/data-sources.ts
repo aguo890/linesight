@@ -25,9 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  DataSourceCreate,
+  AppApiV1EndpointsDatasourceDataSourceCreate,
+  AppApiV1EndpointsDatasourceDataSourceUpdate,
   DataSourceResponse,
-  DataSourceUpdate,
   GetDataSourceByLineApiV1DataSourcesLineLineIdGet200,
   GetDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGet200,
   HTTPValidationError,
@@ -48,7 +48,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
  * @summary Create Data Source
  */
 export const createDataSourceApiV1DataSourcesPost = (
-    dataSourceCreate: DataSourceCreate,
+    appApiV1EndpointsDatasourceDataSourceCreate: AppApiV1EndpointsDatasourceDataSourceCreate,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
@@ -56,7 +56,7 @@ export const createDataSourceApiV1DataSourcesPost = (
       return customInstance<DataSourceResponse>(
       {url: `/api/v1/data-sources`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: dataSourceCreate, signal
+      data: appApiV1EndpointsDatasourceDataSourceCreate, signal
     },
       options);
     }
@@ -64,8 +64,8 @@ export const createDataSourceApiV1DataSourcesPost = (
 
 
 export const getCreateDataSourceApiV1DataSourcesPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext> => {
 
 const mutationKey = ['createDataSourceApiV1DataSourcesPost'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -77,7 +77,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, {data: DataSourceCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, {data: AppApiV1EndpointsDatasourceDataSourceCreate}> = (props) => {
           const {data} = props ?? {};
 
           return  createDataSourceApiV1DataSourcesPost(data,requestOptions)
@@ -89,18 +89,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateDataSourceApiV1DataSourcesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>>
-    export type CreateDataSourceApiV1DataSourcesPostMutationBody = DataSourceCreate
+    export type CreateDataSourceApiV1DataSourcesPostMutationBody = AppApiV1EndpointsDatasourceDataSourceCreate
     export type CreateDataSourceApiV1DataSourcesPostMutationError = HTTPValidationError
 
     /**
  * @summary Create Data Source
  */
 export const useCreateDataSourceApiV1DataSourcesPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: DataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>, TError,{data: AppApiV1EndpointsDatasourceDataSourceCreate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createDataSourceApiV1DataSourcesPost>>,
         TError,
-        {data: DataSourceCreate},
+        {data: AppApiV1EndpointsDatasourceDataSourceCreate},
         TContext
       > => {
 
@@ -299,14 +299,14 @@ export function useGetDataSourceApiV1DataSourcesDataSourceIdGet<TData = Awaited<
  */
 export const updateDataSourceApiV1DataSourcesDataSourceIdPut = (
     dataSourceId: string,
-    dataSourceUpdate: DataSourceUpdate,
+    appApiV1EndpointsDatasourceDataSourceUpdate: AppApiV1EndpointsDatasourceDataSourceUpdate,
  options?: SecondParameter<typeof customInstance>,) => {
       
       
       return customInstance<DataSourceResponse>(
       {url: `/api/v1/data-sources/${dataSourceId}`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: dataSourceUpdate
+      data: appApiV1EndpointsDatasourceDataSourceUpdate
     },
       options);
     }
@@ -314,8 +314,8 @@ export const updateDataSourceApiV1DataSourcesDataSourceIdPut = (
 
 
 export const getUpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: AppApiV1EndpointsDatasourceDataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: AppApiV1EndpointsDatasourceDataSourceUpdate}, TContext> => {
 
 const mutationKey = ['updateDataSourceApiV1DataSourcesDataSourceIdPut'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -327,7 +327,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, {dataSourceId: string;data: DataSourceUpdate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, {dataSourceId: string;data: AppApiV1EndpointsDatasourceDataSourceUpdate}> = (props) => {
           const {dataSourceId,data} = props ?? {};
 
           return  updateDataSourceApiV1DataSourcesDataSourceIdPut(dataSourceId,data,requestOptions)
@@ -339,18 +339,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationResult = NonNullable<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>>
-    export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationBody = DataSourceUpdate
+    export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationBody = AppApiV1EndpointsDatasourceDataSourceUpdate
     export type UpdateDataSourceApiV1DataSourcesDataSourceIdPutMutationError = HTTPValidationError
 
     /**
  * @summary Update Data Source
  */
 export const useUpdateDataSourceApiV1DataSourcesDataSourceIdPut = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: DataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>, TError,{dataSourceId: string;data: AppApiV1EndpointsDatasourceDataSourceUpdate}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateDataSourceApiV1DataSourcesDataSourceIdPut>>,
         TError,
-        {dataSourceId: string;data: DataSourceUpdate},
+        {dataSourceId: string;data: AppApiV1EndpointsDatasourceDataSourceUpdate},
         TContext
       > => {
 

@@ -3956,7 +3956,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataSourceCreate"
+                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceCreate"
               }
             }
           }
@@ -4121,7 +4121,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataSourceUpdate"
+                "$ref": "#/components/schemas/app__api__v1__endpoints__datasource__DataSourceUpdate"
               }
             }
           }
@@ -5733,45 +5733,6 @@
         "title": "DashboardUpdate",
         "description": "Schema for updating an existing dashboard."
       },
-      "DataSourceCreate": {
-        "properties": {
-          "production_line_id": {
-            "type": "string",
-            "title": "Production Line Id"
-          },
-          "source_name": {
-            "type": "string",
-            "title": "Source Name"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "initial_mapping": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SchemaMappingCreate"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "production_line_id",
-          "source_name"
-        ],
-        "title": "DataSourceCreate"
-      },
       "DataSourceRead": {
         "properties": {
           "name": {
@@ -6109,135 +6070,6 @@
         "type": "object",
         "title": "DataSourceSettings",
         "description": "Settings specific to a data source.\nCan be inherited from Factory defaults or overridden."
-      },
-      "DataSourceUpdate": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code"
-          },
-          "specialty": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Specialty"
-          },
-          "target_operators": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Operators"
-          },
-          "target_efficiency_pct": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Efficiency Pct"
-          },
-          "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active"
-          },
-          "settings": {
-            "anyOf": [
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Settings"
-          },
-          "time_column": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Column"
-          },
-          "time_format": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Format"
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description"
-          },
-          "source_name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Name"
-          }
-        },
-        "type": "object",
-        "title": "DataSourceUpdate",
-        "description": "Schema for updating DataSource configuration."
       },
       "DhuPoint": {
         "properties": {
@@ -9834,6 +9666,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",
@@ -9996,6 +9835,174 @@
         ],
         "title": "WorkforceStats",
         "description": "Workforce attendance statistics."
+      },
+      "app__api__v1__endpoints__datasource__DataSourceCreate": {
+        "properties": {
+          "production_line_id": {
+            "type": "string",
+            "title": "Production Line Id"
+          },
+          "source_name": {
+            "type": "string",
+            "title": "Source Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "initial_mapping": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchemaMappingCreate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "production_line_id",
+          "source_name"
+        ],
+        "title": "DataSourceCreate"
+      },
+      "app__api__v1__endpoints__datasource__DataSourceUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "specialty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specialty"
+          },
+          "target_operators": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Operators"
+          },
+          "target_efficiency_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Efficiency Pct"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "settings": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Settings"
+          },
+          "time_column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Column"
+          },
+          "time_format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Format"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          }
+        },
+        "type": "object",
+        "title": "DataSourceUpdate",
+        "description": "Schema for updating DataSource configuration."
       },
       "app__schemas__datasource__DataSourceCreate": {
         "properties": {
