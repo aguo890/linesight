@@ -18,11 +18,11 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { FactoryCard } from '@/components/FactoryCard';
+import { FactoryCard } from '@/features/dashboard/components/FactoryCard';
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { usePermissions } from '@/hooks/usePermissions';
-import { DashboardWizard } from '@/components/DashboardWizard';
+import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard';
 
 type ViewMode = 'grid' | 'list';
 
