@@ -144,9 +144,9 @@ reconcile-dry:
 	@echo ""
 
 # Push to GitHub
-push: reconcile-dry ## 🛡️ Reconcile board, then push
+push: ## 🛡️ Auto-commit + Push
 	@echo ""
-	@echo "✅ Board verified. Running smart push..."
+	@echo "🚀 Running smart push..."
 	@$(PYTHON_CMD) scripts/autocommit.py
 
 # Quick push
