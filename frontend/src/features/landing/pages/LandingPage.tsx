@@ -14,7 +14,7 @@ import {
     Quote,
     BarChart3,
 } from 'lucide-react';
-import { MiniDashboard } from '@/components/simulation/MiniDashboard';
+import { MiniDashboard } from "@/features/landing/components/simulation/MiniDashboard";
 import { PARTNER_LOGOS } from '@/components/PartnerLogos';
 import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
 import { useSnakeScroll } from '@/hooks/useSnakeScroll';
