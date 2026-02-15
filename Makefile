@@ -5,7 +5,12 @@ COMPOSE_FILE := docker-compose.yml
 # Default service for shell command
 SERVICE ?= backend
 # Use system python for utility scripts (cross-platform)
-PYTHON_CMD := python
+# specific handling for Windows (where 'python' is standard) vs Unix (where 'python3' is often standard)
+ifeq ($(OS),Windows_NT)
+    PYTHON_CMD := python
+else
+    PYTHON_CMD := $(shell command -v python > /dev/null 2>&1 && echo python || echo python3)
+endif
 
 .PHONY: default dev up down restart logs shell clean setup help push push-quick migrate branch reconcile reconcile-dry sync-check test test-cov lint lint-fix format check
 
@@ -100,8 +105,7 @@ setup:
 	@echo "🚀 Starting services..."
 	docker compose up -d
 	@echo ""
-	@echo "⏳ Waiting for Postgres to be ready (5s)..."
-	@echo "⏳ Waiting for Postgres to be ready (30s)..."
+	@echo "⏳ Waiting for Postgres to be ready (30s max)..."
 	@docker compose exec backend python wait_for_db.py
 	@echo ""
 	@echo "🔄 Running migrations..."
@@ -157,7 +161,10 @@ ifeq (branch,$(firstword $(MAKECMDGOALS)))
 endif
 
 branch:
-	@if "$(BRANCH_ARGS)"=="" (echo "⚠️  Usage: make branch <name>" & exit /b 1)
+	@if [ -z "$(BRANCH_ARGS)" ]; then \
+		echo "⚠️  Usage: make branch <name>"; \
+		exit 1; \
+	fi
 	@echo "🌿 Creating branch: $(BRANCH_ARGS)"
 	@git checkout -b $(BRANCH_ARGS)
 	@git push --set-upstream origin $(BRANCH_ARGS)

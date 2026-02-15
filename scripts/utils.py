@@ -5,7 +5,9 @@ import urllib.request
 import urllib.error
 import subprocess
 import platform
+import shutil
 import re
+import os
 
 def wait_for_port(host, port, timeout=30):
     """
@@ -31,8 +33,6 @@ def wait_for_port(host, port, timeout=30):
 def wait_for_http(url, timeout=60):
     """
     Wait for an HTTP endpoint to return a successful response.
-    This is more reliable than port checking for FastAPI apps that need
-    time to initialize routes and run startup events.
     """
     start_time = time.time()
     print(f"⏳ Waiting for {url} to respond...", end="", flush=True)
@@ -68,6 +68,62 @@ def confirm_clean():
         print("\n❌ Cancelled.")
         sys.exit(1)
 
+def _get_pid_via_lsof(port):
+    """Helper to find PID using lsof (Unix)."""
+    if not shutil.which("lsof"):
+        return None
+    try:
+        result = subprocess.run(
+            ["lsof", "-t", f"-i:{port}"],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip().split('\n')[0] # Return first PID
+    except Exception:
+        pass
+    return None
+
+def _get_pid_via_ss(port):
+    """Helper to find PID using ss (Linux fallback)."""
+    if not shutil.which("ss"):
+        return None
+    try:
+        # ss -lptn 'sport = :8000'
+        # Output contains: "users:(("python",pid=123,fd=3))"
+        result = subprocess.run(
+            ["ss", "-lptn", f"sport = :{port}"],
+            capture_output=True, text=True
+        )
+        match = re.search(r'pid=(\d+)', result.stdout)
+        if match:
+            return match.group(1)
+    except Exception:
+        pass
+    return None
+
+def _get_pid_via_netstat(port):
+    """Helper to find PID using netstat (Linux/Windows fallback)."""
+    if not shutil.which("netstat"):
+        return None
+    try:
+        # Linux netstat -nlp
+        result = subprocess.run(
+            ["netstat", "-nlp"],
+            capture_output=True, text=True
+        )
+        # Look for line containing port and extract PID
+        # tcp 0 0 0.0.0.0:8000 ... LISTEN 1234/python
+        for line in result.stdout.split('\n'):
+            if f":{port}" in line and "LISTEN" in line:
+                parts = line.split()
+                # Last part often contains PID/ProgramName (e.g., 1234/python)
+                for part in parts:
+                    if '/' in part and part.split('/')[0].isdigit():
+                        return part.split('/')[0]
+    except Exception:
+        pass
+    return None
+
 def kill_port(port):
     """
     Identifies and stops processes or Docker containers using a specific port.
@@ -76,7 +132,6 @@ def kill_port(port):
 
     # 1. Check for Docker containers first
     try:
-        # returns container IDs
         result = subprocess.run(
             ["docker", "ps", "--filter", f"publish={port}", "--format", "{{.ID}}"],
             capture_output=True, text=True
@@ -89,8 +144,7 @@ def kill_port(port):
             print(f"✅ Docker container(s) stopped. Port {port} should be free.")
             return
     except FileNotFoundError:
-        # Docker not found or not in path, proceed to system check
-        pass
+        pass # Docker not installed
     except subprocess.CalledProcessError as e:
         print(f"⚠️  Docker check failed: {e}")
 
@@ -100,10 +154,7 @@ def kill_port(port):
 
     if system == "Windows":
         try:
-            # netstat -ano | findstr :PORT
-            # Output example: "  TCP    0.0.0.0:8000           0.0.0.0:0              LISTENING       1234"
             cmd = f"netstat -ano | findstr :{port}"
-            # Use shell=True for pipe support in Windows
             result = subprocess.run(cmd, capture_output=True, text=True, shell=True)
             if result.stdout:
                 lines = result.stdout.strip().split('\n')
@@ -116,18 +167,11 @@ def kill_port(port):
             print(f"⚠️  Windows process check failed: {e}")
 
     else: # Linux / macOS
-        try:
-            # lsof -t -i:PORT (returns only PID)
-            result = subprocess.run(
-                ["lsof", "-t", f"-i:{port}"], 
-                capture_output=True, text=True
-            )
-            if result.stdout:
-                pid = result.stdout.strip()
-        except FileNotFoundError:
-            # lsof might not be installed; try netstat or ss as fallback? 
-            # For now simplified as per plan.
-            pass
+        pid = _get_pid_via_lsof(port)
+        if not pid and system == "Linux":
+            pid = _get_pid_via_ss(port)
+        if not pid and system == "Linux":
+            pid = _get_pid_via_netstat(port)
 
     # 3. Kill Process if found
     if pid:
@@ -159,13 +203,11 @@ if __name__ == "__main__":
     command = sys.argv[1]
 
     if command == "wait_port":
-        # Usage: python utils.py wait_port localhost 8000
         host = sys.argv[2] if len(sys.argv) > 2 else "localhost"
         port = sys.argv[3] if len(sys.argv) > 3 else "8000"
         wait_for_port(host, port)
     
     elif command == "wait_http":
-        # Usage: python utils.py wait_http http://localhost:8000/api/v1/health
         url = sys.argv[2] if len(sys.argv) > 2 else "http://localhost:8000/api/v1/health"
         wait_for_http(url)
     
@@ -173,7 +215,6 @@ if __name__ == "__main__":
         confirm_clean()
     
     elif command == "kill_port":
-        # Usage: python utils.py kill_port 8000
         port = sys.argv[2] if len(sys.argv) > 2 else "8000"
         kill_port(port)
     
