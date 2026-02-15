@@ -45,16 +45,16 @@ async def setup_quality_test_data(db_session, test_organization):
     await db_session.commit()
     await db_session.refresh(line)
 
-    # 2. Create a DataSource with SchemaMapping
-    ds = DataSource(
-        data_source_id=line.id,  # Link back to the physical line/source config
-        source_name="Test Production Data",
-        time_column="Inspection_Date",
-        description="Test data source",
-    )
-    db_session.add(ds)
+    # 2. Update the physical DataSource with configuration
+    line.source_name = "Test Quality Data"
+    line.time_column = "Inspection_Date"
+    line.description = "Test data source"
+    
+    db_session.add(line)
     await db_session.commit()
-    await db_session.refresh(ds)
+    await db_session.refresh(line)
+    
+    ds = line  # Use the same object for configuration
 
     # 3. Create SchemaMapping
     column_map = {

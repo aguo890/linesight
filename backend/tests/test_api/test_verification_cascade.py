@@ -32,7 +32,12 @@ async def test_factory_deletion_cascade_behavior(
     # Create factory
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Cascade Test Factory", "country": "US", "timezone": "UTC"},
+        json={
+            "name": "Cascade Test Factory", 
+            "code": "CASC-01",
+            "country": "US", 
+            "timezone": "America/New_York"
+        },
         headers=auth_headers,
     )
     assert response.status_code == 201

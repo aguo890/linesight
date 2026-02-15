@@ -22,7 +22,7 @@ async def test_datasource_flow(async_client, auth_headers):
         print("LOG: No factories found, creating one...")
         res = await async_client.post(
             "/api/v1/factories", 
-            json={"name": "Integration Test Factory", "country": "PH", "timezone": "Asia/Manila", "locale": "en-US"},
+            json={"name": "Integration Test Factory", "code": "ITF-01", "country": "PH", "timezone": "Asia/Manila", "locale": "en-US"},
             headers=auth_headers
         )
         assert res.status_code == 201
@@ -34,6 +34,8 @@ async def test_datasource_flow(async_client, auth_headers):
 
     # 2. Create Data Source
     payload = {
+        "name": "Integration Test Source Async",
+        "factory_id": factory_id,
         "source_name": "Integration Test Source Async",
         "type": "production_line",
         "description": "Created via async integration test",

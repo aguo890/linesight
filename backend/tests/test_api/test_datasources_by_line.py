@@ -60,7 +60,7 @@ async def test_get_datasource_by_line_exists(
 
     # Call Endpoint
     response = await async_client.get(
-        f"/api/v1/datasources/by-line/{line.id}", headers=auth_headers
+        f"/api/v1/data-sources/by-line/{line.id}", headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -79,7 +79,7 @@ async def test_get_datasource_by_line_none(
 
     # Call Endpoint without creating a DataSource
     response = await async_client.get(
-        f"/api/v1/datasources/by-line/{line.id}", headers=auth_headers
+        f"/api/v1/data-sources/by-line/{line.id}", headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -123,14 +123,14 @@ async def test_get_datasource_cross_line_isolation(
 
     # Query Line B - should return null
     response_b = await async_client.get(
-        f"/api/v1/datasources/by-line/{line_b.id}", headers=auth_headers
+        f"/api/v1/data-sources/by-line/{line_b.id}", headers=auth_headers
     )
     assert response_b.status_code == 200
     assert response_b.json() is None
 
     # Query Line A - should return the datasource
     response_a = await async_client.get(
-        f"/api/v1/datasources/by-line/{line_a.id}", headers=auth_headers
+        f"/api/v1/data-sources/by-line/{line_a.id}", headers=auth_headers
     )
     assert response_a.status_code == 200
     data = response_a.json()
@@ -164,7 +164,7 @@ async def test_update_datasource(
     }
 
     response = await async_client.put(
-        f"/api/v1/datasources/{ds.id}", json=update_payload, headers=auth_headers
+        f"/api/v1/data-sources/{ds.id}", json=update_payload, headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -175,7 +175,7 @@ async def test_update_datasource(
 
     # Verify persistence by querying again
     verify_response = await async_client.get(
-        f"/api/v1/datasources/{ds.id}", headers=auth_headers
+        f"/api/v1/data-sources/{ds.id}", headers=auth_headers
     )
     verify_data = verify_response.json()
     assert verify_data["time_column"] == "Production_Date"

@@ -113,6 +113,9 @@ async def upload_file_for_ingestion(
     data_source_id: str | None = Query(
         None, description="Optional: Data source to upload data to"
     ),
+    production_line_id: str | None = Query(
+        None, description="LEGACY: Use data_source_id instead"
+    ),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),  # Added authentication
 ):
@@ -129,18 +132,21 @@ async def upload_file_for_ingestion(
     import chardet
     import pandas as pd  # type: ignore[import-untyped]
 
+    # Resolve IDs
+    effective_ds_id = data_source_id or production_line_id
+
     # If data_source_id provided, validate it belongs to the factory
-    if data_source_id:
+    if effective_ds_id:
         ds_result = await db.execute(
-            select(DataSource).where(DataSource.id == data_source_id)
+            select(DataSource).where(DataSource.id == effective_ds_id)
         )
         data_source = ds_result.scalar_one_or_none()
         if not data_source:
-            raise HTTPException(404, f"DataSource not found: {data_source_id}")
+            raise HTTPException(404, f"DataSource not found: {effective_ds_id}")
         if data_source.factory_id != factory_id:
             raise HTTPException(
                 400,
-                f"DataSource {data_source_id} does not belong to Factory {factory_id}",
+                f"DataSource {effective_ds_id} does not belong to Factory {factory_id}",
             )
 
     # Validate file type
@@ -171,7 +177,7 @@ async def upload_file_for_ingestion(
     existing_import_result = await db.execute(
         select(RawImport).where(
             RawImport.file_hash == file_hash,
-            RawImport.data_source_id == data_source_id,
+            RawImport.data_source_id == effective_ds_id,
         )
     )
     existing_import = existing_import_result.scalar_one_or_none()
@@ -248,7 +254,7 @@ async def upload_file_for_ingestion(
                 # Check for unmapped files given we have NO schema yet
                 # Query for any RawImport for this DS that is NOT confirmed.
                 pending_query = select(RawImport).where(
-                    RawImport.data_source_id == data_source_id,
+                    RawImport.data_source_id == effective_ds_id,
                     RawImport.status != "confirmed"
                 )
                 pending_result = await db.execute(pending_query)
@@ -274,7 +280,7 @@ async def upload_file_for_ingestion(
 
     # Use confirmed factory and line IDs
     f_id = factory_id
-    ds_id = data_source_id if data_source_id else "unassigned"
+    ds_id = effective_ds_id if effective_ds_id else "unassigned"
     now = datetime.utcnow()
 
     # Build path
@@ -325,7 +331,8 @@ async def upload_file_for_ingestion(
     # Create RawImport record
     raw_import = RawImport(
         factory_id=factory_id,
-        data_source_id=data_source_id,
+        data_source_id=effective_ds_id,
+        production_line_id=effective_ds_id,  # Set both for backward compatibility
         original_filename=file.filename,
         file_path=str(file_path),
         file_size_bytes=file_size,

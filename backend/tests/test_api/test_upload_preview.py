@@ -12,10 +12,14 @@ import pytest
 from fastapi import status
 
 
+# Point to the directory created by your fixture
+TEST_DATA_DIR = Path(__file__).parent.parent / "data"
+
+
 @pytest.mark.asyncio
 async def test_upload_csv_file(async_client, auth_headers, test_factory, test_line):
     """Test uploading a CSV file."""
-    test_file_path = Path("tests/data/perfect_production.csv")
+    test_file_path = TEST_DATA_DIR / "test_e2e.csv"
 
     with open(test_file_path, "rb") as f:
         response = await async_client.post(
@@ -37,7 +41,7 @@ async def test_upload_csv_file(async_client, auth_headers, test_factory, test_li
 async def test_preview_csv_file(async_client, auth_headers, test_factory, test_line):
     """Test previewing an uploaded CSV file."""
     # First upload a file
-    test_file_path = Path("tests/data/perfect_production.csv")
+    test_file_path = TEST_DATA_DIR / "test_e2e.csv"
 
     with open(test_file_path, "rb") as f:
         upload_response = await async_client.post(
@@ -77,7 +81,7 @@ async def test_preview_csv_file(async_client, auth_headers, test_factory, test_l
 @pytest.mark.asyncio
 async def test_preview_excel_file(async_client, auth_headers, test_factory, test_line):
     """Test previewing an uploaded Excel file."""
-    test_file_path = Path("tests/data/perfect_production.xlsx")
+    test_file_path = TEST_DATA_DIR / "perfect_production.xlsx"
 
     with open(test_file_path, "rb") as f:
         upload_response = await async_client.post(

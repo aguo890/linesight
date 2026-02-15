@@ -13,8 +13,10 @@ import asyncio
 # =============================================================================
 import os
 from collections.abc import AsyncGenerator, Generator
+from pathlib import Path
 from unittest.mock import MagicMock
 
+import pandas as pd
 import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
@@ -277,6 +279,51 @@ async def auth_headers(test_user) -> dict:
     token = create_access_token(subject=test_user.id)
     return {"Authorization": f"Bearer {token}"}
 
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_files():
+    """Ensure dummy files exist for tests to prevent FileNotFoundError."""
+    base_dir = Path(__file__).parent / "data"
+    base_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 1. Dummy Excel (Comphrensive for demo/pipeline tests)
+    excel_path = base_dir / "perfect_production.xlsx"
+    # Always overwrite or ensure it has all columns needed for various tests
+    df = pd.DataFrame({
+        "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
+        "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
+        "buyer": ["Buyer A", "Buyer B", "Buyer C", "Buyer D", "Buyer E"],
+        "production_date": ["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05"],
+        "shift": ["day", "day", "night", "night", "day"],
+        "actual_qty": [100, 150, 200, 120, 180],
+        "planned_qty": [100, 150, 200, 120, 180],
+        "operators_present": [20, 20, 25, 22, 24],
+        "helpers_present": [5, 5, 5, 4, 6],
+        "defects": [0, 1, 0, 2, 0],
+        "dhu": [0.0, 0.67, 0.0, 1.67, 0.0],
+        "downtime_minutes": [0, 10, 0, 0, 5],
+        "downtime_reason": ["", "Breakdown", "", "", "Tea Break"],
+        "sam": [2.5, 2.5, 2.5, 3.0, 3.0]
+    })
+    df.to_excel(excel_path, index=False)
+    
+    # Also create copies as Standard_Master_Widget.xlsx and others for specific tests
+    df.to_excel(base_dir / "Standard_Master_Widget.xlsx", index=False)
+    df.to_excel(base_dir / "messy_production.xlsx", index=False)
+    df.to_excel(base_dir / "ambiguous_production.xlsx", index=False)
+        
+    # 2. Dummy CSV
+    csv_path = base_dir / "test_e2e.csv"
+    df_csv = pd.DataFrame({
+        "Date": ["2026-01-01"], 
+        "Qty": [50],
+        "Style": ["ST-001"],
+        "PO": ["PO-1001"]
+    })
+    df_csv.to_csv(csv_path, index=False)
+    
+    # Also create perfect_production.csv for samples test
+    df_csv.to_csv(base_dir / "perfect_production.csv", index=False)
 
 @pytest.fixture(autouse=True)
 def mock_env_vars(monkeypatch, mocker):

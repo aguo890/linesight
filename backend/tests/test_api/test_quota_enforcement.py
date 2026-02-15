@@ -22,8 +22,9 @@ async def test_factory(db_session: AsyncSession, test_organization):
     factory = Factory(
         organization_id=test_organization.id,
         name="Test Factory",
+        code="TEST-BASE",
         country="US",
-        timezone="UTC",
+        timezone="America/New_York",
         is_active=True,
     )
     db_session.add(factory)
@@ -48,7 +49,7 @@ async def test_factory_quota_enforced(
     # Create first factory (should succeed)
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory 1", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory 1", "code": "FACT-01", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 201
@@ -58,7 +59,7 @@ async def test_factory_quota_enforced(
     # Attempt to create second factory (should fail with quota error)
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory 2", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory 2", "code": "FACT-02", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 403
@@ -131,7 +132,7 @@ async def test_soft_deleted_factories_not_counted(
     # Create factory
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory to Delete", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory to Delete", "code": "DEL-01", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 201
@@ -146,7 +147,7 @@ async def test_soft_deleted_factories_not_counted(
     # Should now be able to create another factory
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "New Factory", "country": "US", "timezone": "UTC"},
+        json={"name": "New Factory", "code": "NEW-01", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 201
@@ -221,7 +222,7 @@ async def test_enterprise_tier_quotas(
     for i in range(5):
         response = await async_client.post(
             "/api/v1/factories",
-            json={"name": f"Factory {i + 1}", "country": "US", "timezone": "UTC"},
+            json={"name": f"Factory {i + 1}", "code": f"ENT-{i}", "country": "US", "timezone": "America/New_York"},
             headers=auth_headers,
         )
         assert response.status_code == 201
@@ -229,7 +230,7 @@ async def test_enterprise_tier_quotas(
     # 6th should fail
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory 6", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory 6", "code": "ENT-6", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 403
@@ -251,7 +252,7 @@ async def test_quota_at_exact_limit(
     for i in range(2):
         response = await async_client.post(
             "/api/v1/factories",
-            json={"name": f"Factory {i + 1}", "country": "US", "timezone": "UTC"},
+            json={"name": f"Factory {i + 1}", "code": f"LIMIT-{i}", "country": "US", "timezone": "America/New_York"},
             headers=auth_headers,
         )
         assert response.status_code == 201
@@ -268,7 +269,7 @@ async def test_quota_at_exact_limit(
     # Attempt to create one more (should fail)
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory 3", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory 3", "code": "LIMIT-3", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 403
@@ -289,7 +290,7 @@ async def test_zero_quota_blocks_creation(
     # Should not be able to create any factories
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory 1", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory 1", "code": "ZERO-1", "country": "US", "timezone": "America/New_York"},
         headers=auth_headers,
     )
     assert response.status_code == 403

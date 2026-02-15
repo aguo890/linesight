@@ -29,6 +29,8 @@ help:
 	@echo "    make shell    : Enter container shell (default: backend)"
 	@echo "    make clean    : Deep clean (removes data/images)"
 	@echo "    make dev      : Start up + Follow logs (Legacy/Convenience)"
+	@echo "    make reset-backend : Recreate and migrate backend"
+	@echo "    make restart-backend: Restart backend container"
 	@echo ""
 	@echo "  Project Workflows:"
 	@echo "    make setup    : FRESH START (Down, Build, Up, Migrate)"
@@ -57,6 +59,22 @@ down:
 
 .PHONY: restart
 restart: down up
+
+.PHONY: restart-backend
+restart-backend:
+	docker compose restart backend
+
+.PHONY: reset-backend
+reset-backend:
+	@echo "🔄 Resetting backend service..."
+	docker compose stop backend
+	docker compose rm -f backend
+	docker compose up -d backend
+	@echo "⏳ Waiting for DB..."
+	@docker compose exec backend python wait_for_db.py
+	@echo "🔄 Running migrations..."
+	docker compose exec backend alembic upgrade head
+	@echo "✅ Backend reset complete."
 
 # ==========================================
 # Interaction & Debugging

@@ -45,7 +45,7 @@ async def test_login_success(async_client: AsyncClient, db_session: AsyncSession
     assert "access_token" in data
     assert data["token_type"] == "bearer"
     assert data["user"]["email"] == "test@test.com"
-    assert data["user"]["role"] == "admin"
+    assert data["user"]["role"] == "system_admin"
 
 
 @pytest.mark.asyncio

@@ -46,9 +46,9 @@ async def test_hourly_production_no_events_returns_zeros(
     print("DEBUG: Run committed")
 
     # 2. Call API
-    print("DEBUG: Calling API /api/v1/analytics/hourly-production")
+    print("DEBUG: Calling API /api/v1/analytics/production/hourly")
     response = await async_client.get(
-        f"/api/v1/analytics/hourly-production?line_id={test_line.id}",
+        f"/api/v1/analytics/production/hourly?line_id={test_line.id}",
         headers=auth_headers,
     )
     print(f"DEBUG: API Response Status: {response.status_code}")

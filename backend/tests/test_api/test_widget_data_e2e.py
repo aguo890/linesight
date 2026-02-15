@@ -57,8 +57,8 @@ async def test_full_widget_data_flow(
             organization_id=test_organization.id,
             name="E2E Test Factory",
             code="E2E-01",
-            country="USA",
-            timezone="UTC",
+            country="US",
+            timezone="America/New_York",
         )
         db_session.add(factory)
         await db_session.flush()

@@ -44,7 +44,7 @@ async def test_factory_settings_localization_and_snapshot(
     factory_data = {
         "name": "Global Factory Inc",
         "code": "GFI-001",
-        "country": "Japan",
+        "country": "JP",
         "location": "Tokyo",
         "timezone": "Asia/Tokyo",
         "settings": {

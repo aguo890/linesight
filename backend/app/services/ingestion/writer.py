@@ -183,7 +183,11 @@ class ProductionWriter:
         order = order_map[order_key]
 
         # Determine production date and shift
-        p_date = record.get("production_date", datetime.now(timezone.utc).date())
+        # Priority: production_date > inspection_date > today
+        p_date = record.get("production_date") or record.get("inspection_date")
+        if p_date is None:
+            p_date = now.date()
+            
         if isinstance(p_date, datetime):
             p_date = p_date.date()
         shift = record.get("shift", "day")
@@ -214,6 +218,7 @@ class ProductionWriter:
             "defects": int(record.get("defects", 0)),
             "dhu": Decimal(str(record.get("dhu", 0))) if record.get("dhu") else None,
             "line_efficiency": Decimal(str(record.get("line_efficiency", 0))) if record.get("line_efficiency") else None,
+            "inspection_date": record.get("inspection_date"),
         }
 
         # Physics validation
@@ -326,6 +331,14 @@ class ProductionWriter:
             }
 
             # Quality inspection (always for new runs)
+            # Use record's inspection_date or production_date, otherwise "now"
+            inspected_at_val = record.get("inspection_date") or record.get("production_date")
+            if inspected_at_val:
+                if isinstance(inspected_at_val, date) and not isinstance(inspected_at_val, datetime):
+                    inspected_at_val = datetime.combine(inspected_at_val, time(12,0))
+            else:
+                inspected_at_val = now
+
             result["quality"] = {
                 "id": str(uuid.uuid4()),
                 "production_run_id": new_id,
@@ -333,7 +346,7 @@ class ProductionWriter:
                 "units_checked": new_qty,
                 "defects_found": int(float(record.get("defects", 0))),
                 "dhu": Decimal(str(record.get("dhu", 0))) if record.get("dhu") else None,
-                "inspected_at": now,
+                "inspected_at": inspected_at_val,
                 "created_at": now,
                 "updated_at": now,
             }

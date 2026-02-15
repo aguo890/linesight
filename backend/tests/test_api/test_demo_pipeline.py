@@ -28,10 +28,9 @@ from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
-# Path to the test Excel file
-TEST_DATA_PATH = (
-    Path(__file__).parent.parent / "data" / "Standard_Master_Widget.xlsx"
-)
+# Point to the directory created by your fixture
+TEST_DATA_DIR = Path(__file__).parent.parent / "data"
+TEST_DATA_PATH = TEST_DATA_DIR / "Standard_Master_Widget.xlsx"
 
 
 @pytest.fixture
