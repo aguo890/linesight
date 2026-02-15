@@ -15,12 +15,12 @@ import {
     BarChart3,
 } from 'lucide-react';
 import { MiniDashboard } from "@/features/landing/components/simulation/MiniDashboard";
-import { PARTNER_LOGOS } from '@/components/PartnerLogos';
+import { PARTNER_LOGOS } from '@/features/landing/components/PartnerLogos';
 import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
 import { useSnakeScroll } from '@/hooks/useSnakeScroll';
-import { SnakeLane } from '@/components/SnakeLane';
-import { WaitlistForm } from '@/components/WaitlistForm';
-import { FeaturesSection } from '@/components/FeaturesSection';
+import { SnakeLane } from '@/features/landing/components/SnakeLane';
+import { WaitlistForm } from '@/features/landing/components/WaitlistForm';
+import { FeaturesSection } from '@/features/landing/components/FeaturesSection';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { SEOHreflangs } from '@/components/common/SEOHreflangs';
 
