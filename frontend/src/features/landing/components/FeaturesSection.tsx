@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { LayoutDashboard, Zap } from 'lucide-react';
-import { MockSpeedQualityWidget } from '@/components/simulation/MockSpeedQualityWidget';
-import { MockTargetRealizationWidget } from '@/components/simulation/MockTargetRealizationWidget';
-import { MockBlockerCloudWidget } from '@/components/simulation/MockBlockerCloudWidget';
+import { MockSpeedQualityWidget } from '@/features/landing/components/simulation/MockSpeedQualityWidget';
+import { MockTargetRealizationWidget } from '@/features/landing/components/simulation/MockTargetRealizationWidget';
+import { MockBlockerCloudWidget } from '@/features/landing/components/simulation/MockBlockerCloudWidget';
 
 interface FeaturesSectionProps {
     isDark: boolean;

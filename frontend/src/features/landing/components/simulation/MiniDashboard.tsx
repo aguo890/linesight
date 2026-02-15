@@ -1,9 +1,9 @@
 import React from 'react';
 import { MiniSidebar } from './MiniSidebar';
 import { MiniTopNav } from './MiniTopNav';
-import LineEfficiencyGauge from '../../../dashboard/widgets/LineEfficiencyGauge';
+import LineEfficiencyGauge from '@/features/dashboard/widgets/LineEfficiencyGauge';
 import { MockEarnedMinutesWidget } from './MockEarnedMinutesWidget';
-import ProductionChart from '../../../dashboard/widgets/ProductionChart';
+import ProductionChart from '@/features/dashboard/widgets/ProductionChart';
 
 interface MiniDashboardProps {
     demoEfficiencyData: any;
