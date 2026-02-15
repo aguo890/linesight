@@ -30,7 +30,7 @@ from app.models.raw_import import RawImport
 
 # Path to the test Excel file
 TEST_DATA_PATH = (
-    Path(__file__).parent.parent.parent / "test_data" / "Master_Widget_Test_Data.xlsx"
+    Path(__file__).parent.parent / "data" / "Standard_Master_Widget.xlsx"
 )
 
 
@@ -180,7 +180,7 @@ async def test_demo_full_pipeline_with_excel_file(
 
     # Check ProductionRuns
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
 
@@ -288,7 +288,7 @@ async def test_demo_data_values_integrity(
 
     # Verify production runs have quantities
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
 

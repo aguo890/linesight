@@ -83,7 +83,7 @@ async def test_factory_settings_localization_and_snapshot(
     }
 
     response = await async_client.post(
-        f"/api/v1/factories/{factory_id}/lines",
+        f"/api/v1/factories/{factory_id}/data-sources",
         json=line_std_data,
         headers=auth_headers,
     )
@@ -113,7 +113,7 @@ async def test_factory_settings_localization_and_snapshot(
     }
 
     response = await async_client.post(
-        f"/api/v1/factories/{factory_id}/lines",
+        f"/api/v1/factories/{factory_id}/data-sources",
         json=line_custom_data,
         headers=auth_headers,
     )
@@ -155,7 +155,7 @@ async def test_factory_settings_localization_and_snapshot(
 
     # Verify Standard Line UNCHANGED (Snapshot worked)
     response = await async_client.get(
-        f"/api/v1/factories/lines/{line_std['id']}",
+        f"/api/v1/factories/data-sources/{line_std['id']}",
         headers=auth_headers,
     )
     line_std_refetched = response.json()

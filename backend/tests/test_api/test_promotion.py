@@ -119,7 +119,7 @@ async def test_promotion_logic_full_cycle(
     # C. Check ProductionRun creation
     run_result = await db_session.execute(
         select(ProductionRun).where(
-            ProductionRun.order_id == order.id, ProductionRun.line_id == line_id
+            ProductionRun.order_id == order.id, ProductionRun.data_source_id == line_id
         )
     )
     runs = run_result.scalars().all()

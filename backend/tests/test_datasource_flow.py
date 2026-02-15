@@ -12,23 +12,30 @@ async def test_datasource_flow(async_client, auth_headers):
     """
     Integration test for the DataSource lifecycle using app fixtures.
     """
-    # 1. Get Factories
+    # 1. Ensure Factory exists
     print("LOG: Fetching factories...")
     res = await async_client.get("/api/v1/factories", headers=auth_headers)
-    assert res.status_code == 200, f"Get factories failed: {res.text}"
-
+    assert res.status_code == 200
+    
     factories = res.json()
-    print(f"LOG: Found {len(factories)} factories")
-    assert len(factories) > 0, "No factories found"
-
-    factory_id = factories[0]["id"]
+    if not factories:
+        print("LOG: No factories found, creating one...")
+        res = await async_client.post(
+            "/api/v1/factories", 
+            json={"name": "Integration Test Factory", "country": "PH", "timezone": "Asia/Manila", "locale": "en-US"},
+            headers=auth_headers
+        )
+        assert res.status_code == 201
+        factory_id = res.json()["id"]
+    else:
+        factory_id = factories[0]["id"]
+    
     print(f"LOG: Using factory {factory_id}")
 
     # 2. Create Data Source
     payload = {
-        "name": "Integration Test Source Async",
         "source_name": "Integration Test Source Async",
-        "production_line_id": "compat_test_async",
+        "type": "production_line",
         "description": "Created via async integration test",
     }
     # Create via factory-scoped endpoint

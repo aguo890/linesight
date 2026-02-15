@@ -85,7 +85,7 @@ async def test_line_quota_enforced(
 
     # Create first line (should succeed)
     response = await async_client.post(
-        f"/api/v1/factories/{test_factory.id}/lines",
+        f"/api/v1/factories/{test_factory.id}/data-sources",
         json={"name": "Line 1"},
         headers=auth_headers,
     )
@@ -95,7 +95,7 @@ async def test_line_quota_enforced(
 
     # Create second line (should succeed)
     response = await async_client.post(
-        f"/api/v1/factories/{test_factory.id}/lines",
+        f"/api/v1/factories/{test_factory.id}/data-sources",
         json={"name": "Line 2"},
         headers=auth_headers,
     )
@@ -103,7 +103,7 @@ async def test_line_quota_enforced(
 
     # Attempt to create third line (should fail with quota error)
     response = await async_client.post(
-        f"/api/v1/factories/{test_factory.id}/lines",
+        f"/api/v1/factories/{test_factory.id}/data-sources",
         json={"name": "Line 3"},
         headers=auth_headers,
     )
@@ -171,7 +171,7 @@ async def test_quota_status_endpoint(
     # Create 2 lines in the test factory
     for i in range(2):
         await async_client.post(
-            f"/api/v1/factories/{test_factory.id}/lines",
+            f"/api/v1/factories/{test_factory.id}/data-sources",
             json={"name": f"Line {i + 1}"},
             headers=auth_headers,
         )

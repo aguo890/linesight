@@ -75,11 +75,12 @@ async def test_get_data_source_by_line(
 
     result = response.json()
     if result:  # May return null if no data source exists
-        assert result["production_line_id"] == test_line.id
+        assert result["id"] == test_line.id  # After refactor, line.id IS ds.id
 
 
 @pytest.mark.asyncio
 async def test_update_schema_mapping(async_client, auth_headers, test_data_source):
+
     """Test updating schema mapping (creates new version)."""
     data = {
         "column_map": {

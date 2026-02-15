@@ -47,7 +47,7 @@ async def setup_quality_test_data(db_session, test_organization):
 
     # 2. Create a DataSource with SchemaMapping
     ds = DataSource(
-        production_line_id=line.id,  # Ensure linked
+        data_source_id=line.id,  # Link back to the physical line/source config
         source_name="Test Production Data",
         time_column="Inspection_Date",
         description="Test data source",
@@ -164,7 +164,7 @@ async def test_quality_data_promotion(
 
     # Run should match our line and style
     run = next(
-        (r for r in prod_runs if r.line_id == line.id and r.actual_qty == 950), None
+        (r for r in prod_runs if r.data_source_id == line.id and r.actual_qty == 950), None
     )
     assert run, "Production Run not found"
 

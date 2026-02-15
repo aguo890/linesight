@@ -41,14 +41,14 @@ async def test_factory_deletion_cascade_behavior(
     # Create 2 lines
     for i in range(2):
         await async_client.post(
-            f"/api/v1/factories/{factory_id}/lines",
+            f"/api/v1/factories/{factory_id}/data-sources",
             json={"name": f"Line {i}"},
             headers=auth_headers,
         )
 
     # Verify lines exist and are active
     lines_response = await async_client.get(
-        f"/api/v1/factories/{factory_id}/lines", headers=auth_headers
+        f"/api/v1/factories/{factory_id}/data-sources", headers=auth_headers
     )
     assert lines_response.status_code == 200
     lines = lines_response.json()
@@ -76,7 +76,7 @@ async def test_factory_deletion_cascade_behavior(
 
     # Let's check DB state of lines
     result = await db_session.execute(
-        select(ProductionLine).where(ProductionLine.factory_id == factory_id)
+        select(DataSource).where(DataSource.factory_id == factory_id)
     )
     db_lines = result.scalars().all()
 
