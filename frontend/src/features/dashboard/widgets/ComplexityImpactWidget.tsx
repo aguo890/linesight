@@ -4,9 +4,9 @@ import {
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import type { WidgetProps } from '../types';
-import { WidgetWrapper, getDensity } from '../components/WidgetWrapper';
+import { WidgetWrapper, getDensity } from '@/components/WidgetWrapper';
 import { TrendingUp, Loader2, AlertCircle } from 'lucide-react';
-import { useWidgetData } from '../hooks/useWidgetData';
+import { useWidgetData } from '@/hooks/useWidgetData';
 
 const ComplexityImpactWidget: React.FC<WidgetProps> = ({
     w = 3, h = 3, productionLineId, demoData, settings, globalFilters

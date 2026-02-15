@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, Clock, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { getDataSourceByLine, updateDataSource, type DataSource } from '../../../lib/datasourceApi';
+import { getDataSourceByLine, updateDataSource, type DataSource } from '@/lib/datasourceApi';
 
 interface DataSourceConfigModalProps {
     isOpen: boolean;

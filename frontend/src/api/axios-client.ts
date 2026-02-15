@@ -1,6 +1,6 @@
 // src/api/axios-client.ts
 import axios, { type AxiosRequestConfig } from 'axios';
-import { authStorage } from '../lib/authStorage';
+import { authStorage } from '@/lib/authStorage';
 
 // 1. Create a base axios instance
 export const AXIOS_INSTANCE = axios.create({

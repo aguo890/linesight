@@ -1,10 +1,10 @@
 
 import { renderHook } from '@testing-library/react';
 import { useFactoryFormat } from '../useFactoryFormat';
-import { FactoryContext } from '../../contexts/FactoryContext';
+import { FactoryContext } from '@/contexts/FactoryContext';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
-import type { Factory } from '../../lib/factoryApi';
+import type { Factory } from '@/lib/factoryApi';
 
 // Mock active factory generator
 const createMockFactory = (settings: any = {}): Factory => ({

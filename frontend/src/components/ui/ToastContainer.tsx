@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, CheckCircle, AlertTriangle, Info, AlertCircle } from 'lucide-react';
-import type { Toast } from '../../contexts/ToastContext';
+import type { Toast } from '@/contexts/ToastContext';
 import { cn } from '@/lib/utils';
 
 interface ToastContainerProps {

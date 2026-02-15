@@ -7,8 +7,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Factory as FactoryIcon, AlertCircle, CheckCircle } from 'lucide-react';
-import { createFactory, createDataSource } from '../../../lib/factoryApi';
-import type { QuotaStatus } from '../../../lib/quotaApi';
+import { createFactory, createDataSource } from '@/lib/factoryApi';
+import type { QuotaStatus } from '@/lib/quotaApi';
 
 interface FactoryCreationModalProps {
     isOpen: boolean;

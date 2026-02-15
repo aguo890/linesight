@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, AlertCircle } from 'lucide-react';
-import { updateFactory } from '../../../lib/factoryApi';
+import { updateFactory } from '@/lib/factoryApi';
 
 interface FactoryEditModalProps {
     isOpen: boolean;

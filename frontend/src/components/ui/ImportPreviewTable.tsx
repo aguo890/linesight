@@ -2,7 +2,7 @@ import React from 'react';
 import { AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-import type { DryRunRecord } from '../../types/ingestion';
+import type { DryRunRecord } from '@/types/ingestion';
 
 interface ImportPreviewTableProps {
     records: DryRunRecord[];

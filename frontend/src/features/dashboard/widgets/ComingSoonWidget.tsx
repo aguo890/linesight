@@ -1,7 +1,7 @@
 import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { WidgetWrapper } from '../components/WidgetWrapper';
-import { getDensity } from '../components/WidgetWrapper';
+import { WidgetWrapper } from '@/components/WidgetWrapper';
+import { getDensity } from '@/components/WidgetWrapper';
 import type { WidgetProps } from '../config';
 
 interface ComingSoonWidgetProps extends WidgetProps {

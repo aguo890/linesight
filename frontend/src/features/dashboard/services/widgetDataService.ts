@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import api from '../../../lib/api';
+import api from '@/lib/api';
 // Standardized Adapter Interface - kept for compatibility with registry for now, 
 // but we will move towards the new fetch pattern
 export interface DataAdapter {

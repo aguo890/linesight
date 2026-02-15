@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FileSpreadsheet, Clock, AlertCircle, CheckCircle2, History, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { listFilesByProductionLine, listFiles, getImportPreview, type FileListItem } from '../../../lib/fileApi';
+import { listFilesByProductionLine, listFiles, getImportPreview, type FileListItem } from '@/lib/fileApi';
 import { DataPreviewModal } from './DataPreviewModal';
 
 import { useDateFormatter } from '@/hooks/useDateFormatter';

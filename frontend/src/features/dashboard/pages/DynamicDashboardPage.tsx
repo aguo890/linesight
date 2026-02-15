@@ -3,17 +3,17 @@ import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import type { DashboardWidgetConfig } from '../config';
-import { MainLayout } from '../../../components/layout/MainLayout';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { dashboardStorage } from '../storage';
-import { WidgetLibrary } from '../components/WidgetLibrary';
-import { DashboardSkeleton } from '../components/DashboardSkeleton';
-import { DashboardEmptyState } from '../components/DashboardEmptyState';
+import { WidgetLibrary } from '@/components/WidgetLibrary';
+import { DashboardSkeleton } from '@/components/DashboardSkeleton';
+import { DashboardEmptyState } from '@/components/DashboardEmptyState';
 
-import { DashboardFilterBar } from '../components/DashboardFilterBar';
-import { DashboardHeader } from '../components/DashboardHeader';
-import { DashboardGridLayout } from '../components/DashboardGridLayout';
-import { WidgetRenderer } from '../components/WidgetRenderer';
-import { SettingsSidebar } from '../components/SettingsSidebar';
+import { DashboardFilterBar } from '@/components/DashboardFilterBar';
+import { DashboardHeader } from '@/components/DashboardHeader';
+import { DashboardGridLayout } from '@/components/DashboardGridLayout';
+import { WidgetRenderer } from '@/components/WidgetRenderer';
+import { SettingsSidebar } from '@/components/SettingsSidebar';
 import type { SavedDashboard } from '../types';
 import { validateWidgetConfigs } from '../services/WidgetService';
 import { getWidgetLayout } from '../registry';

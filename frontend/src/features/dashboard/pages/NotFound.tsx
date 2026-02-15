@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileQuestion, Home, ArrowLeft } from 'lucide-react';
-import { MainLayout } from '../../../components/layout/MainLayout';
-import { OrganizationProvider } from '../../../contexts/OrganizationContext';
+import { MainLayout } from '@/components/layout/MainLayout';
+import { OrganizationProvider } from '@/contexts/OrganizationContext';
 
 const NotFound: React.FC = () => {
     const navigate = useNavigate();

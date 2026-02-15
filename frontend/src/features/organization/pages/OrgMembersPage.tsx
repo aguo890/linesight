@@ -4,10 +4,10 @@ import { Search, Plus, Filter } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { useOrgMembers } from '../hooks/useOrgMembers';
-import { MemberIdentityCell } from '../components/MemberIdentityCell';
-import { MemberDetailsDrawer } from '../components/MemberDetailsDrawer';
-import { SettingsPageHeader } from '../../../components/settings/SettingsPageHeader';
+import { useOrgMembers } from '@/hooks/useOrgMembers';
+import { MemberIdentityCell } from '@/components/MemberIdentityCell';
+import { MemberDetailsDrawer } from '@/components/MemberDetailsDrawer';
+import { SettingsPageHeader } from '@/components/settings/SettingsPageHeader';
 import type { MemberRead } from '../../../api/endpoints/team/teamApi';
 
 export const OrgMembersPage = () => {

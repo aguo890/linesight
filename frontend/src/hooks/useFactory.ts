@@ -15,7 +15,7 @@ import {
     getDataSource,
     type Factory,
     type DataSource,
-} from '../lib/factoryApi';
+} from '@/lib/factoryApi';
 
 // =============================================================================
 // Types

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from '../../../components/ui/checkbox';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // Popover no longer used for assignment
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { UserSearchCommand } from './UserSearchCommand';

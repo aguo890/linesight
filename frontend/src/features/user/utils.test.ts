@@ -1,5 +1,5 @@
 import { getPrefs } from './utils';
-import { type User as UserType } from '../../lib/authApi';
+import { type User as UserType } from '@/lib/authApi';
 
 // Mock User type for testing
 const mockUser = (prefs: any): UserType => ({

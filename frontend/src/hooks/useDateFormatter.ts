@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useFactoryContext } from '../contexts/FactoryContext';
+import { useFactoryContext } from '@/contexts/FactoryContext';
 // import { parseDate } from '@/types/date'; // Can import if needed for strict parsing
 
 /**

@@ -4,8 +4,8 @@ import { LayoutGrid, ChevronDown, PanelLeft, Users } from 'lucide-react';
 import { dashboardStorage } from '../../features/dashboard/storage';
 import type { SavedDashboard } from '../../features/dashboard/types';
 
-import { useOrganization } from '../../contexts/OrganizationContext';
-import { useAuth } from '../../hooks/useAuth';
+import { useOrganization } from '@/contexts/OrganizationContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useTranslation } from 'react-i18next'; // [I18N]
 import type { ParseKeys } from 'i18next'; // [I18N]
 import { Logo } from '../common/Logo';

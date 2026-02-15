@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
-import { Logo } from '../../../components/common/Logo';
+import { Logo } from '@/components/common/Logo';
 import {
     ArrowRight,
     Check,
@@ -14,15 +14,15 @@ import {
     Quote,
     BarChart3,
 } from 'lucide-react';
-import { MiniDashboard } from '../components/simulation/MiniDashboard';
-import { PARTNER_LOGOS } from '../components/PartnerLogos';
+import { MiniDashboard } from '@/components/simulation/MiniDashboard';
+import { PARTNER_LOGOS } from '@/components/PartnerLogos';
 import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
-import { useSnakeScroll } from '../../../hooks/useSnakeScroll';
-import { SnakeLane } from '../components/SnakeLane';
-import { WaitlistForm } from '../components/WaitlistForm';
-import { FeaturesSection } from '../components/FeaturesSection';
-import LanguageSwitcher from '../../../components/common/LanguageSwitcher';
-import { SEOHreflangs } from '../../../components/common/SEOHreflangs';
+import { useSnakeScroll } from '@/hooks/useSnakeScroll';
+import { SnakeLane } from '@/components/SnakeLane';
+import { WaitlistForm } from '@/components/WaitlistForm';
+import { FeaturesSection } from '@/components/FeaturesSection';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
+import { SEOHreflangs } from '@/components/common/SEOHreflangs';
 
 const springTransition = { type: "spring", stiffness: 100, damping: 20 } as const;
 

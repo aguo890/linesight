@@ -5,8 +5,8 @@ import {
     Settings, Database, Server, RefreshCw,
     FileText, Trash2, ArrowRight
 } from 'lucide-react';
-import { Breadcrumb } from '../../../components/ui/Breadcrumb';
-import { MainLayout } from '../../../components/layout/MainLayout';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { MainLayout } from '@/components/layout/MainLayout';
 import {
     getDataSource,
     deleteDataSource,
@@ -21,9 +21,9 @@ import {
 
 // Using new hooks/APIs where possible
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
-import { FilePreviewModal } from '../../../components/FilePreviewModal';
-import { MappingEditModal } from '../components/MappingEditModal';
-import { updateSchemaMapping, getAvailableFields, type AvailableField } from '../../../lib/datasourceApi';
+import { FilePreviewModal } from '@/components/FilePreviewModal';
+import { MappingEditModal } from '@/components/MappingEditModal';
+import { updateSchemaMapping, getAvailableFields, type AvailableField } from '@/lib/datasourceApi';
 
 /**
  * Data Source Detail Page

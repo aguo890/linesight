@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutGrid, ChevronDown, PanelLeft, Users } from 'lucide-react';
-import { Logo } from '../../../../components/common/Logo';
+import { Logo } from '@/components/common/Logo';
 import { cn } from '@/lib/utils';
 
 export const MiniSidebar: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {

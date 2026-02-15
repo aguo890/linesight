@@ -3,7 +3,7 @@ import { ArrowLeft, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus, WIDGET_BUNDLES, getBundleReadiness } from '../../registry';
 import type { DashboardWidgetConfig } from '../../config';
-import type { ColumnMapping } from '../../../../lib/ingestionApi';
+import type { ColumnMapping } from '@/lib/ingestionApi';
 import { WidgetSelector } from '../WidgetSelector';
 import { BlueprintCard } from '../BlueprintCard';
 import { calculateSmartLayout } from '../../../../utils/layoutUtils';

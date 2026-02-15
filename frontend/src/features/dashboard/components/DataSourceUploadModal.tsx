@@ -8,10 +8,10 @@ import React, { useState, useRef } from 'react';
 import { X, Upload, Calendar, FileSpreadsheet, AlertCircle, CheckCircle } from 'lucide-react';
 import { isAxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
-import { getDryRunPreview, uploadFileForIngestion } from '../../../lib/ingestionApi';
-import type { DryRunResponse } from '../../../lib/ingestionApi';
-import { ImportPreviewTable } from '../../../components/ui/ImportPreviewTable';
-import { ValidationErrorDisplay } from '../../../components/ui/ValidationErrorDisplay';
+import { getDryRunPreview, uploadFileForIngestion } from '@/lib/ingestionApi';
+import type { DryRunResponse } from '@/lib/ingestionApi';
+import { ImportPreviewTable } from '@/components/ui/ImportPreviewTable';
+import { ValidationErrorDisplay } from '@/components/ui/ValidationErrorDisplay';
 
 
 interface DataSourceUploadModalProps {

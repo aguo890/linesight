@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@/test/utils';
 import { FilePreviewModal } from '../FilePreviewModal';
-import * as ingestionApi from '../../lib/ingestionApi';
+import * as ingestionApi from '@/lib/ingestionApi';
 
 // Mock the ingestionApi module
 vi.mock('../../lib/ingestionApi', () => ({

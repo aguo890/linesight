@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useBlocker } from 'react-router-dom';
-import ConfirmDialog from '../../components/common/ConfirmDialog';
+import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { User, Mail, Globe, Save, Loader2, Bell, Shield, Smartphone, ArrowLeft, Building2, Factory } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '../../context/ThemeContext';
-import { type UserPreferences, type UserInfo } from '../../lib/authApi';
+import { type UserPreferences, type UserInfo } from '@/lib/authApi';
 import LocationSelector from '../../features/dashboard/components/LocationSelector';
 import { getPrefs } from './utils';
-import api from '../../lib/api';
-import { listFactories } from '../../lib/factoryApi';
-import { useToast } from '../../contexts/ToastContext';
+import api from '@/lib/api';
+import { listFactories } from '@/lib/factoryApi';
+import { useToast } from '@/contexts/ToastContext';
 
 // Organization type for display
 interface OrgInfo {
@@ -26,8 +26,8 @@ interface FactoryInfo {
 }
 
 import { toRegionLocale, detectBestLocale, toShortLocale } from '../../utils/localeUtils';
-import { LanguageSelector } from '../../components/common/LanguageSelector';
-import { AutoFlipIcon } from '../../components/common/AutoFlipIcon';
+import { LanguageSelector } from '@/components/common/LanguageSelector';
+import { AutoFlipIcon } from '@/components/common/AutoFlipIcon';
 
 // Helper to get normalized locale (Legacy 'en' -> 'en-US')
 const getNormalizedLocale = (u: UserInfo | null) => {

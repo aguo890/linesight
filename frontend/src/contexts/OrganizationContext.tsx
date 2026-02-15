@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { getQuotaStatus, type QuotaStatus } from '../lib/quotaApi';
+import { getQuotaStatus, type QuotaStatus } from '@/lib/quotaApi';
 
 interface OrganizationContextType {
     quotaStatus: QuotaStatus | null;

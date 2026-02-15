@@ -27,28 +27,28 @@ import {
     Database
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Breadcrumb } from '../../../components/ui/Breadcrumb';
-import { MainLayout } from '../../../components/layout/MainLayout';
-import { DataSourceCard } from '../components/DataSourceCard';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { MainLayout } from '@/components/layout/MainLayout';
+import { DataSourceCard } from '@/components/DataSourceCard';
 import { CreateDataSourceModal } from '../../organization/components/CreateDataSourceModal';
-import { DataSourceUploadModal } from '../components/DataSourceUploadModal';
-import { MappingFlowModal } from '../components/MappingFlowModal';
-import { DashboardWizard } from '../components/DashboardWizard';
+import { DataSourceUploadModal } from '@/components/DataSourceUploadModal';
+import { MappingFlowModal } from '@/components/MappingFlowModal';
+import { DashboardWizard } from '@/components/DashboardWizard';
 
-import { Skeleton } from '../../../components/ui/Skeleton';
-import { DashboardCard } from '../components/DashboardCard';
-import { FactorySettingsModal } from '../components/FactorySettingsModal';
+import { Skeleton } from '@/components/ui/Skeleton';
+import { DashboardCard } from '@/components/DashboardCard';
+import { FactorySettingsModal } from '@/components/FactorySettingsModal';
 import { dashboardStorage } from '../storage';
 
-import { useOrganization } from '../../../contexts/OrganizationContext';
-import { useFactory } from '../../../hooks/useFactory';
+import { useOrganization } from '@/contexts/OrganizationContext';
+import { useFactory } from '@/hooks/useFactory';
 import {
     useListDashboardsApiV1DashboardsGet,
     useDeleteDashboardApiV1DashboardsDashboardIdDelete
 } from '../../../api/endpoints/dashboards/dashboards';
 import type { Dashboard } from '../types';
-import type { DataSource } from '../../../lib/factoryApi';
-import { usePermissions } from '../../../hooks/usePermissions';
+import type { DataSource } from '@/lib/factoryApi';
+import { usePermissions } from '@/hooks/usePermissions';
 
 type ViewMode = 'grid' | 'list';
 

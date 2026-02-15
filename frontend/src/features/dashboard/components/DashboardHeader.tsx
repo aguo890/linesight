@@ -8,7 +8,7 @@ import React from 'react';
 import { LayoutGrid, Loader2, Settings, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next'; // [I18N]
-import { Breadcrumb } from '../../../components/ui/Breadcrumb';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 // =============================================================================
 // Types

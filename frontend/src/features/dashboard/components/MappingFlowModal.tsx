@@ -9,8 +9,8 @@
  */
 import React, { useState, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
-import api from '../../../lib/api';
-import { useToast } from '../../../contexts/ToastContext';
+import api from '@/lib/api';
+import { useToast } from '@/contexts/ToastContext';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 
 interface MappingFlowModalProps {

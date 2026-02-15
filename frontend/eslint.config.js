@@ -25,6 +25,17 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../*'],
+              message: 'Use absolute imports (@/) instead of relative parent imports.',
+            },
+          ],
+        },
+      ],
     },
   },
 )

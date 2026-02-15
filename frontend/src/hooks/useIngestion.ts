@@ -13,7 +13,7 @@ import {
     getMappingState,
     getDryRunPreview,
     getAvailableFields,
-} from '../lib/ingestionApi';
+} from '@/lib/ingestionApi';
 import type {
     ColumnMapping,
     UploadResponse,
@@ -23,7 +23,7 @@ import type {
     FilePreview,
     DryRunResponse,
     AvailableField,
-} from '../types/ingestion';
+} from '@/types/ingestion';
 
 // =============================================================================
 // Types

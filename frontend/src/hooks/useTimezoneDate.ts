@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { toZonedTime, fromZonedTime, format } from 'date-fns-tz';
 import { startOfDay, endOfDay, subDays } from 'date-fns';
-import { useFactoryContext } from '../contexts/FactoryContext';
+import { useFactoryContext } from '@/contexts/FactoryContext';
 
 /**
  * Hook to provide date manipulation functions that strictly respect a target timezone.

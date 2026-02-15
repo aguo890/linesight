@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { AXIOS_INSTANCE } from '../../../api/axios-client';
 import { Building2, Users, Factory, Crown, AlertTriangle } from 'lucide-react';
-import { SettingsPageHeader } from '../../../components/settings/SettingsPageHeader';
+import { SettingsPageHeader } from '@/components/settings/SettingsPageHeader';
 
 interface OrgStats {
     totalManagers: number;

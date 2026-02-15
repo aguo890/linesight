@@ -3,7 +3,7 @@ import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-re
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '../../../api/endpoints/factories/factories';
-import type { Factory, ShiftConfig } from '../../../lib/factoryApi';
+import type { Factory, ShiftConfig } from '@/lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
 
 interface Props {

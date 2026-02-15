@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest';
 import { DashboardWizard } from './DashboardWizard';
-import { listFactories, listDataSources } from '../../../lib/factoryApi';
-import { getAvailableFields } from '../../../lib/ingestionApi';
+import { listFactories, listDataSources } from '@/lib/factoryApi';
+import { getAvailableFields } from '@/lib/ingestionApi';
 
 // Mock dependencies
 vi.mock('../../../lib/factoryApi');

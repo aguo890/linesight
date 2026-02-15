@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTimezoneDate } from '../../hooks/useTimezoneDate';
+import { useTimezoneDate } from '@/hooks/useTimezoneDate';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

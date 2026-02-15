@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { X, Eye, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { getFilePreview } from '../lib/ingestionApi';
-import type { FilePreview } from '../types/ingestion';
+import { getFilePreview } from '@/lib/ingestionApi';
+import type { FilePreview } from '@/types/ingestion';
 
 interface FilePreviewModalProps {
     fileId: string | null;

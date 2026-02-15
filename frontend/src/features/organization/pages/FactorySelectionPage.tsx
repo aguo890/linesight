@@ -17,13 +17,13 @@ import {
 } from 'lucide-react';
 
 // API & Context
-import { listFactories, listDataSources, deleteFactory, type Factory } from '../../../lib/factoryApi';
+import { listFactories, listDataSources, deleteFactory, type Factory } from '@/lib/factoryApi';
 import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
-import { useOrganization } from '../../../contexts/OrganizationContext';
+import { useOrganization } from '@/contexts/OrganizationContext';
 
 // Components
-import { FactoryCreationModal } from '../components/FactoryCreationModal';
-import { FactoryEditModal } from '../components/FactoryEditModal';
+import { FactoryCreationModal } from '@/components/FactoryCreationModal';
+import { FactoryEditModal } from '@/components/FactoryEditModal';
 
 // Types
 type ViewMode = 'grid' | 'list';

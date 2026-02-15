@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '../../../components/ui/Skeleton';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export const DashboardSkeleton: React.FC = () => {
     return (

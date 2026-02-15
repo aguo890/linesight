@@ -1,6 +1,6 @@
 
 import { useCallback } from 'react';
-import { useFactoryContext } from '../contexts/FactoryContext';
+import { useFactoryContext } from '@/contexts/FactoryContext';
 import { formatInTimeZone } from 'date-fns-tz';
 
 export const useFactoryFormat = () => {

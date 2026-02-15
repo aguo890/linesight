@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
-import { type Factory } from '../lib/factoryApi';
+import { type Factory } from '@/lib/factoryApi';
 import { useListFactoriesApiV1FactoriesGet } from '../api/endpoints/factories/factories';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface FactoryContextType {
     /** All available factories */

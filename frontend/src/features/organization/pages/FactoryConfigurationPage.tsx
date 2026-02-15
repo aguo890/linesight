@@ -2,20 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Settings, LayoutGrid, Users, X, Plus, Info } from 'lucide-react';
-import { Button } from '../../../components/ui/Button';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
-import { Breadcrumb } from '../../../components/ui/Breadcrumb';
+import { Button } from '@/components/ui/Button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 // Custom Components
-import { DataSourceRow } from '../components/DataSourceRow';
-import { CreateDataSourceModal } from '../components/CreateDataSourceModal';
-import { UserSearchCommand } from '../components/UserSearchCommand';
-import { DataSourceDetailsDrawer } from '../components/DataSourceDetailsDrawer';
-import { MemberDetailsDrawer } from '../components/MemberDetailsDrawer';
+import { DataSourceRow } from '@/components/DataSourceRow';
+import { CreateDataSourceModal } from '@/components/CreateDataSourceModal';
+import { UserSearchCommand } from '@/components/UserSearchCommand';
+import { DataSourceDetailsDrawer } from '@/components/DataSourceDetailsDrawer';
+import { MemberDetailsDrawer } from '@/components/MemberDetailsDrawer';
 
 // API & Types
 import { useGetFactoryApiV1FactoriesFactoryIdGet } from '../../../api/endpoints/factories/factories';
-import { useOrganization } from '../../../contexts/OrganizationContext';
+import { useOrganization } from '@/contexts/OrganizationContext';
 import { assignUserToDataSource, listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
 import type { DataSourceRead as DataSource } from '../../../api/model';
 

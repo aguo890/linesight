@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
-import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource } from '../../../lib/ingestionApi';
-import { listFactories, listDataSources, type DataSource as FactoryDataSource } from '../../../lib/factoryApi';
+import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource } from '@/lib/ingestionApi';
+import { listFactories, listDataSources, type DataSource as FactoryDataSource } from '@/lib/factoryApi';
 import { LayoutMiniMap } from './LayoutMiniMap';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus } from '../registry';
 

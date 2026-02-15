@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '../../../context/ThemeContext';
-import { Logo } from '../../../components/common/Logo';
+import { Logo } from '@/components/common/Logo';
 import { ArrowRight, Loader2, ChevronLeft } from 'lucide-react';
 
 // -----------------------------------------------------------------------------

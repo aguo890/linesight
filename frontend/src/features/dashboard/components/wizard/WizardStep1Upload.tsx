@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Loader2, AlertCircle, Database, Clock, FileText, ChevronRight } from 'lucide-react';
-import type { DataSource } from '../../../../lib/ingestionApi';
+import type { DataSource } from '@/lib/ingestionApi';
 
 interface WizardStep1UploadProps {
     onUseExisting: (dataSource: DataSource, dashboardName: string) => void;

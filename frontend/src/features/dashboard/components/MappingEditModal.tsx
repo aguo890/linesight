@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, ArrowRight } from 'lucide-react';
-import { useToast } from '../../../contexts/ToastContext';
+import { useToast } from '@/contexts/ToastContext';
 
 interface AvailableField {
     field: string;

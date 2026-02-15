@@ -6,8 +6,8 @@
  */
 import React from 'react';
 import { Edit2, Trash2, Activity, Upload, Lock, Database } from 'lucide-react';
-import type { DataSource } from '../../../lib/factoryApi';
-import { usePermissions } from '../../../hooks/usePermissions';
+import type { DataSource } from '@/lib/factoryApi';
+import { usePermissions } from '@/hooks/usePermissions';
 
 interface DataSourceCardProps {
     dataSource: DataSource;

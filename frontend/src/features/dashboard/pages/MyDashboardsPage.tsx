@@ -17,12 +17,12 @@ import {
     Plus
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { MainLayout } from '../../../components/layout/MainLayout';
-import { FactoryCard } from '../components/FactoryCard';
+import { MainLayout } from '@/components/layout/MainLayout';
+import { FactoryCard } from '@/components/FactoryCard';
 import { useListFactoriesApiV1FactoriesGet } from '../../../api/endpoints/factories/factories';
-import { useOrganization } from '../../../contexts/OrganizationContext';
-import { usePermissions } from '../../../hooks/usePermissions';
-import { DashboardWizard } from '../components/DashboardWizard';
+import { useOrganization } from '@/contexts/OrganizationContext';
+import { usePermissions } from '@/hooks/usePermissions';
+import { DashboardWizard } from '@/components/DashboardWizard';
 
 type ViewMode = 'grid' | 'list';
 

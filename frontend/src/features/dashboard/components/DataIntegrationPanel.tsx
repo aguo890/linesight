@@ -10,7 +10,7 @@ import {
     Clock
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { listDataSources, updateDataSource, type DataSource } from '../../../lib/datasourceApi';
+import { listDataSources, updateDataSource, type DataSource } from '@/lib/datasourceApi';
 import { X } from 'lucide-react'; // Import Close icon
 
 interface DataIntegrationPanelProps {

@@ -4,7 +4,7 @@ import {
     useGetOverviewStatsApiV1AnalyticsOverviewGet,
 } from '../../../api/endpoints/analytics/analytics';
 import type { OverviewStats } from '../../../api/model';
-import { MainLayout } from '../../../components/layout/MainLayout';
+import { MainLayout } from '@/components/layout/MainLayout';
 
 // Default/fallback data
 const defaultStats: OverviewStats = {
