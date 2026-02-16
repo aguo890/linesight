@@ -12,7 +12,7 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field
-from sqlalchemy import select
+from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
@@ -20,6 +20,9 @@ from app.models import ProductionLine  # Alias for DataSource
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
 from app.models.user import User
+# FIX: Import children models for cascade deletion
+from app.models.production import ProductionRun
+from app.models.raw_import import RawImport
 
 router = APIRouter()
 
@@ -354,6 +357,17 @@ async def delete_data_source(
     if not data_source:
         raise HTTPException(status_code=404, detail="Data source not found")
 
+    # FIX: Manual Cascade Delete
+    # Delete dependent ProductionRun records
+    await db.execute(
+        delete(ProductionRun).where(ProductionRun.data_source_id == data_source_id)
+    )
+    # Delete dependent RawImport records (cascades to StagingRecord usually)
+    await db.execute(
+        delete(RawImport).where(RawImport.data_source_id == data_source_id)
+    )
+    
+    # Finally delete the DataSource
     await db.delete(data_source)
     await db.commit()
 

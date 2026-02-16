@@ -1,0 +1,234 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 11 items
+
+backend\tests\test_api\test_preview.py::test_preview_endpoint_success PASSED [  9%]
+backend\tests\test_api\test_preview.py::test_list_uploads_includes_datasource_id FAILED [ 18%]
+backend\tests\test_api\test_line_management.py::test_reset_schema_configuration FAILED [ 27%]
+backend\tests\test_api\test_line_management.py::test_clear_upload_history FAILED [ 36%]
+backend\tests\api\v1\test_users.py::test_get_user_me PASSED              [ 45%]
+backend\tests\api\v1\test_users.py::test_update_user_me PASSED           [ 54%]
+backend\tests\api\v1\test_users.py::test_update_user_invalid_timezone PASSED [ 63%]
+backend\tests\api\v1\test_users.py::test_update_user_partial_preferences PASSED [ 72%]
+backend\tests\api\v1\test_users.py::test_update_user_invalid_preference_type PASSED [ 81%]
+backend\tests\api\test_analytics_flaws.py::test_hourly_production_no_events_returns_zeros PASSED [ 90%]
+backend\tests\api\test_analytics_flaws.py::test_midnight_boundary_respects_timezone PASSED [100%]
+
+================================== FAILURES ===================================
+__________________ test_list_uploads_includes_datasource_id ___________________
+backend\tests\test_api\test_preview.py:131: in test_list_uploads_includes_datasource_id
+    assert ds_res.status_code == 200
+E   assert 404 == 200
+E    +  where 404 = <Response [404 Not Found]>.status_code
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T08:38:07.557029Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=70abe7e4-f08c-4668-aa59-1add4230a51f&production_line_id=896c76b7-91e7-470c-86ad-17de92083594 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-02-16T08:38:07.558924Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-02-16T08:38:07.559006Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-02-16T08:38:07.559046Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: 0357cb9d-b38d-4b69-ae49-b3da7c7d5157"}
+{"timestamp": "2026-02-16T08:38:07.559082Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: 896c76b7-91e7-470c-86ad-17de92083594"}
+{"timestamp": "2026-02-16T08:38:07.559117Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: None"}
+{"timestamp": "2026-02-16T08:38:07.559147Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: None"}
+{"timestamp": "2026-02-16T08:38:07.559181Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 1"}
+{"timestamp": "2026-02-16T08:38:07.559213Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-02-16T08:38:07.564037Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "Schema Locked for DataSource 896c76b7-91e7-470c-86ad-17de92083594: dict_keys(['style'])"}
+{"timestamp": "2026-02-16T08:38:07.574505Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-02-16T08:38:07.578872Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/ingestion/uploads?production_line_id=896c76b7-91e7-470c-86ad-17de92083594 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-02-16T08:38:07.579405Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/datasources/896c76b7-91e7-470c-86ad-17de92083594 \"HTTP/1.1 404 Not Found\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=70abe7e4-f08c-4668-aa59-1add4230a51f&production_line_id=896c76b7-91e7-470c-86ad-17de92083594 "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:525 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:526 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:527   raw_import_id: 0357cb9d-b38d-4b69-ae49-b3da7c7d5157
+INFO     ingestion.confirm_mapping:ingestion.py:528   production_line_id: 896c76b7-91e7-470c-86ad-17de92083594
+INFO     ingestion.confirm_mapping:ingestion.py:529   factory_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:530   data_source_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:531   mappings count: 1
+INFO     ingestion.confirm_mapping:ingestion.py:532 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:626 Schema Locked for DataSource 896c76b7-91e7-470c-86ad-17de92083594: dict_keys(['style'])
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/ingestion/uploads?production_line_id=896c76b7-91e7-470c-86ad-17de92083594 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/datasources/896c76b7-91e7-470c-86ad-17de92083594 "HTTP/1.1 404 Not Found"
+_______________________ test_reset_schema_configuration _______________________
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlite3.OperationalError: no such table: production_lines
+
+The above exception was the direct cause of the following exception:
+backend\tests\test_api\test_line_management.py:42: in test_reset_schema_configuration
+    await db_session.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py:449: in execute
+    result = await greenlet_spawn(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2258: in _execute_internal
+    result = conn.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: production_lines
+E   [SQL: 
+E           INSERT INTO production_lines (id, factory_id, name, code, is_active, created_at, updated_at)
+E           VALUES ('f349c0de-c824-4c6c-a4f9-c9a4267c9ad8', 'dcbd5883-4486-404e-9bce-08c87cd92517', 'Reset Line', 'RL-01', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+E       ]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________________________ test_clear_upload_history __________________________
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlite3.OperationalError: no such table: production_lines
+
+The above exception was the direct cause of the following exception:
+backend\tests\test_api\test_line_management.py:107: in test_clear_upload_history
+    await db_session.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py:449: in execute
+    result = await greenlet_spawn(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2258: in _execute_internal
+    result = conn.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: production_lines
+E   [SQL: 
+E           INSERT INTO production_lines (id, factory_id, name, code, is_active, created_at, updated_at)
+E           VALUES ('6a56bd4f-85e8-4e2d-ade0-f8f58f32ff4e', '4a87d16d-d888-414e-a853-11eec1b0e9ec', 'History Line', 'HL-01', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+E       ]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_preview.py::test_list_uploads_includes_datasource_id
+FAILED backend\tests\test_api\test_line_management.py::test_reset_schema_configuration
+FAILED backend\tests\test_api\test_line_management.py::test_clear_upload_history
+========================= 3 failed, 8 passed in 6.22s =========================

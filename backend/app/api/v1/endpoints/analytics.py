@@ -536,10 +536,12 @@ async def get_dhu_trend(
     data = []
     current = query_start
     while current <= effective_date:
-        dhu_value = dhu_data_map.get(current, Decimal(0))
+        # SQLite func.date returns string, so we must lookup with string
+        date_str = current.strftime("%Y-%m-%d")
+        dhu_value = dhu_data_map.get(date_str, Decimal(0))
         data.append(
             DhuPoint(
-                date=current.strftime("%Y-%m-%d"),
+                date=date_str,
                 dhu=dhu_value,
             )
         )
@@ -600,17 +602,19 @@ async def get_speed_quality_trend(
     )
 
     dhu_result = await db.execute(dhu_query)
-    dhu_data = {row.report_date: row.avg_dhu for row in dhu_result.all()}
+    dhu_data = {str(row.report_date): row.avg_dhu for row in dhu_result.all()}
 
     data_points = []
     current = start_date
     while current <= effective_date:
-        eff = eff_data.get(current) or Decimal(0)
-        dhu = dhu_data.get(current) or Decimal(0)
+        # SQLite func.date returns string, so we must lookup with string
+        date_str = current.strftime("%Y-%m-%d")
+        eff = eff_data.get(date_str) or Decimal(0)
+        dhu = dhu_data.get(date_str) or Decimal(0)
 
         data_points.append(
             SpeedQualityPoint(
-                date=current.strftime("%Y-%m-%d"),
+                date=date_str,
                 efficiency_pct=round(eff, 1),
                 defects_per_hundred=round(dhu, 1),
             )

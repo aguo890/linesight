@@ -374,7 +374,7 @@ async def test_factory(db_session: AsyncSession, test_organization):
         organization_id=test_organization.id,
         name="Test Factory",
         code="TF001",
-        country="Test Country",
+        country="US",
         timezone="UTC",
         locale="en-US",
     )

@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution FAILED [100%]
+
+================================== FAILURES ===================================
+____________________________ test_schema_evolution ____________________________
+backend\tests\test_api\test_ingestion_flow.py:137: in test_schema_evolution
+    assert response.status_code == 200, f"Upload failed: {response.text}"
+E   AssertionError: Upload failed: {"detail":"DataSource ed84e39b-c0e4-49e0-9845-8287cf05b022 does not belong to Factory 0ddc412e-ca8a-4b8a-8cff-93fe1718a21c"}
+E   assert 400 == 200
+E    +  where 400 = <Response [400 Bad Request]>.status_code
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:21:43.405550Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=0ddc412e-ca8a-4b8a-8cff-93fe1718a21c&production_line_id=619e80ec-8640-4dcd-9218-82d9ed0443db&data_source_id=ed84e39b-c0e4-49e0-9845-8287cf05b022 \"HTTP/1.1 400 Bad Request\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=0ddc412e-ca8a-4b8a-8cff-93fe1718a21c&production_line_id=619e80ec-8640-4dcd-9218-82d9ed0443db&data_source_id=ed84e39b-c0e4-49e0-9845-8287cf05b022 "HTTP/1.1 400 Bad Request"
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution
+============================== 1 failed in 2.48s ==============================

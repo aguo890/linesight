@@ -1,0 +1,233 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 7 items
+
+backend\tests\test_api\test_destructive_flows.py::test_delete_datasource_cascade PASSED [ 14%]
+backend\tests\test_api\test_destructive_flows.py::test_permissions_restricted_delete PASSED [ 28%]
+backend\tests\test_api\test_datasources_by_line.py::test_get_datasource_by_line_exists PASSED [ 42%]
+backend\tests\api\v1\test_team.py::test_assign_user_to_line FAILED       [ 57%]
+backend\tests\test_api\test_production.py::test_production_run_lifecycle PASSED [ 71%]
+backend\tests\test_api\test_production.py::test_create_run_factory_mismatch PASSED [ 85%]
+backend\tests\test_api\test_preview_dry_run_endpoint.py::test_preview_dry_run_endpoint PASSED [100%]
+
+================================== FAILURES ===================================
+__________________________ test_assign_user_to_line ___________________________
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py:1709: in _object_value_for_elem
+    return self._object_lookup[elem]  # type: ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'operator'
+
+The above exception was the direct cause of the following exception:
+backend\tests\api\v1\test_team.py:40: in test_assign_user_to_line
+    res = await async_client.post(
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1859: in post
+    return await self.request(
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1540: in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1629: in send
+    response = await self._send_handling_auth(
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1657: in _send_handling_auth
+    response = await self._send_handling_redirects(
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1694: in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_client.py:1730: in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\httpx\_transports\asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\applications.py:1135: in __call__
+    await super().__call__(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py:119: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py:105: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py:426: in app
+    raw_response = await run_endpoint_function(
+..\..\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py:312: in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\v1\endpoints\team.py:92: in assign_user_to_data_source
+    user_result = await db.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py:449: in execute
+    result = await greenlet_spawn(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:203: in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py:309: in orm_execute_statement
+    return cls.orm_setup_cursor_result(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py:616: in orm_setup_cursor_result
+    return loading.instances(result, querycontext)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py:262: in instances
+    _prebuffered = list(chunks(None))
+                   ^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py:220: in chunks
+    fetch = cursor._raw_all_rows()
+            ^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\result.py:541: in _raw_all_rows
+    return [make_row(row) for row in rows]
+            ^^^^^^^^^^^^^
+lib/sqlalchemy/cyextension/resultproxy.pyx:22: in sqlalchemy.cyextension.resultproxy.BaseRow.__init__
+    ???
+lib/sqlalchemy/cyextension/resultproxy.pyx:79: in sqlalchemy.cyextension.resultproxy._apply_processors
+    ???
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py:1829: in process
+    value = self._object_value_for_elem(value)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py:1711: in _object_value_for_elem
+    raise LookupError(
+E   LookupError: 'operator' is not among the defined enum values. Enum name: userrole. Possible values: system_admi.., owner, factory_man.., ..., viewer
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T08:59:43.008308Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: 'operator' is not among the defined enum values. Enum name: userrole. Possible values: system_admi.., owner, factory_man.., ..., viewer", "exception": "Traceback (most recent call last):\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\sql\\sqltypes.py\", line 1709, in _object_value_for_elem\n    return self._object_lookup[elem]  # type: ignore[return-value]\n           ~~~~~~~~~~~~~~~~~~~^^^^^^\nKeyError: 'operator'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\errors.py\", line 164, in __call__\n    await self.app(scope, receive, _send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\cors.py\", line 85, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\exceptions.py\", line 63, in __call__\n    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\middleware\\asyncexitstack.py\", line 18, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 716, in __call__\n    await self.middleware_stack(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 736, in app\n    await route.handle(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 290, in handle\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 119, in app\n    await wrap_app_handling_exceptions(app, request)(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 105, in app\n    response = await f(request)\n               ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 426, in app\n    raw_response = await run_endpoint_function(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 312, in run_endpoint_function\n    return await dependant.call(**values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\api\\v1\\endpoints\\team.py\", line 92, in assign_user_to_data_source\n    user_result = await db.execute(\n                  ^^^^^^^^^^^^^^^^^\n        select(User).where(User.id == user_id)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\ext\\asyncio\\session.py\", line 449, in execute\n    result = await greenlet_spawn(\n             ^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\_concurrency_py3k.py\", line 203, in greenlet_spawn\n    result = context.switch(value)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 2351, in execute\n    return self._execute_internal(\n           ~~~~~~~~~~~~~~~~~~~~~~^\n        statement,\n        ^^^^^^^^^^\n    ...<4 lines>...\n        _add_event=_add_event,\n        ^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 2249, in _execute_internal\n    result: Result[Any] = compile_state_cls.orm_execute_statement(\n                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        self,\n        ^^^^^\n    ...<4 lines>...\n        conn,\n        ^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\context.py\", line 309, in orm_execute_statement\n    return cls.orm_setup_cursor_result(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        session,\n        ^^^^^^^^\n    ...<4 lines>...\n        result,\n        ^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\context.py\", line 616, in orm_setup_cursor_result\n    return loading.instances(result, querycontext)\n           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\loading.py\", line 262, in instances\n    _prebuffered = list(chunks(None))\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\loading.py\", line 220, in chunks\n    fetch = cursor._raw_all_rows()\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\result.py\", line 541, in _raw_all_rows\n    return [make_row(row) for row in rows]\n            ~~~~~~~~^^^^^\n  File \"lib/sqlalchemy/cyextension/resultproxy.pyx\", line 22, in sqlalchemy.cyextension.resultproxy.BaseRow.__init__\n  File \"lib/sqlalchemy/cyextension/resultproxy.pyx\", line 79, in sqlalchemy.cyextension.resultproxy._apply_processors\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\sql\\sqltypes.py\", line 1829, in process\n    value = self._object_value_for_elem(value)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\sql\\sqltypes.py\", line 1711, in _object_value_for_elem\n    raise LookupError(\n    ...<7 lines>...\n    ) from err\nLookupError: 'operator' is not among the defined enum values. Enum name: userrole. Possible values: system_admi.., owner, factory_man.., ..., viewer"}
+------------------------------ Captured log call ------------------------------
+ERROR    app.main:main.py:100 Unhandled exception: 'operator' is not among the defined enum values. Enum name: userrole. Possible values: system_admi.., owner, factory_man.., ..., viewer
+Traceback (most recent call last):
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py", line 1709, in _object_value_for_elem
+    return self._object_lookup[elem]  # type: ignore[return-value]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'operator'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\endpoints\team.py", line 92, in assign_user_to_data_source
+    user_result = await db.execute(
+                  ^^^^^^^^^^^^^^^^^
+        select(User).where(User.id == user_id)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py", line 449, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 203, in greenlet_spawn
+    result = context.switch(value)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2249, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 309, in orm_execute_statement
+    return cls.orm_setup_cursor_result(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        session,
+        ^^^^^^^^
+    ...<4 lines>...
+        result,
+        ^^^^^^^
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\context.py", line 616, in orm_setup_cursor_result
+    return loading.instances(result, querycontext)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 262, in instances
+    _prebuffered = list(chunks(None))
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\loading.py", line 220, in chunks
+    fetch = cursor._raw_all_rows()
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\result.py", line 541, in _raw_all_rows
+    return [make_row(row) for row in rows]
+            ~~~~~~~~^^^^^
+  File "lib/sqlalchemy/cyextension/resultproxy.pyx", line 22, in sqlalchemy.cyextension.resultproxy.BaseRow.__init__
+  File "lib/sqlalchemy/cyextension/resultproxy.pyx", line 79, in sqlalchemy.cyextension.resultproxy._apply_processors
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py", line 1829, in process
+    value = self._object_value_for_elem(value)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\sqltypes.py", line 1711, in _object_value_for_elem
+    raise LookupError(
+    ...<7 lines>...
+    ) from err
+LookupError: 'operator' is not among the defined enum values. Enum name: userrole. Possible values: system_admi.., owner, factory_man.., ..., viewer
+=========================== short test summary info ===========================
+FAILED backend\tests\api\v1\test_team.py::test_assign_user_to_line - LookupEr...
+========================= 1 failed, 6 passed in 4.11s =========================

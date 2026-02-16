@@ -1,0 +1,270 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 8 items
+
+backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution FAILED [ 12%]
+backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production FAILED [ 25%]
+backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance FAILED [ 37%]
+backend\tests\test_api\test_individual_widgets.py::test_get_workforce_stats PASSED [ 50%]
+backend\tests\test_api\test_individual_widgets.py::test_get_dhu_history FAILED [ 62%]
+backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality FAILED [ 75%]
+backend\tests\test_api\test_individual_widgets.py::test_get_complexity_impact PASSED [ 87%]
+backend\tests\test_api\test_individual_widgets.py::test_get_downtime_reasons PASSED [100%]
+
+================================== FAILURES ===================================
+____________________________ test_schema_evolution ____________________________
+backend\tests\test_api\test_ingestion_flow.py:236: in test_schema_evolution
+    assert len(mappings) >= 1
+E   assert 0 >= 1
+E    +  where 0 = len([])
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:22:43.308081Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=e0d111f0-0306-4e97-a8df-3368858f4f3b&production_line_id=699d3f13-9eaf-4f43-989e-5ec40c115c78&data_source_id=42aa10a7-1ea5-4b5f-9ce6-0f719a2b39ba \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-02-16T09:22:43.318701Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/process/7025549a-4bd1-41cd-95a3-e9096f149a7f \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-02-16T09:22:43.320606Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-02-16T09:22:43.320705Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-02-16T09:22:43.320916Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: 7025549a-4bd1-41cd-95a3-e9096f149a7f"}
+{"timestamp": "2026-02-16T09:22:43.320969Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: 699d3f13-9eaf-4f43-989e-5ec40c115c78"}
+{"timestamp": "2026-02-16T09:22:43.321004Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: None"}
+{"timestamp": "2026-02-16T09:22:43.321035Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: None"}
+{"timestamp": "2026-02-16T09:22:43.321063Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 3"}
+{"timestamp": "2026-02-16T09:22:43.321092Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-02-16T09:22:43.326100Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "Schema Locked for DataSource 699d3f13-9eaf-4f43-989e-5ec40c115c78: dict_keys(['Date', 'Total', 'Eff'])"}
+{"timestamp": "2026-02-16T09:22:43.335607Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=e0d111f0-0306-4e97-a8df-3368858f4f3b&production_line_id=699d3f13-9eaf-4f43-989e-5ec40c115c78&data_source_id=42aa10a7-1ea5-4b5f-9ce6-0f719a2b39ba "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/process/7025549a-4bd1-41cd-95a3-e9096f149a7f "HTTP/1.1 200 OK"
+INFO     ingestion.confirm_mapping:ingestion.py:525 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:526 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion.py:527   raw_import_id: 7025549a-4bd1-41cd-95a3-e9096f149a7f
+INFO     ingestion.confirm_mapping:ingestion.py:528   production_line_id: 699d3f13-9eaf-4f43-989e-5ec40c115c78
+INFO     ingestion.confirm_mapping:ingestion.py:529   factory_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:530   data_source_id: None
+INFO     ingestion.confirm_mapping:ingestion.py:531   mappings count: 3
+INFO     ingestion.confirm_mapping:ingestion.py:532 ============================================================
+INFO     ingestion.confirm_mapping:ingestion.py:626 Schema Locked for DataSource 699d3f13-9eaf-4f43-989e-5ec40c115c78: dict_keys(['Date', 'Total', 'Eff'])
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+_________________________ test_get_hourly_production __________________________
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.country
+
+The above exception was the direct cause of the following exception:
+backend\tests\test_api\test_individual_widgets.py:193: in test_get_hourly_production
+    await db_session.flush()
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py:787: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:203: in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4331: in flush
+    self._flush(objects)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4466: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4427: in _flush
+    flush_context.execute()
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py:466: in execute
+    rec.execute(self)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py:93: in save_obj
+    _emit_insert_statements(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.country
+E   [SQL: INSERT INTO factories (organization_id, name, code, country, city, address, timezone, total_lines, total_workers, daily_capacity_units, certifications, locale, is_active, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E   [parameters: ('6a4fea32-5383-4a90-a1e8-027c6ce52fe9', 'Hourly Factory', 'HF-01', None, None, None, 'UTC', None, None, None, None, 'en-US', 1, 'aed32637-f614-488c-9fc8-8adbf6a0fd63', '2026-02-16 09:22:43.935704', '2026-02-16 09:22:43.935706')]
+E   (Background on this error at: https://sqlalche.me/e/20/gkpj)
+__________________________ test_get_sam_performance ___________________________
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlite3.IntegrityError: NOT NULL constraint failed: factories.country
+
+The above exception was the direct cause of the following exception:
+backend\tests\test_api\test_individual_widgets.py:238: in test_get_sam_performance
+    await db_session.flush()
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py:787: in flush
+    await greenlet_spawn(self.sync_session.flush, objects=objects)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:203: in greenlet_spawn
+    result = context.switch(value)
+             ^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4331: in flush
+    self._flush(objects)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4466: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py:224: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py:4427: in _flush
+    flush_context.execute()
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py:466: in execute
+    rec.execute(self)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py:93: in save_obj
+    _emit_insert_statements(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:180: in execute
+    self._adapt_connection._handle_exception(error)
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:340: in _handle_exception
+    raise error
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:162: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+..\..\AppData\Roaming\Python\Python313\site-packages\aiosqlite\core.py:63: in _connection_worker_thread
+    result = function()
+             ^^^^^^^^^^
+E   sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: factories.country
+E   [SQL: INSERT INTO factories (organization_id, name, code, country, city, address, timezone, total_lines, total_workers, daily_capacity_units, certifications, locale, is_active, id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]
+E   [parameters: ('ab431a79-4cb2-4e4b-a92d-5cdf837e2c40', 'SAM Factory', 'SF-01', None, None, None, 'UTC', None, None, None, None, 'en-US', 1, 'f5ed0a24-f30a-4348-9e74-a45bddabb08e', '2026-02-16 09:22:44.539424', '2026-02-16 09:22:44.539426')]
+E   (Background on this error at: https://sqlalche.me/e/20/gkpj)
+____________________________ test_get_dhu_history _____________________________
+backend\tests\test_api\test_individual_widgets.py:324: in test_get_dhu_history
+    assert float(today_point["dhu"]) == 2.5
+E   AssertionError: assert 0.0 == 2.5
+E    +  where 0.0 = float('0')
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:22:45.466543Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/dhu?days=7 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/dhu?days=7 "HTTP/1.1 200 OK"
+__________________________ test_get_speed_vs_quality __________________________
+backend\tests\test_api\test_individual_widgets.py:351: in test_get_speed_vs_quality
+    assert point is not None
+E   assert None is not None
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:22:45.804211Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/speed-quality \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/speed-quality "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_dhu_history
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality
+========================= 5 failed, 3 passed in 4.77s =========================

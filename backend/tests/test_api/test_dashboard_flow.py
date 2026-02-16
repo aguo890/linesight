@@ -46,6 +46,7 @@ async def setup_dashboard_data(db_session: AsyncSession, test_organization):
         source_name="Production Data",
         time_column="Date",
         description="Main production data source",
+        factory_id=factory.id, # Ensure RLS works
     )
     db_session.add(ds)
     await db_session.commit()
@@ -88,7 +89,7 @@ async def test_edit_configuration(
     update_payload = {"time_column": "Production_Date"}
 
     response = await async_client.put(
-        f"/api/v1/datasources/{ds.id}", json=update_payload, headers=auth_headers
+        f"/api/v1/data-sources/{ds.id}", json=update_payload, headers=auth_headers
     )
 
     assert response.status_code == 200

@@ -185,44 +185,75 @@ async def test_date_format_handling(
     auth_headers: dict,
     pipeline_test_setup,
 ):
-    """
-    Test that various date formats are correctly parsed.
-    ISO format should work; other formats depend on pandas parsing.
-    """
+    """Test pipeline correctly normalizes various date formats to ISO."""
     setup = pipeline_test_setup
     factory_id = setup["factory"].id
     line_id = setup["line"].id
 
-    # Use ISO dates (most reliable)
-    csv_data = """Style Number,PO Number,Production Date,Actual Qty
-DATE-TEST-001,PO-DATE-A,2024-12-25,100
-DATE-TEST-002,PO-DATE-B,2024-12-26,200
-DATE-TEST-003,PO-DATE-C,2024-12-27,300
+    # 1. Setup Dynamic Dates
+    today = date.today()
+    # Create variations relative to TODAY so they aren't filtered out by default views
+    d1 = today.strftime("%Y-%m-%d")
+    d2 = (today - timedelta(days=1)).strftime("%m/%d/%Y")
+    
+    # 2. Upload Data with Mixed Formats
+    csv_content = f"""production_date,style_number,actual_qty
+{d1},ST-DATE-1,100
+{d2},ST-DATE-2,100
 """
-
-    mappings = [
-        {"source_column": "Style Number", "target_field": "style_number"},
-        {"source_column": "PO Number", "target_field": "po_number"},
-        {"source_column": "Production Date", "target_field": "production_date"},
-        {"source_column": "Actual Qty", "target_field": "actual_qty"},
-    ]
-
-    result = await upload_and_promote(
-        async_client, auth_headers, factory_id, line_id, csv_data, mappings
+    files = {"file": ("dates.csv", csv_content, "text/csv")}
+    
+    # Upload
+    upload_res = await async_client.post(
+        f"/api/v1/ingestion/upload?factory_id={factory_id}&data_source_id={line_id}",
+        files=files,
+        headers=auth_headers
     )
+    assert upload_res.status_code == 200, f"Upload failed: {upload_res.text}"
+    import_id = upload_res.json()["raw_import_id"]
 
-    assert result["promote_data"]["success_count"] == 3
-
-    # Verify dates in database
-    db_session.expire_all()
-    runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
+    # Confirm Mapping
+    confirm_res = await async_client.post(
+        "/api/v1/ingestion/confirm-mapping",
+        json={
+            "raw_import_id": import_id,
+            "mappings": [
+                {"source_column": "production_date", "target_field": "production_date"},
+                {"source_column": "style_number", "target_field": "style_number"},
+                {"source_column": "actual_qty", "target_field": "actual_qty"}
+            ],
+            "time_column": "production_date",
+            "production_line_id": str(line_id)
+        },
+        headers=auth_headers
     )
-    runs = runs_result.scalars().all()
+    assert confirm_res.status_code == 200
 
-    dates = sorted([r.production_date for r in runs])
-    expected_dates = [date(2024, 12, 25), date(2024, 12, 26), date(2024, 12, 27)]
-    assert dates == expected_dates, f"Dates mismatch: {dates}"
+    # Process & Promote
+    await async_client.post(f"/api/v1/ingestion/process/{import_id}", headers=auth_headers)
+    await async_client.post(f"/api/v1/ingestion/promote/{import_id}", headers=auth_headers)
+
+    # 3. Verify via Production Runs Endpoint
+    # We query the runs to see if dates were parsed correctly
+    res = await async_client.get(
+        f"/api/v1/production/runs?factory_id={factory_id}&limit=10",
+        headers=auth_headers
+    )
+    assert res.status_code == 200
+    data = res.json()
+    
+    # Support pagination or list response
+    items = data["items"] if isinstance(data, dict) and "items" in data else data
+    
+    dates = [r["production_date"] for r in items]
+    
+    # Assertion: ISO Format Check (YYYY-MM-DD)
+    expected_d1 = today.isoformat()
+    expected_d2 = (today - timedelta(days=1)).isoformat()
+    
+    # Check strict format presence
+    assert expected_d2 in dates
+    assert expected_d1 in dates
 
 
 # =============================================================================

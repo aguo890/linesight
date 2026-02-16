@@ -1,0 +1,61 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 9 items
+
+backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production FAILED [ 11%]
+backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance FAILED [ 22%]
+backend\tests\test_api\test_individual_widgets.py::test_get_workforce_stats PASSED [ 33%]
+backend\tests\test_api\test_individual_widgets.py::test_get_dhu_history PASSED [ 44%]
+backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality FAILED [ 55%]
+backend\tests\test_api\test_individual_widgets.py::test_get_complexity_impact PASSED [ 66%]
+backend\tests\test_api\test_individual_widgets.py::test_get_downtime_reasons PASSED [ 77%]
+backend\tests\test_api\test_ingestion_flow.py::test_full_ingestion_flow PASSED [ 88%]
+backend\tests\test_api\test_ingestion_flow.py::test_schema_evolution PASSED [100%]
+
+================================== FAILURES ===================================
+_________________________ test_get_hourly_production __________________________
+backend\tests\test_api\test_individual_widgets.py:255: in test_get_hourly_production
+    total_qty = sum(d["actual"] for d in data)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\tests\test_api\test_individual_widgets.py:255: in <genexpr>
+    total_qty = sum(d["actual"] for d in data)
+                    ^^^^^^^^^^^
+E   TypeError: 'int' object is not subscriptable
+---------------------------- Captured stdout call -----------------------------
+DEBUG: Entering get_hourly_production line_id=7171af68-8e12-4af9-850b-e56c24499104
+DEBUG: Calling prod_repo.get_effective_date
+DEBUG: effective_date=2026-02-16
+DEBUG: Executing query
+DEBUG: Query executed
+DEBUG: Found 0 rows
+{"timestamp": "2026-02-16T09:33:46.378172Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/production/hourly?line_id=7171af68-8e12-4af9-850b-e56c24499104 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/production/hourly?line_id=7171af68-8e12-4af9-850b-e56c24499104 "HTTP/1.1 200 OK"
+__________________________ test_get_sam_performance ___________________________
+backend\tests\test_api\test_individual_widgets.py:309: in test_get_sam_performance
+    assert data["efficiency"] > 0
+           ^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: '>' not supported between instances of 'str' and 'int'
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:33:47.132614Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=95d86513-2ef4-47f8-807f-d9165b87ae9a \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=95d86513-2ef4-47f8-807f-d9165b87ae9a "HTTP/1.1 200 OK"
+__________________________ test_get_speed_vs_quality __________________________
+backend\tests\test_api\test_individual_widgets.py:396: in test_get_speed_vs_quality
+    assert float(point["defects_per_hundred"]) == 2.5
+E   AssertionError: assert 0.0 == 2.5
+E    +  where 0.0 = float('0.0')
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-02-16T09:33:48.337240Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/speed-quality \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/speed-quality "HTTP/1.1 200 OK"
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_hourly_production
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_speed_vs_quality
+========================= 3 failed, 6 passed in 8.75s =========================

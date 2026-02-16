@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Python313\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 10 items
+
+backend\tests\test_api\test_fallback_logic.py::test_overview_fallback PASSED [ 10%]
+backend\tests\test_api\test_fallback_logic.py::test_production_chart_fallback PASSED [ 20%]
+backend\tests\test_api\test_fallback_logic.py::test_sam_performance_fallback PASSED [ 30%]
+backend\tests\test_api\test_fallback_logic.py::test_hourly_fallback PASSED [ 40%]
+backend\tests\test_api\test_error_handling.py::test_404_json_response PASSED [ 50%]
+backend\tests\test_api\test_error_handling.py::test_validation_error_json_response PASSED [ 60%]
+backend\tests\test_api\test_error_handling.py::test_upload_bad_file_json_response PASSED [ 70%]
+backend\tests\test_api\test_error_handling.py::test_delete_204_response PASSED [ 80%]
+backend\tests\test_api\test_schema_config.py::test_schema_configuration_flow PASSED [ 90%]
+backend\tests\test_api\test_repro_500.py::test_list_dashboards_by_factory_id_crash PASSED [100%]
+
+============================= 10 passed in 6.46s ==============================

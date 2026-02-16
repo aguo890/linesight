@@ -76,6 +76,7 @@ class OrderFactory(SQLAlchemyFactory[Order]):
 class ProductionRunFactory(SQLAlchemyFactory[ProductionRun]):
     __model__ = ProductionRun
 
+    # FIX: Use date.today() to ensure analytics tests always fall within the "Current Month" scope
     production_date = Use(lambda: date.today())
     shift = ShiftType.DAY
     actual_qty = Use(lambda: 450)

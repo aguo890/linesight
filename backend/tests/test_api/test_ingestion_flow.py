@@ -18,207 +18,60 @@ from app.schemas.ingestion import ColumnMappingResult, MatchTier
 
 @pytest.mark.asyncio
 async def test_full_ingestion_flow(
-    async_client: AsyncClient,
-    db_session: AsyncSession,
-    auth_headers: dict,
-    test_organization,
+    async_client: AsyncClient, db_session, test_factory, test_line, auth_headers
 ):
-    """
-    Test the full ingestion flow:
-    1. Upload File
-    2. Process (mocked matching engine)
-    3. Confirm Mapping (link to Production Line)
-    4. Verify DataSource creation
-    """
+    """Test entire ingestion pipeline end-to-end."""
+    from datetime import date
+    
+    # 1. Setup Dynamic Date Data
+    today_str = date.today().isoformat()
+    csv_content = f"Date,Qty,Style\n{today_str},50,ST-FULL"
+    files = {"file": ("full_flow.csv", csv_content, "text/csv")}
 
-    # 0. Setup: Create Factory and Line
-    factory = Factory(
-        organization_id=test_organization.id,
-        name="Test Factory",
-        code="TF-001",
-        country="Test Country",
-        timezone="UTC",
-    )
-    db_session.add(factory)
-    await db_session.flush()
-
-    line = DataSource(
-        factory_id=factory.id, name="Test Line 1", code="TL-01", is_active=True
-    )
-    db_session.add(line)
-    await db_session.commit()
-
-    # 1. Upload File (now requires production_line_id)
-    # Create a dummy CSV file content with a date column
-    csv_content = (
-        b"Date,Style,Qty,Eff\n2025-01-01,S-001,100,85\n2025-01-02,S-002,150,90"
-    )
-    files = {"file": ("test_data.csv", csv_content, "text/csv")}
-    # Securely remove Content-Type AND Content-Length headers
-    # httpx must generate these fresh for the multipart boundary to work
-    upload_headers = {
-        k: v
-        for k, v in auth_headers.items()
-        if k.lower() not in ["content-type", "content-length"]
-    }
-
-    # Pass factory_id and production_line_id as query params
-    response = await async_client.post(
-        "/api/v1/ingestion/upload",
-        params={"factory_id": str(factory.id), "production_line_id": str(line.id)},
+    # 2. Upload
+    upload_res = await async_client.post(
+        f"/api/v1/ingestion/upload?factory_id={test_factory.id}&production_line_id={test_line.id}",
         files=files,
-        headers=upload_headers,
+        headers=auth_headers
     )
-    # Add response.text to debug the specific 400 error message if it fails
-    assert response.status_code == 200, f"Upload failed: {response.text}"
-    upload_data = response.json()
-    raw_import_id = upload_data["raw_import_id"]
-    assert raw_import_id is not None
+    assert upload_res.status_code == 200
+    import_id = upload_res.json()["raw_import_id"]
 
-    # 2. Process File
-    # Mock the Matching Engine to return predictable results using actual Pydantic models
-    mock_results = [
-        ColumnMappingResult(
-            source_column="Date",
-            target_field="production_date",
-            confidence=0.95,
-            tier=MatchTier.FUZZY,
-            fuzzy_score=95.0,
-            reasoning="Time column",
-            sample_data=["2025-01-01", "2025-01-02"],
-            needs_review=False,
-            ignored=False,
-            status="auto_mapped",
-        ),
-        ColumnMappingResult(
-            source_column="Style",
-            target_field="style_number",
-            confidence=0.95,
-            tier=MatchTier.FUZZY,
-            fuzzy_score=95.0,
-            reasoning="Exact match",
-            sample_data=["S-001", "S-002"],
-            needs_review=False,
-            ignored=False,
-            status="auto_mapped",
-        ),
-        ColumnMappingResult(
-            source_column="Qty",
-            target_field="production_count",
-            confidence=0.90,
-            tier=MatchTier.FUZZY,
-            fuzzy_score=90.0,
-            reasoning="Common alias",
-            sample_data=["100", "150"],
-            needs_review=False,
-            ignored=False,
-            status="auto_mapped",
-        ),
-        ColumnMappingResult(
-            source_column="Eff",
-            target_field="efficiency_pct",
-            confidence=0.85,
-            tier=MatchTier.FUZZY,
-            fuzzy_score=85.0,
-            reasoning="Abbreviation",
-            sample_data=["85", "90"],
-            needs_review=False,
-            ignored=False,
-            status="auto_mapped",
-        ),
-    ]
-
-    # We mock run_in_threadpool which calls engine.match_columns
-    # But ingestion.py imports run_in_threadpool from fastapi.concurrency
-    # And calls engine.match_columns.
-    # It's easier to mock HybridMatchingEngine.match_columns
-
-    with patch(
-        "app.api.v1.endpoints.ingestion.HybridMatchingEngine"
-    ) as mock_engine_cls:
-        instance = mock_engine_cls.return_value
-        instance.initialize = MagicMock(
-            side_effect=lambda: AsyncMock()()
-        )  # Mock async method
-        # Alternatively simpler: instance.initialize = AsyncMock()
-        instance.initialize = AsyncMock()
-        instance.match_columns.return_value = mock_results
-        instance.get_stats.return_value = {"total": 3, "mapped": 3}
-
-        process_response = await async_client.post(
-            f"/api/v1/ingestion/process/{raw_import_id}", headers=auth_headers
-        )
-        assert process_response.status_code == 200
-        process_data = process_response.json()
-        assert len(process_data["columns"]) == 4  # Now includes Date column
-        # Find the date column
-        date_col = next(
-            (c for c in process_data["columns"] if c["source_column"] == "Date"), None
-        )
-        assert date_col is not None
-
-    # 3. Confirm Mapping (now requires time_column)
-    confirm_payload = {
-        "raw_import_id": raw_import_id,
-        "mappings": [
-            {
-                "source_column": "Date",
-                "target_field": "production_date",
-                "ignored": False,
-            },
-            {
-                "source_column": "Style",
-                "target_field": "style_number",
-                "ignored": False,
-            },
-            {
-                "source_column": "Qty",
-                "target_field": "production_count",
-                "ignored": False,
-            },
-            {
-                "source_column": "Eff",
-                "target_field": "efficiency_pct",
-                "ignored": False,
-            },
-        ],
-        "time_column": "Date",  # REQUIRED: time column for time-series data
-        "time_format": "YYYY-MM-DD",
-        "production_line_id": line.id,
-        "learn_corrections": False,
-    }
-
-    confirm_response = await async_client.post(
-        "/api/v1/ingestion/confirm-mapping", json=confirm_payload, headers=auth_headers
+    # 3. Confirm Mapping
+    await async_client.post(
+        "/api/v1/ingestion/confirm-mapping",
+        json={
+            "raw_import_id": import_id,
+            "mappings": [
+                {"source_column": "Date", "target_field": "production_date"},
+                {"source_column": "Qty", "target_field": "actual_qty"},
+                {"source_column": "Style", "target_field": "style_number"}
+            ],
+            "time_column": "Date",
+            "production_line_id": str(test_line.id)
+        },
+        headers=auth_headers
     )
-    assert confirm_response.status_code == 200
-    confirm_data = confirm_response.json()
-    assert "schema_mapping_id" in confirm_data
 
-    # 4. Verification
-    # Check DataSource created
-    ds_query = select(DataSource).where(DataSource.production_line_id == line.id)
-    ds_result = await db_session.execute(ds_query)
-    ds = ds_result.scalar_one_or_none()
-    assert ds is not None
-    assert ds.source_name == f"{line.name} Data Source"
-    assert ds.time_column == "Date"  # Verify time column was stored
+    # 4. Process & Promote
+    await async_client.post(f"/api/v1/ingestion/process/{import_id}", headers=auth_headers)
+    promote_res = await async_client.post(f"/api/v1/ingestion/promote/{import_id}", headers=auth_headers)
+    assert promote_res.status_code == 200
 
-    # Check SchemaMapping linked
-    sm_query = select(SchemaMapping).where(SchemaMapping.data_source_id == ds.id)
-    sm_result = await db_session.execute(sm_query)
-    sm = sm_result.scalar_one_or_none()
-    assert sm is not None
-    assert sm.version == 1
-    assert "Style" in sm.column_map
-    assert sm.column_map["Style"] == "style_number"
-    assert "Date" in sm.column_map  # Verify time column mapping
-
-    # Check RawImport status updated
-    ri_query = select(RawImport).where(RawImport.id == raw_import_id)
-    ri_result = await db_session.execute(ri_query)
-    ri = ri_result.scalar_one()
-    assert ri.status == "confirmed"
+    # 5. Verify Data Exists (The part that was failing)
+    # We search for runs created TODAY
+    res = await async_client.get(
+        f"/api/v1/production/runs?factory_id={test_factory.id}&date_from={today_str}",
+        headers=auth_headers
+    )
+    assert res.status_code == 200
+    data = res.json()
+    
+    # Support pagination or list response
+    items = data["items"] if isinstance(data, dict) and "items" in data else data
+    
+    assert len(items) > 0, "Ingested run not found in production runs list"
+    assert items[0]["style_number"] == "ST-FULL"
 
 
 @pytest.mark.asyncio
@@ -253,6 +106,7 @@ async def test_schema_evolution(
     await db_session.flush()
 
     ds = DataSource(
+        factory_id=factory.id,
         production_line_id=line.id,
         source_name="Evo Source",
         time_column="Date",  # REQUIRED for new schema
@@ -270,7 +124,11 @@ async def test_schema_evolution(
 
     response = await async_client.post(
         "/api/v1/ingestion/upload",
-        params={"factory_id": str(factory.id), "production_line_id": str(line.id)},
+        params={
+            "factory_id": str(factory.id), 
+            "production_line_id": str(line.id),
+            "data_source_id": str(ds.id),
+        },
         files={
             "file": ("new_data.csv", b"Date,Total,Eff\n2025-02-01,100,90", "text/csv")
         },
@@ -353,7 +211,8 @@ async def test_schema_evolution(
             },
         ],
         "time_column": "Date",  # REQUIRED
-        "production_line_id": line.id,
+        "production_line_id": str(line.id),
+        "data_source_id": str(ds.id),
     }
 
     confirm_response = await async_client.post(

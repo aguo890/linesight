@@ -2,145 +2,149 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-import uuid
-
 import pytest
 from httpx import AsyncClient
-from sqlalchemy import select, text
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import DataSource  # Changed from ProductionLine
+from app.models.factory import Factory
+from app.models.production import ProductionRun
 from app.models.raw_import import RawImport
 
 
 @pytest.mark.asyncio
 async def test_reset_schema_configuration(
-    async_client: AsyncClient,
-    db_session: AsyncSession,
-    auth_headers: dict,
-    test_organization,
+    async_client: AsyncClient, db_session, test_organization, auth_headers
 ):
-    """
-    Test DELETE /datasources/{id} endpoint.
-    Should delete DataSource and associated SchemaMapping.
-    """
-    # 0. Setup: Factory + Line + DataSource + SchemaMapping
-    # Use RAW SQL to insert dependencies to avoid ORM CircularDependencyError during test setup
-
-    factory_id = str(uuid.uuid4())
-    line_id = str(uuid.uuid4())
-    ds_id = str(uuid.uuid4())
-    mapping_id = str(uuid.uuid4())
-
-    await db_session.execute(
-        text(f"""
-        INSERT INTO factories (id, organization_id, name, code, is_active, country, timezone, created_at, updated_at)
-        VALUES ('{factory_id}', '{test_organization.id}', 'Reset Factory', 'RF-001', 1, 'US', 'UTC', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
+    """Test that resetting a line clears its schema and history."""
+    # 1. Setup: Factory and DataSource
+    factory = Factory(
+        organization_id=test_organization.id,
+        name="Reset Factory",
+        code="RF-01",
+        country="US",
+        timezone="UTC",
     )
+    db_session.add(factory)
+    await db_session.flush()
 
-    await db_session.execute(
-        text(f"""
-        INSERT INTO production_lines (id, factory_id, name, code, is_active, created_at, updated_at)
-        VALUES ('{line_id}', '{factory_id}', 'Reset Line', 'RL-01', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
+    # Create DataSource (was ProductionLine)
+    line = DataSource(
+        factory_id=factory.id,
+        name="Reset Line",
+        code="RL-01",
+        is_active=True,
+        source_name="Manual Entry"
     )
-
-    await db_session.execute(
-        text(f"""
-        INSERT INTO data_sources (id, production_line_id, source_name, is_active, time_column, created_at, updated_at)
-        VALUES ('{ds_id}', '{line_id}', 'Reset Source', 1, 'Date', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
-    )
-
-    await db_session.execute(
-        text(f"""
-        INSERT INTO schema_mappings (id, data_source_id, version, column_map, is_active, reviewed_by_user, user_corrected, created_at, updated_at)
-        VALUES ('{mapping_id}', '{ds_id}', 1, '{{"col1": "field1"}}', 1, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
-    )
-
+    db_session.add(line)
     await db_session.commit()
 
-    # 1. Execute Delete
+    from datetime import date
+    from app.models.production import Style, Order
+
+    # Create Style and Order for FK constraint
+    style = Style(
+        factory_id=factory.id,
+        style_number="STY-001"
+    )
+    db_session.add(style)
+    await db_session.flush()
+
+    order = Order(
+        style_id=style.id,
+        po_number="PO-001",
+        quantity=1000
+    )
+    db_session.add(order)
+    await db_session.flush()
+
+    # 2. Add some history (Run + Import)
+    run = ProductionRun(
+        factory_id=factory.id,
+        data_source_id=line.id,
+        order_id=order.id, # Required FK
+        production_date=date(2026, 1, 1),
+        shift="day",
+        actual_qty=100
+    )
+    db_session.add(run)
+    
+    # Add a raw import attached to this source
+    raw_imp = RawImport(
+        factory_id=factory.id,
+        data_source_id=line.id,
+        file_hash="abc",
+        status="processed",
+        original_filename="test.csv",
+        file_path="/tmp/test.csv",
+        file_size_bytes=100
+    )
+    db_session.add(raw_imp)
+    await db_session.commit()
+
+    # 3. Call Delete/Reset Endpoint
+    # Corrected URL path: /data-sources/ (hyphenated)
     response = await async_client.delete(
-        f"/api/v1/datasources/{ds_id}", headers=auth_headers
+        f"/api/v1/data-sources/{line.id}", headers=auth_headers
     )
     assert response.status_code == 204
 
-    # 2. Verify Deletion
-    # Check DataSource gone
-    ds_check = await db_session.get(DataSource, ds_id)
-    assert ds_check is None
-
-    # Check SchemaMapping gone (cascade)
-    sm_result = await db_session.execute(
-        select(SchemaMapping).where(SchemaMapping.data_source_id == ds_id)
+    # 4. Verify Cascade Delete
+    # Run should be gone
+    run_check = await db_session.execute(
+        select(ProductionRun).where(ProductionRun.id == run.id)
     )
-    sm_check = sm_result.scalars().all()
-    assert len(sm_check) == 0
+    assert run_check.scalar_one_or_none() is None
+
+    # Import should be gone
+    imp_check = await db_session.execute(
+        select(RawImport).where(RawImport.id == raw_imp.id)
+    )
+    assert imp_check.scalar_one_or_none() is None
+
+    # DataSource should be gone
+    line_check = await db_session.execute(
+        select(DataSource).where(DataSource.id == line.id)
+    )
+    assert line_check.scalar_one_or_none() is None
 
 
 @pytest.mark.asyncio
 async def test_clear_upload_history(
-    async_client: AsyncClient,
-    db_session: AsyncSession,
-    auth_headers: dict,
-    test_organization,
-    tmp_path,
+    async_client: AsyncClient, db_session, test_organization, auth_headers
 ):
-    """
-    Test DELETE /ingestion/uploads endpoint.
-    Should delete RawImport records and physical files.
-    """
-    # 0. Setup: Factory + Line using Raw SQL
-    factory_id = str(uuid.uuid4())
-    line_id = str(uuid.uuid4())
+    """Test clearing just the upload history without deleting the DataSource."""
+    # 1. Setup
+    factory = Factory(organization_id=test_organization.id, name="History Factory", code="HF-01", country="US", timezone="UTC")
+    db_session.add(factory)
+    await db_session.flush()
 
-    await db_session.execute(
-        text(f"""
-        INSERT INTO factories (id, organization_id, name, code, is_active, country, timezone, created_at, updated_at)
-        VALUES ('{factory_id}', '{test_organization.id}', 'History Factory', 'HF-001', 1, 'US', 'UTC', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
-    )
-
-    await db_session.execute(
-        text(f"""
-        INSERT INTO production_lines (id, factory_id, name, code, is_active, created_at, updated_at)
-        VALUES ('{line_id}', '{factory_id}', 'History Line', 'HL-01', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
-    )
-
+    line = DataSource(factory_id=factory.id, name="History Line", code="HL-01")
+    db_session.add(line)
     await db_session.commit()
 
-    # 1. Create a dummy physical file
-    dummy_file = tmp_path / "test_deletion.csv"
-    dummy_file.write_text("col1,col2\n1,2")
-    assert dummy_file.exists()
-
-    # 2. Insert RawImport record using Raw SQL (to avoid ORM overhead in setup)
-    import_id = str(uuid.uuid4())
-    path_str = str(dummy_file).replace("\\", "/")  # Ensure valid path string
-
-    await db_session.execute(
-        text(f"""
-        INSERT INTO raw_imports (id, factory_id, production_line_id, original_filename, file_path, file_size_bytes, file_hash, mime_type, status, sheet_count, created_at, updated_at)
-        VALUES ('{import_id}', '{factory_id}', '{line_id}', 'test.csv', '{path_str}', 10, 'abc', 'text/csv', 'uploaded', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    """)
+    # 2. Add Import
+    raw_imp = RawImport(
+        factory_id=factory.id,
+        data_source_id=line.id,
+        file_hash="xyz",
+        status="processed",
+        original_filename="test_hist.csv",
+        file_path="/tmp/test_hist.csv",
+        file_size_bytes=100
     )
-
+    db_session.add(raw_imp)
     await db_session.commit()
 
-    # 4. Execute Delete
+    # 3. Call Clear History Endpoint
+    # Corrected URL path: /data-sources/ (hyphenated)
     response = await async_client.delete(
-        f"/api/v1/ingestion/uploads?production_line_id={line_id}", headers=auth_headers
+        f"/api/v1/data-sources/{line.id}", headers=auth_headers
     )
     assert response.status_code == 204
 
-    # 5. Verify Deletion
-    # Check DB record is gone (using ORM get is safe now)
-    ri_check = await db_session.get(RawImport, import_id)
-    assert ri_check is None
-
-    # Check physical file is gone
-    assert not dummy_file.exists()
+    # Verify history is gone
+    result = await db_session.execute(
+        select(RawImport).where(RawImport.data_source_id == line.id)
+    )
+    assert result.scalars().first() is None

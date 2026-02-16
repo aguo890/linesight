@@ -9,7 +9,7 @@ from app.models.analytics import DHUReport, EfficiencyMetric
 from app.models.base import Base
 from app.models.dashboard import Dashboard
 from app.models.data_quality import DataQualityIssue, IssueSeverity, IssueType
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import DataSource, DataSource as ProductionLine, SchemaMapping
 from app.models.events import EventType, ProductionEvent
 from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
