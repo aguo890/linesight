@@ -88,7 +88,17 @@ async def aggregate_dhu_for_date(
         defect_result = await db.execute(defect_query)
         defect_rows = defect_result.all()
 
-        total_defects = row[4] or 0
+        total_defects = int(row[5] or 0)
+        total_inspected = int(row[4] or 0)
+        total_rejected = int(row[6] or 0)
+
+        # Calculate Weighted DHU (Total Defects / Total Inspected * 100)
+        # func.avg(dhu) gives unweighted average of rates, which is mathematically incorrect for aggregate
+        if total_inspected > 0:
+            avg_dhu = (total_defects / total_inspected) * 100
+        else:
+            avg_dhu = 0.0
+
         top_defects = []
         for defect_row in defect_rows:
             pct = (defect_row[1] / total_defects * 100) if total_defects > 0 else 0
@@ -105,12 +115,12 @@ async def aggregate_dhu_for_date(
                 "factory_id": factory_id_val,
                 "report_date": target_date,
                 "period_type": PeriodType.DAILY,
-                "avg_dhu": Decimal(str(round(row[1] or 0, 2))),
+                "avg_dhu": Decimal(str(round(avg_dhu, 2))),
                 "min_dhu": Decimal(str(round(row[2] or 0, 2))),
                 "max_dhu": Decimal(str(round(row[3] or 0, 2))),
-                "total_inspected": int(row[4] or 0),
-                "total_defects": int(row[5] or 0),
-                "total_rejected": int(row[6] or 0),
+                "total_inspected": total_inspected,
+                "total_defects": total_defects,
+                "total_rejected": total_rejected,
                 "top_defects": json.dumps(top_defects) if top_defects else None,
             }
         )

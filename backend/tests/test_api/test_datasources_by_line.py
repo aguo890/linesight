@@ -18,7 +18,7 @@ from app.models.datasource import DataSource
 
 
 @pytest.fixture
-async def setup_line(db_session: AsyncSession, test_organization):
+async def setup_line(db_session: AsyncSession, test_organization, test_user):
     """Create a basic factory hierarchy (Organization -> Factory -> Line)."""
     # 1. Create Factory
     factory = Factory(
@@ -37,6 +37,19 @@ async def setup_line(db_session: AsyncSession, test_organization):
     await db_session.commit()
     await db_session.refresh(line)
 
+    # Assign Scope to User
+    from app.models.user import UserScope
+    from app.enums import RoleScope, UserRole
+
+    scope = UserScope(
+        user_id=test_user.id,
+        scope_type=RoleScope.FACTORY,
+        factory_id=factory.id,
+        role=UserRole.FACTORY_MANAGER,
+    )
+    db_session.add(scope)
+    await db_session.commit()
+
     return line
 
 
@@ -50,6 +63,7 @@ async def test_get_datasource_by_line_exists(
     # Create DataSource
     ds = DataSource(
         production_line_id=line.id,
+        factory_id=line.factory_id, # Required for organization verification
         source_name="Test Data Source",
         description="Test description",
         time_column="Date",  # Required field
@@ -57,6 +71,8 @@ async def test_get_datasource_by_line_exists(
     db_session.add(ds)
     await db_session.commit()
     await db_session.refresh(ds)
+
+
 
     # Call Endpoint
     response = await async_client.get(
@@ -105,6 +121,7 @@ async def test_get_datasource_cross_line_isolation(
     )
     factory = factory_result.scalar_one()
 
+    # factory_id is required
     line_b = DataSource(name="Line B", factory_id=factory.id)
     db_session.add(line_b)
     await db_session.commit()
@@ -113,6 +130,7 @@ async def test_get_datasource_cross_line_isolation(
     # Create DataSource for Line A only
     ds_a = DataSource(
         production_line_id=line_a.id,
+        factory_id=line_a.factory_id,
         source_name="Line A Data Source",
         description="Line A only",
         time_column="Date",
@@ -149,6 +167,7 @@ async def test_update_datasource(
     # Create DataSource
     ds = DataSource(
         production_line_id=line.id,
+        factory_id=line.factory_id,
         source_name="Test Data Source",
         description="Original description",
         time_column="Date",

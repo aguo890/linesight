@@ -38,6 +38,7 @@ from app.schemas.ingestion import (
     ConfirmMappingRequest,
     ConfirmMappingResponse,
     ProcessingResponse,
+    PreviewResponse,
 )
 from app.services.matching import HybridMatchingEngine
 
@@ -863,7 +864,8 @@ async def download_file(
     )
 
 
-@router.get("/preview/{raw_import_id}")
+
+@router.get("/preview/{raw_import_id}", response_model=PreviewResponse)
 async def get_import_preview(raw_import_id: str, db: AsyncSession = Depends(get_db)):
     """Fetches formatted preview data for the frontend TablePreview interface."""
     # 1. Get the RawImport metadata
@@ -921,14 +923,16 @@ async def get_import_preview(raw_import_id: str, db: AsyncSession = Depends(get_
         sanitized_rows.append(new_row)
     sample_rows = sanitized_rows
 
-    return {
-        "headers": columns,
-        "sample_rows": sample_rows,
-        "total_rows": raw_import.row_count or 0,
-        "total_columns": len(columns),
-        "filename": raw_import.original_filename,
-        "status": raw_import.status,
-    }
+    return PreviewResponse(
+        data=sample_rows,
+        columns=columns,
+        preview_rows=len(sample_rows),
+        total_rows=raw_import.row_count or 0,
+        total_columns=len(columns),
+        filename=raw_import.original_filename,
+        status=raw_import.status,
+    )
+
 
 
 @router.get("/preview-dry-run/{raw_import_id}")

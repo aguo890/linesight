@@ -15,6 +15,8 @@ import os
 from collections.abc import AsyncGenerator, Generator
 from pathlib import Path
 from unittest.mock import MagicMock
+from datetime import date, timedelta
+
 
 import pandas as pd
 import pytest
@@ -293,7 +295,13 @@ def setup_test_files():
         "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
         "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
         "buyer": ["Buyer A", "Buyer B", "Buyer C", "Buyer D", "Buyer E"],
-        "production_date": ["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05"],
+        "production_date": [
+            str(date.today() - timedelta(days=4)),
+            str(date.today() - timedelta(days=3)),
+            str(date.today() - timedelta(days=2)),
+            str(date.today() - timedelta(days=1)),
+            str(date.today())
+        ],
         "shift": ["day", "day", "night", "night", "day"],
         "actual_qty": [100, 150, 200, 120, 180],
         "planned_qty": [100, 150, 200, 120, 180],
@@ -315,7 +323,7 @@ def setup_test_files():
     # 2. Dummy CSV
     csv_path = base_dir / "test_e2e.csv"
     df_csv = pd.DataFrame({
-        "Date": ["2026-01-01"], 
+        "Date": [str(date.today())], 
         "Qty": [50],
         "Style": ["ST-001"],
         "PO": ["PO-1001"]
