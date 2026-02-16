@@ -9,6 +9,7 @@ import type { AppSchemasDatasourceDataSourceCreateCode } from './appSchemasDatas
 import type { AppSchemasDatasourceDataSourceCreateSpecialty } from './appSchemasDatasourceDataSourceCreateSpecialty';
 import type { AppSchemasDatasourceDataSourceCreateTargetOperators } from './appSchemasDatasourceDataSourceCreateTargetOperators';
 import type { AppSchemasDatasourceDataSourceCreateTargetEfficiencyPct } from './appSchemasDatasourceDataSourceCreateTargetEfficiencyPct';
+import type { AppSchemasDatasourceDataSourceCreateFactoryId } from './appSchemasDatasourceDataSourceCreateFactoryId';
 import type { AppSchemasDatasourceDataSourceCreateSettings } from './appSchemasDatasourceDataSourceCreateSettings';
 import type { AppSchemasDatasourceDataSourceCreateSourceName } from './appSchemasDatasourceDataSourceCreateSourceName';
 import type { AppSchemasDatasourceDataSourceCreateDescription } from './appSchemasDatasourceDataSourceCreateDescription';
@@ -29,7 +30,7 @@ export interface AppSchemasDatasourceDataSourceCreate {
   target_operators?: AppSchemasDatasourceDataSourceCreateTargetOperators;
   target_efficiency_pct?: AppSchemasDatasourceDataSourceCreateTargetEfficiencyPct;
   /** ID of the factory this data source belongs to */
-  factory_id: string;
+  factory_id?: AppSchemasDatasourceDataSourceCreateFactoryId;
   settings?: AppSchemasDatasourceDataSourceCreateSettings;
   source_name?: AppSchemasDatasourceDataSourceCreateSourceName;
   description?: AppSchemasDatasourceDataSourceCreateDescription;

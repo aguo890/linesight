@@ -192,6 +192,24 @@
               "title": "Data Source Id"
             },
             "description": "Optional: Data source to upload data to"
+          },
+          {
+            "name": "production_line_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "LEGACY: Use data_source_id instead",
+              "title": "Production Line Id"
+            },
+            "description": "LEGACY: Use data_source_id instead"
           }
         ],
         "requestBody": {
@@ -594,7 +612,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResponse"
+                }
               }
             }
           },
@@ -7675,6 +7695,64 @@
         "title": "OverviewStats",
         "description": "Dashboard overview statistics."
       },
+      "PreviewResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "items": {},
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "First N rows of data for preview"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns",
+            "description": "Column headers detected"
+          },
+          "preview_rows": {
+            "type": "integer",
+            "title": "Preview Rows",
+            "description": "Number of rows included in this preview"
+          },
+          "total_rows": {
+            "type": "integer",
+            "title": "Total Rows",
+            "description": "Total rows in the file"
+          },
+          "total_columns": {
+            "type": "integer",
+            "title": "Total Columns",
+            "description": "Total columns in the file"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename",
+            "description": "Name of the uploaded file"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status of the raw import"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "columns",
+          "preview_rows",
+          "total_rows",
+          "total_columns",
+          "filename",
+          "status"
+        ],
+        "title": "PreviewResponse",
+        "description": "Response for previewing uploaded file data before processing."
+      },
       "PriorityLevel": {
         "type": "string",
         "enum": [
@@ -9618,14 +9696,9 @@
                 "$ref": "#/components/schemas/UserPreferencesUpdate"
               },
               {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
                 "type": "null"
               }
-            ],
-            "title": "Preferences"
+            ]
           },
           "is_active": {
             "anyOf": [
@@ -10062,7 +10135,14 @@
             "title": "Target Efficiency Pct"
           },
           "factory_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Factory Id",
             "description": "ID of the factory this data source belongs to"
           },
@@ -10126,8 +10206,7 @@
         },
         "type": "object",
         "required": [
-          "name",
-          "factory_id"
+          "name"
         ],
         "title": "DataSourceCreate",
         "description": "Schema for creating a data source."

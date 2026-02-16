@@ -131,11 +131,16 @@ async def get_overview_stats(
     total_lines = lines_stats.total or 0
 
     # 3. Discrepancies (Separate as it's a different table hierarchy)
-    disc_query = select(func.count(TraceabilityRecord.id)).where(
-        TraceabilityRecord.verification_status != VerificationStatus.VERIFIED
-    )
-    disc_result = await db.execute(disc_query)
-    discrepancies_count = disc_result.scalar() or 0
+    # Graceful fallback if table is missing (draft feature)
+    try:
+        disc_query = select(func.count(TraceabilityRecord.id)).where(
+            TraceabilityRecord.verification_status != VerificationStatus.VERIFIED
+        )
+        disc_result = await db.execute(disc_query)
+        discrepancies_count = disc_result.scalar() or 0
+    except Exception as e:
+        logger.warning(f"Traceability table not found or error querying: {e}")
+        discrepancies_count = 0
 
     last_updated = "Just now"
 
@@ -283,50 +288,51 @@ async def get_discrepancies(
     """
     Get detected data discrepancies based on TraceabilityRecords.
     """
-    # TODO: Compliance module is currently archived/draft.
-    # Re-enable this when app.models.compliance is restored.
-    query = (
-        select(TraceabilityRecord)
-        .where(
-            TraceabilityRecord.verification_status.in_(
-                [
-                    VerificationStatus.FLAGGED,
-                    VerificationStatus.REJECTED,
-                    VerificationStatus.PENDING,
-                ]
+    # Note: Compliance module is a draft feature and might not be migrated in all environments.
+    try:
+        query = (
+            select(TraceabilityRecord)
+            .where(
+                TraceabilityRecord.verification_status.in_(
+                    [
+                        VerificationStatus.FLAGGED,
+                        VerificationStatus.REJECTED,
+                        VerificationStatus.PENDING,
+                    ]
+                )
             )
-        )
-        .order_by(desc(TraceabilityRecord.created_at))
-        .limit(20)
-    )
-
-    result = await db.execute(query)
-    records = result.scalars().all()
-
-    discrepancies = []
-    for rec in records:
-        severity = "Medium"
-        if (
-            rec.verification_status == VerificationStatus.REJECTED
-            or rec.verification_status == VerificationStatus.FLAGGED
-        ):
-            severity = "High"
-
-        discrepancies.append(
-            DiscrepancyItem(
-                id=rec.id,
-                severity=severity,
-                issue_title=f"Compliance {rec.verification_status.value.title()}",
-                issue_description=rec.risk_notes
-                or "Verification incomplete or failed.",
-                source_file="Traceability Record",  # Placeholder
-            )
+            .order_by(desc(TraceabilityRecord.created_at))
+            .limit(20)
         )
 
-    return DiscrepanciesResponse(
-        discrepancies=discrepancies,
-        total_count=len(discrepancies),
-    )
+        result = await db.execute(query)
+        records = result.scalars().all()
+
+        discrepancies = []
+        for rec in records:
+            severity = "Medium"
+            if (
+                rec.verification_status == VerificationStatus.REJECTED
+                or rec.verification_status == VerificationStatus.FLAGGED
+            ):
+                severity = "High"
+
+            discrepancies.append(
+                DiscrepancyItem(
+                    id=rec.id,
+                    severity=severity,
+                    issue_title=f"Compliance {rec.verification_status.value.title()}",
+                    issue_description=rec.risk_notes or "Verification incomplete or failed.",
+                    detected_at=rec.created_at,
+                )
+            )
+        return DiscrepanciesResponse(
+            discrepancies=discrepancies,
+            total_count=len(discrepancies),
+        )
+    except Exception as e:
+        logger.warning(f"Traceability table not found or error querying: {e}")
+        return DiscrepanciesResponse(discrepancies=[], total_count=0)
 
 
 @router.get("/production/styles", response_model=StyleProgressResponse)
@@ -524,13 +530,13 @@ async def get_dhu_trend(
     result = await db.execute(query)
     rows = result.all()
 
-    # Map results by date for lookup
+    # Map results by date for lookup (Coerce key to string for cross-DB compatibility)
     dhu_data_map = {}
     for row in rows:
         dhu = Decimal(0)
         if row.total_checked > 0:
             dhu = (Decimal(row.total_defects) / Decimal(row.total_checked)) * 100
-        dhu_data_map[row.report_date] = round(dhu, 1)
+        dhu_data_map[str(row.report_date)] = round(dhu, 1)
 
     # Iterate through ALL dates in range (matching production-chart/speed-quality behavior)
     data = []
@@ -592,7 +598,8 @@ async def get_speed_quality_trend(
     eff_query = eff_query.group_by(ProductionRun.production_date)
 
     eff_result = await db.execute(eff_query)
-    eff_data = {row.production_date: row.avg_eff for row in eff_result.all()}
+    # Coerce key to string for cross-DB compatibility
+    eff_data = {str(row.production_date): row.avg_eff for row in eff_result.all()}
 
     # 2. Get Daily DHU Quality
     dhu_query = (

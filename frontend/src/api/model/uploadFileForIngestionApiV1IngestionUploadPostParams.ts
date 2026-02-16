@@ -15,4 +15,8 @@ factory_id: string;
  * Optional: Data source to upload data to
  */
 data_source_id?: string | null;
+/**
+ * LEGACY: Use data_source_id instead
+ */
+production_line_id?: string | null;
 };

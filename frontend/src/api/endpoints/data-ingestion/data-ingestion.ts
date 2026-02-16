@@ -33,6 +33,7 @@ import type {
   GetUploadHistoryApiV1IngestionHistoryGetParams,
   HTTPValidationError,
   ListUploadsApiV1IngestionUploadsGetParams,
+  PreviewResponse,
   ProcessFileApiV1IngestionProcessRawImportIdPostParams,
   ProcessingResponse,
   PromoteToProductionApiV1IngestionPromoteRawImportIdPost200,
@@ -803,7 +804,7 @@ export const getImportPreviewApiV1IngestionPreviewRawImportIdGet = (
 ) => {
       
       
-      return customInstance<unknown>(
+      return customInstance<PreviewResponse>(
       {url: `/api/v1/ingestion/preview/${rawImportId}`, method: 'GET', signal
     },
       options);

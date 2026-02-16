@@ -86,7 +86,8 @@ OPTIONAL: data_source_id - If provided, upload is associated with a specific dat
  */
 export const uploadFileForIngestionApiV1IngestionUploadPostQueryParams = zod.object({
   "factory_id": zod.string().describe('REQUIRED: Factory to upload data to'),
-  "data_source_id": zod.union([zod.string(),zod.null()]).optional().describe('Optional: Data source to upload data to')
+  "data_source_id": zod.union([zod.string(),zod.null()]).optional().describe('Optional: Data source to upload data to'),
+  "production_line_id": zod.union([zod.string(),zod.null()]).optional().describe('LEGACY: Use data_source_id instead')
 })
 
 export const uploadFileForIngestionApiV1IngestionUploadPostBody = zod.object({
@@ -246,7 +247,15 @@ export const getImportPreviewApiV1IngestionPreviewRawImportIdGetParams = zod.obj
   "raw_import_id": zod.string()
 })
 
-export const getImportPreviewApiV1IngestionPreviewRawImportIdGetResponse = zod.any()
+export const getImportPreviewApiV1IngestionPreviewRawImportIdGetResponse = zod.object({
+  "data": zod.array(zod.array(zod.any())).describe('First N rows of data for preview'),
+  "columns": zod.array(zod.string()).describe('Column headers detected'),
+  "preview_rows": zod.number().describe('Number of rows included in this preview'),
+  "total_rows": zod.number().describe('Total rows in the file'),
+  "total_columns": zod.number().describe('Total columns in the file'),
+  "filename": zod.string().describe('Name of the uploaded file'),
+  "status": zod.string().describe('Current status of the raw import')
+}).describe('Response for previewing uploaded file data before processing.')
 
 
 /**
@@ -744,7 +753,7 @@ export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBody = zod.ob
   "specialty": zod.union([zod.string().max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodySpecialtyMaxOne),zod.null()]).optional(),
   "target_operators": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetOperatorsMinOne),zod.null()]).optional(),
   "target_efficiency_pct": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMinOne).max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMaxOne),zod.null()]).optional(),
-  "factory_id": zod.string().describe('ID of the factory this data source belongs to'),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional().describe('ID of the factory this data source belongs to'),
   "settings": zod.union([zod.object({
   "is_custom_schedule": zod.boolean().optional().describe('If false, uses factory defaults'),
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
@@ -2326,7 +2335,7 @@ export const updateUserMeApiV1UsersMePatchBody = zod.object({
   "country_code": zod.union([zod.string(),zod.null()]).optional(),
   "notifications": zod.union([zod.boolean(),zod.null()]).optional(),
   "locale": zod.union([zod.string(),zod.null()]).optional()
-}).describe('Schema for updating user preferences (all fields optional for merging).'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+}).describe('Schema for updating user preferences (all fields optional for merging).'),zod.null()]).optional(),
   "is_active": zod.union([zod.boolean(),zod.null()]).optional()
 }).describe('Schema for updating a user.')
 
