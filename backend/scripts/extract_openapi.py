@@ -15,21 +15,29 @@ import sys
 
 import requests
 
+# Add backend directory to sys.path to allow importing app
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.main import app
 
-def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") -> None:
+
+def extract_openapi(output_path: str, api_url: str | None = None) -> None:
     """Fetch OpenAPI schema from running API and save to file."""
-    openapi_url = f"{api_url}/api/v1/openapi.json"
-    print(f"Fetching OpenAPI schema from {openapi_url}...")
+    if api_url:
+        openapi_url = f"{api_url}/api/v1/openapi.json"
+        print(f"Fetching OpenAPI schema from {openapi_url}...")
 
-    try:
-        response = requests.get(openapi_url, timeout=10)
-        response.raise_for_status()
-        schema = response.json()
-    except requests.RequestException as e:
-        print(f"❌ Failed to fetch schema from {openapi_url}")
-        print(f"   Error: {e}")
-        print("   Make sure the API is running (docker-compose up -d)")
-        sys.exit(1)
+        try:
+            response = requests.get(openapi_url, timeout=10)
+            response.raise_for_status()
+            schema = response.json()
+        except requests.RequestException as e:
+            print(f"❌ Failed to fetch schema from {openapi_url}")
+            print(f"   Error: {e}")
+            print("   Make sure the API is running (docker-compose up -d)")
+            sys.exit(1)
+    else:
+        print("Extracting OpenAPI schema directly from FastAPI app in memory...")
+        schema = app.openapi()
 
     # --- Schema Simplification Logic ---
     print("✂️  Simplifying schema names...")
@@ -130,8 +138,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--api-url",
-        help="API base URL",
-        default="http://localhost:8000",
+        help="API base URL (optional, defaults to extracting from memory)",
+        default=None,
     )
     args = parser.parse_args()
     extract_openapi(args.output, args.api_url)
