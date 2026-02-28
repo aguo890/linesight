@@ -110,7 +110,7 @@ class UserUpdate(BaseModel):
     full_name: str | None = Field(None, max_length=255)
     role: str | None = None
     timezone: str | None = Field(None, max_length=50)
-    preferences: UserPreferencesUpdate | None = None
+    preferences: UserPreferencesUpdate | dict | None = None
     is_active: bool | None = None
 
     @field_validator("timezone")

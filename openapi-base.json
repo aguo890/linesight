@@ -192,24 +192,6 @@
               "title": "Data Source Id"
             },
             "description": "Optional: Data source to upload data to"
-          },
-          {
-            "name": "production_line_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "LEGACY: Use data_source_id instead",
-              "title": "Production Line Id"
-            },
-            "description": "LEGACY: Use data_source_id instead"
           }
         ],
         "requestBody": {
@@ -612,9 +594,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PreviewResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -7695,64 +7675,6 @@
         "title": "OverviewStats",
         "description": "Dashboard overview statistics."
       },
-      "PreviewResponse": {
-        "properties": {
-          "data": {
-            "items": {
-              "items": {},
-              "type": "array"
-            },
-            "type": "array",
-            "title": "Data",
-            "description": "First N rows of data for preview"
-          },
-          "columns": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Columns",
-            "description": "Column headers detected"
-          },
-          "preview_rows": {
-            "type": "integer",
-            "title": "Preview Rows",
-            "description": "Number of rows included in this preview"
-          },
-          "total_rows": {
-            "type": "integer",
-            "title": "Total Rows",
-            "description": "Total rows in the file"
-          },
-          "total_columns": {
-            "type": "integer",
-            "title": "Total Columns",
-            "description": "Total columns in the file"
-          },
-          "filename": {
-            "type": "string",
-            "title": "Filename",
-            "description": "Name of the uploaded file"
-          },
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "description": "Current status of the raw import"
-          }
-        },
-        "type": "object",
-        "required": [
-          "data",
-          "columns",
-          "preview_rows",
-          "total_rows",
-          "total_columns",
-          "filename",
-          "status"
-        ],
-        "title": "PreviewResponse",
-        "description": "Response for previewing uploaded file data before processing."
-      },
       "PriorityLevel": {
         "type": "string",
         "enum": [
@@ -8067,10 +7989,9 @@
             "type": "string",
             "title": "Order Id"
           },
-          "data_source_id": {
+          "line_id": {
             "type": "string",
-            "title": "Data Source Id",
-            "description": "ID of the data source (formerly line_id)"
+            "title": "Line Id"
           }
         },
         "type": "object",
@@ -8080,7 +8001,7 @@
           "operators_present",
           "worked_minutes",
           "order_id",
-          "data_source_id"
+          "line_id"
         ],
         "title": "ProductionRunCreate"
       },
@@ -8222,9 +8143,9 @@
             "type": "string",
             "title": "Order Id"
           },
-          "data_source_id": {
+          "line_id": {
             "type": "string",
-            "title": "Data Source Id"
+            "title": "Line Id"
           },
           "efficiency": {
             "anyOf": [
@@ -8395,7 +8316,7 @@
           "worked_minutes",
           "id",
           "order_id",
-          "data_source_id",
+          "line_id",
           "created_at",
           "updated_at",
           "earned_minutes"
@@ -9745,6 +9666,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",

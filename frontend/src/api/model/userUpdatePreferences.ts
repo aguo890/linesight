@@ -6,5 +6,6 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { UserPreferencesUpdate } from './userPreferencesUpdate';
+import type { UserUpdatePreferencesAnyOf } from './userUpdatePreferencesAnyOf';
 
-export type UserUpdatePreferences = UserPreferencesUpdate | null;
+export type UserUpdatePreferences = UserPreferencesUpdate | UserUpdatePreferencesAnyOf | null;

@@ -54,7 +54,7 @@ class DataSourceBase(BaseModel):
 class DataSourceCreate(DataSourceBase):
     """Schema for creating a data source."""
 
-    factory_id: str | None = Field(None, description="ID of the factory this data source belongs to")
+    factory_id: str = Field(..., description="ID of the factory this data source belongs to")
     settings: DataSourceSettings | None = None
 
     # Data source configuration

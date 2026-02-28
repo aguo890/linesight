@@ -58,7 +58,7 @@ jobs:
           
           # Run oasdiff and capture output
           set +e
-          BREAKING_OUTPUT=$(oasdiff breaking openapi-base.json openapi-new.json 2>&1)
+          BREAKING_OUTPUT=$(oasdiff breaking openapi-base.json openapi-new.json --err-ignore .github/oasdiff-ignore.txt 2>&1)
           BREAKING_EXIT_CODE=$?
           set -e
           

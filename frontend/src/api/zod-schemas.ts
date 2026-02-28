@@ -753,7 +753,7 @@ export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBody = zod.ob
   "specialty": zod.union([zod.string().max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodySpecialtyMaxOne),zod.null()]).optional(),
   "target_operators": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetOperatorsMinOne),zod.null()]).optional(),
   "target_efficiency_pct": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMinOne).max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMaxOne),zod.null()]).optional(),
-  "factory_id": zod.union([zod.string(),zod.null()]).optional().describe('ID of the factory this data source belongs to'),
+  "factory_id": zod.string().describe('ID of the factory this data source belongs to'),
   "settings": zod.union([zod.object({
   "is_custom_schedule": zod.boolean().optional().describe('If false, uses factory defaults'),
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
@@ -1811,7 +1811,7 @@ export const createRunApiV1ProductionRunsPostBody = zod.object({
   "shade_band": zod.union([zod.string().max(createRunApiV1ProductionRunsPostBodyShadeBandMaxOne).regex(createRunApiV1ProductionRunsPostBodyShadeBandRegExpOne),zod.null()]).optional().describe('Shade band code (e.g., \'A1\', \'B2\') for color consistency'),
   "batch_number": zod.union([zod.string().max(createRunApiV1ProductionRunsPostBodyBatchNumberMaxOne),zod.null()]).optional().describe('Production batch identifier'),
   "order_id": zod.string(),
-  "data_source_id": zod.string()
+  "data_source_id": zod.string().describe('ID of the data source (formerly line_id)')
 })
 
 
@@ -2335,7 +2335,7 @@ export const updateUserMeApiV1UsersMePatchBody = zod.object({
   "country_code": zod.union([zod.string(),zod.null()]).optional(),
   "notifications": zod.union([zod.boolean(),zod.null()]).optional(),
   "locale": zod.union([zod.string(),zod.null()]).optional()
-}).describe('Schema for updating user preferences (all fields optional for merging).'),zod.null()]).optional(),
+}).describe('Schema for updating user preferences (all fields optional for merging).'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
   "is_active": zod.union([zod.boolean(),zod.null()]).optional()
 }).describe('Schema for updating a user.')
 

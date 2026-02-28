@@ -58,5 +58,6 @@ export interface ProductionRunCreate {
   /** Production batch identifier */
   batch_number?: ProductionRunCreateBatchNumber;
   order_id: string;
+  /** ID of the data source (formerly line_id) */
   data_source_id: string;
 }

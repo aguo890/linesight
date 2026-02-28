@@ -8068,9 +8068,29 @@
             "title": "Order Id"
           },
           "data_source_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Data Source Id",
-            "description": "ID of the data source (formerly line_id)"
+            "description": "ID of the data source"
+          },
+          "line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line Id",
+            "description": "LEGACY: Use data_source_id instead. Will be removed in API v2.",
+            "deprecated": true
           }
         },
         "type": "object",
@@ -8079,8 +8099,7 @@
           "production_date",
           "operators_present",
           "worked_minutes",
-          "order_id",
-          "data_source_id"
+          "order_id"
         ],
         "title": "ProductionRunCreate"
       },

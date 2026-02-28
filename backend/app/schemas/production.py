@@ -350,9 +350,26 @@ class ProductionRunBase(BaseModel):
         return v
 
 
+from typing import Any
+from pydantic import model_validator, Field
+
 class ProductionRunCreate(ProductionRunBase):
     order_id: str
-    data_source_id: str
+    data_source_id: str | None = Field(None, description="ID of the data source")
+    line_id: str | None = Field(None, description="LEGACY: Use data_source_id instead. Will be removed in API v2.", deprecated=True)
+
+    @model_validator(mode='before')
+    @classmethod
+    def map_legacy_line_id(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            # If line_id is provided but data_source_id is not, map it
+            if 'line_id' in data and 'data_source_id' not in data:
+                data['data_source_id'] = data['line_id']
+            
+            # Ensure at least one is provided to maintain the original strictness
+            if not data.get('data_source_id') and not data.get('line_id'):
+                raise ValueError("Either data_source_id or line_id must be provided")
+        return data
 
 
 class ProductionRunUpdate(BaseModel):
