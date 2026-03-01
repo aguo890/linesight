@@ -125,7 +125,7 @@ class OrderBase(BaseModel):
         max_length=100,
         description="Purchase Order number from buyer (e.g., 'PO-2024-001')",
     )
-    quantity: int = Field(..., gt=0, description="Total order quantity in units")
+    quantity: int = Field(..., ge=1, description="Total order quantity in units")
     size_breakdown: dict | None = Field(
         None, description="Quantity per size (e.g., {'S': 100, 'M': 200, 'L': 150})"
     )
@@ -179,7 +179,7 @@ class OrderCreate(OrderBase):
 
 
 class OrderUpdate(BaseModel):
-    quantity: int | None = Field(None, gt=0)
+    quantity: int | None = Field(None, ge=1)
     status: str | None = None
     priority: str | None = None
     size_breakdown: dict | None = None
@@ -218,6 +218,8 @@ class ProductionRunBase(BaseModel):
     - earned_minutes: actual_qty × SAM (computed)
     - efficiency: (earned_minutes / available_minutes) × 100 (computed)
     """
+
+    model_config = ConfigDict(populate_by_name=True)
 
     factory_id: str = Field(..., description="UUID of the factory")
     production_date: date = Field(..., description="Date when production occurred")
@@ -335,8 +337,11 @@ class ProductionRunBase(BaseModel):
 
             # Case: 12-19 (Missing Year)
             if len(parts) == 2:
-                # Zero Tolerance: Do not guess current year
-                return None
+                try:
+                    current_year = datetime.now().year
+                    return date(current_year, int(parts[0]), int(parts[1]))
+                except ValueError:
+                    return None
 
             # Case: 19-12-2024 (DD-MM-YYYY) or 12-19-2024 (MM-DD-YYYY)
             # Pydantic's default parser handles ISO (YYYY-MM-DD) well, so we try to catch the others
@@ -345,9 +350,26 @@ class ProductionRunBase(BaseModel):
         return v
 
 
+from typing import Any
+from pydantic import model_validator, Field
+
 class ProductionRunCreate(ProductionRunBase):
     order_id: str
-    line_id: str
+    data_source_id: str | None = Field(None, description="ID of the data source")
+    line_id: str | None = Field(None, description="LEGACY: Use data_source_id instead. Will be removed in API v2.", deprecated=True)
+
+    @model_validator(mode='before')
+    @classmethod
+    def map_legacy_line_id(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            # If line_id is provided but data_source_id is not, map it
+            if 'line_id' in data and 'data_source_id' not in data:
+                data['data_source_id'] = data['line_id']
+            
+            # Ensure at least one is provided to maintain the original strictness
+            if not data.get('data_source_id') and not data.get('line_id'):
+                raise ValueError("Either data_source_id or line_id must be provided")
+        return data
 
 
 class ProductionRunUpdate(BaseModel):
@@ -362,7 +384,7 @@ class ProductionRunRead(ProductionRunBase):
     model_config = ConfigDict(from_attributes=True)
     id: str
     order_id: str
-    line_id: str
+    data_source_id: str
     # earned_minutes is inherited as a computed_field
     efficiency: Decimal | None = Field(
         None, description="Computed: (Earned / Available) * 100"

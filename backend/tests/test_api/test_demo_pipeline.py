@@ -23,14 +23,14 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
-# Path to the test Excel file
-TEST_DATA_PATH = (
-    Path(__file__).parent.parent.parent / "test_data" / "Master_Widget_Test_Data.xlsx"
-)
+# Point to the directory created by your fixture
+TEST_DATA_DIR = Path(__file__).parent.parent / "data"
+TEST_DATA_PATH = TEST_DATA_DIR / "Standard_Master_Widget.xlsx"
 
 
 @pytest.fixture
@@ -52,7 +52,7 @@ async def demo_factory_line(db_session: AsyncSession, test_organization):
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id,
         name="Demo Line A",
         code=f"DLA-{int(date.today().strftime('%Y%m%d%H%M%S'))}",
@@ -179,7 +179,7 @@ async def test_demo_full_pipeline_with_excel_file(
 
     # Check ProductionRuns
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
 
@@ -287,7 +287,7 @@ async def test_demo_data_values_integrity(
 
     # Verify production runs have quantities
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
 

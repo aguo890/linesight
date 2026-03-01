@@ -39,7 +39,7 @@ CANONICAL_MODEL_MAPPING: dict[str, Any] = {
     # Identifiers
     "style_number": (Style, "style_number"),
     "po_number": (Order, "po_number"),
-    "line_id": (ProductionRun, "line_id"),
+    "line_id": (ProductionRun, "data_source_id"),
     "order_id": (ProductionRun, "order_id"),
     "lot_number": (ProductionRun, "lot_number"),
     "batch_number": (ProductionRun, "batch_number"),

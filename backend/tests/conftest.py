@@ -13,8 +13,12 @@ import asyncio
 # =============================================================================
 import os
 from collections.abc import AsyncGenerator, Generator
+from pathlib import Path
 from unittest.mock import MagicMock
+from datetime import date, timedelta
 
+
+import pandas as pd
 import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
@@ -278,6 +282,57 @@ async def auth_headers(test_user) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_files():
+    """Ensure dummy files exist for tests to prevent FileNotFoundError."""
+    base_dir = Path(__file__).parent / "data"
+    base_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 1. Dummy Excel (Comphrensive for demo/pipeline tests)
+    excel_path = base_dir / "perfect_production.xlsx"
+    # Always overwrite or ensure it has all columns needed for various tests
+    df = pd.DataFrame({
+        "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
+        "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
+        "buyer": ["Buyer A", "Buyer B", "Buyer C", "Buyer D", "Buyer E"],
+        "production_date": [
+            str(date.today() - timedelta(days=4)),
+            str(date.today() - timedelta(days=3)),
+            str(date.today() - timedelta(days=2)),
+            str(date.today() - timedelta(days=1)),
+            str(date.today())
+        ],
+        "shift": ["day", "day", "night", "night", "day"],
+        "actual_qty": [100, 150, 200, 120, 180],
+        "planned_qty": [100, 150, 200, 120, 180],
+        "operators_present": [20, 20, 25, 22, 24],
+        "helpers_present": [5, 5, 5, 4, 6],
+        "defects": [0, 1, 0, 2, 0],
+        "dhu": [0.0, 0.67, 0.0, 1.67, 0.0],
+        "downtime_minutes": [0, 10, 0, 0, 5],
+        "downtime_reason": ["", "Breakdown", "", "", "Tea Break"],
+        "sam": [2.5, 2.5, 2.5, 3.0, 3.0]
+    })
+    df.to_excel(excel_path, index=False)
+    
+    # Also create copies as Standard_Master_Widget.xlsx and others for specific tests
+    df.to_excel(base_dir / "Standard_Master_Widget.xlsx", index=False)
+    df.to_excel(base_dir / "messy_production.xlsx", index=False)
+    df.to_excel(base_dir / "ambiguous_production.xlsx", index=False)
+        
+    # 2. Dummy CSV
+    csv_path = base_dir / "test_e2e.csv"
+    df_csv = pd.DataFrame({
+        "Date": [str(date.today())], 
+        "Qty": [50],
+        "Style": ["ST-001"],
+        "PO": ["PO-1001"]
+    })
+    df_csv.to_csv(csv_path, index=False)
+    
+    # Also create perfect_production.csv for samples test
+    df_csv.to_csv(base_dir / "perfect_production.csv", index=False)
+
 @pytest.fixture(autouse=True)
 def mock_env_vars(monkeypatch, mocker):
     """Set dummy API keys and mock LLM calls to prevent initialization and 401 errors."""
@@ -301,7 +356,7 @@ def mock_env_vars(monkeypatch, mocker):
 
     # Mock fallback for DeepSeek if needed
     mocker.patch(
-        "app.services.llm_agent.SemanticETLAgent._init_client", return_value=MagicMock()
+        "app.private_core.etl_agent.SemanticETLAgent._init_client", return_value=MagicMock()
     )
 
 
@@ -319,8 +374,9 @@ async def test_factory(db_session: AsyncSession, test_organization):
         organization_id=test_organization.id,
         name="Test Factory",
         code="TF001",
-        country="Test Country",
+        country="US",
         timezone="UTC",
+        locale="en-US",
     )
     db_session.add(factory)
     await db_session.commit()
@@ -408,27 +464,25 @@ def sample_production_run_data():
 async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     """Create comprehensive test data for dry-run testing."""
     from app.models.datasource import DataSource, SchemaMapping
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
 
-    # 1. Setup Factory & Line
+    # 1. Setup Factory
     factory = Factory(
         name="Dry Run Test Factory",
         organization_id=test_organization.id,
         code="DRT1",
         country="US",
+        locale="en-US",
     )
     db_session.add(factory)
     await db_session.commit()
     await db_session.refresh(factory)
 
-    line = ProductionLine(name="Test Line A", factory_id=factory.id)
-    db_session.add(line)
-    await db_session.commit()
-    await db_session.refresh(line)
-
-    # 2. Create a DataSource with SchemaMapping
+    # 2. Create DataSource (replaces separate ProductionLine + DataSource)
+    # DataSource now IS the production line with data config
     ds = DataSource(
-        production_line_id=line.id,
+        name="Test Line A",
+        factory_id=factory.id,
         source_name="Test Production Data",
         time_column="Date",
         description="Test data source with messy dates",
@@ -436,6 +490,9 @@ async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     db_session.add(ds)
     await db_session.commit()
     await db_session.refresh(ds)
+
+    # line is the same as ds after the merge
+    line = ds
 
     # 3. Create SchemaMapping with typical production columns
     column_map = {

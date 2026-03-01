@@ -22,7 +22,7 @@ async def test_storage_segmentation(
     Test that files are stored in the correct segmented directory structure.
     Structure: uploads/{factory_id}/{line_id}/{year}/{month}/...
     """
-    from app.models.factory import ProductionLine
+    from app.models.datasource import DataSource
 
     # Mock settings.UPLOAD_DIR to use a temporary directory
     mock_upload_dir = tmp_path / "uploads"
@@ -34,7 +34,7 @@ async def test_storage_segmentation(
     line_id_1 = str(test_line.id)
 
     # Create a second line in the same factory
-    line_2 = ProductionLine(factory_id=test_factory.id, name="Test Line 2", code="TL2")
+    line_2 = DataSource(factory_id=test_factory.id, name="Test Line 2", code="TL2")
     db_session.add(line_2)
     await db_session.commit()
     await db_session.refresh(line_2)

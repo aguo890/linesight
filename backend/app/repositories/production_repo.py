@@ -166,7 +166,7 @@ class ProductionRepository:
             ProductionEvent.timestamp < start_of_next_day_utc,
         )
         if line_id:
-            check_events = check_events.where(ProductionEvent.line_id == line_id)
+            check_events = check_events.where(ProductionEvent.data_source_id == line_id)
 
         res_events = await self.db.execute(check_events)
         if (res_events.scalar() or 0) > 0:
@@ -188,7 +188,7 @@ class ProductionRepository:
         # Latest Event Timestamp (UTC) -> Convert to Factory Date
         latest_event_q = select(func.max(ProductionEvent.timestamp))
         if line_id:
-            latest_event_q = latest_event_q.where(ProductionEvent.line_id == line_id)
+            latest_event_q = latest_event_q.where(ProductionEvent.data_source_id == line_id)
         res_latest_event = await self.db.execute(latest_event_q)
         latest_ts = res_latest_event.scalar()
 
@@ -256,7 +256,7 @@ class ProductionRepository:
                 func.sum(
                     case(
                         (
-                            ProductionRun.production_date == effective_today,
+                            func.date(ProductionRun.production_date) == effective_today,
                             ProductionRun.actual_qty,
                         ),
                         else_=0,
@@ -265,7 +265,7 @@ class ProductionRepository:
                 func.sum(
                     case(
                         (
-                            ProductionRun.production_date == effective_yesterday,
+                            func.date(ProductionRun.production_date) == effective_yesterday,
                             ProductionRun.actual_qty,
                         ),
                         else_=0,
@@ -274,7 +274,7 @@ class ProductionRepository:
                 func.avg(
                     case(
                         (
-                            ProductionRun.production_date == effective_today,
+                            func.date(ProductionRun.production_date) == effective_today,
                             EfficiencyMetric.efficiency_pct,
                         ),
                         else_=None,
@@ -283,7 +283,7 @@ class ProductionRepository:
                 func.avg(
                     case(
                         (
-                            ProductionRun.production_date == effective_yesterday,
+                            func.date(ProductionRun.production_date) == effective_yesterday,
                             EfficiencyMetric.efficiency_pct,
                         ),
                         else_=None,
@@ -294,7 +294,7 @@ class ProductionRepository:
                 EfficiencyMetric, EfficiencyMetric.production_run_id == ProductionRun.id
             )
             .where(
-                ProductionRun.production_date.in_(
+                func.date(ProductionRun.production_date).in_(
                     [effective_today, effective_yesterday]
                 )
             )
@@ -335,7 +335,7 @@ class ProductionRepository:
 
     async def get_run_by_id(self, run_id: str) -> ProductionRun | None:
         """
-        Get a production run by ID.
+        Get a production run by ID with eager loading for details.
 
         Args:
             run_id: Production run ID
@@ -343,7 +343,12 @@ class ProductionRepository:
         Returns:
             ProductionRun instance or None if not found
         """
-        query = select(ProductionRun).where(ProductionRun.id == run_id)
+        from sqlalchemy.orm import selectinload
+        query = select(ProductionRun).where(ProductionRun.id == run_id).options(
+            selectinload(ProductionRun.events),
+            selectinload(ProductionRun.quality_inspections),
+            selectinload(ProductionRun.production_outputs)
+        )
         result = await self.db.execute(query)
         return result.scalar_one_or_none()
 

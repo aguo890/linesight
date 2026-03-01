@@ -16,7 +16,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio
@@ -45,7 +46,7 @@ async def test_confirm_mapping_deactivates_previous(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Schema Test Line", code="SCH-L1", is_active=True
     )
     db_session.add(line)
@@ -201,7 +202,7 @@ async def test_schema_mapping_version_increments_correctly(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Version Test Line", code="VER-L1", is_active=True
     )
     db_session.add(line)

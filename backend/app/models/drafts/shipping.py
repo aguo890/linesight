@@ -91,13 +91,11 @@ class PackingList(Base, UUIDMixin, TimestampMixin):
     # Relationships
     order: Mapped["Order"] = relationship(
         "Order",
-        back_populates="packing_lists",
     )
     cartons: Mapped[list["Carton"]] = relationship(
         "Carton",
         back_populates="packing_list",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<PackingList(id={self.id}, number={self.packing_list_number})>"
@@ -154,8 +152,7 @@ class Carton(Base, UUIDMixin, TimestampMixin):
     traceability_records: Mapped[list["TraceabilityRecord"]] = relationship(
         "TraceabilityRecord",
         back_populates="carton",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<Carton(id={self.id}, number={self.carton_number})>"

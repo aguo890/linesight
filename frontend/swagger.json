@@ -122,6 +122,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 10,
               "title": "Limit"
             }
@@ -192,6 +194,24 @@
               "title": "Data Source Id"
             },
             "description": "Optional: Data source to upload data to"
+          },
+          {
+            "name": "production_line_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "LEGACY: Use data_source_id instead",
+              "title": "Production Line Id"
+            },
+            "description": "LEGACY: Use data_source_id instead"
           }
         ],
         "requestBody": {
@@ -594,7 +614,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewResponse"
+                }
               }
             }
           },
@@ -1666,6 +1688,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
               "default": 5,
               "title": "Limit"
             }
@@ -3083,6 +3107,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3093,6 +3118,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -3371,6 +3398,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3381,6 +3409,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -3693,6 +3723,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3703,9 +3734,13 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1000,
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Max 100 runs per page",
+              "default": 100,
               "title": "Limit"
-            }
+            },
+            "description": "Max 100 runs per page"
           },
           {
             "name": "sort_asc",
@@ -4003,6 +4038,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -4013,6 +4049,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -6833,13 +6871,13 @@
           },
           "w": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "W",
             "description": "Width in grid units"
           },
           "h": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "H",
             "description": "Height in grid units"
           }
@@ -7039,7 +7077,7 @@
           },
           "quantity": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "Quantity",
             "description": "Total order quantity in units"
           },
@@ -7174,7 +7212,7 @@
           },
           "quantity": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "Quantity",
             "description": "Total order quantity in units"
           },
@@ -7356,7 +7394,7 @@
             "anyOf": [
               {
                 "type": "integer",
-                "exclusiveMinimum": 0.0
+                "minimum": 1.0
               },
               {
                 "type": "null"
@@ -7675,6 +7713,64 @@
         "title": "OverviewStats",
         "description": "Dashboard overview statistics."
       },
+      "PreviewResponse": {
+        "properties": {
+          "data": {
+            "items": {
+              "items": {},
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Data",
+            "description": "First N rows of data for preview"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns",
+            "description": "Column headers detected"
+          },
+          "preview_rows": {
+            "type": "integer",
+            "title": "Preview Rows",
+            "description": "Number of rows included in this preview"
+          },
+          "total_rows": {
+            "type": "integer",
+            "title": "Total Rows",
+            "description": "Total rows in the file"
+          },
+          "total_columns": {
+            "type": "integer",
+            "title": "Total Columns",
+            "description": "Total columns in the file"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename",
+            "description": "Name of the uploaded file"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current status of the raw import"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "columns",
+          "preview_rows",
+          "total_rows",
+          "total_columns",
+          "filename",
+          "status"
+        ],
+        "title": "PreviewResponse",
+        "description": "Response for previewing uploaded file data before processing."
+      },
       "PriorityLevel": {
         "type": "string",
         "enum": [
@@ -7989,9 +8085,30 @@
             "type": "string",
             "title": "Order Id"
           },
+          "data_source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Source Id",
+            "description": "ID of the data source"
+          },
           "line_id": {
-            "type": "string",
-            "title": "Line Id"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line Id",
+            "description": "LEGACY: Use data_source_id instead. Will be removed in API v2.",
+            "deprecated": true
           }
         },
         "type": "object",
@@ -8000,8 +8117,7 @@
           "production_date",
           "operators_present",
           "worked_minutes",
-          "order_id",
-          "line_id"
+          "order_id"
         ],
         "title": "ProductionRunCreate"
       },
@@ -8143,9 +8259,9 @@
             "type": "string",
             "title": "Order Id"
           },
-          "line_id": {
+          "data_source_id": {
             "type": "string",
-            "title": "Line Id"
+            "title": "Data Source Id"
           },
           "efficiency": {
             "anyOf": [
@@ -8316,7 +8432,7 @@
           "worked_minutes",
           "id",
           "order_id",
-          "line_id",
+          "data_source_id",
           "created_at",
           "updated_at",
           "earned_minutes"
@@ -9666,13 +9782,6 @@
           "type": {
             "type": "string",
             "title": "Error Type"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
           }
         },
         "type": "object",

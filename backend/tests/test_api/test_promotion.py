@@ -7,7 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
@@ -39,13 +40,13 @@ async def test_promotion_logic_full_cycle(
             organization_id=test_organization.id,
             name="Promotion Test Factory",
             code="PTF-01",
-            country="USA",
-            timezone="UTC",
+            country="US",
+            timezone="America/New_York",
         )
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Promotion Line A", code="PLA-01", is_active=True
     )
     db_session.add(line)
@@ -56,7 +57,7 @@ async def test_promotion_logic_full_cycle(
 
     # 2. Upload File (CSV)
     # Note: 'Eff' contains '%' to test cleaning logic
-    csv_data = "Item_No,Order_No,Output,Eff\nSTYLE-XYZ,PO-ABC,500,85%\nSTYLE-XYZ,PO-ABC,250,0.90"
+    csv_data = "Item_No,Order_No,Output,Eff,Date\nSTYLE-XYZ,PO-ABC,500,85%,2026-02-01\nSTYLE-XYZ,PO-ABC,250,0.90,2026-02-02"
     files = {"file": ("test_promo.csv", csv_data, "text/csv")}
 
     upload_resp = await async_client.post(
@@ -73,12 +74,13 @@ async def test_promotion_logic_full_cycle(
         "raw_import_id": raw_import_id,
         "production_line_id": line_id,
         "factory_id": factory_id,
-        "time_column": "Item_No",  # Dummy time column for now
+        "time_column": "Date",  # Real date column now
         "mappings": [
             {"source_column": "Item_No", "target_field": "style_number"},
             {"source_column": "Order_No", "target_field": "po_number"},
             {"source_column": "Output", "target_field": "actual_qty"},
             {"source_column": "Eff", "target_field": "efficiency_pct"},
+            {"source_column": "Date", "target_field": "production_date"},
         ],
     }
 
@@ -118,7 +120,7 @@ async def test_promotion_logic_full_cycle(
     # C. Check ProductionRun creation
     run_result = await db_session.execute(
         select(ProductionRun).where(
-            ProductionRun.order_id == order.id, ProductionRun.line_id == line_id
+            ProductionRun.order_id == order.id, ProductionRun.data_source_id == line_id
         )
     )
     runs = run_result.scalars().all()

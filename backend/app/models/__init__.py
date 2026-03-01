@@ -9,7 +9,7 @@ from app.models.analytics import DHUReport, EfficiencyMetric
 from app.models.base import Base
 from app.models.dashboard import Dashboard
 from app.models.data_quality import DataQualityIssue, IssueSeverity, IssueType
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import DataSource, DataSource as ProductionLine, SchemaMapping
 from app.models.events import EventType, ProductionEvent
 from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
@@ -24,10 +24,10 @@ from app.models.workforce import ProductionOutput, Worker, WorkerAttendance, Wor
 # Use DataSource instead for new code
 ProductionLine = DataSource
 
-# ARCHIVED MODELS (see models/drafts/):
-# - cutting.py: FabricLot, CutTicket
-# - shipping.py: PackingList, Carton
-# - compliance.py: TraceabilityRecord
+# Draft/Archived Models (Required for recursive FKs in tests)
+from app.models.drafts.cutting import CutTicket, FabricLot
+from app.models.drafts.shipping import Carton, PackingList
+from app.models.drafts.compliance import TraceabilityRecord
 
 __all__ = [
     "Base",

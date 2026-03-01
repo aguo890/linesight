@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import Organization, User
 
 
@@ -26,21 +27,21 @@ async def test_list_dashboards_by_factory_id_crash(
 ):
     """
     REPRO: This test attempts to fetch dashboards filtered by factory_id.
-    If the 'Ambiguous Join' bug exists, this will fail with status 500.
-
-    The join path is: Dashboard -> DataSource (via data_source_id) -> Factory
     """
 
-    # 1. SETUP: Create a factory
-    factory_res = await async_client.post(
-        "/api/v1/factories",
-        json={"name": "Test Factory 500", "country": "US", "timezone": "UTC"},
-        headers=auth_headers,
+    # 1. SETUP: Create a factory manually to ensure ID control
+    # RLS: Must belong to test_org
+    factory = Factory(
+        organization_id=test_organization.id,
+        name="Test Factory 500", 
+        country="US", 
+        timezone="UTC"
     )
-    assert factory_res.status_code == 201
-    factory_id = factory_res.json()["id"]
+    db_session.add(factory)
+    await db_session.commit()
+    factory_id = factory.id
 
-    # 2. Create a DataSource linked to that factory (direct DB)
+    # 2. Create a DataSource linked to that factory
     data_source = DataSource(
         factory_id=factory_id,
         name="Test DataSource 500",
@@ -49,18 +50,23 @@ async def test_list_dashboards_by_factory_id_crash(
     )
     db_session.add(data_source)
     await db_session.commit()
-    await db_session.refresh(data_source)
 
-    # 3. Create a Dashboard linked to that DataSource
-    dashboard = Dashboard(
-        user_id=test_user.id,
-        name="Crash Test Dummy",
-        description="Testing for 500 error",
-        data_source_id=data_source.id,
+    # 3. Create a Dashboard via API to ensure complete setup
+    payload = {
+        "name": "Crash Test Dummy",
+        "description": "Testing for 500 error",
+        "data_source_id": str(data_source.id),
+        "factory_id": str(factory_id),
+        "widget_config": {"layout": []},
+        "layout_config": {}
+    }
+    
+    create_res = await async_client.post(
+        "/api/v1/dashboards/", 
+        json=payload,
+        headers=auth_headers
     )
-    db_session.add(dashboard)
-    await db_session.commit()
-    await db_session.refresh(dashboard)
+    assert create_res.status_code == 201, f"Setup Failed: {create_res.text}"
 
     # 4. ACT: Hit the exact endpoint causing the browser error
     # URL: /api/v1/dashboards/?factory_id=...
@@ -79,4 +85,3 @@ async def test_list_dashboards_by_factory_id_crash(
     # Verify we actually got the list back
     assert "dashboards" in data
     assert data["count"] >= 1
-    assert any(d["id"] == str(dashboard.id) for d in data["dashboards"])

@@ -22,7 +22,7 @@ async def setup_e2e_environment(db_session):
 
     from app.core.security import hash_password
     from app.models.datasource import DataSource
-    from app.models.factory import Factory, ProductionLine
+    from app.models.factory import Factory
     from app.models.user import Organization, User
 
     # 0. Ensure Demo User & Org
@@ -65,8 +65,8 @@ async def setup_e2e_environment(db_session):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    # 2. Line
-    line = ProductionLine(
+    # 2. Line (Data Source)
+    line = DataSource(
         factory_id=factory.id,
         name="Verifiable Line 1",
         code="V-LINE-1",
@@ -79,6 +79,7 @@ async def setup_e2e_environment(db_session):
 
     # 3. Data Source
     ds = DataSource(
+        factory_id=factory.id, # Ensure RLS works
         production_line_id=line.id,
         source_name="Excel Upload (Verifiable)",
         time_column="production_date",
@@ -237,7 +238,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
 
     # 5.1 Overview Stats (Aggregate)
     # 5.1 Overview Stats (Returns "Effective Date" stats, i.e., Last Day Jan 5 -> 8 units)
-    response = await async_client.get(f"/api/v1/analytics/overview?line_id={line_id}")
+    response = await async_client.get(f"/api/v1/analytics/overview?line_id={ds_id}&date_from=2025-01-05&date_to=2025-01-05")
     assert response.status_code == 200, response.text
     stats = response.json()
     assert stats["total_output"] == 8, (
@@ -246,7 +247,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
 
     # 5.1.5 Verify Total History via Chart
     response = await async_client.get(
-        f"/api/v1/analytics/production-chart?line_id={line_id}&date_from=2025-01-01&date_to=2025-01-07"
+        f"/api/v1/analytics/production-chart?line_id={ds_id}&date_from=2025-01-01&date_to=2025-01-07"
     )
     chart_data = response.json()
     total_chart = sum(p["actual"] for p in chart_data["data_points"])
@@ -284,7 +285,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
     print(f"VERIFIED: Found {len(zero_defect_qis)} zero-defect inspections.")
 
     response = await async_client.get(
-        f"/api/v1/analytics/dhu?line_id={line_id}&start_date=2025-01-02&end_date=2025-01-02"
+        f"/api/v1/analytics/dhu?line_id={ds_id}&start_date=2025-01-02&end_date=2025-01-02"
     )
     assert response.status_code == 200
     dhu_data = response.json()
@@ -303,7 +304,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
     # 5.4 Downtime (Reasons)
     # Day 3: "Needle Breakage" (30 mins)
     response = await async_client.get(
-        f"/api/v1/analytics/downtime-reasons?line_id={line_id}"
+        f"/api/v1/analytics/downtime-reasons?line_id={ds_id}&date_from=2025-01-01&date_to=2025-01-05"
     )
     assert response.status_code == 200
     downtime_data = response.json()
@@ -320,7 +321,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
     # The backend might spread it or show single point.
     # Just verify valid response for now.
     response = await async_client.get(
-        f"/api/v1/analytics/production/hourly?line_id={line_id}"
+        f"/api/v1/analytics/production/hourly?line_id={ds_id}"
     )
     assert response.status_code == 200
 

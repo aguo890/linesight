@@ -20,7 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 from app.models.raw_import import RawImport
 
@@ -56,13 +57,13 @@ async def test_full_widget_data_flow(
             organization_id=test_organization.id,
             name="E2E Test Factory",
             code="E2E-01",
-            country="USA",
-            timezone="UTC",
+            country="US",
+            timezone="America/New_York",
         )
         db_session.add(factory)
         await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="E2E Test Line", code="E2E-L1", is_active=True
     )
     db_session.add(line)
@@ -145,7 +146,7 @@ STYLE-002,PO-DEF,{today},300,350,2.0,85.7
     assert data_source_id is not None, "data_source_id not returned!"
     data_source = await db_session.get(DataSource, data_source_id)
     assert data_source is not None, "DataSource not found in DB"
-    print(f"  DataSource.production_line_id: {data_source.production_line_id}")
+    print(f"  DataSource.id: {data_source.id}")
 
     # Verify SchemaMapping is active
     await db_session.refresh(data_source, ["schema_mappings"])
@@ -175,7 +176,7 @@ STYLE-002,PO-DEF,{today},300,350,2.0,85.7
     # Verify ProductionRuns were created
     db_session.expire_all()
     runs_result = await db_session.execute(
-        select(ProductionRun).where(ProductionRun.line_id == line_id)
+        select(ProductionRun).where(ProductionRun.data_source_id == line_id)
     )
     runs = runs_result.scalars().all()
 
@@ -276,9 +277,9 @@ async def test_widget_endpoint_with_line_filter(
     # Get a line that has production runs
     result = await db_session.execute(
         text("""
-            SELECT DISTINCT pr.line_id, COUNT(*) as run_count
+            SELECT DISTINCT pr.data_source_id as line_id, COUNT(*) as run_count
             FROM production_runs pr
-            GROUP BY pr.line_id
+            GROUP BY pr.data_source_id
         """)
     )
     lines_with_data = result.all()

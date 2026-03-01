@@ -68,29 +68,29 @@ class AnalyticsService:
         for log in logs:
             # Handle both dicts and ORM objects safely (mapping to ProductionRun fields)
             qty = (
-                getattr(log, "actual_qty", 0)
+                getattr(log, "actual_qty", 0) or 0
                 if not isinstance(log, dict)
-                else log.get("actual_qty", 0)
+                else log.get("actual_qty", 0) or 0
             )
             sam = (
-                getattr(log, "sam", 0.0)
+                getattr(log, "sam", 0.0) or 0.0
                 if not isinstance(log, dict)
-                else log.get("sam", 0.0)
+                else log.get("sam", 0.0) or 0.0
             )
             ops = (
-                getattr(log, "operators_present", 0)
+                getattr(log, "operators_present", 0) or 0
                 if not isinstance(log, dict)
-                else log.get("operators_present", 0)
+                else log.get("operators_present", 0) or 0
             )
             helpers = (
-                getattr(log, "helpers_present", 0)
+                getattr(log, "helpers_present", 0) or 0
                 if not isinstance(log, dict)
-                else log.get("helpers_present", 0)
+                else log.get("helpers_present", 0) or 0
             )
             worked = (
-                getattr(log, "worked_minutes", 0.0)
+                getattr(log, "worked_minutes", 0.0) or 0.0
                 if not isinstance(log, dict)
-                else log.get("worked_minutes", 0.0)
+                else log.get("worked_minutes", 0.0) or 0.0
             )
 
             earned = cls.calculate_earned_minutes(qty, sam)

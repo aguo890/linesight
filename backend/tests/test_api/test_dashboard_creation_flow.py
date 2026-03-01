@@ -49,7 +49,7 @@ async def test_complete_dashboard_creation_flow(
     # =========================================================================
     factory_response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Test Dashboard Factory", "country": "US", "timezone": "UTC"},
+        json={"name": "Test Dashboard Factory", "code": "TDF01", "country": "US", "timezone": "UTC"},
         headers=auth_headers,
     )
     assert factory_response.status_code == 201
@@ -234,7 +234,7 @@ async def test_dashboard_creation_blocked_by_factory_quota(
     # Attempt to create factory
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Blocked Factory", "country": "US", "timezone": "UTC"},
+        json={"name": "Blocked Factory", "code": "BF01", "country": "US", "timezone": "UTC"},
         headers=auth_headers,
     )
 
@@ -276,7 +276,7 @@ async def test_multiple_dashboards_same_data_source(
     # Create factory
     factory_res = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Factory", "country": "US", "timezone": "UTC"},
+        json={"name": "Factory", "code": "F01", "country": "US", "timezone": "UTC"},
         headers=auth_headers,
     )
     factory_id = factory_res.json()["id"]
@@ -350,7 +350,7 @@ async def test_list_dashboards_filtered_by_factory(
     # Factory 1
     f1_res = await async_client.post(
         "/api/v1/factories",
-        json={"name": "F1", "country": "US", "timezone": "UTC"},
+        json={"name": "F1", "code": "F1A", "country": "US", "timezone": "UTC"},
         headers=auth_headers,
     )
     assert f1_res.status_code == 201
@@ -359,7 +359,7 @@ async def test_list_dashboards_filtered_by_factory(
     # Factory 2
     f2_res = await async_client.post(
         "/api/v1/factories",
-        json={"name": "F2", "country": "US", "timezone": "UTC"},
+        json={"name": "F2", "code": "F2B", "country": "US", "timezone": "UTC"},
         headers=auth_headers,
     )
     assert f2_res.status_code == 201

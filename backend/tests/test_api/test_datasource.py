@@ -30,7 +30,7 @@ async def test_create_data_source(async_client, auth_headers, test_line):
     }
 
     response = await async_client.post(
-        "/api/v1/datasources", json=data, headers=auth_headers
+        "/api/v1/data-sources", json=data, headers=auth_headers
     )
     assert response.status_code == 201, (
         f"Expected 201, got {response.status_code}: {response.text}"
@@ -53,7 +53,7 @@ async def test_create_data_source(async_client, auth_headers, test_line):
 async def test_get_data_source(async_client, auth_headers, test_data_source):
     """Test retrieving a data source by ID."""
     response = await async_client.get(
-        f"/api/v1/datasources/{test_data_source.id}", headers=auth_headers
+        f"/api/v1/data-sources/{test_data_source.id}", headers=auth_headers
     )
     assert response.status_code == 200
 
@@ -69,17 +69,18 @@ async def test_get_data_source_by_line(
 ):
     """Test retrieving a data source by production line ID."""
     response = await async_client.get(
-        f"/api/v1/datasources/line/{test_line.id}", headers=auth_headers
+        f"/api/v1/data-sources/line/{test_line.id}", headers=auth_headers
     )
     assert response.status_code == 200
 
     result = response.json()
     if result:  # May return null if no data source exists
-        assert result["production_line_id"] == test_line.id
+        assert result["id"] == test_line.id  # After refactor, line.id IS ds.id
 
 
 @pytest.mark.asyncio
 async def test_update_schema_mapping(async_client, auth_headers, test_data_source):
+
     """Test updating schema mapping (creates new version)."""
     data = {
         "column_map": {
@@ -98,7 +99,7 @@ async def test_update_schema_mapping(async_client, auth_headers, test_data_sourc
     }
 
     response = await async_client.put(
-        f"/api/v1/datasources/{test_data_source.id}/mapping",
+        f"/api/v1/data-sources/{test_data_source.id}/mapping",
         json=data,
         headers=auth_headers,
     )
@@ -124,7 +125,7 @@ async def test_create_duplicate_data_source_fails(
     }
 
     response = await async_client.post(
-        "/api/v1/datasources", json=data, headers=auth_headers
+        "/api/v1/data-sources", json=data, headers=auth_headers
     )
 
     # Should fail since one already exists for this line
@@ -153,7 +154,7 @@ async def test_data_source(async_client, auth_headers, test_line):
     }
 
     response = await async_client.post(
-        "/api/v1/datasources", json=data, headers=auth_headers
+        "/api/v1/data-sources", json=data, headers=auth_headers
     )
     assert response.status_code == 201, (
         f"Failed to create test data source: {response.text}"

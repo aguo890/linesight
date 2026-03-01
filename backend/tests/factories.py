@@ -8,7 +8,8 @@ from decimal import Decimal
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, OrderStatus, ProductionRun, ShiftType, Style
 from app.models.user import Organization, User, UserRole
 
@@ -43,8 +44,8 @@ class FactoryFactory(SQLAlchemyFactory[Factory]):
     organization_id = OrganizationFactory
 
 
-class ProductionLineFactory(SQLAlchemyFactory[ProductionLine]):
-    __model__ = ProductionLine
+class DataSourceFactory(SQLAlchemyFactory[DataSource]):
+    __model__ = DataSource
 
     name = Use(lambda: f"Line {SQLAlchemyFactory.__random__.get_random_bytes(2).hex()}")
     code = Use(lambda: f"L-{SQLAlchemyFactory.__random__.get_random_bytes(2).hex()}")
@@ -75,6 +76,7 @@ class OrderFactory(SQLAlchemyFactory[Order]):
 class ProductionRunFactory(SQLAlchemyFactory[ProductionRun]):
     __model__ = ProductionRun
 
+    # FIX: Use date.today() to ensure analytics tests always fall within the "Current Month" scope
     production_date = Use(lambda: date.today())
     shift = ShiftType.DAY
     actual_qty = Use(lambda: 450)
@@ -85,4 +87,4 @@ class ProductionRunFactory(SQLAlchemyFactory[ProductionRun]):
     worked_minutes = Use(lambda: Decimal("4800.0"))
     factory_id = FactoryFactory
     order_id = OrderFactory
-    line_id = ProductionLineFactory
+    data_source_id = DataSourceFactory

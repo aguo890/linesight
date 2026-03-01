@@ -12,13 +12,13 @@ async def test_create_factory(async_client: AsyncClient, auth_headers: dict):
         "name": "Test Factory",
         "code": "TF01",
         "location": "New York",
-        "country": "USA",
-        "timezone": "EST",
+        "country": "US",
+        "timezone": "America/New_York",
     }
     response = await async_client.post(
         "/api/v1/factories", json=payload, headers=auth_headers
     )
-    assert response.status_code == 201
+    assert response.status_code == 201, f"Failed to create factory: {response.text}"
     data = response.json()
     assert data["name"] == "Test Factory"
     assert data["city"] == "New York"
@@ -30,7 +30,7 @@ async def test_list_factories(async_client: AsyncClient, auth_headers: dict):
     # Ensure at least one factory exists
     await async_client.post(
         "/api/v1/factories",
-        json={"name": "List Test Factory", "code": "LTF01", "country": "USA"},
+        json={"name": "List Test Factory", "code": "LTF01", "country": "US"},
         headers=auth_headers,
     )
 
@@ -44,10 +44,10 @@ async def test_production_line_crud(async_client: AsyncClient, auth_headers: dic
     # 1. Create factory
     factory_res = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Line Factory", "code": "LF01", "country": "USA"},
+        json={"name": "Line Factory", "code": "LF01", "country": "US"},
         headers=auth_headers,
     )
-    assert factory_res.status_code == 201
+    assert factory_res.status_code == 201, f"Failed to create factory for line: {factory_res.text}"
     factory_id = factory_res.json()["id"]
 
     # 2. Create Line
@@ -57,9 +57,10 @@ async def test_production_line_crud(async_client: AsyncClient, auth_headers: dic
         "specialty": "Wovens",
         "target_operators": 20,
         "target_efficiency_pct": 85,
+        "factory_id": factory_id,
     }
     line_res = await async_client.post(
-        f"/api/v1/factories/{factory_id}/lines", json=line_payload, headers=auth_headers
+        f"/api/v1/factories/{factory_id}/data-sources", json=line_payload, headers=auth_headers
     )
     assert line_res.status_code == 201, line_res.text
     line_id = line_res.json()["id"]
@@ -67,14 +68,14 @@ async def test_production_line_crud(async_client: AsyncClient, auth_headers: dic
 
     # 3. Get Line
     get_res = await async_client.get(
-        f"/api/v1/factories/lines/{line_id}", headers=auth_headers
+        f"/api/v1/factories/data-sources/{line_id}", headers=auth_headers
     )
     assert get_res.status_code == 200
     assert get_res.json()["name"] == "Line 1"
 
     # 4. Update Line
     patch_res = await async_client.patch(
-        f"/api/v1/factories/lines/{line_id}",
+        f"/api/v1/factories/data-sources/{line_id}",
         json={"name": "Updated Line 1"},
         headers=auth_headers,
     )
@@ -83,27 +84,27 @@ async def test_production_line_crud(async_client: AsyncClient, auth_headers: dic
 
     # 5. List Lines for Factory
     list_res = await async_client.get(
-        f"/api/v1/factories/{factory_id}/lines", headers=auth_headers
+        f"/api/v1/factories/{factory_id}/data-sources", headers=auth_headers
     )
     assert list_res.status_code == 200
     assert len(list_res.json()) == 1
 
     # 6. Delete Line
     del_res = await async_client.delete(
-        f"/api/v1/factories/lines/{line_id}", headers=auth_headers
+        f"/api/v1/factories/data-sources/{line_id}", headers=auth_headers
     )
     assert del_res.status_code == 204
 
     # Verify soft delete behavior (is_active should be False)
     # Re-fetch line
     check_res = await async_client.get(
-        f"/api/v1/factories/lines/{line_id}", headers=auth_headers
+        f"/api/v1/factories/data-sources/{line_id}", headers=auth_headers
     )
     assert check_res.status_code == 200
     assert check_res.json()["is_active"] is False
 
     # Verify list does NOT return deleted line
     list_check = await async_client.get(
-        f"/api/v1/factories/{factory_id}/lines", headers=auth_headers
+        f"/api/v1/factories/{factory_id}/data-sources", headers=auth_headers
     )
     assert len(list_check.json()) == 0

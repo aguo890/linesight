@@ -16,7 +16,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import DataSource
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 
 
@@ -34,7 +35,7 @@ async def setup_dashboard_data(db_session: AsyncSession, test_organization):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    line = ProductionLine(name="Line 1", factory_id=factory.id)
+    line = DataSource(name="Line 1", factory_id=factory.id)
     db_session.add(line)
     await db_session.commit()
     await db_session.refresh(line)
@@ -45,6 +46,7 @@ async def setup_dashboard_data(db_session: AsyncSession, test_organization):
         source_name="Production Data",
         time_column="Date",
         description="Main production data source",
+        factory_id=factory.id, # Ensure RLS works
     )
     db_session.add(ds)
     await db_session.commit()
@@ -87,7 +89,7 @@ async def test_edit_configuration(
     update_payload = {"time_column": "Production_Date"}
 
     response = await async_client.put(
-        f"/api/v1/datasources/{ds.id}", json=update_payload, headers=auth_headers
+        f"/api/v1/data-sources/{ds.id}", json=update_payload, headers=auth_headers
     )
 
     assert response.status_code == 200
@@ -141,7 +143,7 @@ async def test_upload_history_isolation(
     factory, line_1, _, _ = setup_dashboard_data
 
     # Create a second line
-    line_2 = ProductionLine(name="Line 2", factory_id=factory.id)
+    line_2 = DataSource(name="Line 2", factory_id=factory.id)
     db_session.add(line_2)
     await db_session.commit()
     await db_session.refresh(line_2)

@@ -92,16 +92,13 @@ class RecordValidator:
         if not order_keys:
             return {}
 
-        # Fetch existing orders - need to handle composite key lookup
-        po_numbers = [k[0] for k in order_keys]
-        style_ids = [k[1] for k in order_keys]
-
-        result = await self.db.execute(
-            select(Order).where(
-                Order.po_number.in_(po_numbers),
-                Order.style_id.in_(style_ids),
-            )
+        # Fetch existing orders using precise composite key matching
+        from sqlalchemy import tuple_
+        
+        stmt = select(Order).where(
+            tuple_(Order.po_number, Order.style_id).in_(list(order_keys))
         )
+        result = await self.db.execute(stmt)
         existing_orders = {(o.po_number, o.style_id): o for o in result.scalars().all()}
 
         # Create missing orders

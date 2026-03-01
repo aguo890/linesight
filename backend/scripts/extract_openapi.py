@@ -15,21 +15,29 @@ import sys
 
 import requests
 
+# Add backend directory to sys.path to allow importing app
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.main import app
 
-def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") -> None:
+
+def extract_openapi(output_path: str, api_url: str | None = None) -> None:
     """Fetch OpenAPI schema from running API and save to file."""
-    openapi_url = f"{api_url}/api/v1/openapi.json"
-    print(f"Fetching OpenAPI schema from {openapi_url}...")
+    if api_url:
+        openapi_url = f"{api_url}/api/v1/openapi.json"
+        print(f"Fetching OpenAPI schema from {openapi_url}...")
 
-    try:
-        response = requests.get(openapi_url, timeout=10)
-        response.raise_for_status()
-        schema = response.json()
-    except requests.RequestException as e:
-        print(f"❌ Failed to fetch schema from {openapi_url}")
-        print(f"   Error: {e}")
-        print("   Make sure the API is running (docker-compose up -d)")
-        sys.exit(1)
+        try:
+            response = requests.get(openapi_url, timeout=10)
+            response.raise_for_status()
+            schema = response.json()
+        except requests.RequestException as e:
+            print(f"❌ Failed to fetch schema from {openapi_url}")
+            print(f"   Error: {e}")
+            print("   Make sure the API is running (docker-compose up -d)")
+            sys.exit(1)
+    else:
+        print("Extracting OpenAPI schema directly from FastAPI app in memory...")
+        schema = app.openapi()
 
     # --- Schema Simplification Logic ---
     print("✂️  Simplifying schema names...")
@@ -106,6 +114,38 @@ def extract_openapi(output_path: str, api_url: str = "http://localhost:8000") ->
     if "paths" in schema:
         schema["paths"] = recursive_update_refs(schema["paths"], renaming_map)
 
+    # 4. Strip Pydantic V2 exclusiveMinimum (OpenAPI 3.1) to minimum (OpenAPI 3.0)
+    # This fixes parsing crashes in oasdiff and older code generators.
+    def recursive_strip_exclusive_minimum(node):
+        if isinstance(node, list):
+            for item in node:
+                recursive_strip_exclusive_minimum(item)
+        elif isinstance(node, dict):
+            if "exclusiveMinimum" in node:
+                val = node.pop("exclusiveMinimum")
+                # If exclusiveMinimum was 0, equivalent minimum is 1 for integers
+                # but we can just use the value + 1 or just value for decimals.
+                # Since we don't know the type, we just fallback to the value for safety,
+                # or better, Pydantic's exclusiveMinimum handles 'gt': so if int, it's val+1.
+                # Actually, many parsers just want the field gone.
+                # "minimum" is inclusive.
+                # Let's just set minimum = val + epsilon or just val + 1 if integer.
+                # Since Pydantic outputs exclusiveMinimum: 0.0 for gt=0, minimum: 1 is best for ints.
+                # We'll just set it to minimum: val + 1 if it ends in .0, but honestly just replacing it with `minimum: val` is safer (though technically 0 instead of 1). Let's use `minimum` carefully:
+                if "type" in node and node["type"] == "integer":
+                    try:
+                        node["minimum"] = int(val) + 1
+                    except (ValueError, TypeError):
+                        node["minimum"] = val
+                else:
+                    # For floats/decimals, exclusiveMinimum is technically val, but since OpenAPI 3.0 uses exclusiveMinimum: true, we can't easily express it. Setting minimum = val is "close enough" for most clients.
+                    node["minimum"] = val
+                    
+            for key, value in node.items():
+                recursive_strip_exclusive_minimum(value)
+
+    recursive_strip_exclusive_minimum(schema)
+
     # Ensure the directory exists
     output_dir = os.path.dirname(output_path)
     if output_dir:
@@ -130,8 +170,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--api-url",
-        help="API base URL",
-        default="http://localhost:8000",
+        help="API base URL (optional, defaults to extracting from memory)",
+        default=None,
     )
     args = parser.parse_args()
     extract_openapi(args.output, args.api_url)

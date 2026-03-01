@@ -257,3 +257,16 @@ class UploadListResponse(BaseModel):
     total: int
     offset: int
     limit: int
+
+
+class PreviewResponse(BaseModel):
+    """
+    Response for previewing uploaded file data before processing.
+    """
+    data: list[list[Any]] = Field(..., description="First N rows of data for preview")
+    columns: list[str] = Field(..., description="Column headers detected")
+    preview_rows: int = Field(..., description="Number of rows included in this preview")
+    total_rows: int = Field(..., description="Total rows in the file")
+    total_columns: int = Field(..., description="Total columns in the file")
+    filename: str = Field(..., description="Name of the uploaded file")
+    status: str = Field(..., description="Current status of the raw import")

@@ -14,7 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 
 import asyncio
 
-from app.services.llm_agent import CodeExecutionSandbox, SemanticETLAgent
+from app.private_core.etl_agent import CodeExecutionSandbox, SemanticETLAgent
 
 
 def run_ai_test(csv_path, label):

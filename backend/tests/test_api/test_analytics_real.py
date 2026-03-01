@@ -15,7 +15,8 @@ from app.models.drafts.compliance import (
     TraceabilityRecord,
     VerificationStatus,
 )
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import Order, ProductionRun, Style
 from app.models.workforce import Worker, WorkerSkill
 
@@ -37,7 +38,7 @@ async def test_factory(db_session: AsyncSession, test_organization):
 
 @pytest.fixture
 async def test_line(db_session: AsyncSession, test_factory):
-    line = ProductionLine(
+    line = DataSource(
         factory_id=test_factory.id,
         name="Test Line Audit",
         code="TL-AUD",
@@ -68,11 +69,12 @@ async def analytics_data(db_session: AsyncSession, test_factory, test_line):
         factory_id=test_factory.id,
         production_date=today,
         order_id=order.id,
-        line_id=test_line.id,
+        data_source_id=test_line.id,
         planned_qty=500,
         actual_qty=450,
         worked_minutes=Decimal("4800"),
         operators_present=10,
+        sam=Decimal("10.0"),
     )
     db_session.add(run)
     await db_session.flush()
@@ -92,13 +94,13 @@ async def analytics_data(db_session: AsyncSession, test_factory, test_line):
         factory_id=test_factory.id,
         employee_id="WK-001",
         full_name="High Performer",
-        line_id=test_line.id,
+        data_source_id=test_line.id,
     )
     worker2 = Worker(
         factory_id=test_factory.id,
         employee_id="WK-002",
         full_name="Low Performer",
-        line_id=test_line.id,
+        data_source_id=test_line.id,
     )
     db_session.add_all([worker1, worker2])
     await db_session.flush()

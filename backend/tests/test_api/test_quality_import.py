@@ -15,7 +15,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.models.datasource import DataSource, SchemaMapping
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 
 # Mock file for quality data
@@ -36,7 +37,7 @@ async def setup_quality_test_data(db_session, test_organization):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    line = ProductionLine(
+    line = DataSource(
         name="Line A",  # Matches CSV Line column
         factory_id=factory.id,
     )
@@ -44,16 +45,16 @@ async def setup_quality_test_data(db_session, test_organization):
     await db_session.commit()
     await db_session.refresh(line)
 
-    # 2. Create a DataSource with SchemaMapping
-    ds = DataSource(
-        production_line_id=line.id,  # Ensure linked
-        source_name="Test Production Data",
-        time_column="Inspection_Date",
-        description="Test data source",
-    )
-    db_session.add(ds)
+    # 2. Update the physical DataSource with configuration
+    line.source_name = "Test Quality Data"
+    line.time_column = "Inspection_Date"
+    line.description = "Test data source"
+    
+    db_session.add(line)
     await db_session.commit()
-    await db_session.refresh(ds)
+    await db_session.refresh(line)
+    
+    ds = line  # Use the same object for configuration
 
     # 3. Create SchemaMapping
     column_map = {
@@ -163,7 +164,7 @@ async def test_quality_data_promotion(
 
     # Run should match our line and style
     run = next(
-        (r for r in prod_runs if r.line_id == line.id and r.actual_qty == 950), None
+        (r for r in prod_runs if r.data_source_id == line.id and r.actual_qty == 950), None
     )
     assert run, "Production Run not found"
 

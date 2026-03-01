@@ -29,14 +29,16 @@ router = APIRouter()
 # =============================================================================
 
 
+from fastapi import APIRouter, Depends, status, Query
+
 @router.get("/styles", response_model=list[StyleRead], tags=["Styles"])
 async def list_styles(
     current_user: CurrentUser,
     db: AsyncSession = Depends(get_db),
     factory_id: str | None = None,
     buyer: str | None = None,
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
 ) -> Any:
     """List styles."""
     service = ProductionService(db)
@@ -93,8 +95,8 @@ async def list_orders(
     db: AsyncSession = Depends(get_db),
     style_id: str | None = None,
     status: str | None = None,
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
 ) -> Any:
     """List orders."""
     service = ProductionService(db)
@@ -153,8 +155,8 @@ async def list_runs(
     line_id: str | None = None,
     date_from: date | None = None,
     date_to: date | None = None,
-    skip: int = 0,
-    limit: int = 1000,  # Increased default limit for charts
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100, description="Max 100 runs per page"),
     sort_asc: bool = False,
 ) -> Any:
     """List production runs."""

@@ -105,18 +105,15 @@ class FabricLot(Base, UUIDMixin, TimestampMixin):
     # Relationships
     factory: Mapped["Factory"] = relationship(
         "Factory",
-        back_populates="fabric_lots",
     )
     cut_tickets: Mapped[list["CutTicket"]] = relationship(
         "CutTicket",
         back_populates="fabric_lot",
-        lazy="selectin",
-    )
+            )
     traceability_records: Mapped[list["TraceabilityRecord"]] = relationship(
         "TraceabilityRecord",
         back_populates="fabric_lot",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<FabricLot(id={self.id}, lot={self.lot_number}, origin={self.origin_country})>"
@@ -184,22 +181,15 @@ class CutTicket(Base, UUIDMixin, TimestampMixin):
     )
     order: Mapped["Order"] = relationship(
         "Order",
-        back_populates="cut_tickets",
     )
     cutter: Mapped[Optional["Worker"]] = relationship(
         "Worker",
         foreign_keys=[cutter_id],
     )
-    production_runs: Mapped[list["ProductionRun"]] = relationship(
-        "ProductionRun",
-        back_populates="cut_ticket",
-        lazy="selectin",
-    )
     traceability_records: Mapped[list["TraceabilityRecord"]] = relationship(
         "TraceabilityRecord",
         back_populates="cut_ticket",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<CutTicket(id={self.id}, ticket={self.ticket_number})>"

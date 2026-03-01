@@ -115,6 +115,10 @@ class UserRole(str, Enum):
     ANALYST = "analyst"                  # Read-only analytics
     VIEWER = "viewer"                    # Read-only access
 
+    # Backward-compatibility aliases (used by older tests)
+    ADMIN = "system_admin"
+    MANAGER = "factory_manager"
+
 
 class RoleScope(str, Enum):
     """Scope levels for user permissions.

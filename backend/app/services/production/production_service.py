@@ -147,8 +147,8 @@ class ProductionService:
         if not order:
             raise HTTPException(status_code=404, detail="Order not found")
 
-        # Verify line exists
-        line = await self.db.get(ProductionLine, run_in.line_id)
+        # Verify line exists (DataSource)
+        line = await self.db.get(ProductionLine, run_in.data_source_id)
         if not line:
             raise HTTPException(status_code=404, detail="Production Line not found")
 

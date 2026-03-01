@@ -124,6 +124,15 @@ class UserUpdate(BaseModel):
             except Exception:
                 raise ValueError("Invalid IANA timezone string") from None
         return v
+    # FIX: Ensure preferences is a valid dictionary
+    @field_validator("preferences")
+    @classmethod
+    def validate_preferences(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, UserPreferencesUpdate):
+            return v
+        raise ValueError("Preferences must be a valid dictionary")
 
 
 class UserRead(UserBase):

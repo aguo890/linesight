@@ -18,8 +18,8 @@ class LayoutItem(BaseModel):
     widget_id: str = Field(..., description="Unique identifier for the widget")
     x: int = Field(..., ge=0, description="X position in grid")
     y: int = Field(..., ge=0, description="Y position in grid")
-    w: int = Field(..., gt=0, description="Width in grid units")
-    h: int = Field(..., gt=0, description="Height in grid units")
+    w: int = Field(..., ge=1, description="Width in grid units")
+    h: int = Field(..., ge=1, description="Height in grid units")
 
 
 class WidgetConfig(BaseModel):

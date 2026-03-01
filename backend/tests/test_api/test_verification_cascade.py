@@ -7,7 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.user import Organization, User
 
 
@@ -31,7 +32,12 @@ async def test_factory_deletion_cascade_behavior(
     # Create factory
     response = await async_client.post(
         "/api/v1/factories",
-        json={"name": "Cascade Test Factory", "country": "US", "timezone": "UTC"},
+        json={
+            "name": "Cascade Test Factory", 
+            "code": "CASC-01",
+            "country": "US", 
+            "timezone": "America/New_York"
+        },
         headers=auth_headers,
     )
     assert response.status_code == 201
@@ -40,14 +46,14 @@ async def test_factory_deletion_cascade_behavior(
     # Create 2 lines
     for i in range(2):
         await async_client.post(
-            f"/api/v1/factories/{factory_id}/lines",
+            f"/api/v1/factories/{factory_id}/data-sources",
             json={"name": f"Line {i}"},
             headers=auth_headers,
         )
 
     # Verify lines exist and are active
     lines_response = await async_client.get(
-        f"/api/v1/factories/{factory_id}/lines", headers=auth_headers
+        f"/api/v1/factories/{factory_id}/data-sources", headers=auth_headers
     )
     assert lines_response.status_code == 200
     lines = lines_response.json()
@@ -75,7 +81,7 @@ async def test_factory_deletion_cascade_behavior(
 
     # Let's check DB state of lines
     result = await db_session.execute(
-        select(ProductionLine).where(ProductionLine.factory_id == factory_id)
+        select(DataSource).where(DataSource.factory_id == factory_id)
     )
     db_lines = result.scalars().all()
 

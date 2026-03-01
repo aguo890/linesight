@@ -8,7 +8,8 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory, ProductionLine
+from app.models.factory import Factory
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport
 
 
@@ -31,7 +32,7 @@ async def test_ingestion_deduplication(
     db_session.add(factory)
     await db_session.flush()
 
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Dedupe Line", code="DL-01", is_active=True
     )
     db_session.add(line)
@@ -82,7 +83,7 @@ async def test_mapping_state_endpoint(
     )
     db_session.add(factory)
     await db_session.flush()
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="State Line", code="SL-01", is_active=True
     )
     db_session.add(line)
@@ -149,7 +150,7 @@ async def test_process_idempotency(
     )
     db_session.add(factory)
     await db_session.flush()
-    line = ProductionLine(
+    line = DataSource(
         factory_id=factory.id, name="Idem Line", code="IL-01", is_active=True
     )
     db_session.add(line)

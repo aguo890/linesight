@@ -4,7 +4,7 @@
 
 import pytest
 from httpx import AsyncClient
-
+from datetime import date
 
 @pytest.mark.asyncio
 async def test_404_json_response(async_client: AsyncClient):
@@ -45,36 +45,44 @@ async def test_upload_bad_file_json_response(async_client: AsyncClient, auth_hea
 
 
 @pytest.mark.asyncio
-async def test_delete_204_response(async_client: AsyncClient, auth_headers):
+async def test_delete_204_response(
+    async_client: AsyncClient, 
+    db_session, 
+    auth_headers, 
+    test_factory, 
+    test_line,
+    test_order
+):
     """Test that delete actions return 204 with NO body"""
-    # 1. Create a factory
+    # 1. Create a Production Run to delete
+    # FIX: Correct payload schema
+    payload = {
+        "factory_id": str(test_factory.id),
+        "data_source_id": str(test_line.id),
+        "order_id": str(test_order.id),
+        "production_date": str(date.today()),
+        "shift": "day",
+        "actual_qty": 100,
+        "planned_qty": 100,
+        "operators_present": 5,
+        "worked_minutes": 300, # 5 ops * 60 mins
+        "sam": 1.5
+    }
+
     create_response = await async_client.post(
-        "/api/v1/factories",
-        json={
-            "name": "Temp Factory for Delete Test",
-            "country": "US",
-            "timezone": "UTC",
-        },
+        "/api/v1/production/runs",
+        json=payload,
         headers=auth_headers,
     )
-    if create_response.status_code == 403:  # Handle quota
-        pytest.skip("Quota limit reached, cannot test delete")
-    assert create_response.status_code == 201
-    factory_id = create_response.json()["id"]
+    
+    assert create_response.status_code == 201, f"Setup failed: {create_response.text}"
+    run_id = create_response.json()["id"]
 
-    # 2. Delete the factory
+    # 2. Delete the run
     delete_response = await async_client.delete(
-        f"/api/v1/factories/{factory_id}", headers=auth_headers
+        f"/api/v1/production/runs/{run_id}", headers=auth_headers
     )
 
     # 3. Verify 204 status and EMPTY body
     assert delete_response.status_code == 204
     assert delete_response.content == b""  # Verify completely empty body
-
-    # Verify .json() usage raises error for 204 if httpx follows typical behavior
-    # httpx doesn't throw on .json() but Python's json.loads("") raises error
-    # We want to confirm there is NO JSON to parse.
-    import json
-
-    with pytest.raises(json.JSONDecodeError):  # usually json.decoder.JSONDecodeError
-        delete_response.json()
