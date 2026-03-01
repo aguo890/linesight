@@ -9,6 +9,13 @@
 export type ListOrdersApiV1ProductionOrdersGetParams = {
 style_id?: string | null;
 status?: string | null;
+/**
+ * @minimum 0
+ */
 skip?: number;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
 limit?: number;
 };

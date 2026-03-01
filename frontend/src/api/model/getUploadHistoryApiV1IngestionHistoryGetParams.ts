@@ -8,5 +8,9 @@
 
 export type GetUploadHistoryApiV1IngestionHistoryGetParams = {
 data_source_id?: string | null;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
 limit?: number;
 };

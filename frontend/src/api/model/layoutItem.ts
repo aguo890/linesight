@@ -24,10 +24,12 @@ export interface LayoutItem {
   y: number;
   /**
    * Width in grid units
+   * @minimum 1
    */
   w: number;
   /**
    * Height in grid units
+   * @minimum 1
    */
   h: number;
 }

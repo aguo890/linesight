@@ -24,6 +24,7 @@ export interface OrderCreate {
   po_number: string;
   /**
    * Total order quantity in units
+   * @minimum 1
    */
   quantity: number;
   /** Quantity per size (e.g., {'S': 100, 'M': 200, 'L': 150}) */

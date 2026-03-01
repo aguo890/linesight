@@ -12,6 +12,8 @@ import type { ProductionRunCreateNotes } from './productionRunCreateNotes';
 import type { ProductionRunCreateLotNumber } from './productionRunCreateLotNumber';
 import type { ProductionRunCreateShadeBand } from './productionRunCreateShadeBand';
 import type { ProductionRunCreateBatchNumber } from './productionRunCreateBatchNumber';
+import type { ProductionRunCreateDataSourceId } from './productionRunCreateDataSourceId';
+import type { ProductionRunCreateLineId } from './productionRunCreateLineId';
 
 export interface ProductionRunCreate {
   /** UUID of the factory */
@@ -58,6 +60,11 @@ export interface ProductionRunCreate {
   /** Production batch identifier */
   batch_number?: ProductionRunCreateBatchNumber;
   order_id: string;
-  /** ID of the data source (formerly line_id) */
-  data_source_id: string;
+  /** ID of the data source */
+  data_source_id?: ProductionRunCreateDataSourceId;
+  /**
+   * LEGACY: Use data_source_id instead. Will be removed in API v2.
+   * @deprecated
+   */
+  line_id?: ProductionRunCreateLineId;
 }

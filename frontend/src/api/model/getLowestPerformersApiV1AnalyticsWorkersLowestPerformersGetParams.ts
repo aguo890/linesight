@@ -7,5 +7,9 @@
  */
 
 export type GetLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetParams = {
+/**
+ * @minimum 1
+ * @maximum 50
+ */
 limit?: number;
 };

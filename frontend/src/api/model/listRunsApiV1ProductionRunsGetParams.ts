@@ -11,7 +11,15 @@ order_id?: string | null;
 line_id?: string | null;
 date_from?: string | null;
 date_to?: string | null;
+/**
+ * @minimum 0
+ */
 skip?: number;
+/**
+ * Max 100 runs per page
+ * @minimum 1
+ * @maximum 100
+ */
 limit?: number;
 sort_asc?: boolean;
 };

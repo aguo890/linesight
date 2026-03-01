@@ -6,16 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListStylesApiV1ProductionStylesGetParams = {
-factory_id?: string | null;
-buyer?: string | null;
 /**
- * @minimum 0
+ * LEGACY: Use data_source_id instead. Will be removed in API v2.
+ * @deprecated
  */
-skip?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-};
+export type ProductionRunCreateLineId = string | null;
