@@ -6,16 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ListStylesApiV1ProductionStylesGetParams = {
-factory_id?: string | null;
-buyer?: string | null;
 /**
- * @minimum 0
+ * ID of the data source
  */
-skip?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-};
+export type ProductionRunCreateDataSourceId = string | null;

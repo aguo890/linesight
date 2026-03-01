@@ -65,10 +65,11 @@ export const registerApiV1AuthRegisterPostBody = zod.object({
  * @summary Get Upload History
  */
 export const getUploadHistoryApiV1IngestionHistoryGetQueryLimitDefault = 10;
+export const getUploadHistoryApiV1IngestionHistoryGetQueryLimitMax = 100;
 
 export const getUploadHistoryApiV1IngestionHistoryGetQueryParams = zod.object({
   "data_source_id": zod.union([zod.string(),zod.null()]).optional(),
-  "limit": zod.number().default(getUploadHistoryApiV1IngestionHistoryGetQueryLimitDefault)
+  "limit": zod.number().min(1).max(getUploadHistoryApiV1IngestionHistoryGetQueryLimitMax).default(getUploadHistoryApiV1IngestionHistoryGetQueryLimitDefault)
 })
 
 export const getUploadHistoryApiV1IngestionHistoryGetResponse = zod.any()
@@ -341,8 +342,8 @@ export const createDashboardApiV1DashboardsPostBody = zod.object({
   "widget_id": zod.string().describe('Unique identifier for the widget'),
   "x": zod.number().min(createDashboardApiV1DashboardsPostBodyLayoutConfigLayoutsItemXMin).describe('X position in grid'),
   "y": zod.number().min(createDashboardApiV1DashboardsPostBodyLayoutConfigLayoutsItemYMin).describe('Y position in grid'),
-  "w": zod.number().describe('Width in grid units'),
-  "h": zod.number().describe('Height in grid units')
+  "w": zod.number().min(1).describe('Width in grid units'),
+  "h": zod.number().min(1).describe('Height in grid units')
 }).describe('Widget layout position and size in grid.')).optional().describe('Widget layout items')
 }).describe('Dashboard layout configuration.'),zod.null()]).optional().describe('Layout configuration')
 }).describe('Schema for creating a new dashboard.')
@@ -425,8 +426,8 @@ export const updateDashboardApiV1DashboardsDashboardIdPutBody = zod.object({
   "widget_id": zod.string().describe('Unique identifier for the widget'),
   "x": zod.number().min(updateDashboardApiV1DashboardsDashboardIdPutBodyLayoutConfigLayoutsItemXMin).describe('X position in grid'),
   "y": zod.number().min(updateDashboardApiV1DashboardsDashboardIdPutBodyLayoutConfigLayoutsItemYMin).describe('Y position in grid'),
-  "w": zod.number().describe('Width in grid units'),
-  "h": zod.number().describe('Height in grid units')
+  "w": zod.number().min(1).describe('Width in grid units'),
+  "h": zod.number().min(1).describe('Height in grid units')
 }).describe('Widget layout position and size in grid.')).optional().describe('Widget layout items')
 }).describe('Dashboard layout configuration.'),zod.null()]).optional()
 }).describe('Schema for updating an existing dashboard.')
@@ -936,9 +937,10 @@ This is intended for coaching/improvement, not punitive purposes.
  * @summary Get Lowest Performers
  */
 export const getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryLimitDefault = 5;
+export const getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryLimitMax = 50;
 
 export const getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryParams = zod.object({
-  "limit": zod.number().default(getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryLimitDefault)
+  "limit": zod.number().min(1).max(getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryLimitMax).default(getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetQueryLimitDefault)
 })
 
 export const getLowestPerformersApiV1AnalyticsWorkersLowestPerformersGetResponseWorkersItemEfficiencyPctRegExp = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$');
@@ -1418,13 +1420,15 @@ export const getOrganizationApiV1OrganizationsOrganizationIdGetResponse = zod.ob
  * List styles.
  * @summary List Styles
  */
-export const listStylesApiV1ProductionStylesGetQuerySkipDefault = 0;export const listStylesApiV1ProductionStylesGetQueryLimitDefault = 100;
+export const listStylesApiV1ProductionStylesGetQuerySkipDefault = 0;
+export const listStylesApiV1ProductionStylesGetQuerySkipMin = 0;export const listStylesApiV1ProductionStylesGetQueryLimitDefault = 100;
+export const listStylesApiV1ProductionStylesGetQueryLimitMax = 100;
 
 export const listStylesApiV1ProductionStylesGetQueryParams = zod.object({
   "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "buyer": zod.union([zod.string(),zod.null()]).optional(),
-  "skip": zod.number().optional(),
-  "limit": zod.number().default(listStylesApiV1ProductionStylesGetQueryLimitDefault)
+  "skip": zod.number().min(listStylesApiV1ProductionStylesGetQuerySkipMin).optional(),
+  "limit": zod.number().min(1).max(listStylesApiV1ProductionStylesGetQueryLimitMax).default(listStylesApiV1ProductionStylesGetQueryLimitDefault)
 })
 
 export const listStylesApiV1ProductionStylesGetResponseStyleNumberMax = 100;export const listStylesApiV1ProductionStylesGetResponseStyleNameMaxOne = 255;export const listStylesApiV1ProductionStylesGetResponseDescriptionMaxOne = 500;export const listStylesApiV1ProductionStylesGetResponseBuyerMaxOne = 255;export const listStylesApiV1ProductionStylesGetResponseSeasonMaxOne = 50;export const listStylesApiV1ProductionStylesGetResponseCategoryMaxOne = 100;export const listStylesApiV1ProductionStylesGetResponseBaseSamRegExpOne = new RegExp('^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d{0,4}0*$');
@@ -1558,13 +1562,15 @@ export const deleteStyleApiV1ProductionStylesStyleIdDeleteParams = zod.object({
  * List orders.
  * @summary List Orders
  */
-export const listOrdersApiV1ProductionOrdersGetQuerySkipDefault = 0;export const listOrdersApiV1ProductionOrdersGetQueryLimitDefault = 100;
+export const listOrdersApiV1ProductionOrdersGetQuerySkipDefault = 0;
+export const listOrdersApiV1ProductionOrdersGetQuerySkipMin = 0;export const listOrdersApiV1ProductionOrdersGetQueryLimitDefault = 100;
+export const listOrdersApiV1ProductionOrdersGetQueryLimitMax = 100;
 
 export const listOrdersApiV1ProductionOrdersGetQueryParams = zod.object({
   "style_id": zod.union([zod.string(),zod.null()]).optional(),
   "status": zod.union([zod.string(),zod.null()]).optional(),
-  "skip": zod.number().optional(),
-  "limit": zod.number().default(listOrdersApiV1ProductionOrdersGetQueryLimitDefault)
+  "skip": zod.number().min(listOrdersApiV1ProductionOrdersGetQuerySkipMin).optional(),
+  "limit": zod.number().min(1).max(listOrdersApiV1ProductionOrdersGetQueryLimitMax).default(listOrdersApiV1ProductionOrdersGetQueryLimitDefault)
 })
 
 export const listOrdersApiV1ProductionOrdersGetResponsePoNumberMax = 100;export const listOrdersApiV1ProductionOrdersGetResponseUomDefault = "pcs";
@@ -1572,7 +1578,7 @@ export const listOrdersApiV1ProductionOrdersGetResponseUomMax = 20;export const 
 
 export const listOrdersApiV1ProductionOrdersGetResponseItem = zod.object({
   "po_number": zod.string().min(1).max(listOrdersApiV1ProductionOrdersGetResponsePoNumberMax).describe('Purchase Order number from buyer (e.g., \'PO-2024-001\')'),
-  "quantity": zod.number().describe('Total order quantity in units'),
+  "quantity": zod.number().min(1).describe('Total order quantity in units'),
   "size_breakdown": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional().describe('Quantity per size (e.g., {\'S\': 100, \'M\': 200, \'L\': 150})'),
   "uom": zod.string().max(listOrdersApiV1ProductionOrdersGetResponseUomMax).default(listOrdersApiV1ProductionOrdersGetResponseUomDefault).describe('Unit of measure (pcs, dozen, etc.)'),
   "color": zod.union([zod.string().max(listOrdersApiV1ProductionOrdersGetResponseColorMaxOne),zod.null()]).optional().describe('Color/colorway (e.g., \'Navy Blue\', \'Heather Grey\')'),
@@ -1604,7 +1610,7 @@ export const createOrderApiV1ProductionOrdersPostBodyUomMax = 20;export const cr
 
 export const createOrderApiV1ProductionOrdersPostBody = zod.object({
   "po_number": zod.string().min(1).max(createOrderApiV1ProductionOrdersPostBodyPoNumberMax).describe('Purchase Order number from buyer (e.g., \'PO-2024-001\')'),
-  "quantity": zod.number().describe('Total order quantity in units'),
+  "quantity": zod.number().min(1).describe('Total order quantity in units'),
   "size_breakdown": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional().describe('Quantity per size (e.g., {\'S\': 100, \'M\': 200, \'L\': 150})'),
   "uom": zod.string().max(createOrderApiV1ProductionOrdersPostBodyUomMax).default(createOrderApiV1ProductionOrdersPostBodyUomDefault).describe('Unit of measure (pcs, dozen, etc.)'),
   "color": zod.union([zod.string().max(createOrderApiV1ProductionOrdersPostBodyColorMaxOne),zod.null()]).optional().describe('Color/colorway (e.g., \'Navy Blue\', \'Heather Grey\')'),
@@ -1632,7 +1638,7 @@ export const getOrderApiV1ProductionOrdersOrderIdGetResponseUomMax = 20;export c
 
 export const getOrderApiV1ProductionOrdersOrderIdGetResponse = zod.object({
   "po_number": zod.string().min(1).max(getOrderApiV1ProductionOrdersOrderIdGetResponsePoNumberMax).describe('Purchase Order number from buyer (e.g., \'PO-2024-001\')'),
-  "quantity": zod.number().describe('Total order quantity in units'),
+  "quantity": zod.number().min(1).describe('Total order quantity in units'),
   "size_breakdown": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional().describe('Quantity per size (e.g., {\'S\': 100, \'M\': 200, \'L\': 150})'),
   "uom": zod.string().max(getOrderApiV1ProductionOrdersOrderIdGetResponseUomMax).default(getOrderApiV1ProductionOrdersOrderIdGetResponseUomDefault).describe('Unit of measure (pcs, dozen, etc.)'),
   "color": zod.union([zod.string().max(getOrderApiV1ProductionOrdersOrderIdGetResponseColorMaxOne),zod.null()]).optional().describe('Color/colorway (e.g., \'Navy Blue\', \'Heather Grey\')'),
@@ -1665,7 +1671,7 @@ export const updateOrderApiV1ProductionOrdersOrderIdPatchParams = zod.object({
 export const updateOrderApiV1ProductionOrdersOrderIdPatchBodyQtyCutMinOne = 0;export const updateOrderApiV1ProductionOrdersOrderIdPatchBodyQtySewnMinOne = 0;export const updateOrderApiV1ProductionOrdersOrderIdPatchBodyQtyPackedMinOne = 0;export const updateOrderApiV1ProductionOrdersOrderIdPatchBodyQtyShippedMinOne = 0;
 
 export const updateOrderApiV1ProductionOrdersOrderIdPatchBody = zod.object({
-  "quantity": zod.union([zod.number(),zod.null()]).optional(),
+  "quantity": zod.union([zod.number().min(1),zod.null()]).optional(),
   "status": zod.union([zod.string(),zod.null()]).optional(),
   "priority": zod.union([zod.string(),zod.null()]).optional(),
   "size_breakdown": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional(),
@@ -1681,7 +1687,7 @@ export const updateOrderApiV1ProductionOrdersOrderIdPatchResponseUomMax = 20;exp
 
 export const updateOrderApiV1ProductionOrdersOrderIdPatchResponse = zod.object({
   "po_number": zod.string().min(1).max(updateOrderApiV1ProductionOrdersOrderIdPatchResponsePoNumberMax).describe('Purchase Order number from buyer (e.g., \'PO-2024-001\')'),
-  "quantity": zod.number().describe('Total order quantity in units'),
+  "quantity": zod.number().min(1).describe('Total order quantity in units'),
   "size_breakdown": zod.union([zod.record(zod.string(), zod.any()),zod.null()]).optional().describe('Quantity per size (e.g., {\'S\': 100, \'M\': 200, \'L\': 150})'),
   "uom": zod.string().max(updateOrderApiV1ProductionOrdersOrderIdPatchResponseUomMax).default(updateOrderApiV1ProductionOrdersOrderIdPatchResponseUomDefault).describe('Unit of measure (pcs, dozen, etc.)'),
   "color": zod.union([zod.string().max(updateOrderApiV1ProductionOrdersOrderIdPatchResponseColorMaxOne),zod.null()]).optional().describe('Color/colorway (e.g., \'Navy Blue\', \'Heather Grey\')'),
@@ -1716,15 +1722,17 @@ export const deleteOrderApiV1ProductionOrdersOrderIdDeleteParams = zod.object({
  * List production runs.
  * @summary List Runs
  */
-export const listRunsApiV1ProductionRunsGetQuerySkipDefault = 0;export const listRunsApiV1ProductionRunsGetQueryLimitDefault = 1000;export const listRunsApiV1ProductionRunsGetQuerySortAscDefault = false;
+export const listRunsApiV1ProductionRunsGetQuerySkipDefault = 0;
+export const listRunsApiV1ProductionRunsGetQuerySkipMin = 0;export const listRunsApiV1ProductionRunsGetQueryLimitDefault = 100;
+export const listRunsApiV1ProductionRunsGetQueryLimitMax = 100;export const listRunsApiV1ProductionRunsGetQuerySortAscDefault = false;
 
 export const listRunsApiV1ProductionRunsGetQueryParams = zod.object({
   "order_id": zod.union([zod.string(),zod.null()]).optional(),
   "line_id": zod.union([zod.string(),zod.null()]).optional(),
   "date_from": zod.union([zod.iso.date(),zod.null()]).optional(),
   "date_to": zod.union([zod.iso.date(),zod.null()]).optional(),
-  "skip": zod.number().optional(),
-  "limit": zod.number().default(listRunsApiV1ProductionRunsGetQueryLimitDefault),
+  "skip": zod.number().min(listRunsApiV1ProductionRunsGetQuerySkipMin).optional(),
+  "limit": zod.number().min(1).max(listRunsApiV1ProductionRunsGetQueryLimitMax).default(listRunsApiV1ProductionRunsGetQueryLimitDefault).describe('Max 100 runs per page'),
   "sort_asc": zod.boolean().optional()
 })
 
@@ -1811,7 +1819,8 @@ export const createRunApiV1ProductionRunsPostBody = zod.object({
   "shade_band": zod.union([zod.string().max(createRunApiV1ProductionRunsPostBodyShadeBandMaxOne).regex(createRunApiV1ProductionRunsPostBodyShadeBandRegExpOne),zod.null()]).optional().describe('Shade band code (e.g., \'A1\', \'B2\') for color consistency'),
   "batch_number": zod.union([zod.string().max(createRunApiV1ProductionRunsPostBodyBatchNumberMaxOne),zod.null()]).optional().describe('Production batch identifier'),
   "order_id": zod.string(),
-  "data_source_id": zod.string().describe('ID of the data source (formerly line_id)')
+  "data_source_id": zod.union([zod.string(),zod.null()]).optional().describe('ID of the data source'),
+  "line_id": zod.union([zod.string(),zod.null()]).optional().describe('LEGACY: Use data_source_id instead. Will be removed in API v2.')
 })
 
 
@@ -1977,11 +1986,13 @@ export const createDataSourceApiV1DataSourcesPostBody = zod.object({
  * List all data sources with mappings loaded.
  * @summary List Data Sources
  */
-export const listDataSourcesApiV1DataSourcesGetQuerySkipDefault = 0;export const listDataSourcesApiV1DataSourcesGetQueryLimitDefault = 100;
+export const listDataSourcesApiV1DataSourcesGetQuerySkipDefault = 0;
+export const listDataSourcesApiV1DataSourcesGetQuerySkipMin = 0;export const listDataSourcesApiV1DataSourcesGetQueryLimitDefault = 100;
+export const listDataSourcesApiV1DataSourcesGetQueryLimitMax = 100;
 
 export const listDataSourcesApiV1DataSourcesGetQueryParams = zod.object({
-  "skip": zod.number().optional(),
-  "limit": zod.number().default(listDataSourcesApiV1DataSourcesGetQueryLimitDefault)
+  "skip": zod.number().min(listDataSourcesApiV1DataSourcesGetQuerySkipMin).optional(),
+  "limit": zod.number().min(1).max(listDataSourcesApiV1DataSourcesGetQueryLimitMax).default(listDataSourcesApiV1DataSourcesGetQueryLimitDefault)
 })
 
 export const listDataSourcesApiV1DataSourcesGetResponseHasActiveSchemaDefault = false;export const listDataSourcesApiV1DataSourcesGetResponseSchemaMappingsDefault = [];

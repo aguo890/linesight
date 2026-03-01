@@ -7,6 +7,13 @@
  */
 
 export type ListDataSourcesApiV1DataSourcesGetParams = {
+/**
+ * @minimum 0
+ */
 skip?: number;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
 limit?: number;
 };
