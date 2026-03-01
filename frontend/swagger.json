@@ -122,6 +122,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 10,
               "title": "Limit"
             }
@@ -1686,6 +1688,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
               "default": 5,
               "title": "Limit"
             }
@@ -3103,6 +3107,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3113,6 +3118,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -3391,6 +3398,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3401,6 +3409,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -3713,6 +3723,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -3723,9 +3734,13 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1000,
+              "maximum": 100,
+              "minimum": 1,
+              "description": "Max 100 runs per page",
+              "default": 100,
               "title": "Limit"
-            }
+            },
+            "description": "Max 100 runs per page"
           },
           {
             "name": "sort_asc",
@@ -4023,6 +4038,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "minimum": 0,
               "default": 0,
               "title": "Skip"
             }
@@ -4033,6 +4049,8 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
               "default": 100,
               "title": "Limit"
             }
@@ -6853,13 +6871,13 @@
           },
           "w": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "W",
             "description": "Width in grid units"
           },
           "h": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "H",
             "description": "Height in grid units"
           }
@@ -7059,7 +7077,7 @@
           },
           "quantity": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "Quantity",
             "description": "Total order quantity in units"
           },
@@ -7194,7 +7212,7 @@
           },
           "quantity": {
             "type": "integer",
-            "exclusiveMinimum": 0.0,
+            "minimum": 1.0,
             "title": "Quantity",
             "description": "Total order quantity in units"
           },
@@ -7376,7 +7394,7 @@
             "anyOf": [
               {
                 "type": "integer",
-                "exclusiveMinimum": 0.0
+                "minimum": 1.0
               },
               {
                 "type": "null"
@@ -8068,9 +8086,29 @@
             "title": "Order Id"
           },
           "data_source_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Data Source Id",
-            "description": "ID of the data source (formerly line_id)"
+            "description": "ID of the data source"
+          },
+          "line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line Id",
+            "description": "LEGACY: Use data_source_id instead. Will be removed in API v2.",
+            "deprecated": true
           }
         },
         "type": "object",
@@ -8079,8 +8117,7 @@
           "production_date",
           "operators_present",
           "worked_minutes",
-          "order_id",
-          "data_source_id"
+          "order_id"
         ],
         "title": "ProductionRunCreate"
       },

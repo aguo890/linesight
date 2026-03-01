@@ -139,8 +139,7 @@ class QualityInspection(Base, UUIDMixin, TimestampMixin):
     defects: Mapped[list["Defect"]] = relationship(
         "Defect",
         back_populates="inspection",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<QualityInspection(id={self.id}, dhu={self.dhu})>"

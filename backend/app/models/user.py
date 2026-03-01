@@ -64,13 +64,11 @@ class Organization(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     users: Mapped[list["User"]] = relationship(
         "User",
         back_populates="organization",
-        lazy="selectin",
-    )
+            )
     factories: Mapped[list["Factory"]] = relationship(
         "Factory",
         back_populates="organization",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<Organization(id={self.id}, name={self.name})>"
@@ -130,13 +128,11 @@ class User(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     dashboards: Mapped[list["Dashboard"]] = relationship(
         "Dashboard",
         back_populates="user",
-        lazy="selectin",
-    )
+            )
     scopes: Mapped[list["UserScope"]] = relationship(
         "UserScope",
         back_populates="user",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<User(id={self.id}, email={self.email})>"

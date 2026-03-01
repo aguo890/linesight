@@ -125,7 +125,7 @@ class OrderBase(BaseModel):
         max_length=100,
         description="Purchase Order number from buyer (e.g., 'PO-2024-001')",
     )
-    quantity: int = Field(..., gt=0, description="Total order quantity in units")
+    quantity: int = Field(..., ge=1, description="Total order quantity in units")
     size_breakdown: dict | None = Field(
         None, description="Quantity per size (e.g., {'S': 100, 'M': 200, 'L': 150})"
     )
@@ -179,7 +179,7 @@ class OrderCreate(OrderBase):
 
 
 class OrderUpdate(BaseModel):
-    quantity: int | None = Field(None, gt=0)
+    quantity: int | None = Field(None, ge=1)
     status: str | None = None
     priority: str | None = None
     size_breakdown: dict | None = None

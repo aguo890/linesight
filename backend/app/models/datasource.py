@@ -137,29 +137,24 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     supervisor: Mapped[Optional["Worker"]] = relationship(
         "Worker",
         foreign_keys=[supervisor_id],
-        lazy="selectin",
-    )
+            )
     production_runs: Mapped[list["ProductionRun"]] = relationship(
         "ProductionRun",
         back_populates="data_source",
-        lazy="selectin",
-    )
+            )
     schema_mappings: Mapped[list["SchemaMapping"]] = relationship(
         "SchemaMapping",
         back_populates="data_source",
-        lazy="selectin",
-        cascade="all, delete-orphan",
+                cascade="all, delete-orphan",
     )
     ai_decisions: Mapped[list["AIDecision"]] = relationship(
         "AIDecision",
         back_populates="data_source",
-        lazy="selectin",
-    )
+            )
     dashboards: Mapped[list["Dashboard"]] = relationship(
         "Dashboard",
         back_populates="data_source",
-        lazy="selectin",
-    )
+            )
 
     # Self-referential hierarchy
     parent: Mapped[Optional["DataSource"]] = relationship(
@@ -172,8 +167,7 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
         "DataSource",
         back_populates="parent",
         foreign_keys=[parent_data_source_id],
-        lazy="selectin",
-    )
+            )
 
     @property
     def has_active_schema(self) -> bool:

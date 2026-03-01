@@ -175,10 +175,12 @@ async def get_data_source(
     return data_source
 
 
+from fastapi import Query
+
 @router.get("/data-sources", response_model=list[DataSourceResponse])
 async def list_data_sources(
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):

@@ -335,7 +335,7 @@ class ProductionRepository:
 
     async def get_run_by_id(self, run_id: str) -> ProductionRun | None:
         """
-        Get a production run by ID.
+        Get a production run by ID with eager loading for details.
 
         Args:
             run_id: Production run ID
@@ -343,7 +343,12 @@ class ProductionRepository:
         Returns:
             ProductionRun instance or None if not found
         """
-        query = select(ProductionRun).where(ProductionRun.id == run_id)
+        from sqlalchemy.orm import selectinload
+        query = select(ProductionRun).where(ProductionRun.id == run_id).options(
+            selectinload(ProductionRun.events),
+            selectinload(ProductionRun.quality_inspections),
+            selectinload(ProductionRun.production_outputs)
+        )
         result = await self.db.execute(query)
         return result.scalar_one_or_none()
 

@@ -12,7 +12,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import case, desc, func, literal, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -238,7 +238,7 @@ async def get_production_chart(
 async def get_lowest_performers(
     current_user: CurrentUser,
     db: Annotated[AsyncSession, Depends(get_db)],
-    limit: int = 5,
+    limit: int = Query(5, ge=1, le=50),
 ):
     """
     Get workers with lowest efficiency for the current week.

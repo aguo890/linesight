@@ -94,7 +94,7 @@ def get_sample_data_from_import(raw_import: RawImport) -> dict[str, list[Any]]:
 @router.get("/history")
 async def get_upload_history(
     data_source_id: str | None = None,
-    limit: int = 10,
+    limit: int = Query(10, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
 ):
     """Fetch recent file uploads, optionally filtered by data source."""

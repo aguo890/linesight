@@ -91,7 +91,7 @@ class Style(Base, UUIDMixin, TimestampMixin):
     # Relationships
     factory: Mapped["Factory"] = relationship("Factory", back_populates="styles")
     orders: Mapped[list["Order"]] = relationship(
-        "Order", back_populates="style", lazy="selectin"
+        "Order", back_populates="style"
     )
 
     def __repr__(self) -> str:
@@ -155,7 +155,7 @@ class Order(Base, UUIDMixin, TimestampMixin):
     # Relationships
     style: Mapped["Style"] = relationship("Style", back_populates="orders")
     production_runs: Mapped[list["ProductionRun"]] = relationship(
-        "ProductionRun", back_populates="order", lazy="selectin"
+        "ProductionRun", back_populates="order"
     )
     # ARCHIVED: cut_tickets moved to models/drafts/cutting.py
     # ARCHIVED: packing_lists moved to models/drafts/shipping.py
@@ -331,16 +331,16 @@ class ProductionRun(Base, UUIDMixin, TimestampMixin):
     )
     # ARCHIVED: cut_ticket relationship moved to models/drafts/cutting.py
     quality_inspections: Mapped[list["QualityInspection"]] = relationship(
-        "QualityInspection", back_populates="production_run", lazy="selectin"
+        "QualityInspection", back_populates="production_run"
     )
     production_outputs: Mapped[list["ProductionOutput"]] = relationship(
-        "ProductionOutput", back_populates="production_run", lazy="selectin"
+        "ProductionOutput", back_populates="production_run"
     )
     efficiency_metric: Mapped[Optional["EfficiencyMetric"]] = relationship(
         "EfficiencyMetric", back_populates="production_run", uselist=False
     )
     events: Mapped[list["ProductionEvent"]] = relationship(
-        "ProductionEvent", back_populates="production_run", lazy="selectin"
+        "ProductionEvent", back_populates="production_run"
     )
 
     @hybrid_property

@@ -88,25 +88,21 @@ class Factory(Base, UUIDMixin, TimestampMixin):
     data_sources: Mapped[list["DataSource"]] = relationship(
         "DataSource",
         back_populates="factory",
-        lazy="selectin",
-    )
+            )
     workers: Mapped[list["Worker"]] = relationship(
         "Worker",
         back_populates="factory",
-        lazy="selectin",
-    )
+            )
     styles: Mapped[list["Style"]] = relationship(
         "Style",
         back_populates="factory",
-        lazy="selectin",
-    )
+            )
     # ARCHIVED: fabric_lots relationship moved to models/drafts/cutting.py
 
     dhu_reports: Mapped[list["DHUReport"]] = relationship(
         "DHUReport",
         back_populates="factory",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<Factory(id={self.id}, name={self.name}, country={self.country})>"

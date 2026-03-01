@@ -101,18 +101,15 @@ class Worker(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     skills: Mapped[list["WorkerSkill"]] = relationship(
         "WorkerSkill",
         back_populates="worker",
-        lazy="selectin",
-    )
+            )
     attendance_records: Mapped[list["WorkerAttendance"]] = relationship(
         "WorkerAttendance",
         back_populates="worker",
-        lazy="selectin",
-    )
+            )
     production_outputs: Mapped[list["ProductionOutput"]] = relationship(
         "ProductionOutput",
         back_populates="worker",
-        lazy="selectin",
-    )
+            )
 
     def __repr__(self) -> str:
         return f"<Worker(id={self.id}, employee_id={self.employee_id})>"

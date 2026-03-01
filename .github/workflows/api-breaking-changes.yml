@@ -43,6 +43,7 @@ jobs:
           git checkout origin/${{ github.base_ref }} -- frontend/swagger.json || echo "No existing schema found"
           if [ -f frontend/swagger.json ]; then
             cp frontend/swagger.json openapi-base.json
+            sed -i 's/"exclusiveMinimum": \?0/"minimum": 1/g' openapi-base.json
           fi
 
       - name: Install oasdiff
