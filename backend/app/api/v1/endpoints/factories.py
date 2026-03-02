@@ -91,7 +91,9 @@ async def get_factory(
     """
     result = await db.execute(
         select(Factory)
-        .options(selectinload(Factory.data_sources))
+        .options(
+            selectinload(Factory.data_sources).selectinload(DataSource.schema_mappings)
+        )
         .where(Factory.id == factory_id)
         .where(Factory.organization_id == current_user.organization_id)
     )
@@ -302,6 +304,7 @@ async def list_data_sources(
     # Build base query
     query = (
         select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
         .where(DataSource.factory_id == factory_id)
         .where(DataSource.is_active)
     )
@@ -443,6 +446,7 @@ async def get_data_source(
     """
     result = await db.execute(
         select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
         .join(Factory)
         .where(DataSource.id == ds_id)
         .where(Factory.organization_id == current_user.organization_id)
@@ -471,6 +475,7 @@ async def update_data_source(
     """
     result = await db.execute(
         select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
         .join(Factory)
         .where(DataSource.id == ds_id)
         .where(Factory.organization_id == current_user.organization_id)
