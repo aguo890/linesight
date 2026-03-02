@@ -109,6 +109,10 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     const effectiveWidth = editMode ? debouncedW : parentWidth;
     const effectiveHeight = editMode ? debouncedH : parentHeight;
 
+    const title = widget.settings?.customTitle || manifest?.meta.title;
+    const IconComponent = useMemo(() => manifest?.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest?.meta.icon]);
+    const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest?.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest?.meta.iconColor]);
+
     if (!manifest) {
         return (
             <div className="p-4 bg-error/10 border border-error/30 rounded text-error">
@@ -116,10 +120,6 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             </div>
         );
     }
-
-    const title = widget.settings?.customTitle || manifest.meta.title;
-    const IconComponent = useMemo(() => manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest.meta.icon]);
-    const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest.meta.iconColor]);
 
     // 8. Loading State (Only for non-edit mode or initial load)
     if (loading && !data && manifest.dataId && !editMode) {

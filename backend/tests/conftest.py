@@ -96,70 +96,67 @@ def sync_db_engine():
     engine.dispose()
 
 
-@pytest_asyncio.fixture(scope="function")
-async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
-    """Create a fresh database session for each test."""
-    # Create tables
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def setup_database(db_engine):
+    """Session-scoped fixture to handle table creation with correct dependency order."""
+    # Ensure DataSource is imported before AIDecision for Foreign Key resolution
+    from app.models.datasource import DataSource
+    # Import Base to get metadata
+    from app.models.base import Base
+    
     try:
         async with db_engine.begin() as conn:
             dialect = conn.dialect.name
-        if dialect == "sqlite":
-            await conn.execute(text("PRAGMA foreign_keys=OFF"))
-        elif dialect == "mysql":
-            await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
-        elif dialect == "postgresql":
-            await conn.execute(text("SET session_replication_role = 'replica';"))
+            if dialect == "sqlite":
+                await conn.execute(text("PRAGMA foreign_keys=OFF"))
+            elif dialect == "mysql":
+                await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
+            elif dialect == "postgresql":
+                await conn.execute(text("SET session_replication_role = 'replica';"))
 
-        # Manually create tables to bypass topological sort (circular dependency) check in create_all
-        for table_obj in Base.metadata.tables.values():
-            await conn.run_sync(
-                lambda sync_conn, t=table_obj: t.create(sync_conn, checkfirst=True)
-            )
+            # Create tables using metadata to respect dependency graph
+            await conn.run_sync(Base.metadata.create_all)
 
-        if dialect == "sqlite":
-            await conn.execute(text("PRAGMA foreign_keys=ON"))
-        elif dialect == "mysql":
-            await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
-        elif dialect == "postgresql":
-            await conn.execute(text("SET session_replication_role = 'origin';"))
+            if dialect == "sqlite":
+                await conn.execute(text("PRAGMA foreign_keys=ON"))
+            elif dialect == "mysql":
+                await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
+            elif dialect == "postgresql":
+                await conn.execute(text("SET session_replication_role = 'origin';"))
     except Exception as e:
-        print(f"\n[!!!] DB Connection Error during session init: {e}\n")
+        print(f"\n[!!!] DB Connection Error during table creation: {e}\n")
         raise e
 
-    # Create session factory
-    async_session_factory = async_sessionmaker(
-        bind=db_engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-    )
+    yield
 
-    # Create session
-    async with async_session_factory() as session:
+    # Optional: Teardown logic here if we wanted to drop_all
+    # We are preserving data as per original implementation
+
+
+@pytest_asyncio.fixture(scope="function")
+async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
+    """Create a fresh, isolated database session for each test that rolls back."""
+    # 1. Create a connection from the engine
+    connection = await db_engine.connect()
+    
+    # 2. Begin a transaction that will be rolled back after each test
+    transaction = await connection.begin()
+    
+    # 3. Create the session bound to this specific connection
+    # Critical: expire_on_commit=False prevents extra DB lookups after commit
+    session = AsyncSession(bind=connection, expire_on_commit=False)
+
+    try:
         yield session
-
-    # Drop tables after test
-    async with db_engine.begin() as conn:
-        dialect = conn.dialect.name
-        if dialect == "sqlite":
-            await conn.execute(text("PRAGMA foreign_keys=OFF"))
-            result = await conn.execute(
-                text("SELECT name FROM sqlite_master WHERE type='table'")
-            )
-            tables = result.scalars().all()
-            for table in tables:
-                await conn.execute(text(f'DROP TABLE IF EXISTS "{table}"'))
-            await conn.execute(text("PRAGMA foreign_keys=ON"))
-        else:
-            print(
-                f"\n⚠️ Skipping table DROP for {dialect} (Data preserved for manual verification)"
-            )
-            # We still might want to clear specific data, but for now let's keep it.
-            # await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
-            # for table_obj in reversed(Base.metadata.sorted_tables):
-            #      await conn.run_sync(lambda sync_conn, t=table_obj: t.drop(sync_conn, checkfirst=True))
-            # await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
-
-
+    finally:
+        # 4. CLEANUP PHASE: Must happen in this exact order
+        try:
+            await session.close()      # Close the session first
+        finally:
+            try:
+                await transaction.rollback() # Roll back the transaction
+            finally:
+                await connection.close()    # Finally, release the connection
 @pytest.fixture(scope="function")
 def sync_db_session(sync_db_engine) -> Generator[Session, None, None]:
     """Synchronous database session for non-async tests."""

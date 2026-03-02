@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 /**
  * Returns dimensions that only update after the specified delay.
@@ -16,16 +16,21 @@ import { useState, useEffect } from 'react';
  */
 export function useDebouncedDimensions(width: number, height: number, delay: number = 200) {
     const [dims, setDims] = useState({ width, height });
+    const latestRef = useRef({ width, height });
+
+    useLayoutEffect(() => {
+        latestRef.current = { width, height };
+    }, [width, height]);
 
     useEffect(() => {
         // If delay is 0, update immediately (optimization for non-edit mode)
         if (delay === 0) {
-            setDims({ width, height });
+            setDims(latestRef.current);
             return;
         }
 
         const handler = setTimeout(() => {
-            setDims({ width, height });
+            setDims(latestRef.current);
         }, delay);
 
         return () => clearTimeout(handler);

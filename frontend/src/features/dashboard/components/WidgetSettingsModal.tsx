@@ -84,7 +84,7 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
     let fields: { key: string, def: z.ZodTypeAny, description?: string }[] = [];
 
     if (schema instanceof z.ZodObject) {
-        // @ts-ignore - access internal shape for introspection
+        // Access ZodObject shape for introspection
         const shape = schema.shape;
         fields = Object.entries(shape).map(([key, def]) => ({
             key,

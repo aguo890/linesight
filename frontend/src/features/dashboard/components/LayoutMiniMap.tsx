@@ -17,7 +17,7 @@ import { calculateSmartLayout } from '@/utils/layoutUtils';
 // Helper: Safe Icon Lookup
 const resolveIcon = (iconName: string | undefined) => {
     if (!iconName) return LucideIcons.Box;
-    // @ts-ignore - Dynamic access to Lucide icons
+    // @ts-expect-error - Dynamic access to Lucide icons
     const IconComponent = LucideIcons[iconName];
     return IconComponent || LucideIcons.Box; // Fallback
 };

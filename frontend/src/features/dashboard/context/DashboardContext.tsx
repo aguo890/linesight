@@ -153,7 +153,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
         return DEFAULT_FILTERS;
     });
 
-    const [lastRefreshAt, setLastRefreshAt] = useState(Date.now());
+    const [lastRefreshAt, setLastRefreshAt] = useState(() => Date.now());
     const [dataSourceId, setDataSourceId] = useState<string | undefined>(initialDataSourceId);
 
     // Optimized Persistence Effect - Debounced 500ms to prevent spam
