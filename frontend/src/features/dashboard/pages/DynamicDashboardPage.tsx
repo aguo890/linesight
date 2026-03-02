@@ -162,7 +162,7 @@ const DashboardPageContent = () => {
 
         // Fallback to localStorage for 'default' or if API fetch failed
         const boards = dashboardStorage.getDashboards();
-        let board = boards.find(b => b.id === targetId) || boards[0];
+        const board = boards.find(b => b.id === targetId) || boards[0];
 
         if (board) {
             console.log('📦 Dashboard loaded from localStorage:', {

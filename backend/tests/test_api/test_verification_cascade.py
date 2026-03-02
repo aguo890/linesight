@@ -45,11 +45,12 @@ async def test_factory_deletion_cascade_behavior(
 
     # Create 2 lines
     for i in range(2):
-        await async_client.post(
+        res = await async_client.post(
             f"/api/v1/factories/{factory_id}/data-sources",
             json={"name": f"Line {i}"},
             headers=auth_headers,
         )
+        assert res.status_code == 201, res.text
 
     # Verify lines exist and are active
     lines_response = await async_client.get(

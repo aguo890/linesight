@@ -114,7 +114,7 @@ async def test_quality_inspection_allows_different_types_per_run(
     await db_session.commit()
 
     # Verify both exist
-    await db_session.refresh(run)
+    await db_session.refresh(run, attribute_names=["quality_inspections"])
     assert len(run.quality_inspections) == 2
 
 

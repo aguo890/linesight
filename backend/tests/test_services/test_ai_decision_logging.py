@@ -237,7 +237,7 @@ async def test_ai_decision_data_source_relationship(
     )
 
     await db_session.commit()
-    await db_session.refresh(data_source)
+    await db_session.refresh(data_source, attribute_names=["ai_decisions"])
 
     # Verify relationship
     assert len(data_source.ai_decisions) > 0

@@ -12,7 +12,7 @@
 export type MatchTier = typeof MatchTier[keyof typeof MatchTier];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+ 
 export const MatchTier = {
   hash: 'hash',
   fuzzy: 'fuzzy',

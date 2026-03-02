@@ -426,7 +426,14 @@ async def create_data_source(
     )
     db.add(data_source)
     await db.commit()
-    await db.refresh(data_source)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == data_source.id)
+    )
+    data_source = result.scalar_one()
     return data_source
 
 
@@ -493,7 +500,14 @@ async def update_data_source(
         setattr(data_source, field, value)
 
     await db.commit()
-    await db.refresh(data_source)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == ds_id)
+    )
+    data_source = result.scalar_one()
     return data_source
 
 

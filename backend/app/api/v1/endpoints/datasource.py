@@ -53,7 +53,7 @@ class DataSourceUpdate(BaseModel):
 
 class DataSourceResponse(BaseModel):
     id: str
-    factory_id: str
+    factory_id: str | None = None  # Nullable for legacy data sources created without a factory
     production_line_id: str | None = None  # Legacy field, nullable after refactor
     source_name: str | None = None  # May be None for seeded lines
     description: str | None
@@ -123,7 +123,15 @@ async def create_data_source(
         db.add(mapping)
 
     await db.commit()
-    await db.refresh(data_source)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    from sqlalchemy.orm import selectinload
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == data_source.id)
+    )
+    data_source = result.scalar_one()
 
     return data_source
 
@@ -295,7 +303,14 @@ async def update_data_source(
         setattr(datasource, field, value)
 
     await db.commit()
-    await db.refresh(datasource)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == data_source_id)
+    )
+    datasource = result.scalar_one()
 
     return datasource
 

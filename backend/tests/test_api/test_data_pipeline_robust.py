@@ -194,7 +194,7 @@ async def test_date_format_handling(
     today = date.today()
     # Create variations relative to TODAY so they aren't filtered out by default views
     d1 = today.strftime("%Y-%m-%d")
-    d2 = (today - timedelta(days=1)).strftime("%m/%d/%Y")
+    d2 = (today - timedelta(days=1)).strftime("%d-%b-%Y")
     
     # 2. Upload Data with Mixed Formats
     csv_content = f"""production_date,style_number,actual_qty
