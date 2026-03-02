@@ -1,0 +1,82 @@
+name: Full Stack Test Suite
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    services:
+      # Spin up a test DB service automatically
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: linesight_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        working-directory: ./backend
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry install --no-interaction --no-root
+
+      - name: Run Pytest (Backend)
+        working-directory: ./backend
+        env:
+          DATABASE_URL: postgresql+asyncpg://user:password@localhost:5432/linesight_test
+          # Also set specific variables in case config.py reads them
+          DB_HOST: localhost
+          DB_PORT: "5432"
+          DB_USER: user
+          DB_PASSWORD: password
+          DB_NAME: linesight_test
+          # Force use of real DB if conftest.py respects it
+          # USE_REAL_DB: "true" # Note: conftest.py currently has a MySQL hardcode for USE_REAL_DB
+        run: |
+          # Fails if coverage drops or tests fail
+          pytest tests/ --cov=app --cov-fail-under=80
+
+  frontend-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Type Check (TypeScript)
+        working-directory: ./frontend
+        run: npx tsc --noEmit
+
+      - name: Lint Check
+        working-directory: ./frontend
+        run: npm run lint
