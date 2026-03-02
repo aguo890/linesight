@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { X, Eye, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getFilePreview } from '@/lib/ingestionApi';
@@ -28,28 +28,32 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        if (fileId && isOpen) {
-            loadPreview(fileId);
-        }
-    }, [fileId, isOpen]);
 
-    const loadPreview = async (id: string) => {
+
+    const loadPreview = useCallback(async (id: string) => {
         setLoading(true);
         setError(null);
         try {
             const previewData = await getFilePreview(id);
             setData(previewData);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Preview failed:', err);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const error = err as any;
             setError(
-                err.response?.data?.detail ||
+                error.response?.data?.detail ||
                 t('file_preview.error_default')
             );
         } finally {
             setLoading(false);
         }
-    };
+    }, [t]);
+
+    useEffect(() => {
+        if (fileId && isOpen) {
+            loadPreview(fileId);
+        }
+    }, [fileId, isOpen, loadPreview]);
 
     if (!isOpen) return null;
 

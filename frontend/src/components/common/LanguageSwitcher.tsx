@@ -6,7 +6,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { LOCALES, type LocaleCode } from '../../context/config/locales';
+import { LOCALES, type LocaleCode } from '@/context/config/locales';
 
 /**
  * LanguageSwitcher - Dropdown component for switching languages

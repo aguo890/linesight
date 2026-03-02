@@ -7,8 +7,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LayoutGrid, ChevronDown, PanelLeft, Users } from 'lucide-react';
-import { dashboardStorage } from '../../features/dashboard/storage';
-import type { SavedDashboard } from '../../features/dashboard/types';
+import { dashboardStorage } from '@/features/dashboard/storage';
+import type { SavedDashboard } from '@/features/dashboard/types';
 
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useAuth } from '@/hooks/useAuth';

@@ -47,6 +47,7 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHT
         };
 
         if (asChild && React.isValidElement(children)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return React.cloneElement(children as React.ReactElement<any>, {
                 onClick: handleClick,
                 ref,

@@ -37,9 +37,8 @@ jobs:
       - name: Install Dependencies
         working-directory: ./backend
         run: |
-          pip install poetry
-          poetry config virtualenvs.create false
-          poetry install --no-interaction --no-root
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Pytest (Backend)
         working-directory: ./backend

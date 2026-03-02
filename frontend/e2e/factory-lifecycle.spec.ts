@@ -35,10 +35,9 @@ test.describe('Factory Management Lifecycle', () => {
             });
         });
 
-        // Mock Factories API (Stateful)
         let mockFactories = [
             // Start empty
-        ] as any[];
+        ] as Record<string, unknown>[];
 
         // Regex for /api/v1/factories/ (exact list) or POST
         await page.route(/\/api\/v1\/factories\/$/, async route => {
@@ -172,8 +171,6 @@ test.describe('Factory Management Lifecycle', () => {
     test('should require fields when creating factory', async ({ page }) => {
         await page.goto('/dashboard/my-dashboards');
         await page.getByTestId('create-factory-btn').click();
-
-        const modal = page.getByTestId('factory-modal');
 
         // Try to submit empty
         await page.getByTestId('submit-factory-btn').click();

@@ -5,7 +5,7 @@
  */
 
 import { useEffect } from 'react';
-import { LOCALES } from '../../context/config/locales';
+import { LOCALES } from '@/context/config/locales';
 
 interface SEOHreflangsProps {
     /** The generic path without locale prefix (e.g., "/" or "/pricing") */

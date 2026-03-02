@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import type { ColumnMatchResult } from '../../types/domain';
+import type { ColumnMatchResult } from '@/types/domain';
 
 /**
  * Service for matching engine operations.

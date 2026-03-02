@@ -26,7 +26,7 @@ export default function TopNav() {
     const [showSearchToast, setShowSearchToast] = useState(false);
 
     // MOCK DATA: Notifications (Empty for now to show empty state)
-    const notifications: any[] = [];
+    const notifications: unknown[] = [];
 
 
     useEffect(() => {
