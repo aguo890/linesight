@@ -8,9 +8,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import type { DashboardWidgetConfig } from '../config';
+import type { DashboardWidgetConfig } from '@/features/dashboard/config';
 import { MainLayout } from '@/components/layout/MainLayout';
-import { dashboardStorage } from '../storage';
+import { dashboardStorage } from '@/features/dashboard/storage';
 import { WidgetLibrary } from '@/features/dashboard/components/WidgetLibrary';
 import { DashboardSkeleton } from '@/features/dashboard/components/DashboardSkeleton';
 import { DashboardEmptyState } from '@/features/dashboard/components/DashboardEmptyState';
@@ -20,10 +20,10 @@ import { DashboardHeader } from '@/features/dashboard/components/DashboardHeader
 import { DashboardGridLayout } from '@/features/dashboard/components/DashboardGridLayout';
 import { WidgetRenderer } from '@/features/dashboard/components/WidgetRenderer';
 import { SettingsSidebar } from '@/features/dashboard/components/SettingsSidebar';
-import type { SavedDashboard } from '../types';
-import { validateWidgetConfigs } from '../services/WidgetService';
-import { getWidgetLayout } from '../registry';
-import { useDashboard } from '../context/DashboardContext';
+import type { SavedDashboard } from '@/features/dashboard/types';
+import { validateWidgetConfigs } from '@/features/dashboard/services/WidgetService';
+import { getWidgetLayout } from '@/features/dashboard/registry';
+import { useDashboard } from '@/features/dashboard/context/DashboardContext';
 
 
 import { useIsFetching } from '@tanstack/react-query';

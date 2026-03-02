@@ -11,9 +11,9 @@
  * Abstracts localStorage-based storage and API calls from components.
  */
 import { useState, useEffect, useCallback } from 'react';
-import { dashboardStorage } from '../features/dashboard/storage';
-import type { SavedDashboard } from '../features/dashboard/types';
-import type { DashboardWidgetConfig } from '../features/dashboard/config';
+import { dashboardStorage } from '@/features/dashboard/storage';
+import type { SavedDashboard } from '@/features/dashboard/types';
+import type { DashboardWidgetConfig } from '@/features/dashboard/config';
 
 // =============================================================================
 // Types

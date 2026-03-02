@@ -24,7 +24,7 @@ import {
 
 // API & Context
 import { listFactories, listDataSources, deleteFactory, type Factory } from '@/lib/factoryApi';
-import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
+import { listOrgMembers, type MemberRead } from '@/api/endpoints/team/teamApi';
 import { useOrganization } from '@/contexts/OrganizationContext';
 
 // Components

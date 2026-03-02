@@ -6,7 +6,7 @@
 
 
 import { renderHook } from '@testing-library/react';
-import { useFactoryFormat } from '../useFactoryFormat';
+import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { FactoryContext } from '@/contexts/FactoryContext';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';

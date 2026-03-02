@@ -5,7 +5,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
+import { listOrgMembers, type MemberRead } from '@/api/endpoints/team/teamApi';
 
 export const useOrgMembers = () => {
     const [members, setMembers] = useState<MemberRead[]>([]);

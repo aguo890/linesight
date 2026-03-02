@@ -28,9 +28,9 @@ import type {
   HTTPValidationError,
   UserRead,
   UserUpdate
-} from '../../model';
+} from '@/api/model';
 
-import { customInstance } from '../../axios-client';
+import { customInstance } from '@/api/axios-client';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];

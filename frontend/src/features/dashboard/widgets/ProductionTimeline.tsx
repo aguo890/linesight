@@ -9,8 +9,8 @@ import { useTranslation } from 'react-i18next';
 import {
     ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
-import type { SmartWidgetProps } from '../config';
-import { TimelineDataSchema } from '../registry';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
+import { TimelineDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 

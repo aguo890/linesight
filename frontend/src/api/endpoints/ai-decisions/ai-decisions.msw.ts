@@ -21,7 +21,7 @@ import type {
 import type {
   AIDecisionListResponse,
   AIDecisionResponse
-} from '../../model';
+} from '@/api/model';
 
 
 export const getListAiDecisionsApiV1AiDecisionsGetResponseMock = (overrideResponse: Partial< AIDecisionListResponse > = {}): AIDecisionListResponse => ({decisions: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, data_source_id: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), agent_type: faker.string.alpha({length: {min: 10, max: 20}}), model_used: faker.string.alpha({length: {min: 10, max: 20}}), input_summary: faker.string.alpha({length: {min: 10, max: 20}}), output_summary: faker.string.alpha({length: {min: 10, max: 20}}), confidence: faker.helpers.arrayElement([faker.number.float({min: undefined, max: undefined, fractionDigits: 2}),null,]), reasoning: faker.helpers.arrayElement([null,]), performance_metadata: faker.helpers.arrayElement([faker.helpers.arrayElement([null,]), undefined])})), total: faker.number.int({min: undefined, max: undefined}), limit: faker.number.int({min: undefined, max: undefined}), offset: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})

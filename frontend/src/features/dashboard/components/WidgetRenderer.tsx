@@ -7,17 +7,17 @@
 import React, { Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react'; // Removed Maximize2, LayoutGrid, Move
-import type { ValidatedWidgetConfig } from '../services/WidgetService';
-import type { GlobalFilters } from '../config';
-import { getWidgetManifest } from '../registry';
+import type { ValidatedWidgetConfig } from '@/features/dashboard/services/WidgetService';
+import type { GlobalFilters } from '@/features/dashboard/config';
+import { getWidgetManifest } from '@/features/dashboard/registry';
 import WidgetErrorBoundary from './WidgetErrorBoundary';
 import { useWidgetLogger } from '@/hooks/useWidgetLogger';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useDashboard } from '../context/DashboardContext';
+import { useDashboard } from '@/features/dashboard/context/DashboardContext';
 import { useWidgetData } from '@/features/dashboard/hooks/useWidgetData';
 import { WidgetWrapper } from './WidgetWrapper';
-import { ComingSoonWidget } from '../widgets/ComingSoonWidget';
-import { getWidgetIcon } from '../utils/iconMap';
+import { ComingSoonWidget } from '@/features/dashboard/widgets/ComingSoonWidget';
+import { getWidgetIcon } from '@/features/dashboard/utils/iconMap';
 import { useDebouncedDimensions } from '@/hooks/useDebouncedDimensions';
 import { MicroPreview } from './MicroPreview'; // Import the lightweight preview
 
@@ -31,6 +31,16 @@ interface WidgetRendererProps {
     width?: number;
     height?: number;
 }
+
+// 11. Memoized Inner Widget
+const MemoizedInnerWidget = React.memo(({ component: Component, ...props }: any) => {
+    return <Component {...props} />;
+}, (prev: any, next: any) => {
+    const isSameSize = Math.abs(prev.width - next.width) < 2 && Math.abs(prev.height - next.height) < 2;
+    const isSameData = prev.data === next.data;
+    const isSameSettings = prev.settings === next.settings;
+    return isSameSize && isSameData && isSameSettings;
+});
 
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     widget,
@@ -145,15 +155,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         );
     }
 
-    // 11. Memoized Inner Widget
-    const MemoizedInnerWidget = React.memo(({ component: Component, ...props }: any) => {
-        return <Component {...props} />;
-    }, (prev, next) => {
-        const isSameSize = Math.abs(prev.width - next.width) < 2 && Math.abs(prev.height - next.height) < 2;
-        const isSameData = prev.data === next.data;
-        const isSameSettings = prev.settings === next.settings;
-        return isSameSize && isSameData && isSameSettings;
-    });
+
 
     return (
         <>

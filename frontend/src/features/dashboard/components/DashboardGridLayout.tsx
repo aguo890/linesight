@@ -10,7 +10,7 @@ import { useContainerWidth } from '@/hooks/useContainerWidth';
 import { useLayout } from '@/contexts/LayoutContext';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import type { ValidatedWidgetConfig } from '../services/WidgetService';
+import type { ValidatedWidgetConfig } from '@/features/dashboard/services/WidgetService';
 
 export interface DashboardGridLayoutProps {
     widgets: ValidatedWidgetConfig[];

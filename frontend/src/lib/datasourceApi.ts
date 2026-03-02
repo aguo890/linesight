@@ -12,7 +12,7 @@ import {
     type DataSourceUpdate,
     type SchemaMappingResponse,
     type SchemaMappingCreate
-} from '../api/model';
+} from '@/api/model';
 
 export interface AvailableField {
     field: string;

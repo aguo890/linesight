@@ -20,7 +20,7 @@ import type {
 
 import type {
   OrganizationRead
-} from '../../model';
+} from '@/api/model';
 
 
 export const getGetMyOrganizationApiV1OrganizationsMeGetResponseMock = (overrideResponse: Partial< OrganizationRead > = {}): OrganizationRead => ({name: faker.string.alpha({length: {min: 1, max: 255}}), code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 50}}),null,]), undefined]), primary_email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.internet.email(),null,]), undefined]), primary_phone: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 50}}),null,]), undefined]), id: faker.string.alpha({length: {min: 10, max: 20}}), subscription_tier: faker.string.alpha({length: {min: 10, max: 20}}), settings: faker.helpers.arrayElement([faker.helpers.arrayElement([null,]), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})

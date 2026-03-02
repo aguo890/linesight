@@ -7,8 +7,8 @@
 import React from 'react';
 import { Save } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useDashboard } from '../context/DashboardContext';
-import { getWidgetManifest } from '../registry';
+import { useDashboard } from '@/features/dashboard/context/DashboardContext';
+import { getWidgetManifest } from '@/features/dashboard/registry';
 import { RightSidebarShell } from './RightSidebarShell';
 
 export const SettingsSidebar: React.FC = () => {

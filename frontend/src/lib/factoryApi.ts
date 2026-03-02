@@ -9,7 +9,7 @@ import api from './api';
 import {
     type FactoryRead,
     type DataSourceRead
-} from '../api/model';
+} from '@/api/model';
 
 export const listFactories = async (): Promise<FactoryRead[]> => {
     const response = await api.get('/factories/');

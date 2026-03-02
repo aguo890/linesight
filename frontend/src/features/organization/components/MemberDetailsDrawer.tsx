@@ -10,7 +10,7 @@ import { X, Shield, Factory, AlertTriangle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import type { MemberRead } from '../../../api/endpoints/team/teamApi';
+import type { MemberRead } from '@/api/endpoints/team/teamApi';
 
 interface MemberDetailsDrawerProps {
     member: MemberRead | null;

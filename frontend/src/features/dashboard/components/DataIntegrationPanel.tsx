@@ -25,7 +25,7 @@ interface DataIntegrationPanelProps {
 }
 
 import { DashboardWizard } from './DashboardWizard';
-import { UploadHistory } from '../../factory-floor/components/UploadHistory';
+import { UploadHistory } from '@/features/factory-floor/components/UploadHistory';
 
 export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ className = '', productionLineId }) => {
     const { t } = useTranslation();

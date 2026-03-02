@@ -5,7 +5,7 @@
  */
 
 import { render, screen } from '@testing-library/react';
-import RTLWidgetTemplate from '../RTLWidgetTemplate';
+import RTLWidgetTemplate from '@/features/dashboard/widgets/RTLWidgetTemplate';
 import { useTranslation } from 'react-i18next';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 

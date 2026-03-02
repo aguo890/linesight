@@ -5,11 +5,11 @@
  */
 
 import React from 'react';
-import { type SmartWidgetProps } from '../config';
+import { type SmartWidgetProps } from '@/features/dashboard/config';
 import { AlertOctagon, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-import { DowntimeDataSchema } from '../registry';
+import { DowntimeDataSchema } from '@/features/dashboard/registry';
 
 // Infer types from Registry Schema
 // The registry defines it as an object { reasons: [...] }

@@ -10,9 +10,9 @@ import ConfirmDialog from '@/components/common/ConfirmDialog';
 import { User, Mail, Globe, Save, Loader2, Bell, Shield, Smartphone, ArrowLeft, Building2, Factory } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import { type UserPreferences, type UserInfo } from '@/lib/authApi';
-import LocationSelector from '../../features/dashboard/components/LocationSelector';
+import LocationSelector from '@/features/dashboard/components/LocationSelector';
 import { getPrefs } from './utils';
 import api from '@/lib/api';
 import { listFactories } from '@/lib/factoryApi';
@@ -31,7 +31,7 @@ interface FactoryInfo {
     name: string;
 }
 
-import { toRegionLocale, detectBestLocale, toShortLocale } from '../../utils/localeUtils';
+import { toRegionLocale, detectBestLocale, toShortLocale } from '@/utils/localeUtils';
 import { LanguageSelector } from '@/components/common/LanguageSelector';
 import { AutoFlipIcon } from '@/components/common/AutoFlipIcon';
 

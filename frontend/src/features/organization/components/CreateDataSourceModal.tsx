@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Settings, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '../../../api/endpoints/factories/factories';
+import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '@/api/endpoints/factories/factories';
 import type { QuotaStatus } from '@/lib/quotaApi';
 
 interface CreateDataSourceModalProps {

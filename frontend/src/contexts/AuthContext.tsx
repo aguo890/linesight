@@ -8,8 +8,8 @@ import { createContext, useState, useCallback, useEffect, type ReactNode } from 
 import api from '@/lib/api';
 import { authStorage } from '@/lib/authStorage';
 import { updateProfile, type UserUpdate, type UserInfo } from '@/lib/authApi';
-import i18n from '../i18n';
-import { toShortLocale, detectBestLocale } from '../utils/localeUtils';
+import i18n from '@/i18n';
+import { toShortLocale, detectBestLocale } from '@/utils/localeUtils';
 
 interface AuthState {
     user: UserInfo | null;

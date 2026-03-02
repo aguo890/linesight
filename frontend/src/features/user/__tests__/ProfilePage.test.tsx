@@ -6,7 +6,7 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import ProfilePage from '../ProfilePage';
+import ProfilePage from '@/features/user/ProfilePage';
 
 // Mocks
 const mockUpdateUser = vi.fn();

@@ -6,7 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@/test/utils';
-import { FilePreviewModal } from '../FilePreviewModal';
+import { FilePreviewModal } from '@/components/FilePreviewModal';
 import * as ingestionApi from '@/lib/ingestionApi';
 
 vi.mock('@/lib/ingestionApi', () => ({

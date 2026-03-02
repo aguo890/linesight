@@ -7,7 +7,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 import { render, screen, userEvent } from '@/test/utils';
-import { Input } from '../Input';
+import { Input } from '@/components/ui/Input';
 
 describe('Input Component', () => {
   it('renders input element', () => {

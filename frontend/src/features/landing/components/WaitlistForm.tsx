@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { AXIOS_INSTANCE as axiosClient } from '../../../api/axios-client';
+import { AXIOS_INSTANCE as axiosClient } from '@/api/axios-client';
 import { AxiosError } from 'axios';
 import { Check, Copy, Linkedin, Mail } from "lucide-react";
 

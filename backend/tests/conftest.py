@@ -100,8 +100,9 @@ def sync_db_engine():
 async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
     """Create a fresh database session for each test."""
     # Create tables
-    async with db_engine.begin() as conn:
-        dialect = conn.dialect.name
+    try:
+        async with db_engine.begin() as conn:
+            dialect = conn.dialect.name
         if dialect == "sqlite":
             await conn.execute(text("PRAGMA foreign_keys=OFF"))
         elif dialect == "mysql":
@@ -121,6 +122,9 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
             await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
         elif dialect == "postgresql":
             await conn.execute(text("SET session_replication_role = 'origin';"))
+    except Exception as e:
+        print(f"\n[!!!] DB Connection Error during session init: {e}\n")
+        raise e
 
     # Create session factory
     async_session_factory = async_sessionmaker(

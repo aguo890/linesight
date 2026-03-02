@@ -141,8 +141,10 @@ const AIProcessingView: React.FC<{
     const processActionRef = useRef(processAction);
     const onCompleteRef = useRef(onAnimationComplete);
 
-    processActionRef.current = processAction;
-    onCompleteRef.current = onAnimationComplete;
+    useEffect(() => {
+        processActionRef.current = processAction;
+        onCompleteRef.current = onAnimationComplete;
+    }, [processAction, onAnimationComplete]);
 
     useEffect(() => {
         if (scrollRef.current) {

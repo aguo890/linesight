@@ -5,14 +5,14 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import api from '../api';
+import api from '@/lib/api';
 import {
     getDataSourceByLine,
     updateDataSource,
     getUploadHistory,
     type DataSource,
     type RawImport,
-} from '../datasourceApi';
+} from '@/lib/datasourceApi';
 
 
 // Mock the api module

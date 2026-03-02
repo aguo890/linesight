@@ -14,7 +14,7 @@ import { useOrgMembers } from '@/features/organization/hooks/useOrgMembers';
 import { MemberIdentityCell } from '@/features/organization/components/MemberIdentityCell';
 import { MemberDetailsDrawer } from '@/features/organization/components/MemberDetailsDrawer';
 import { SettingsPageHeader } from '@/components/settings/SettingsPageHeader';
-import type { MemberRead } from '../../../api/endpoints/team/teamApi';
+import type { MemberRead } from '@/api/endpoints/team/teamApi';
 
 export const OrgMembersPage = () => {
     const { t } = useTranslation();

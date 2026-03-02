@@ -6,7 +6,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { DashboardWidgetConfig, GlobalFilters } from '../config';
+import type { DashboardWidgetConfig, GlobalFilters } from '@/features/dashboard/config';
 import type { DateRange } from 'react-day-picker';
 
 

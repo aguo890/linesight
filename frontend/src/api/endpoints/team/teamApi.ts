@@ -4,8 +4,8 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { AXIOS_INSTANCE } from '../../axios-client';
-import type { MemberRead, ScopeRead, ScopeAssign } from '../../model';
+import { AXIOS_INSTANCE } from '@/api/axios-client';
+import type { MemberRead, ScopeRead, ScopeAssign } from '@/api/model';
 
 export type { MemberRead, ScopeRead };
 

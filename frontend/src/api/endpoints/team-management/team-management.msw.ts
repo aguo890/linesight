@@ -21,7 +21,7 @@ import type {
 import type {
   MemberRead,
   ScopeRead
-} from '../../model';
+} from '@/api/model';
 
 
 export const getListOrganizationMembersApiV1OrganizationsMembersGetResponseMock = (): MemberRead[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), email: faker.internet.email(), full_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), avatar_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}}), is_active: faker.datatype.boolean(), last_login: faker.helpers.arrayElement([faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), undefined]), scopes: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.string.alpha({length: {min: 10, max: 20}}), scope_type: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), factory_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), data_source_id: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), role: faker.string.alpha({length: {min: 10, max: 20}})})), undefined])})))

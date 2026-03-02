@@ -33,7 +33,7 @@ import type {
   StyleProgressResponse,
   TargetRealizationResponse,
   WorkforceStats
-} from '../../model';
+} from '@/api/model';
 
 
 export const getGetOverviewStatsApiV1AnalyticsOverviewGetResponseMock = (overrideResponse: Partial< OverviewStats > = {}): OverviewStats => ({total_output: faker.number.int({min: undefined, max: undefined}), output_change_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), avg_efficiency: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), efficiency_change_pct: faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d*$'), discrepancies_count: faker.number.int({min: undefined, max: undefined}), active_lines: faker.number.int({min: undefined, max: undefined}), total_lines: faker.number.int({min: undefined, max: undefined}), last_updated: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})

@@ -8,8 +8,8 @@ import React from 'react';
 
 import {
     useGetOverviewStatsApiV1AnalyticsOverviewGet,
-} from '../../../api/endpoints/analytics/analytics';
-import type { OverviewStats } from '../../../api/model';
+} from '@/api/endpoints/analytics/analytics';
+import type { OverviewStats } from '@/api/model';
 import { MainLayout } from '@/components/layout/MainLayout';
 
 // Default/fallback data

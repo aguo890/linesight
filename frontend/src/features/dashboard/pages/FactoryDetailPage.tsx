@@ -36,7 +36,7 @@ import { useTranslation } from 'react-i18next';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { DataSourceCard } from '@/features/dashboard/components/DataSourceCard';
-import { CreateDataSourceModal } from '../../organization/components/CreateDataSourceModal';
+import { CreateDataSourceModal } from '@/features/organization/components/CreateDataSourceModal';
 import { DataSourceUploadModal } from '@/features/dashboard/components/DataSourceUploadModal';
 import { MappingFlowModal } from '@/features/dashboard/components/MappingFlowModal';
 import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard';
@@ -44,15 +44,15 @@ import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard
 import { Skeleton } from '@/components/ui/Skeleton';
 import { DashboardCard } from '@/features/dashboard/components/DashboardCard';
 import { FactorySettingsModal } from '@/features/dashboard/components/FactorySettingsModal';
-import { dashboardStorage } from '../storage';
+import { dashboardStorage } from '@/features/dashboard/storage';
 
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useFactory } from '@/hooks/useFactory';
 import {
     useListDashboardsApiV1DashboardsGet,
     useDeleteDashboardApiV1DashboardsDashboardIdDelete
-} from '../../../api/endpoints/dashboards/dashboards';
-import type { Dashboard } from '../types';
+} from '@/api/endpoints/dashboards/dashboards';
+import type { Dashboard } from '@/features/dashboard/types';
 import type { DataSource } from '@/lib/factoryApi';
 import { usePermissions } from '@/hooks/usePermissions';
 

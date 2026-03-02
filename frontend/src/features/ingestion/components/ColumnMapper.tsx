@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { type ColumnMatchResult, MatchTier } from '../../../types/domain';
+import { type ColumnMatchResult, MatchTier } from '@/types/domain';
 
 interface ColumnMapperProps {
     match: ColumnMatchResult;

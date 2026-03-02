@@ -5,11 +5,11 @@
  */
 
 import React, { useMemo } from 'react';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { Activity, TrendingUp, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-import { KpiSummaryDataSchema } from '../registry';
+import { KpiSummaryDataSchema } from '@/features/dashboard/registry';
 // Schema-inferred types
 type KpiData = z.infer<typeof KpiSummaryDataSchema>;
 

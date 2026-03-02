@@ -5,7 +5,7 @@
  */
 
 import { useLayoutEffect, useEffect, useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 /**
  * SSR-safe useLayoutEffect.

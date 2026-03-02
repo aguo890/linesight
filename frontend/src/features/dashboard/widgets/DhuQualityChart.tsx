@@ -8,9 +8,9 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { z } from 'zod';
-import { DhuQualityDataSchema } from '../registry';
+import { DhuQualityDataSchema } from '@/features/dashboard/registry';
 import { useThemeColors } from '@/hooks/useThemeColor';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 

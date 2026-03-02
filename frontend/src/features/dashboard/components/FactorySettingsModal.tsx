@@ -8,7 +8,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '../../../api/endpoints/factories/factories';
+import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '@/api/endpoints/factories/factories';
 import type { Factory, ShiftConfig } from '@/lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
 

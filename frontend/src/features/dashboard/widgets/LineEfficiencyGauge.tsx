@@ -6,9 +6,9 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { z } from 'zod';
-import { LineEfficiencyDataSchema } from '../registry';
+import { LineEfficiencyDataSchema } from '@/features/dashboard/registry';
 
 // Input type inferred from Zod Schema
 type EfficiencyData = z.infer<typeof LineEfficiencyDataSchema>;

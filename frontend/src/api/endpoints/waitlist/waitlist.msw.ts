@@ -20,7 +20,7 @@ import type {
 
 import type {
   WaitlistResponse
-} from '../../model';
+} from '@/api/model';
 
 
 export const getJoinWaitlistApiV1WaitlistPostResponseMock = (overrideResponse: Partial< WaitlistResponse > = {}): WaitlistResponse => ({id: faker.number.int({min: undefined, max: undefined}), email: faker.internet.email(), referral_code: faker.string.alpha({length: {min: 10, max: 20}}), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})

@@ -11,9 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // Popover no longer used for assignment
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { UserSearchCommand } from './UserSearchCommand';
-import { useUpdateDataSourceApiV1DataSourcesDataSourceIdPut, useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete } from '../../../api/endpoints/data-sources/data-sources';
-import { listOrgMembers } from '../../../api/endpoints/team/teamApi';
-import type { DataSourceRead as DataSource } from '../../../api/model';
+import { useUpdateDataSourceApiV1DataSourcesDataSourceIdPut, useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete } from '@/api/endpoints/data-sources/data-sources';
+import { listOrgMembers } from '@/api/endpoints/team/teamApi';
+import type { DataSourceRead as DataSource } from '@/api/model';
 
 interface DataSourceRowProps {
     dataSource: DataSource;

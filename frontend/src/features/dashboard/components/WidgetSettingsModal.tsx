@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, RotateCcw } from 'lucide-react';
 
 import { z } from 'zod';
-import { getWidgetSchema } from '../registry';
+import { getWidgetSchema } from '@/features/dashboard/registry';
 
 interface WidgetSettingsModalProps {
     isOpen: boolean;

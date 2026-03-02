@@ -36,7 +36,7 @@ import type {
     DashboardListResponse,
     DashboardDetailResponse,
     WidgetSuggestionsResponse,
-} from '../features/dashboard/types';
+} from '@/features/dashboard/types';
 
 /**
  * Create a new dashboard.

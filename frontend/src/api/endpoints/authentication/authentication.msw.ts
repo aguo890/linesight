@@ -21,7 +21,7 @@ import type {
 import type {
   LoginResponse,
   RegisterResponse
-} from '../../model';
+} from '@/api/model';
 
 
 export const getLoginApiV1AuthLoginPostResponseMock = (overrideResponse: Partial< LoginResponse > = {}): LoginResponse => ({access_token: faker.string.alpha({length: {min: 10, max: 20}}), token_type: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), user: {id: faker.string.alpha({length: {min: 10, max: 20}}), email: faker.string.alpha({length: {min: 10, max: 20}}), full_name: faker.string.alpha({length: {min: 10, max: 20}}), role: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.string.alpha({length: {min: 10, max: 20}}), timezone: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), preferences: faker.helpers.arrayElement([faker.helpers.arrayElement([null,]), undefined]), avatar_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined])}, ...overrideResponse})

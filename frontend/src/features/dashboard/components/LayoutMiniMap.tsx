@@ -9,8 +9,8 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Layout } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import { WIDGET_DEFINITIONS } from '../registry';
-import { calculateSmartLayout } from '../../../utils/layoutUtils';
+import { WIDGET_DEFINITIONS } from '@/features/dashboard/registry';
+import { calculateSmartLayout } from '@/utils/layoutUtils';
 
 // --- 1. Helpers for Icons & Tooltips ---
 

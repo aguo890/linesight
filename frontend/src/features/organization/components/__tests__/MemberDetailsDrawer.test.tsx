@@ -8,8 +8,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
-import { MemberDetailsDrawer } from '../MemberDetailsDrawer';
-import type { MemberRead } from '../../../../api/endpoints/team/teamApi';
+import { MemberDetailsDrawer } from '@/features/organization/components/MemberDetailsDrawer';
+import type { MemberRead } from '@/api/endpoints/team/teamApi';
 
 // Mock Lucide icons to avoid render issues in tests
 vi.mock('lucide-react', () => ({

@@ -5,7 +5,7 @@
  */
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import LocationSelector from '../LocationSelector';
+import LocationSelector from '@/features/dashboard/components/LocationSelector';
 import { vi } from 'vitest';
 
 // Mock the heavy dependencies to keep unit test fast and focused on logic

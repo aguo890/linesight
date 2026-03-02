@@ -5,7 +5,7 @@
  */
 
 import { z } from 'zod';
-import { getWidgetSchema, isValidWidgetType as isRegistryTypeValid, ALL_WIDGETS } from '../registry';
+import { getWidgetSchema, isValidWidgetType as isRegistryTypeValid, ALL_WIDGETS } from '@/features/dashboard/registry';
 
 // --- Schema Definitions ---
 

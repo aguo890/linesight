@@ -21,12 +21,12 @@ import type {
 import {
   OrderStatus,
   PriorityLevel
-} from '../../model';
+} from '@/api/model';
 import type {
   OrderRead,
   ProductionRunRead,
   StyleRead
-} from '../../model';
+} from '@/api/model';
 
 
 export const getListStylesApiV1ProductionStylesGetResponseMock = (): StyleRead[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({style_number: faker.string.alpha({length: {min: 1, max: 100}}), style_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 255}}),null,]), undefined]), description: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 500}}),null,]), undefined]), buyer: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 255}}),null,]), undefined]), season: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 50}}),null,]), undefined]), category: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 100}}),null,]), undefined]), base_sam: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.fromRegExp('^(?!^[-+.]*$)[+-]?0*\d*\.?\d{0,4}0*$'),null,]), undefined]), complexity_rating: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(PriorityLevel)),null,]), undefined]), bom_summary: faker.helpers.arrayElement([faker.helpers.arrayElement([null,]), undefined]), tech_pack_url: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.internet.url(),null,]), undefined]), id: faker.string.alpha({length: {min: 10, max: 20}}), factory_id: faker.string.alpha({length: {min: 10, max: 20}}), is_active: faker.datatype.boolean(), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`})))

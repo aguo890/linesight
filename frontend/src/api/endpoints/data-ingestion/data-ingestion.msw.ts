@@ -20,7 +20,7 @@ import type {
 
 import {
   MatchTier
-} from '../../model';
+} from '@/api/model';
 import type {
   AvailableField,
   ConfirmMappingResponse,
@@ -28,7 +28,7 @@ import type {
   ProcessingResponse,
   PromoteToProductionApiV1IngestionPromoteRawImportIdPost200,
   UploadFileForIngestionApiV1IngestionUploadPost200
-} from '../../model';
+} from '@/api/model';
 
 
 export const getUploadFileForIngestionApiV1IngestionUploadPostResponseMock = (): UploadFileForIngestionApiV1IngestionUploadPost200 => ({})

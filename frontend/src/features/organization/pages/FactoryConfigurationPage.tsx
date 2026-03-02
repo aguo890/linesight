@@ -20,10 +20,10 @@ import { DataSourceDetailsDrawer } from '@/features/organization/components/Data
 import { MemberDetailsDrawer } from '@/features/organization/components/MemberDetailsDrawer';
 
 // API & Types
-import { useGetFactoryApiV1FactoriesFactoryIdGet } from '../../../api/endpoints/factories/factories';
+import { useGetFactoryApiV1FactoriesFactoryIdGet } from '@/api/endpoints/factories/factories';
 import { useOrganization } from '@/contexts/OrganizationContext';
-import { assignUserToDataSource, listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
-import type { DataSourceRead as DataSource } from '../../../api/model';
+import { assignUserToDataSource, listOrgMembers, type MemberRead } from '@/api/endpoints/team/teamApi';
+import type { DataSourceRead as DataSource } from '@/api/model';
 
 export const FactoryConfigurationPage: React.FC = () => {
     const { factoryId } = useParams<{ factoryId: string }>();

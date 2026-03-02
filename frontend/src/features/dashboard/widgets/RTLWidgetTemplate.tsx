@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { useThemeColors } from '@/hooks/useThemeColor';
 import { z } from 'zod';
 

@@ -6,8 +6,8 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useTimezoneDate } from '../useTimezoneDate';
-import { useFactories } from '../useFactory';
+import { useTimezoneDate } from '@/hooks/useTimezoneDate';
+import { useFactories } from '@/hooks/useFactory';
 
 // Mock useFactories to control timezone
 vi.mock('../useFactory', () => ({

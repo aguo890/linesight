@@ -7,12 +7,12 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Wand2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { WIDGET_DEFINITIONS, getCompatibilityStatus, WIDGET_BUNDLES, getBundleReadiness } from '../../registry';
-import type { DashboardWidgetConfig } from '../../config';
+import { WIDGET_DEFINITIONS, getCompatibilityStatus, WIDGET_BUNDLES, getBundleReadiness } from '@/features/dashboard/registry';
+import type { DashboardWidgetConfig } from '@/features/dashboard/config';
 import type { ColumnMapping } from '@/lib/ingestionApi';
-import { WidgetSelector } from '../WidgetSelector';
-import { BlueprintCard } from '../BlueprintCard';
-import { calculateSmartLayout } from '../../../../utils/layoutUtils';
+import { WidgetSelector } from '@/features/dashboard/components/WidgetSelector';
+import { BlueprintCard } from '@/features/dashboard/components/BlueprintCard';
+import { calculateSmartLayout } from '@/utils/layoutUtils';
 
 export interface DashboardConfiguration {
     widgets: DashboardWidgetConfig[];

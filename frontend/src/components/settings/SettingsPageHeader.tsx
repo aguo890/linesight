@@ -15,7 +15,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { AutoFlipIcon } from '../common/AutoFlipIcon';
+import { AutoFlipIcon } from '@/components/common/AutoFlipIcon';
 
 interface SettingsPageHeaderProps {
     title: string;

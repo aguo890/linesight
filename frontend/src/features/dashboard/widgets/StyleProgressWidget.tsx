@@ -8,8 +8,8 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList
 } from 'recharts';
 import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
-import type { SmartWidgetProps } from '../config';
-import { StyleProgressDataSchema } from '../registry';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
+import { StyleProgressDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 
 // Infer Type

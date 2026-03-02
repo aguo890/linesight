@@ -13,9 +13,9 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { AutoFlipIcon } from '@/components/common/AutoFlipIcon';
-import { useGetDataSourceApiV1DataSourcesDataSourceIdGet } from '../../../api/endpoints/data-sources/data-sources';
+import { useGetDataSourceApiV1DataSourcesDataSourceIdGet } from '@/api/endpoints/data-sources/data-sources';
 import { Skeleton } from '@/components/ui/Skeleton';
-import type { Dashboard } from '../types';
+import type { Dashboard } from '@/features/dashboard/types';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 
 interface DashboardCardProps {

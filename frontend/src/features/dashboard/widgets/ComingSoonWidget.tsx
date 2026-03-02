@@ -8,7 +8,7 @@ import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { WidgetWrapper } from '@/features/dashboard/components/WidgetWrapper';
 import { getDensity } from '@/features/dashboard/components/WidgetWrapper';
-import type { WidgetProps } from '../config';
+import type { WidgetProps } from '@/features/dashboard/config';
 
 interface ComingSoonWidgetProps extends WidgetProps {
     title?: string;

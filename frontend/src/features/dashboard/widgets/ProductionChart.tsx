@@ -17,9 +17,9 @@ import {
     ResponsiveContainer,
     Legend
 } from 'recharts';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { z } from 'zod';
-import { ProductionChartDataSchema } from '../registry';
+import { ProductionChartDataSchema } from '@/features/dashboard/registry';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { useThemeColors } from '@/hooks/useThemeColor';
 
