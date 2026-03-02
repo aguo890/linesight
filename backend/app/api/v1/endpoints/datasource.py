@@ -23,35 +23,9 @@ from app.models.user import User
 # FIX: Import children models for cascade deletion
 from app.models.production import ProductionRun
 from app.models.raw_import import RawImport
+from app.schemas.datasource import SchemaMappingCreate, SchemaMappingResponse
 
 router = APIRouter()
-
-
-# Pydantic Schemas
-class SchemaMappingCreate(BaseModel):
-    column_map: dict = Field(
-        ..., description="Mapping from Excel columns to internal fields"
-    )
-    extraction_rules: dict | None = Field(
-        None, description="Parsing rules (skip_rows, header_row, etc.)"
-    )
-    reviewed_by_user: bool = Field(
-        False, description="Whether user has validated this mapping"
-    )
-    user_notes: str | None = None
-
-
-class SchemaMappingResponse(BaseModel):
-    id: str
-    version: int
-    is_active: bool
-    column_map: dict[str, Any]  # JSON type returns dict directly
-    extraction_rules: dict[str, Any] | None
-    reviewed_by_user: bool
-    user_notes: str | None
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
 
 
 class DataSourceCreate(BaseModel):
@@ -79,6 +53,7 @@ class DataSourceUpdate(BaseModel):
 
 class DataSourceResponse(BaseModel):
     id: str
+    factory_id: str | None = None  # Nullable for legacy data sources created without a factory
     production_line_id: str | None = None  # Legacy field, nullable after refactor
     source_name: str | None = None  # May be None for seeded lines
     description: str | None
@@ -148,7 +123,15 @@ async def create_data_source(
         db.add(mapping)
 
     await db.commit()
-    await db.refresh(data_source)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    from sqlalchemy.orm import selectinload
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == data_source.id)
+    )
+    data_source = result.scalar_one()
 
     return data_source
 
@@ -320,7 +303,14 @@ async def update_data_source(
         setattr(datasource, field, value)
 
     await db.commit()
-    await db.refresh(datasource)
+
+    # Re-fetch with eager loading to prevent MissingGreenlet on schema_mappings
+    result = await db.execute(
+        select(DataSource)
+        .options(selectinload(DataSource.schema_mappings))
+        .where(DataSource.id == data_source_id)
+    )
+    datasource = result.scalar_one()
 
     return datasource
 

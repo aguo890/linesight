@@ -7,40 +7,16 @@
 
 import api from './api';
 
-export interface SchemaMapping {
-    id: string;
-    version: number;
-    is_active: boolean;
-    column_map: Record<string, any>; // JSON object (matches backend)
-    extraction_rules?: Record<string, any>; // JSON object (matches backend)
-    reviewed_by_user: boolean;
-    user_notes?: string;
-    created_at: string;
-}
+import {
+    type DataSourceRead,
+    type DataSourceUpdate,
+    type SchemaMappingResponse,
+    type SchemaMappingCreate
+} from '../api/model';
 
 export interface AvailableField {
     field: string;
     description: string;
-}
-
-export interface DataSource {
-    id: string;
-    production_line_id: string;
-    source_name: string;
-    description?: string;
-    time_column?: string;
-    time_format?: string;
-    is_active: boolean;
-    schema_mappings: SchemaMapping[];
-    created_at: string;
-}
-
-
-export interface SchemaMappingCreate {
-    column_map: Record<string, string>;
-    extraction_rules?: Record<string, any>;
-    reviewed_by_user?: boolean;
-    user_notes?: string;
 }
 
 export interface RawImport {
@@ -55,30 +31,30 @@ export interface RawImport {
     production_line_id: string;
 }
 
-export const listDataSources = async (skip: number = 0, limit: number = 100): Promise<DataSource[]> => {
+export const listDataSources = async (skip: number = 0, limit: number = 100): Promise<DataSourceRead[]> => {
     const response = await api.get(`/data-sources?skip=${skip}&limit=${limit}`);
     return response.data;
 };
 
-export const getDataSource = async (id: string): Promise<DataSource> => {
+export const getDataSource = async (id: string): Promise<DataSourceRead> => {
     const response = await api.get(`/data-sources/${id}`);
     return response.data;
 };
 
-export const getDataSourceByLine = async (lineId: string): Promise<DataSource | null> => {
+export const getDataSourceByLine = async (lineId: string): Promise<DataSourceRead | null> => {
     const response = await api.get(`/data-sources/by-line/${lineId}`);
     return response.data;
 };
 
-export const updateSchemaMapping = async (dataSourceId: string, data: SchemaMappingCreate): Promise<SchemaMapping> => {
+export const updateSchemaMapping = async (dataSourceId: string, data: SchemaMappingCreate): Promise<SchemaMappingResponse> => {
     const response = await api.put(`/data-sources/${dataSourceId}/mapping`, data);
     return response.data;
 };
 
 export const updateDataSource = async (
     id: string,
-    updates: Partial<Pick<DataSource, 'time_column' | 'time_format' | 'description' | 'source_name' | 'is_active'>>
-): Promise<DataSource> => {
+    updates: DataSourceUpdate
+): Promise<DataSourceRead> => {
     const response = await api.put(`/data-sources/${id}`, updates);
     return response.data;
 };

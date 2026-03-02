@@ -197,7 +197,7 @@ async def test_get_discrepancies_real(
     response = await async_client.get(
         "/api/v1/analytics/discrepancies", headers=auth_headers
     )
-    assert response.status_code == 200
+    assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.text}"
     data = response.json()
 
     discrepancies = data["discrepancies"]

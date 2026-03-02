@@ -550,7 +550,7 @@ export const getFactoryApiV1FactoriesFactoryIdGetResponseNameMax = 255;export co
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDefaultShiftPatternItemEndTimeRegExp = new RegExp('^\\d{2}:\\d{2}$');
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsStandardNonWorkingDaysDefault = [5, 6];export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsTimezoneDefault = "UTC";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsDateFormatDefault = "MM/DD/YYYY";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsNumberFormatDefault = "1,000.00";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsMeasurementSystemDefault = "metric";export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsFiscalYearStartMonthDefault = 1;
 export const getFactoryApiV1FactoriesFactoryIdGetResponseSettingsFiscalYearStartMonthMax = 12;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemNameMax = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemCodeMaxOne = 50;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSpecialtyMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetOperatorsMinOne = 0;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetEfficiencyPctMinOne = 0;
-export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetEfficiencyPctMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSettingsIsCustomScheduleDefault = false;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemIsSegmentDefault = false;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesDefault = [];
+export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemTargetEfficiencyPctMaxOne = 100;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSettingsIsCustomScheduleDefault = false;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSchemaMappingsDefault = [];export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemIsSegmentDefault = false;export const getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesDefault = [];
 
 export const getFactoryApiV1FactoriesFactoryIdGetResponse = zod.object({
   "name": zod.string().min(1).max(getFactoryApiV1FactoriesFactoryIdGetResponseNameMax),
@@ -600,6 +600,16 @@ export const getFactoryApiV1FactoriesFactoryIdGetResponse = zod.object({
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
   "non_working_days": zod.union([zod.array(zod.number()),zod.null()]).optional()
 }).describe('Settings specific to a data source.\nCan be inherited from Factory defaults or overridden.'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+  "schema_mappings": zod.array(zod.object({
+  "id": zod.string(),
+  "version": zod.number(),
+  "is_active": zod.boolean(),
+  "column_map": zod.record(zod.string(), zod.any()),
+  "extraction_rules": zod.union([zod.record(zod.string(), zod.any()),zod.null()]),
+  "reviewed_by_user": zod.boolean(),
+  "user_notes": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.iso.datetime({})
+})).default(getFactoryApiV1FactoriesFactoryIdGetResponseDataSourcesItemSchemaMappingsDefault),
   "parent_data_source_id": zod.union([zod.string(),zod.null()]).optional(),
   "is_segment": zod.boolean().optional(),
   "date_range_start": zod.union([zod.iso.date(),zod.null()]).optional(),
@@ -706,7 +716,7 @@ export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetParams = zod.ob
 })
 
 export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseNameMax = 100;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseCodeMaxOne = 50;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseSpecialtyMaxOne = 100;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseTargetOperatorsMinOne = 0;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseTargetEfficiencyPctMinOne = 0;
-export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseTargetEfficiencyPctMaxOne = 100;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseSettingsIsCustomScheduleDefault = false;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseIsSegmentDefault = false;
+export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseTargetEfficiencyPctMaxOne = 100;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseSettingsIsCustomScheduleDefault = false;export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseSchemaMappingsDefault = [];export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseIsSegmentDefault = false;
 
 export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseItem = zod.object({
   "name": zod.string().min(1).max(listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseNameMax),
@@ -726,6 +736,16 @@ export const listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseItem = 
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
   "non_working_days": zod.union([zod.array(zod.number()),zod.null()]).optional()
 }).describe('Settings specific to a data source.\nCan be inherited from Factory defaults or overridden.'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+  "schema_mappings": zod.array(zod.object({
+  "id": zod.string(),
+  "version": zod.number(),
+  "is_active": zod.boolean(),
+  "column_map": zod.record(zod.string(), zod.any()),
+  "extraction_rules": zod.union([zod.record(zod.string(), zod.any()),zod.null()]),
+  "reviewed_by_user": zod.boolean(),
+  "user_notes": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.iso.datetime({})
+})).default(listDataSourcesApiV1FactoriesFactoryIdDataSourcesGetResponseSchemaMappingsDefault),
   "parent_data_source_id": zod.union([zod.string(),zod.null()]).optional(),
   "is_segment": zod.boolean().optional(),
   "date_range_start": zod.union([zod.iso.date(),zod.null()]).optional(),
@@ -777,7 +797,7 @@ export const getDataSourceApiV1FactoriesDataSourcesDsIdGetParams = zod.object({
 })
 
 export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseNameMax = 100;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseCodeMaxOne = 50;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseSpecialtyMaxOne = 100;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseTargetOperatorsMinOne = 0;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseTargetEfficiencyPctMinOne = 0;
-export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseTargetEfficiencyPctMaxOne = 100;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseSettingsIsCustomScheduleDefault = false;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseIsSegmentDefault = false;
+export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseTargetEfficiencyPctMaxOne = 100;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseSettingsIsCustomScheduleDefault = false;export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseSchemaMappingsDefault = [];export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseIsSegmentDefault = false;
 
 export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponse = zod.object({
   "name": zod.string().min(1).max(getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseNameMax),
@@ -797,6 +817,16 @@ export const getDataSourceApiV1FactoriesDataSourcesDsIdGetResponse = zod.object(
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
   "non_working_days": zod.union([zod.array(zod.number()),zod.null()]).optional()
 }).describe('Settings specific to a data source.\nCan be inherited from Factory defaults or overridden.'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+  "schema_mappings": zod.array(zod.object({
+  "id": zod.string(),
+  "version": zod.number(),
+  "is_active": zod.boolean(),
+  "column_map": zod.record(zod.string(), zod.any()),
+  "extraction_rules": zod.union([zod.record(zod.string(), zod.any()),zod.null()]),
+  "reviewed_by_user": zod.boolean(),
+  "user_notes": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.iso.datetime({})
+})).default(getDataSourceApiV1FactoriesDataSourcesDsIdGetResponseSchemaMappingsDefault),
   "parent_data_source_id": zod.union([zod.string(),zod.null()]).optional(),
   "is_segment": zod.boolean().optional(),
   "date_range_start": zod.union([zod.iso.date(),zod.null()]).optional(),
@@ -838,7 +868,7 @@ export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchBody = zod.object
 }).describe('Schema for updating a data source.')
 
 export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseNameMax = 100;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseCodeMaxOne = 50;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseSpecialtyMaxOne = 100;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseTargetOperatorsMinOne = 0;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseTargetEfficiencyPctMinOne = 0;
-export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseTargetEfficiencyPctMaxOne = 100;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseSettingsIsCustomScheduleDefault = false;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseIsSegmentDefault = false;
+export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseTargetEfficiencyPctMaxOne = 100;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseSettingsIsCustomScheduleDefault = false;export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseSchemaMappingsDefault = [];export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseIsSegmentDefault = false;
 
 export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponse = zod.object({
   "name": zod.string().min(1).max(updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseNameMax),
@@ -858,6 +888,16 @@ export const updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponse = zod.ob
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
   "non_working_days": zod.union([zod.array(zod.number()),zod.null()]).optional()
 }).describe('Settings specific to a data source.\nCan be inherited from Factory defaults or overridden.'),zod.record(zod.string(), zod.any()),zod.null()]).optional(),
+  "schema_mappings": zod.array(zod.object({
+  "id": zod.string(),
+  "version": zod.number(),
+  "is_active": zod.boolean(),
+  "column_map": zod.record(zod.string(), zod.any()),
+  "extraction_rules": zod.union([zod.record(zod.string(), zod.any()),zod.null()]),
+  "reviewed_by_user": zod.boolean(),
+  "user_notes": zod.union([zod.string(),zod.null()]),
+  "created_at": zod.iso.datetime({})
+})).default(updateDataSourceApiV1FactoriesDataSourcesDsIdPatchResponseSchemaMappingsDefault),
   "parent_data_source_id": zod.union([zod.string(),zod.null()]).optional(),
   "is_segment": zod.boolean().optional(),
   "date_range_start": zod.union([zod.iso.date(),zod.null()]).optional(),
@@ -1999,6 +2039,7 @@ export const listDataSourcesApiV1DataSourcesGetResponseHasActiveSchemaDefault = 
 
 export const listDataSourcesApiV1DataSourcesGetResponseItem = zod.object({
   "id": zod.string(),
+  "factory_id": zod.string(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2033,6 +2074,7 @@ export const getDataSourceApiV1DataSourcesDataSourceIdGetResponseHasActiveSchema
 
 export const getDataSourceApiV1DataSourcesDataSourceIdGetResponse = zod.object({
   "id": zod.string(),
+  "factory_id": zod.string(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2080,6 +2122,7 @@ export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponseHasActiveSch
 
 export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponse = zod.object({
   "id": zod.string(),
+  "factory_id": zod.string(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2122,6 +2165,7 @@ export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponseHasActiveSc
 
 export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
+  "factory_id": zod.string(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2157,6 +2201,7 @@ export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGe
 
 export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
+  "factory_id": zod.string(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),

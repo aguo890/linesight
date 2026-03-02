@@ -328,6 +328,9 @@ class ProductionRepository:
         Note:
             Caller is responsible for committing the transaction
         """
+        # Strip deprecated 'line_id' — the Pydantic model_validator maps it
+        # to 'data_source_id', but leaves the original key in the dict.
+        run_data.pop("line_id", None)
         run = ProductionRun(**run_data)
         self.db.add(run)
         await self.db.flush()  # Flush but don't commit - let caller handle transactions

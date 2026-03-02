@@ -79,9 +79,6 @@ interface DashboardContextValue {
     updateWidgetSettings: (id: string, newSettings: any) => void;
 
     // Dashboard Metadata
-    productionLineId?: string;
-    setProductionLineId: (id: string | undefined) => void;
-
     dataSourceId?: string;
     setDataSourceId: (id: string | undefined) => void;
 }
@@ -90,13 +87,11 @@ const DashboardContext = createContext<DashboardContextValue | undefined>(undefi
 
 interface DashboardProviderProps {
     children: ReactNode;
-    productionLineId?: string;
     dataSourceId?: string;
 }
 
 export const DashboardProvider: React.FC<DashboardProviderProps> = ({
     children,
-    productionLineId: initialProductionLineId,
     dataSourceId: initialDataSourceId,
 }) => {
     // Hydrate widgets from localStorage
@@ -159,7 +154,6 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
     });
 
     const [lastRefreshAt, setLastRefreshAt] = useState(Date.now());
-    const [productionLineId, setProductionLineId] = useState<string | undefined>(initialProductionLineId);
     const [dataSourceId, setDataSourceId] = useState<string | undefined>(initialDataSourceId);
 
     // Optimized Persistence Effect - Debounced 500ms to prevent spam
@@ -170,7 +164,6 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
                 widgets,
                 layout,
                 globalFilters,
-                productionLineId,
                 dataSourceId,
                 savedAt: new Date().toISOString(),
             };
@@ -184,7 +177,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [widgets, layout, globalFilters, productionLineId, dataSourceId]);
+    }, [widgets, layout, globalFilters, dataSourceId]);
 
     const queryClient = useQueryClient();
 
@@ -257,8 +250,6 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
         updateWidgetSettings,
         updateDateRange,
         updateShift,
-        productionLineId,
-        setProductionLineId,
         dataSourceId,
         setDataSourceId,
     };

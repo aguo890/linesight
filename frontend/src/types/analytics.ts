@@ -17,23 +17,6 @@
 export type ShiftType = 'ALL' | 'Morning' | 'Evening' | 'Night';
 
 /**
- * Standard filter parameters for all analytics endpoints.
- * All fields are optional to support partial filtering.
- */
-export interface FilterParams {
-    /** Production line ID to filter by */
-    line_id?: string;
-    /** Start date in ISO format (YYYY-MM-DD) */
-    date_from: string;
-    /** End date in ISO format (YYYY-MM-DD) */
-    date_to: string;
-    /** Shift filter */
-    shift?: ShiftType;
-    /** Limit number of results */
-    limit?: number;
-}
-
-/**
  * Global filter state used by the dashboard context
  */
 export interface GlobalFilters {

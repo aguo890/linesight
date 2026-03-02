@@ -15,6 +15,7 @@ import type { DataSourceReadDescription } from './dataSourceReadDescription';
 import type { DataSourceReadTimeColumn } from './dataSourceReadTimeColumn';
 import type { DataSourceReadTimeFormat } from './dataSourceReadTimeFormat';
 import type { DataSourceReadSettings } from './dataSourceReadSettings';
+import type { SchemaMappingResponse } from './schemaMappingResponse';
 import type { DataSourceReadParentDataSourceId } from './dataSourceReadParentDataSourceId';
 import type { DataSourceReadDateRangeStart } from './dataSourceReadDateRangeStart';
 import type { DataSourceReadDateRangeEnd } from './dataSourceReadDateRangeEnd';
@@ -40,6 +41,7 @@ export interface DataSourceRead {
   time_column?: DataSourceReadTimeColumn;
   time_format?: DataSourceReadTimeFormat;
   settings?: DataSourceReadSettings;
+  schema_mappings?: SchemaMappingResponse[];
   parent_data_source_id?: DataSourceReadParentDataSourceId;
   is_segment?: boolean;
   date_range_start?: DataSourceReadDateRangeStart;

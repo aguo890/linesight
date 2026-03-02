@@ -323,6 +323,7 @@ async def get_discrepancies(
                     severity=severity,
                     issue_title=f"Compliance {rec.verification_status.value.title()}",
                     issue_description=rec.risk_notes or "Verification incomplete or failed.",
+                    source_file="System Record",  # Placeholder since not stored on rec natively
                     detected_at=rec.created_at,
                 )
             )
@@ -332,7 +333,7 @@ async def get_discrepancies(
         )
     except Exception as e:
         logger.warning(f"Traceability table not found or error querying: {e}")
-        return DiscrepanciesResponse(discrepancies=[], total_count=0)
+        raise e
 
 
 @router.get("/production/styles", response_model=StyleProgressResponse)
