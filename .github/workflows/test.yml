@@ -71,7 +71,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Type Check (TypeScript)
         working-directory: ./frontend
