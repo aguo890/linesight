@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { type ZodSchema } from 'zod';
 import { fetchWidgetData, type ServiceResponse } from '../services/widgetDataService';
 import * as mocks from '../services/mockData'; // We still need the mock generators
-import { type FilterParams, type ShiftType, ANALYTICS_ENDPOINTS } from '../services/analyticsApi';
+import { type ShiftType } from '../../../types/analytics';
 import { useDashboardSafe } from '../context/DashboardContext';
 
 interface UseWidgetDataOptions<T = any> {
@@ -23,7 +23,7 @@ interface UseWidgetDataOptions<T = any> {
 }
 
 // Helper to map filters to API params (keep this logic centrally or moved to a utility)
-const mapFiltersToParams = (filters: any, dataSourceId?: string): FilterParams => {
+const mapFiltersToParams = (filters: any, dataSourceId?: string): Record<string, any> => {
     const now = new Date();
     const dateFrom = filters.dateRange?.start
         ? filters.dateRange.start.toISOString().split('T')[0]
@@ -40,42 +40,55 @@ const mapFiltersToParams = (filters: any, dataSourceId?: string): FilterParams =
     else if (filters.shift === 'NIGHT') shift = 'Night';
 
     return {
-        line_id: dataSourceId,
+        line_id: dataSourceId, // Orval fetchers still statically expect line_id as the query param key
         date_from: dateFrom,
         date_to: dateTo,
         shift: shift,
     };
 };
 
-// Map dataId to endpoint path using centralized constants
-const ENDPOINT_MAP: Record<string, string> = {
+import {
+    getProductionChartApiV1AnalyticsProductionChartGet as fetchProductionChart,
+    getOverviewStatsApiV1AnalyticsOverviewGet as fetchOverviewStats,
+    getTargetRealizationApiV1AnalyticsTargetRealizationGet as fetchTargetRealization,
+    getEarnedMinutesStatsApiV1AnalyticsEarnedMinutesGet as fetchEarnedMinutes,
+    getHourlyProductionApiV1AnalyticsProductionHourlyGet as fetchHourlyProduction,
+    getSamPerformanceApiV1AnalyticsSamPerformanceGet as fetchSamPerformance,
+    getDhuTrendApiV1AnalyticsDhuGet as fetchDhuQuality,
+    getSpeedQualityTrendApiV1AnalyticsSpeedQualityGet as fetchSpeedQuality,
+    getComplexityAnalysisApiV1AnalyticsComplexityGet as fetchComplexity,
+    getDowntimeReasonsApiV1AnalyticsDowntimeReasonsGet as fetchDowntime,
+    getStyleProgressApiV1AnalyticsProductionStylesGet as fetchStyleProgress,
+    getWorkforceStatsApiV1AnalyticsWorkforceGet as fetchWorkforce
+} from '@/api/endpoints/analytics/analytics';
+
+// Map dataId to fetcher
+const FETCHER_MAP: Record<string, (params: any) => Promise<any>> = {
     // Efficiency & Production
-    'production_history': ANALYTICS_ENDPOINTS.productionChart,
-    'efficiency_trend': ANALYTICS_ENDPOINTS.overview,
-    'efficiency_kpi': ANALYTICS_ENDPOINTS.overview, // Uses same endpoint as trend
-    'realization_kpi': ANALYTICS_ENDPOINTS.targetRealization,
-    'earned_minutes': ANALYTICS_ENDPOINTS.earnedMinutes,
-    'production_timeline': ANALYTICS_ENDPOINTS.hourlyProduction,
-    'sam_performance': ANALYTICS_ENDPOINTS.samPerformance,
-    'kpi_summary': ANALYTICS_ENDPOINTS.overview, // Aggregated KPIs
+    'production_history': fetchProductionChart,
+    'efficiency_trend': fetchOverviewStats,
+    'efficiency_kpi': fetchOverviewStats, // Uses same endpoint as trend
+    'realization_kpi': fetchTargetRealization,
+    'earned_minutes': fetchEarnedMinutes,
+    'production_timeline': fetchHourlyProduction,
+    'sam_performance': fetchSamPerformance,
+    'kpi_summary': fetchOverviewStats, // Aggregated KPIs
 
     // Quality
-    'dhu_history': ANALYTICS_ENDPOINTS.dhuQuality,
-    'speed_quality_scatter': ANALYTICS_ENDPOINTS.speedQuality,
-    'complexity_impact': ANALYTICS_ENDPOINTS.complexity,
+    'dhu_history': fetchDhuQuality,
+    'speed_quality_scatter': fetchSpeedQuality,
+    'complexity_impact': fetchComplexity,
 
     // Operations
-    'downtime_reasons': ANALYTICS_ENDPOINTS.downtime,
-    'style_progress': ANALYTICS_ENDPOINTS.styleProgress,
+    'downtime_reasons': fetchDowntime,
+    'style_progress': fetchStyleProgress,
 
     // Workforce
-    'workforce_stats': ANALYTICS_ENDPOINTS.workforce,
-
-    // Note: 'upload_history' uses /ingestion/uploads, not analytics
+    'workforce_stats': fetchWorkforce,
 };
 
-const getEndpointForDataId = (dataId: string): string | undefined => {
-    return ENDPOINT_MAP[dataId];
+const getFetcherForDataId = (dataId: string): ((params: any) => Promise<any>) | undefined => {
+    return FETCHER_MAP[dataId];
 };
 
 // Map dataId to mock generator
@@ -121,7 +134,7 @@ export function useWidgetData<T = any>({
 
     // resolve dependencies - use dataSourceId for filtering (line_id param)
     const params = mapFiltersToParams(filters, dataSourceId);
-    const endpoint = dataId ? getEndpointForDataId(dataId) : undefined;
+    const fetcher = dataId ? getFetcherForDataId(dataId) : undefined;
     const mockGenerator = dataId ? getMockGeneratorForDataId(dataId) : () => null;
 
     // Debug: Log data source being fetched
@@ -135,7 +148,7 @@ export function useWidgetData<T = any>({
             console.log(`[DEBUG][${dataId}] 🎣 Query Function Triggered`, { filters });
             return fetchWidgetData(
                 dataId,
-                endpoint,
+                fetcher,
                 params,
                 schema,
                 mockGenerator,

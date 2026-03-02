@@ -15,6 +15,36 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 # =============================================================================
+# Schema Mappings
+# =============================================================================
+
+class SchemaMappingCreate(BaseModel):
+    column_map: dict = Field(
+        ..., description="Mapping from Excel columns to internal fields"
+    )
+    extraction_rules: dict | None = Field(
+        None, description="Parsing rules (skip_rows, header_row, etc.)"
+    )
+    reviewed_by_user: bool = Field(
+        False, description="Whether user has validated this mapping"
+    )
+    user_notes: str | None = None
+
+
+class SchemaMappingResponse(BaseModel):
+    id: str
+    version: int
+    is_active: bool
+    column_map: dict[str, Any]  # JSON type returns dict directly
+    extraction_rules: dict[str, Any] | None
+    reviewed_by_user: bool
+    user_notes: str | None
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# =============================================================================
 # DataSource Settings
 # =============================================================================
 
@@ -99,6 +129,9 @@ class DataSourceRead(DataSourceBase):
 
     # Settings
     settings: DataSourceSettings | dict[str, Any] | None = None
+
+    # Relationship fields dynamically loaded
+    schema_mappings: list[SchemaMappingResponse] = []
 
     # Hierarchy fields
     parent_data_source_id: str | None = None

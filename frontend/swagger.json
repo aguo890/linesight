@@ -5906,6 +5906,14 @@
             ],
             "title": "Settings"
           },
+          "schema_mappings": {
+            "items": {
+              "$ref": "#/components/schemas/SchemaMappingResponse"
+            },
+            "type": "array",
+            "title": "Schema Mappings",
+            "default": []
+          },
           "parent_data_source_id": {
             "anyOf": [
               {
@@ -5978,6 +5986,10 @@
           "id": {
             "type": "string",
             "title": "Id"
+          },
+          "factory_id": {
+            "type": "string",
+            "title": "Factory Id"
           },
           "production_line_id": {
             "anyOf": [
@@ -6060,6 +6072,7 @@
         "type": "object",
         "required": [
           "id",
+          "factory_id",
           "description",
           "is_active",
           "created_at"

@@ -28,7 +28,11 @@ import { useDashboard } from '../context/DashboardContext';
 
 import { useIsFetching } from '@tanstack/react-query';
 
-
+import {
+    getDashboardApiV1DashboardsDashboardIdGet as getDashboard,
+    updateDashboardApiV1DashboardsDashboardIdPut as updateDashboard
+} from '@/api/endpoints/dashboards/dashboards';
+import { getDataSourceApiV1FactoriesDataSourcesDsIdGet as getDataSource, getFactoryApiV1FactoriesFactoryIdGet as getFactory } from '@/api/endpoints/factories/factories';
 
 const DashboardPageContent = () => {
 
@@ -38,8 +42,7 @@ const DashboardPageContent = () => {
     // NEW: Consume DashboardContext
     const {
         widgets, setWidgets,
-        activePanel, openLibrary, closePanels,
-        productionLineId, setProductionLineId
+        activePanel, openLibrary, closePanels
     } = useDashboard();
 
     const { factoryId: factoryIdFromUrl, dashboardId: dashboardIdFromUrl } = useParams<{ factoryId: string; dashboardId: string }>();
@@ -78,7 +81,6 @@ const DashboardPageContent = () => {
         // If we have a specific ID (not 'default'), try to fetch from database first
         if (targetId && targetId !== 'default') {
             try {
-                const { getDashboard } = await import('../../../lib/dashboardApi');
                 const dashboardData = await getDashboard(targetId);
 
                 // Parse the layout and create a SavedDashboard object
@@ -94,26 +96,19 @@ const DashboardPageContent = () => {
                 let dataSourceName = 'No data source';
                 if (dashboardData.data_source_id) {
                     try {
-                        const { getDataSource } = await import('../../../lib/datasourceApi');
                         const dsData = await getDataSource(dashboardData.data_source_id);
-                        dataSourceName = dsData.source_name;
-                        setProductionLineId(dsData.production_line_id);
+                        dataSourceName = dsData.source_name ?? 'Unnamed Source';
 
-                        // Fetch factory ID from production line
-                        if (dsData.production_line_id) {
-                            const { getProductionLine } = await import('../../../lib/factoryApi');
-                            const lineData = await getProductionLine(dsData.production_line_id);
-                            setFactoryId(lineData.factory_id);
-
-                            // Fetch factory name for breadcrumb
-                            const { getFactory } = await import('../../../lib/factoryApi');
-                            const factoryData = await getFactory(lineData.factory_id);
+                        // Factory details are now fetched directly from Data Source
+                        if (dsData.factory_id) {
+                            setFactoryId(dsData.factory_id);
+                            const factoryData = await getFactory(dsData.factory_id);
                             setFactoryName(factoryData.name);
                         }
 
                         // Extract available fields from active schema mapping
                         if (dsData.schema_mappings && dsData.schema_mappings.length > 0) {
-                            const activeMapping = dsData.schema_mappings.find(m => m.is_active) || dsData.schema_mappings[0];
+                            const activeMapping = dsData.schema_mappings.find((m) => m.is_active) || dsData.schema_mappings[0];
                             if (activeMapping && activeMapping.column_map) {
                                 // column_map is Source -> Canonical
                                 const rawColumnMap = activeMapping.column_map;
@@ -137,8 +132,8 @@ const DashboardPageContent = () => {
                     id: dashboardData.id,
                     name: dashboardData.name,
                     widgets: parsedWidgets,
-                    dataSourceId: dashboardData.data_source_id,
-                    dataSourceName,
+                    dataSourceId: dashboardData.data_source_id ?? undefined,
+                    dataSourceName: dataSourceName ?? undefined,
                     createdAt: dashboardData.created_at,
                     updatedAt: dashboardData.updated_at,
                     lastModified: dashboardData.updated_at
@@ -186,19 +181,12 @@ const DashboardPageContent = () => {
             // Fetch production line ID and Name from data source if it exists
             if (board.dataSourceId) {
                 try {
-                    const { getDataSource } = await import('../../../lib/datasourceApi');
                     const dsData = await getDataSource(board.dataSourceId);
-                    setProductionLineId(dsData.production_line_id);
 
-                    // Fetch factory ID from production line
-                    if (dsData.production_line_id) {
-                        const { getProductionLine } = await import('../../../lib/factoryApi');
-                        const lineData = await getProductionLine(dsData.production_line_id);
-                        setFactoryId(lineData.factory_id);
-
-                        // Fetch factory name for breadcrumb
-                        const { getFactory } = await import('../../../lib/factoryApi');
-                        const factoryData = await getFactory(lineData.factory_id);
+                    // Factory details are now fetched directly from Data Source
+                    if (dsData.factory_id) {
+                        setFactoryId(dsData.factory_id);
+                        const factoryData = await getFactory(dsData.factory_id);
                         setFactoryName(factoryData.name);
                     }
 
@@ -207,13 +195,13 @@ const DashboardPageContent = () => {
                         console.log('✅ Updating dashboard with data source name:', dsData.source_name);
                         setActiveDashboard(prev => {
                             if (prev?.dataSourceName === dsData.source_name) return prev;
-                            return prev ? { ...prev, dataSourceName: dsData.source_name } : null;
+                            return prev ? { ...prev, dataSourceName: dsData.source_name ?? undefined } : null;
                         });
                     }
 
                     // Extract available fields from active schema mapping
                     if (dsData.schema_mappings && dsData.schema_mappings.length > 0) {
-                        const activeMapping = dsData.schema_mappings.find(m => m.is_active) || dsData.schema_mappings[0];
+                        const activeMapping = dsData.schema_mappings.find((m) => m.is_active) || dsData.schema_mappings[0];
                         if (activeMapping && activeMapping.column_map) {
                             // column_map is Source -> Canonical
                             const rawColumnMap = activeMapping.column_map;
@@ -226,11 +214,9 @@ const DashboardPageContent = () => {
 
                 } catch (error) {
                     console.error('Failed to fetch data source:', error);
-                    setProductionLineId(undefined);
                     setFactoryId(undefined);
                 }
             } else {
-                setProductionLineId(undefined);
                 setFactoryId(undefined);
             }
         }
@@ -244,8 +230,6 @@ const DashboardPageContent = () => {
 
         setIsSaving(true);
         try {
-            const { updateDashboard } = await import('../../../lib/dashboardApi');
-
             // Include settings in payload for cross-device persistence
             const layoutConfig = {
                 layouts: currentWidgets.map(w => ({
@@ -261,7 +245,7 @@ const DashboardPageContent = () => {
             };
 
             await updateDashboard(activeDashboard.id, {
-                layout_config: layoutConfig
+                layout_config: layoutConfig as any
             });
 
             console.log('✅ Dashboard layout + settings persisted to database');
@@ -425,7 +409,6 @@ const DashboardPageContent = () => {
                                 <WidgetRenderer
                                     widget={widget}
                                     editMode={editMode}
-                                    productionLineId={productionLineId}
                                     dataSourceId={activeDashboard?.dataSourceId}
                                     onDelete={() => setWidgets(widgets.filter(x => x.i !== widget.i))}
                                 />

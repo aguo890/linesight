@@ -5,7 +5,6 @@
  */
 
 import { z } from 'zod';
-import api from '@/lib/api';
 // Standardized Adapter Interface - kept for compatibility with registry for now, 
 // but we will move towards the new fetch pattern
 export interface DataAdapter {
@@ -23,18 +22,17 @@ export type ServiceResponse<T> = {
 // 2. The Fetcher Function
 export const fetchWidgetData = async <T>(
     dataId: string, // Kept for logging/lookup
-    endpoint: string | undefined,
+    fetcher: ((params: any) => Promise<T>) | undefined,
     params: any,
     schema: z.ZodSchema<T> | undefined,
     mockDataGenerator: (filters: any) => T,
     mockFilters: any
 ): Promise<ServiceResponse<T>> => {
     // 1. Attempt Real Fetch
-    if (endpoint) {
+    if (fetcher) {
         try {
-            console.log(`[DEBUG][${dataId}] 🌐 Fetching from: ${endpoint}`, { params });
-            const response = await api.get(endpoint, { params });
-            const rawData = response.data;
+            console.log(`[DEBUG][${dataId}] 🌐 Fetching from API`, { params });
+            const rawData = await fetcher(params);
 
             // Diagnostic: Expose raw data to browser console
             console.log(`[DEBUG][${dataId}] 📦 Raw API Response:`, rawData);
@@ -72,10 +70,9 @@ export const fetchWidgetData = async <T>(
         } catch (error: any) {
             // Check for 404 - expected behavior for not-yet-implemented endpoints
             if (error?.response?.status === 404) {
-                console.warn(`[DEBUG][${dataId}] ⚠️ 404 Not Found for ${endpoint}. Using mock.`);
+                console.warn(`[DEBUG][${dataId}] ⚠️ 404 Not Found. Using mock.`);
             } else {
                 console.error(`[DEBUG][${dataId}] ❌ FETCH/VALIDATION FAILED:`, {
-                    endpoint,
                     params,
                     errorMessage: error?.message,
                     errorResponse: error?.response?.data,
@@ -85,8 +82,8 @@ export const fetchWidgetData = async <T>(
             // Fall through to Mock Logic
         }
     } else {
-        // No endpoint defined, treat as immediate "failure" of real data, go to mock
-        console.warn(`[DEBUG][${dataId}] No endpoint defined, using mock.`);
+        // No fetcher defined, treat as immediate "failure" of real data, go to mock
+        console.warn(`[DEBUG][${dataId}] No fetcher defined, using mock.`);
     }
 
     // 2. Mock Fallback logic

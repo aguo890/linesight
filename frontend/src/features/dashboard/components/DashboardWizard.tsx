@@ -284,7 +284,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                 raw_import_id: rawImportId,
                 mappings: confirmationData,
                 // Correctly passing the Data Source ID to the backend
-                production_line_id: selectedDataSourceId || undefined,
+                data_source_id: selectedDataSourceId || undefined,
                 factory_id: selectedFactoryId || undefined,
                 time_column: "Date",
                 time_format: "YYYY-MM-DD",
@@ -620,7 +620,6 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                                 name: dashboardName, // Use state from Step 1
                                                 description: `Generated from ${uploadedFile?.name || 'existing source'}`,
                                                 data_source_id: dataSourceId!,
-                                                production_line_id: selectedDataSourceId, // Using DS ID as Line ID for now
                                                 widget_config: { enabled_widgets: config.widgets.map(w => w.widget), widget_settings: {} },
                                                 layout_config: { layouts: config.widgets.map(w => ({ widget_id: w.i, x: w.x, y: w.y, w: w.w, h: w.h })) }
                                             });

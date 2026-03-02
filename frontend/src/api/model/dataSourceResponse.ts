@@ -14,6 +14,7 @@ import type { SchemaMappingResponse } from './schemaMappingResponse';
 
 export interface DataSourceResponse {
   id: string;
+  factory_id: string;
   production_line_id?: DataSourceResponseProductionLineId;
   source_name?: DataSourceResponseSourceName;
   description: DataSourceResponseDescription;
