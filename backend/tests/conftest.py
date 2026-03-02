@@ -35,8 +35,13 @@ from app.models.base import Base
 # Detect Real DB usage
 USE_REAL_DB = os.getenv("USE_REAL_DB", "false").lower() == "true"
 
+# Prefer explicit CI/Env variable first
+if os.getenv("DATABASE_URL"):
+    TEST_DATABASE_URL = os.getenv("DATABASE_URL")
+    SYNC_TEST_DATABASE_URL = os.getenv("SYNC_DATABASE_URL", TEST_DATABASE_URL.replace("+asyncpg", "+psycopg2").replace("+aiomysql", "+pymysql"))
+    USE_REAL_DB = True
 # Use SQLite for tests (in-memory) by default
-if USE_REAL_DB:
+elif USE_REAL_DB:
     # Use local MySQL (port 3306) and the dedicated TEST database
     TEST_DATABASE_URL = "mysql+aiomysql://root:root@localhost:3306/linesight_test"
     SYNC_TEST_DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/linesight_test"
@@ -96,10 +101,13 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
     """Create a fresh database session for each test."""
     # Create tables
     async with db_engine.begin() as conn:
-        if not USE_REAL_DB:
+        dialect = conn.dialect.name
+        if dialect == "sqlite":
             await conn.execute(text("PRAGMA foreign_keys=OFF"))
-        else:
+        elif dialect == "mysql":
             await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
+        elif dialect == "postgresql":
+            await conn.execute(text("SET session_replication_role = 'replica';"))
 
         # Manually create tables to bypass topological sort (circular dependency) check in create_all
         for table_obj in Base.metadata.tables.values():
@@ -107,10 +115,12 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
                 lambda sync_conn, t=table_obj: t.create(sync_conn, checkfirst=True)
             )
 
-        if not USE_REAL_DB:
+        if dialect == "sqlite":
             await conn.execute(text("PRAGMA foreign_keys=ON"))
-        else:
+        elif dialect == "mysql":
             await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
+        elif dialect == "postgresql":
+            await conn.execute(text("SET session_replication_role = 'origin';"))
 
     # Create session factory
     async_session_factory = async_sessionmaker(
@@ -125,7 +135,8 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
 
     # Drop tables after test
     async with db_engine.begin() as conn:
-        if not USE_REAL_DB:
+        dialect = conn.dialect.name
+        if dialect == "sqlite":
             await conn.execute(text("PRAGMA foreign_keys=OFF"))
             result = await conn.execute(
                 text("SELECT name FROM sqlite_master WHERE type='table'")
@@ -136,7 +147,7 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
             await conn.execute(text("PRAGMA foreign_keys=ON"))
         else:
             print(
-                "\n⚠️ Skipping table DROP because USE_REAL_DB=true (Data preserved for manual verification)"
+                f"\n⚠️ Skipping table DROP for {dialect} (Data preserved for manual verification)"
             )
             # We still might want to clear specific data, but for now let's keep it.
             # await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
@@ -149,10 +160,23 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
 def sync_db_session(sync_db_engine) -> Generator[Session, None, None]:
     """Synchronous database session for non-async tests."""
     conn = sync_db_engine.connect()
-    conn.execute(text("PRAGMA foreign_keys=OFF"))
+    dialect = conn.dialect.name
+    if dialect == "sqlite":
+        conn.execute(text("PRAGMA foreign_keys=OFF"))
+    elif dialect == "mysql":
+        conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
+    elif dialect == "postgresql":
+        conn.execute(text("SET session_replication_role = 'replica';"))
+
     for table in Base.metadata.tables.values():
         table.create(bind=conn, checkfirst=True)
-    conn.execute(text("PRAGMA foreign_keys=ON"))
+
+    if dialect == "sqlite":
+        conn.execute(text("PRAGMA foreign_keys=ON"))
+    elif dialect == "mysql":
+        conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
+    elif dialect == "postgresql":
+        conn.execute(text("SET session_replication_role = 'origin';"))
     conn.close()
 
     sync_test_session_local = sessionmaker(
@@ -165,10 +189,12 @@ def sync_db_session(sync_db_engine) -> Generator[Session, None, None]:
     session.close()
 
     conn = sync_db_engine.connect()
-    conn.execute(text("PRAGMA foreign_keys=OFF"))
-    for table in Base.metadata.tables.values():
-        table.drop(bind=conn, checkfirst=True)
-    conn.execute(text("PRAGMA foreign_keys=ON"))
+    dialect = conn.dialect.name
+    if dialect == "sqlite":
+        conn.execute(text("PRAGMA foreign_keys=OFF"))
+        for table in Base.metadata.tables.values():
+            table.drop(bind=conn, checkfirst=True)
+        conn.execute(text("PRAGMA foreign_keys=ON"))
     conn.close()
 
 
