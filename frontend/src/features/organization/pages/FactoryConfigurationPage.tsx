@@ -266,6 +266,7 @@ export const FactoryConfigurationPage: React.FC = () => {
             />
 
             <CreateDataSourceModal
+                key={isCreateModalOpen ? 'open' : 'closed'}
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 factoryId={factoryId || ''}

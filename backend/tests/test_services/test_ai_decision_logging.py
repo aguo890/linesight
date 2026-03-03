@@ -74,6 +74,7 @@ async def test_schema_inference_logging(db_session, mock_llm_response, test_line
 
     # Create valid data source
     ds = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id, source_name="Test", description="Desc"
     )
     db_session.add(ds)
@@ -131,6 +132,7 @@ async def test_code_generation_logging(db_session, mock_llm_response, test_line)
 
     # Create valid data source
     ds = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id, source_name="Test2", description="Desc2"
     )
     db_session.add(ds)
@@ -217,6 +219,7 @@ async def test_ai_decision_data_source_relationship(
 
     # Create a data source
     data_source = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id,
         source_name="Test Source",
         description="Test data source",
@@ -253,6 +256,7 @@ async def test_ai_decision_confidence_calculation(
 
     # Create valid data source
     ds = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id, source_name="Test3", description="Desc3"
     )
     db_session.add(ds)
@@ -297,6 +301,7 @@ async def test_ai_decision_metadata_completeness(
 
     # Create valid data source
     ds = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id, source_name="Test4", description="Desc4"
     )
     db_session.add(ds)

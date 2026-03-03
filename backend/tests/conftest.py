@@ -4,13 +4,10 @@
 
 """
 Pytest configuration and fixtures for LineSight tests.
+Refactored to enforce PostgreSQL parity and remove SQLite support.
 """
 
 import asyncio
-
-# =============================================================================
-# Database Fixtures
-# =============================================================================
 import os
 from collections.abc import AsyncGenerator, Generator
 from datetime import date, timedelta
@@ -25,29 +22,25 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import NullPool
 
 from app.core.database import get_db
 from app.main import app
 from app.models.base import Base
 
-# Detect Real DB usage
-USE_REAL_DB = os.getenv("USE_REAL_DB", "false").lower() == "true"
+# =============================================================================
+# Database Configuration (PostgreSQL Only)
+# =============================================================================
 
-# Prefer explicit CI/Env variable first
-if os.getenv("DATABASE_URL"):
-    TEST_DATABASE_URL = os.getenv("DATABASE_URL")
-    SYNC_TEST_DATABASE_URL = os.getenv("SYNC_DATABASE_URL", TEST_DATABASE_URL.replace("+asyncpg", "+psycopg2").replace("+aiomysql", "+pymysql"))
-    USE_REAL_DB = True
-# Use SQLite for tests (in-memory) by default
-elif USE_REAL_DB:
-    # Use local MySQL (port 3306) and the dedicated TEST database
-    TEST_DATABASE_URL = "mysql+aiomysql://root:root@localhost:3306/linesight_test"
-    SYNC_TEST_DATABASE_URL = "mysql+pymysql://root:root@localhost:3306/linesight_test"
-else:
-    TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
-    SYNC_TEST_DATABASE_URL = "sqlite:///:memory:"
+# Enforce PostgreSQL for testing
+# Default to port 5434 (exposed by Docker) for local runs, or 5432 for CI/Docker internal runs
+TEST_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+asyncpg://postgres:postgres@localhost:5434/linesight_test"
+)
 
+# Derive sync URL for legacy sync tests
+SYNC_TEST_DATABASE_URL = TEST_DATABASE_URL.replace("+asyncpg", "+psycopg2")
 
 @pytest.fixture(scope="session")
 def event_loop():
@@ -62,17 +55,11 @@ def event_loop():
 
 @pytest_asyncio.fixture(scope="session")
 async def db_engine():
-    """Session-scoped async database engine."""
-    connect_args = {}
-    if not USE_REAL_DB:
-        connect_args["check_same_thread"] = False
-
+    """Session-scoped async database engine using NullPool to prevent connection leaks."""
     engine = create_async_engine(
         TEST_DATABASE_URL,
-        connect_args=connect_args,
-        poolclass=StaticPool
-        if not USE_REAL_DB
-        else None,  # Real DB doesn't need StaticPool
+        poolclass=NullPool,
+        echo=False
     )
     yield engine
     # CRITICAL: Dispose of the engine to close connections and prevent hangs
@@ -81,15 +68,10 @@ async def db_engine():
 
 @pytest.fixture(scope="session")
 def sync_db_engine():
-    """Session-scoped sync database engine."""
-    connect_args = {}
-    if not USE_REAL_DB:
-        connect_args["check_same_thread"] = False
-
+    """Session-scoped sync database engine using NullPool."""
     engine = create_engine(
         SYNC_TEST_DATABASE_URL,
-        connect_args=connect_args,
-        poolclass=StaticPool if not USE_REAL_DB else None,
+        poolclass=NullPool,
     )
     yield engine
     engine.dispose()
@@ -98,37 +80,22 @@ def sync_db_engine():
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_database(db_engine):
     """Session-scoped fixture to handle table creation with correct dependency order."""
-    # Ensure DataSource is imported before AIDecision for Foreign Key resolution
-    # Import Base to get metadata
     from app.models.base import Base
 
     try:
         async with db_engine.begin() as conn:
-            dialect = conn.dialect.name
-            if dialect == "sqlite":
-                await conn.execute(text("PRAGMA foreign_keys=OFF"))
-            elif dialect == "mysql":
-                await conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
-            elif dialect == "postgresql":
-                await conn.execute(text("SET session_replication_role = 'replica';"))
-
+            # PostgreSQL specific: bypass FK checks for mass creation/drop
+            await conn.execute(text("SET session_replication_role = 'replica';"))
+            
             # Create tables using metadata to respect dependency graph
             await conn.run_sync(Base.metadata.create_all)
 
-            if dialect == "sqlite":
-                await conn.execute(text("PRAGMA foreign_keys=ON"))
-            elif dialect == "mysql":
-                await conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
-            elif dialect == "postgresql":
-                await conn.execute(text("SET session_replication_role = 'origin';"))
+            await conn.execute(text("SET session_replication_role = 'origin';"))
     except Exception as e:
         print(f"\n[!!!] DB Connection Error during table creation: {e}\n")
         raise e
 
     yield
-
-    # Optional: Teardown logic here if we wanted to drop_all
-    # We are preserving data as per original implementation
 
 
 @pytest_asyncio.fixture(scope="function")
@@ -147,54 +114,33 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
     try:
         yield session
     finally:
-        # 4. CLEANUP PHASE: Must happen in this exact order
-        try:
-            await session.close()      # Close the session first
-        finally:
-            try:
-                await transaction.rollback() # Roll back the transaction
-            finally:
-                await connection.close()    # Finally, release the connection
+        # 4. CLEANUP PHASE: Ensure complete rollback and closure to prevent locks
+        await session.rollback()
+        await session.close()
+        
+        await transaction.rollback()
+        await connection.close()
+
+
 @pytest.fixture(scope="function")
 def sync_db_session(sync_db_engine) -> Generator[Session, None, None]:
     """Synchronous database session for non-async tests."""
-    conn = sync_db_engine.connect()
-    dialect = conn.dialect.name
-    if dialect == "sqlite":
-        conn.execute(text("PRAGMA foreign_keys=OFF"))
-    elif dialect == "mysql":
-        conn.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
-    elif dialect == "postgresql":
-        conn.execute(text("SET session_replication_role = 'replica';"))
-
-    for table in Base.metadata.tables.values():
-        table.create(bind=conn, checkfirst=True)
-
-    if dialect == "sqlite":
-        conn.execute(text("PRAGMA foreign_keys=ON"))
-    elif dialect == "mysql":
-        conn.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
-    elif dialect == "postgresql":
-        conn.execute(text("SET session_replication_role = 'origin';"))
-    conn.close()
-
-    sync_test_session_local = sessionmaker(
-        bind=sync_db_engine,
-        expire_on_commit=False,
-    )
-
-    session = sync_test_session_local()
-    yield session
-    session.close()
-
-    conn = sync_db_engine.connect()
-    dialect = conn.dialect.name
-    if dialect == "sqlite":
-        conn.execute(text("PRAGMA foreign_keys=OFF"))
-        for table in Base.metadata.tables.values():
-            table.drop(bind=conn, checkfirst=True)
-        conn.execute(text("PRAGMA foreign_keys=ON"))
-    conn.close()
+    # 1. Create a specific connection
+    connection = sync_db_engine.connect()
+    
+    # 2. Begin a transaction
+    transaction = connection.begin()
+    
+    # 3. Bind the session to the connection
+    session = Session(bind=connection, expire_on_commit=False)
+    
+    try:
+        yield session
+    finally:
+        # 4. Rollback and close everything to prevent locks
+        session.close()
+        transaction.rollback()
+        connection.close()
 
 
 # =============================================================================
@@ -313,9 +259,8 @@ def setup_test_files():
     base_dir = Path(__file__).parent / "data"
     base_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Dummy Excel (Comphrensive for demo/pipeline tests)
+    # 1. Dummy Excel (Comprehensive for demo/pipeline tests)
     excel_path = base_dir / "perfect_production.xlsx"
-    # Always overwrite or ensure it has all columns needed for various tests
     df = pd.DataFrame({
         "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
         "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
@@ -354,9 +299,8 @@ def setup_test_files():
         "PO": ["PO-1001"]
     })
     df_csv.to_csv(csv_path, index=False)
-
-    # Also create perfect_production.csv for samples test
     df_csv.to_csv(base_dir / "perfect_production.csv", index=False)
+
 
 @pytest.fixture(autouse=True)
 def mock_env_vars(monkeypatch, mocker):
@@ -373,26 +317,24 @@ def mock_env_vars(monkeypatch, mocker):
     ].message.content = '{"header_row": 0, "detected_headers": ["date", "style"], "column_mappings": {"date": "production_date"}, "confidence_scores": {"date": 0.9}, "recommendations": [], "suggested_widgets": []}'
     mock_response.usage.total_tokens = 100
 
-    # Mock the OpenAI client's chat.completions.create
     mocker.patch(
         "openai.resources.chat.completions.Completions.create",
         return_value=mock_response,
     )
 
-    # Mock fallback for DeepSeek if needed
     mocker.patch(
         "app.private_core.etl_agent.SemanticETLAgent._init_client", return_value=MagicMock()
     )
 
 
 # =============================================================================
-# Shared Domain Fixtures (Consolidated from individual test files)
+# Shared Domain Fixtures
 # =============================================================================
 
 
 @pytest_asyncio.fixture
 async def test_factory(db_session: AsyncSession, test_organization):
-    """Create a test factory. Replaces duplicated fixtures across test files."""
+    """Create a test factory."""
     from app.models.factory import Factory
 
     factory = Factory(
@@ -414,7 +356,6 @@ async def test_line(db_session: AsyncSession, test_factory):
     """Create a test data source (formerly production line)."""
     from app.models.datasource import DataSource
 
-    # DataSource replaces the deprecated ProductionLine model
     data_source = DataSource(
         factory_id=test_factory.id,
         name="Test Line 1",
@@ -462,10 +403,7 @@ async def test_order(db_session: AsyncSession, test_style):
 
 @pytest.fixture
 def sample_production_run_data():
-    """
-    Standard production run data with all required fields.
-    Use this as a base and override specific fields as needed.
-    """
+    """Standard production run data with all required fields."""
     from datetime import date
 
     return {
@@ -474,14 +412,14 @@ def sample_production_run_data():
         "sam": 2.5,
         "operators_present": 25,
         "helpers_present": 5,
-        "worked_minutes": 12000,  # 25 operators × 480 mins
+        "worked_minutes": 12000,
         "actual_qty": 0,
         "planned_qty": 0,
     }
 
 
 # =============================================================================
-# Dry-Run and Data Import Fixtures (Consolidated from api/v1/conftest.py)
+# Dry-Run and Data Import Fixtures
 # =============================================================================
 
 
@@ -491,7 +429,6 @@ async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     from app.models.datasource import DataSource, SchemaMapping
     from app.models.factory import Factory
 
-    # 1. Setup Factory
     factory = Factory(
         name="Dry Run Test Factory",
         organization_id=test_organization.id,
@@ -503,8 +440,6 @@ async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     await db_session.commit()
     await db_session.refresh(factory)
 
-    # 2. Create DataSource (replaces separate ProductionLine + DataSource)
-    # DataSource now IS the production line with data config
     ds = DataSource(
         name="Test Line A",
         factory_id=factory.id,
@@ -516,10 +451,8 @@ async def setup_dry_run_test_data(db_session: AsyncSession, test_organization):
     await db_session.commit()
     await db_session.refresh(ds)
 
-    # line is the same as ds after the merge
     line = ds
 
-    # 3. Create SchemaMapping with typical production columns
     column_map = {
         "Date": "production_date",
         "Style": "style_number",
@@ -553,12 +486,10 @@ async def create_raw_import_with_messy_dates(
 ):
     """Create a RawImport with messy date formatting."""
     import json
-
     from app.models.raw_import import RawImport
 
     factory, line, ds, _ = setup_dry_run_test_data
 
-    # Create test CSV content with problematic dates
     test_csv_content = """Date,Style,PO,Produced,Target,Eff%,SAM
 12-19,ST100,PO123,85,100,85%,2.5
 12-20,ST101,PO124,95,100,95%,3.0
@@ -566,11 +497,9 @@ async def create_raw_import_with_messy_dates(
 01-06,ST103,PO126,110,100,110%,2.2
 2025-01-07,ST104,PO127,90,100,90,2.6"""
 
-    # Write to temporary file
     test_file_path = tmp_path / "messy_dates.csv"
     test_file_path.write_text(test_csv_content)
 
-    # Create RawImport record
     raw_import = RawImport(
         factory_id=factory.id,
         production_line_id=line.id,

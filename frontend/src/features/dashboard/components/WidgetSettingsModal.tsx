@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Settings, Database, RotateCcw } from 'lucide-react';
 
 import { z } from 'zod';
@@ -22,6 +22,9 @@ interface WidgetSettingsModalProps {
 /**
  * Zod-Driven Settings Modal
  * Dynamically renders form inputs based on the Zod schema defined in the registry.
+ * 
+ * NOTE: This component relies on the parent using a `key` prop to force remount
+ * when opened, ensuring fresh state initialization. Do not add useEffect for state sync.
  */
 export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
     isOpen,
@@ -31,27 +34,15 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
     onSave,
     onClose
 }) => {
-    const [formValues, setFormValues] = useState<Record<string, any>>({});
+    // Initialize schema and form values once at mount (key-prop pattern handles resets)
+    const [schema] = useState<z.ZodSchema<any> | null>(() => widgetType ? getWidgetSchema(widgetType) : null);
+    const [formValues, setFormValues] = useState<Record<string, any>>(() => {
+        if (!widgetType) return {};
+        const widgetSchema = getWidgetSchema(widgetType);
+        const defaults = widgetSchema instanceof z.ZodObject ? widgetSchema.parse({}) : {};
+        return { ...defaults, ...currentSettings };
+    });
     const [errors, setErrors] = useState<z.ZodIssue[]>([]);
-    const [schema, setSchema] = useState<z.ZodSchema<any> | null>(null);
-
-    // 1. Retrieve the Source of Truth
-    // When modal opens, fetch the schema and initialize form
-    useEffect(() => {
-        if (isOpen && widgetType) {
-            const widgetSchema = getWidgetSchema(widgetType);
-            setSchema(widgetSchema);
-
-            // Merge current settings with defaults
-            // We use safeParse to get default values if available in the schema
-            const defaults = widgetSchema instanceof z.ZodObject
-                ? widgetSchema.parse({})
-                : {};
-
-            setFormValues({ ...defaults, ...currentSettings });
-            setErrors([]);
-        }
-    }, [isOpen, widgetType, currentSettings]);
 
     const handleChange = (name: string, value: any) => {
         setFormValues(prev => ({ ...prev, [name]: value }));

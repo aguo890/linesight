@@ -45,6 +45,7 @@ async def test_schema_configuration_flow(
 
     # Create valid DataSource
     ds = DataSource(
+        factory_id=factory.id,
         production_line_id=line.id, source_name="Schema Test Source", is_active=True
     )
     db_session.add(ds)

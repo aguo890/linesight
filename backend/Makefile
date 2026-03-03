@@ -58,6 +58,8 @@ kill-zombies:
 # -------------------------------------------------------------------------
 
 test:
+	# Forces local tests to hit the Dockerized PostgreSQL on port 5434
+	DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5434/linesight_test \
 	$(VENV) pytest
 
 test-cov:

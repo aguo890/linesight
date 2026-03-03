@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 import { type Factory } from '@/lib/factoryApi';
 import { useListFactoriesApiV1FactoriesGet } from '@/api/endpoints/factories/factories';
 import { useAuth } from '@/hooks/useAuth';
@@ -38,22 +38,17 @@ export const FactoryProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const factories = (factoriesData as unknown as Factory[]) || [];
     const error = queryError ? (queryError as any).message || "Failed to load factories" : null;
 
-    // Smart Default: Select first factory if none selected
-    useEffect(() => {
-        if (factories.length > 0 && !activeFactoryId) {
-            // Ideally we might check localStorage here first in a real app
-            setActiveFactoryId(factories[0].id);
-        }
-    }, [factories, activeFactoryId]);
+    // Derive: auto-select first factory if none explicitly set
+    const effectiveFactoryId = activeFactoryId ?? (factories.length > 0 ? factories[0].id : null);
 
     // 2. Derive Active Factory
     const activeFactory = useMemo(() => {
-        return factories.find(f => f.id === activeFactoryId) || null;
-    }, [factories, activeFactoryId]);
+        return factories.find(f => f.id === effectiveFactoryId) || null;
+    }, [factories, effectiveFactoryId]);
 
     const value = {
         factories,
-        activeFactoryId,
+        activeFactoryId: effectiveFactoryId,
         activeFactory,
         setActiveFactoryId,
         isLoading,

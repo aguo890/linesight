@@ -100,8 +100,9 @@ async def create_data_source(
             detail="Data source already exists for this production line",
         )
 
-    # Create data source
+    # Create data source — inherit factory_id from parent line
     data_source = DataSource(
+        factory_id=line.factory_id,
         production_line_id=data.production_line_id,
         source_name=data.source_name,
         description=data.description,

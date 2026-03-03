@@ -31,6 +31,7 @@ export function useContainerWidth(ref: React.RefObject<HTMLElement | null>, isPa
     }, [isPaused]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMounted(true);
         if (!ref.current) return;
 

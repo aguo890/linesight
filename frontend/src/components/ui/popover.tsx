@@ -50,6 +50,7 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHT
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return React.cloneElement(children as React.ReactElement<any>, {
                 onClick: handleClick,
+                // eslint-disable-next-line react-compiler/react-compiler
                 ref,
                 ...props
             });

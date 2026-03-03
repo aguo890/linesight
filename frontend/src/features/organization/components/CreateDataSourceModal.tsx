@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Settings, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -43,16 +43,8 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
     const factoryQuota = quotaStatus?.lines_per_factory.by_factory.find(f => f.factory_id === factoryId);
     const canCreate = factoryQuota?.can_create ?? true;
 
-    useEffect(() => {
-        if (!isOpen) {
-            setName('');
-            setCode('');
-            setDescription('');
-            setSpecialty('');
-            setUseDefaults(true);
-            setError(null);
-        }
-    }, [isOpen]);
+
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

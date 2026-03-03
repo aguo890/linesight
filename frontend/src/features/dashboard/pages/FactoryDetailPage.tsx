@@ -649,6 +649,7 @@ export const FactoryDetailPage: React.FC = () => {
                 preselectedFactoryId={factory?.id}
             />
             <CreateDataSourceModal
+                key={isCreateModalOpen ? 'open' : 'closed'}
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 onSuccess={handleSourceCreationSuccess}
@@ -678,6 +679,7 @@ export const FactoryDetailPage: React.FC = () => {
             />
             {factory && (
                 <FactorySettingsModal
+                    key={isSettingsModalOpen ? 'open' : 'closed'}
                     isOpen={isSettingsModalOpen}
                     onClose={() => setIsSettingsModalOpen(false)}
                     factory={factory}
