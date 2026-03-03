@@ -22,12 +22,8 @@ interface WidgetSettingsModalProps {
 /**
  * Zod-Driven Settings Modal
  * Dynamically renders form inputs based on the Zod schema defined in the registry.
- * 
- * NOTE: This component relies on the parent using a `key` prop to force remount
- * when opened, ensuring fresh state initialization. Do not add useEffect for state sync.
  */
-export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
-    isOpen,
+const WidgetSettingsModalContent: React.FC<WidgetSettingsModalProps> = ({
     widgetType,
     widgetTitle,
     currentSettings,
@@ -68,7 +64,6 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
         }
     };
 
-    if (!isOpen) return null;
 
     // Helper to extract field metadata from Zod Schema
     // Zod doesn't have a simple public "shape" API on ZodSchema, so we check if it is ZodObject
@@ -272,6 +267,14 @@ const ZodFieldRenderer: React.FC<{
             <p className="text-xs text-text-muted">Unsupported field type: {name}</p>
         </div>
     );
+};
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ */
+export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = (props) => {
+    if (!props.isOpen) return null;
+    return <WidgetSettingsModalContent {...props} />;
 };
 
 export default WidgetSettingsModal;

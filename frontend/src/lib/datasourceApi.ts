@@ -14,6 +14,10 @@ import {
     type SchemaMappingCreate
 } from '@/api/model';
 
+export type DataSource = DataSourceRead & {
+    production_line_id?: string;
+};
+
 export interface AvailableField {
     field: string;
     description: string;

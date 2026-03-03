@@ -11,6 +11,11 @@ import {
     type DataSourceRead
 } from '@/api/model';
 
+export type Factory = FactoryRead;
+export type DataSource = DataSourceRead & {
+    production_line_id?: string;
+};
+
 export const listFactories = async (): Promise<FactoryRead[]> => {
     const response = await api.get('/factories/');
     return response.data;

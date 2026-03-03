@@ -9,7 +9,7 @@ import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-re
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '@/api/endpoints/factories/factories';
-import type { Factory, ShiftConfig } from '@/lib/factoryApi';
+import type { FactoryRead as Factory, ShiftConfig } from '@/api/model';
 import { formatInTimeZone } from 'date-fns-tz';
 
 interface Props {
@@ -53,16 +53,12 @@ const MEASUREMENT_SYSTEMS = [
 
 /**
  * Factory Settings Modal
- * 
- * NOTE: This component relies on the parent using a `key` prop to force remount
- * when opened, ensuring fresh state initialization from the `factory` prop.
- * Do not add useEffect to sync props → state.
  */
-export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory }) => {
+const FactorySettingsModalContent: React.FC<Props> = ({ onClose, factory }) => {
     const { t } = useTranslation();
 
     // State initialized directly from factory props (key-prop pattern handles resets)
-    const settings = factory.settings;
+    const settings = factory.settings as any;
     const [shifts, setShifts] = useState<ShiftConfig[]>(
         (settings?.default_shift_pattern) || (settings?.operating_shifts) || []
     );
@@ -184,7 +180,6 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
         }
     };
 
-    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -444,3 +439,13 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
         </div>
     );
 };
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ */
+export const FactorySettingsModal: React.FC<Props> = (props) => {
+    if (!props.isOpen) return null;
+    return <FactorySettingsModalContent {...props} />;
+};
+
+export default FactorySettingsModal;

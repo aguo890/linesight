@@ -110,7 +110,8 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     const effectiveHeight = editMode ? debouncedH : parentHeight;
 
     const title = widget.settings?.customTitle || manifest?.meta.title;
-    const IconComponent = useMemo(() => manifest?.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest]);
+    const iconKey = manifest?.meta.icon;
+    const IconComponent = useMemo(() => iconKey ? getWidgetIcon(iconKey) : undefined, [iconKey]);
     const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest?.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest?.meta.iconColor]);
 
     if (!manifest) {

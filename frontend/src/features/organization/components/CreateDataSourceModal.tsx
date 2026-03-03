@@ -20,8 +20,7 @@ interface CreateDataSourceModalProps {
     quotaStatus: QuotaStatus | null;
 }
 
-export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
-    isOpen,
+const CreateDataSourceModalContent: React.FC<CreateDataSourceModalProps> = ({
     onClose,
     onSuccess,
     factoryId,
@@ -99,7 +98,6 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
     const isSubmitting = createDataSourceMutation.isPending;
 
-    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -256,3 +254,14 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
         </div>
     );
 };
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ * Returns null when closed to ensure unmounting and fresh state initialization on next open.
+ */
+export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = (props) => {
+    if (!props.isOpen) return null;
+    return <CreateDataSourceModalContent {...props} />;
+};
+
+export default CreateDataSourceModal;

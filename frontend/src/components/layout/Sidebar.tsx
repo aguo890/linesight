@@ -53,9 +53,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     const { t } = useTranslation(); // [I18N]
     const location = useLocation();
     const navigate = useNavigate();
-    const [dashboards, setDashboards] = useState<SavedDashboard[]>([]);
+    const [dashboards, setDashboards] = useState<SavedDashboard[]>(() => dashboardStorage.getDashboards());
     const [showAllDashboards, setShowAllDashboards] = useState(false);
     const [isDashboardsExpanded] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     // PERSISTENCE: MainLayout handles the state now.
     // We could still persist to localStorage if MainLayout initializes from it.
@@ -66,13 +67,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     const { user } = useAuth();
     const isOwner = user?.role === 'owner' || user?.role === 'system_admin';
 
+
+
     const loadDashboards = () => {
         // Create a shallow copy to ensure React detects the change and re-renders
         setDashboards([...dashboardStorage.getDashboards()]);
     };
 
     useEffect(() => {
-        loadDashboards();
+        // Removed initial call to avoid cascading render on mount
+        // State is already initialized via lazy useState initializer above
+
         // Listen for dashboard updates
         const handleStorageChange = () => {
             console.log('Sidebar: handleStorageChange triggered');

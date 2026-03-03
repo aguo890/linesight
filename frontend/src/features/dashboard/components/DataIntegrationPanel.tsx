@@ -182,7 +182,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                         ) : (
                                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                                 {dataSources.map(ds => {
-                                                    const activeMapping = ds.schema_mappings.find(m => m.is_active);
+                                                    const activeMapping = ds.schema_mappings?.find(m => m.is_active);
                                                     return (
                                                         <div key={ds.id} className="border rounded-md p-3 hover:border-blue-300 transition-colors">
                                                             <div className="flex justify-between items-start mb-2">
@@ -258,7 +258,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                 <label className="block text-sm font-medium text-gray-700 mb-1">{t('data_integration.modal.time_column')}</label>
                                 <input
                                     type="text"
-                                    value={editingDataSource.time_column}
+                                    value={editingDataSource.time_column || ''}
                                     onChange={(e) => setEditingDataSource({ ...editingDataSource, time_column: e.target.value })}
                                     className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
                                 />
