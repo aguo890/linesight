@@ -34,7 +34,7 @@ async def test_full_ingestion_flow(
         files=files,
         headers=auth_headers
     )
-    assert upload_res.status_code == 200
+    assert upload_res.status_code == 201
     import_id = upload_res.json()["raw_import_id"]
 
     # 3. Confirm Mapping
@@ -135,7 +135,7 @@ async def test_schema_evolution(
         headers=upload_headers,
     )
     # Add response.text to debug the specific 400 error message if it fails
-    assert response.status_code == 200, f"Upload failed: {response.text}"
+    assert response.status_code == 201, f"Upload failed: {response.text}"
     raw_import_id = response.json()["raw_import_id"]
 
     # Process (skip mocking details, just assume success for simplicity or mock again)

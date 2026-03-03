@@ -77,20 +77,6 @@ class IngestionOrchestrator:
                 "records_processed": 0,
             }
 
-        # --- DEEP DEBUGGING START ---
-        print(f"\n{'='*50}")
-        print("🚀 DEBUG: promote_to_production CALLED")
-        print(f"🆔 raw_import_id: {raw_import_id}")
-
-        # 1. Enable SQL Echo
-        # This forces SQLAlchemy to print every SQL statement to stdout/stderr
-        self.db.bind.echo = True
-        print("🔊 SQL Logging Enabled")
-        print(f"{'='*50}\n")
-        # --- DEEP DEBUGGING END ---
-
-        logger.info(f"ORCHESTRATOR: promote_to_production for {raw_import_id}")
-
         # Fetch RawImport context
         result = await self.db.execute(
             select(RawImport)
