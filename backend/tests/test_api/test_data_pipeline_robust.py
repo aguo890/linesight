@@ -18,8 +18,8 @@ from httpx import AsyncClient
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 
 # =============================================================================
@@ -195,14 +195,14 @@ async def test_date_format_handling(
     # Create variations relative to TODAY so they aren't filtered out by default views
     d1 = today.strftime("%Y-%m-%d")
     d2 = (today - timedelta(days=1)).strftime("%d-%b-%Y")
-    
+
     # 2. Upload Data with Mixed Formats
     csv_content = f"""production_date,style_number,actual_qty
 {d1},ST-DATE-1,100
 {d2},ST-DATE-2,100
 """
     files = {"file": ("dates.csv", csv_content, "text/csv")}
-    
+
     # Upload
     upload_res = await async_client.post(
         f"/api/v1/ingestion/upload?factory_id={factory_id}&data_source_id={line_id}",
@@ -241,16 +241,16 @@ async def test_date_format_handling(
     )
     assert res.status_code == 200
     data = res.json()
-    
+
     # Support pagination or list response
     items = data["items"] if isinstance(data, dict) and "items" in data else data
-    
+
     dates = [r["production_date"] for r in items]
-    
+
     # Assertion: ISO Format Check (YYYY-MM-DD)
     expected_d1 = today.isoformat()
     expected_d2 = (today - timedelta(days=1)).isoformat()
-    
+
     # Check strict format presence
     assert expected_d2 in dates
     assert expected_d1 in dates

@@ -14,31 +14,26 @@ Handles the HITL (Human-in-the-Loop) data ingestion flow:
 Schemas are defined in app.schemas.ingestion for reusability.
 """
 
-import hashlib
 import json
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
-from sqlalchemy import func, or_, select, update
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
-from app.core.config import settings
-from app.models.alias_mapping import AliasMapping, AliasScope
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import DataSource
 from app.models.raw_import import RawImport, StagingRecord
 from app.models.user import User, UserRole
 
 # Import schemas from dedicated module
 from app.schemas.ingestion import (
     AvailableField,
-    ColumnMappingResult,
     ConfirmMappingRequest,
     ConfirmMappingResponse,
-    ProcessingResponse,
     PreviewResponse,
+    ProcessingResponse,
 )
 from app.services.matching import HybridMatchingEngine
 
@@ -127,7 +122,7 @@ async def upload_file_for_ingestion(
     Logic delegated to IngestionService.
     """
     from app.services.ingestion.ingestion_service import IngestionService
-    
+
     service = IngestionService(db)
     return await service.handle_upload(
         file=file,
@@ -155,11 +150,11 @@ async def process_file(
     Logic delegated to IngestionService.
     """
     from app.services.ingestion.ingestion_service import IngestionService
-    
+
     service = IngestionService(db)
     return await service.process_file(
-        raw_import_id=raw_import_id, 
-        factory_id=factory_id, 
+        raw_import_id=raw_import_id,
+        factory_id=factory_id,
         llm_enabled=llm_enabled
     )
 
@@ -178,7 +173,7 @@ async def confirm_mapping(
     Logic delegated to IngestionService.
     """
     from app.services.ingestion.ingestion_service import IngestionService
-    
+
     service = IngestionService(db)
     return await service.confirm_mapping(request)
 
@@ -243,7 +238,6 @@ async def list_uploads(
     query = query.order_by(desc(RawImport.created_at))
 
     # Count total
-    from sqlalchemy import func
 
     count_query = select(func.count()).select_from(RawImport)
     if production_line_id:

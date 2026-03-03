@@ -2,7 +2,7 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-from datetime import date, datetime, timedelta, time
+from datetime import date, datetime, time, timedelta
 from decimal import Decimal
 
 import pytest
@@ -11,11 +11,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import DHUReport, EfficiencyMetric
 from app.models.datasource import DataSource
+from app.models.events import ProductionEvent
 from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
-from app.models.workforce import ProductionOutput, Worker
 from app.models.quality import QualityInspection
-from app.models.events import ProductionEvent, EventType
+from app.models.workforce import ProductionOutput, Worker
 
 
 @pytest.fixture
@@ -157,7 +157,7 @@ async def widget_data(db_session: AsyncSession, test_organization):
         inspected_at=datetime.now()
     )
     db_session.add(qi_today)
-    
+
     qi_yesterday = QualityInspection(
         production_run_id=run_yesterday.id,
         inspector_id=worker.id,
@@ -280,7 +280,7 @@ async def test_get_hourly_production(
         f"/api/v1/analytics/production/hourly?line_id={line.id}",
         headers=auth_headers
     )
-    
+
     # 4. Assert
     assert res.status_code == 200
     data = res.json()
@@ -297,14 +297,14 @@ async def test_get_sam_performance(
     """Test SAM performance widget."""
     # 1. Setup RLS-Compliant Infrastructure
     factory = Factory(
-        organization_id=test_organization.id, 
-        name="SAM Factory", 
-        code="SF-01", 
+        organization_id=test_organization.id,
+        name="SAM Factory",
+        code="SF-01",
         country="US"
     )
     db_session.add(factory)
     await db_session.flush()
-    
+
     line = DataSource(factory_id=factory.id, name="SAM Line")
     db_session.add(line)
     await db_session.commit()
@@ -338,7 +338,7 @@ async def test_get_sam_performance(
     )
     assert res.status_code == 200
     data = res.json()
-    
+
     # Assert
     assert float(data["efficiency"]) > 0
     assert abs(float(data["efficiency"]) - 83.3) < 1.0 # Allow slight rounding diffs

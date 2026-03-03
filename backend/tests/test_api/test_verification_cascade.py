@@ -7,8 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import Organization, User
 
 
@@ -33,9 +33,9 @@ async def test_factory_deletion_cascade_behavior(
     response = await async_client.post(
         "/api/v1/factories",
         json={
-            "name": "Cascade Test Factory", 
+            "name": "Cascade Test Factory",
             "code": "CASC-01",
-            "country": "US", 
+            "country": "US",
             "timezone": "America/New_York"
         },
         headers=auth_headers,

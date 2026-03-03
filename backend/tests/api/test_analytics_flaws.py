@@ -8,9 +8,9 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.datasource import DataSource
 from app.models.events import ProductionEvent
 from app.models.production import ProductionRun
-from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio

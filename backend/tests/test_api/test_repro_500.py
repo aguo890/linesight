@@ -11,7 +11,6 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.dashboard import Dashboard
 from app.models.datasource import DataSource
 from app.models.factory import Factory
 from app.models.user import Organization, User
@@ -33,8 +32,8 @@ async def test_list_dashboards_by_factory_id_crash(
     # RLS: Must belong to test_org
     factory = Factory(
         organization_id=test_organization.id,
-        name="Test Factory 500", 
-        country="US", 
+        name="Test Factory 500",
+        country="US",
         timezone="UTC"
     )
     db_session.add(factory)
@@ -60,9 +59,9 @@ async def test_list_dashboards_by_factory_id_crash(
         "widget_config": {"layout": []},
         "layout_config": {}
     }
-    
+
     create_res = await async_client.post(
-        "/api/v1/dashboards/", 
+        "/api/v1/dashboards/",
         json=payload,
         headers=auth_headers
     )

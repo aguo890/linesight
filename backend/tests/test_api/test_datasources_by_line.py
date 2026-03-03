@@ -4,8 +4,10 @@
 
 import pytest
 from httpx import AsyncClient
-from app.models.factory import Factory
+
 from app.models.datasource import DataSource
+from app.models.factory import Factory
+
 
 @pytest.mark.asyncio
 async def test_get_datasource_by_line_exists(
@@ -29,12 +31,12 @@ async def test_get_datasource_by_line_exists(
 
     # 2. Fetch
     res = await async_client.get(
-        f"/api/v1/data-sources/by-line/{ds.id}", 
+        f"/api/v1/data-sources/by-line/{ds.id}",
         headers=auth_headers
     )
     assert res.status_code == 200
     data = res.json()
-    
+
     # 3. Verify
     assert data is not None
     assert data["id"] == str(ds.id)

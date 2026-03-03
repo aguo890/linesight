@@ -4,9 +4,11 @@
 
 import pytest
 from httpx import AsyncClient
-from app.models.factory import Factory
+
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.user import User
+
 
 @pytest.mark.asyncio
 async def test_assign_user_to_line(
@@ -17,10 +19,10 @@ async def test_assign_user_to_line(
     factory = Factory(organization_id=test_organization.id, name="Team Factory", code="TF-99", country="US", timezone="UTC")
     db_session.add(factory)
     await db_session.flush()
-    
+
     ds = DataSource(factory_id=factory.id, name="Team Line")
     db_session.add(ds)
-    
+
     target_user = User(
         organization_id=test_organization.id,
         email="operator@example.com",
@@ -34,9 +36,9 @@ async def test_assign_user_to_line(
     # 2. Assign Scope
     payload = {
         "data_source_id": str(ds.id),
-        "role": "viewer" 
+        "role": "viewer"
     }
-    
+
     res = await async_client.post(
         f"/api/v1/organizations/members/{target_user.id}/scopes",
         json=payload,
@@ -44,7 +46,7 @@ async def test_assign_user_to_line(
     )
     assert res.status_code == 201
     data = res.json()
-    
+
     # FIX: Assert 'data_source' instead of 'line'
-    assert data["scope_type"] == "data_source" 
+    assert data["scope_type"] == "data_source"
     assert data["data_source_id"] == str(ds.id)

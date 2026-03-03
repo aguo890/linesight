@@ -45,12 +45,12 @@ async def test_dry_run_preview_structure(
     # Verify response structure (Robust check)
     assert "raw_import_id" in result
     assert "total_rows" in result
-    
+
     # Support multiple possible keys for preview records
     preview_records = result.get("preview_records") or result.get("preview") or result.get("rows")
     assert preview_records is not None, "Could not find preview records in result"
     assert isinstance(preview_records, list)
-    
+
     assert "mapping_used" in result
     assert "overall_status" in result
 

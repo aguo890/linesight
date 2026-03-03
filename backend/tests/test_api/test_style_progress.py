@@ -9,8 +9,8 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.enums import OrderStatus
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 
 

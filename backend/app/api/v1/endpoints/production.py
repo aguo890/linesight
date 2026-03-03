@@ -29,7 +29,8 @@ router = APIRouter()
 # =============================================================================
 
 
-from fastapi import APIRouter, Depends, status, Query
+from fastapi import APIRouter, Query
+
 
 @router.get("/styles", response_model=list[StyleRead], tags=["Styles"])
 async def list_styles(

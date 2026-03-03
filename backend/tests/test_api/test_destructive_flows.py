@@ -10,6 +10,7 @@ from app.models.datasource import DataSource
 from app.models.factory import Factory
 from app.models.production import ProductionRun
 
+
 @pytest.mark.asyncio
 async def test_delete_datasource_cascade(
     async_client: AsyncClient, db_session, test_organization, test_user, auth_headers
@@ -36,7 +37,8 @@ async def test_delete_datasource_cascade(
     await db_session.commit()
 
     from datetime import date
-    from app.models.production import Style, Order
+
+    from app.models.production import Order, Style
 
     # Create Style and Order for FK constraint
     style = Style(factory_id=factory.id, style_number="STY-CASC")
@@ -94,7 +96,7 @@ async def test_permissions_restricted_delete(
         is_active=True
     )
     db_session.add(viewer)
-    
+
     # Setup Factory/DS (must belong to same org for viewer to even see it, though delete is forbidden)
     factory = Factory(organization_id=test_organization.id, name="View Factory", code="VF-01", country="US", timezone="UTC")
     db_session.add(factory)
@@ -106,7 +108,7 @@ async def test_permissions_restricted_delete(
     # 2. Attempt Delete with Viewer Token
     token = create_access_token(subject=viewer.id)
     headers = {"Authorization": f"Bearer {token}"}
-    
+
     response = await async_client.delete(
         f"/api/v1/data-sources/{ds.id}", # FIX: correct URL
         headers=headers

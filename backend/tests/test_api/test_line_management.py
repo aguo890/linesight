@@ -40,7 +40,8 @@ async def test_reset_schema_configuration(
     await db_session.commit()
 
     from datetime import date
-    from app.models.production import Style, Order
+
+    from app.models.production import Order, Style
 
     # Create Style and Order for FK constraint
     style = Style(
@@ -68,7 +69,7 @@ async def test_reset_schema_configuration(
         actual_qty=100
     )
     db_session.add(run)
-    
+
     # Add a raw import attached to this source
     raw_imp = RawImport(
         factory_id=factory.id,

@@ -1,4 +1,3 @@
-import chardet
 import hashlib
 import json
 import logging
@@ -7,6 +6,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Any
 
+import chardet
 import pandas as pd  # type: ignore[import-untyped]
 from fastapi import HTTPException, UploadFile, status
 from fastapi.concurrency import run_in_threadpool
@@ -203,7 +203,7 @@ class IngestionService:
             await self.db.flush()  # Validate constraints without permanently saving yet
             await self.db.commit()
             await self.db.refresh(raw_import)
-            
+
             return {
                 "raw_import_id": raw_import.id,
                 "filename": file.filename,
@@ -217,14 +217,14 @@ class IngestionService:
             await self.db.rollback()
             logger.error(f"Failed to save raw import. Rolled back. Error: {e}")
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Database transaction failed during upload."
             )
 
     async def process_file(self, raw_import_id: str, factory_id: str | None, llm_enabled: bool) -> Any:
+        from app.models.raw_import import StagingRecord
         from app.schemas.ingestion import ColumnMappingResult, ProcessingResponse
         from app.services.matching import HybridMatchingEngine
-        from app.models.raw_import import StagingRecord
 
         # Get raw import
         result = await self.db.execute(select(RawImport).where(RawImport.id == raw_import_id))
@@ -249,7 +249,7 @@ class IngestionService:
                 sample_rows = json.loads(ri.sample_data)
                 h = json.loads(ri.raw_headers) if ri.raw_headers else []
                 if not sample_rows or not h: return {}
-                
+
                 sample_out = {}
                 for i, head in enumerate(h):
                     s = []
@@ -320,7 +320,7 @@ class IngestionService:
         try:
             file_path_obj = Path(raw_import.file_path)
             encoding = raw_import.encoding_detected or "utf-8"
-            
+
             if file_path_obj.suffix.lower() == ".csv":
                 df = await run_in_threadpool(pd.read_csv, file_path_obj, nrows=50, encoding=encoding)
             else:
@@ -367,11 +367,13 @@ class IngestionService:
         )
 
     async def confirm_mapping(self, request: Any) -> Any:
-        from app.schemas.ingestion import ConfirmMappingResponse
-        from app.models.datasource import SchemaMapping
-        from app.models.alias_mapping import AliasMapping, AliasScope
-        from sqlalchemy import update, func, or_, text
         import logging
+
+        from sqlalchemy import func, text, update
+
+        from app.models.alias_mapping import AliasMapping, AliasScope
+        from app.models.datasource import SchemaMapping
+        from app.schemas.ingestion import ConfirmMappingResponse
 
         logger = logging.getLogger("ingestion.confirm_mapping")
 
@@ -443,7 +445,7 @@ class IngestionService:
             if request.time_format:
                 data_source.time_format = request.time_format
 
-        if not data_source:  
+        if not data_source:
             ds_result = await self.db.execute(
                 select(DataSource).where(DataSource.id == data_source_id)
             )
@@ -537,7 +539,7 @@ class IngestionService:
             await self.db.flush()
             await self.db.commit()
             await self.db.refresh(schema_mapping)
-            
+
             await self.db.execute(
                 text("SELECT id FROM data_sources WHERE id = :id"), {"id": data_source_id}
             )

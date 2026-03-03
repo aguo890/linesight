@@ -1,13 +1,13 @@
 
-import sys
-import os
 import logging
+import os
+import sys
 
 # Add backend to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from app.core.factory import get_etl_agent, get_widget_suggestion_service
-from app.core.interfaces import ETLAgentInterface, WidgetSuggestionInterface
+from app.core.interfaces import ETLAgentInterface
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ def test_factory():
     etl_agent = get_etl_agent()
     logger.info(f"   Got: {type(etl_agent)}")
     assert isinstance(etl_agent, ETLAgentInterface)
-    
+
     if "private_core" in str(type(etl_agent)):
         logger.info("   ✅ Correctly loaded Private ETL Agent")
     elif "public_core" in str(type(etl_agent)):
@@ -34,9 +34,9 @@ def test_factory():
     logger.info(f"   Got: {type(widget_service)}")
     # Widget service might be a module or class instance depending on implementation
     # defined in factory.py
-    
+
     # In factory.py: return widget_suggestion_service (which is an instance)
-    
+
     if "private_core" in str(type(widget_service)) or "private_core" in str(widget_service):
         logger.info("   ✅ Correctly loaded Private Widget Service")
     elif "public_core" in str(type(widget_service)) or "public_core" in str(widget_service):

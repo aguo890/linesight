@@ -3,13 +3,15 @@
 # found in the LICENSE file in the root directory of this source tree.
 
 from typing import Any
+
 from app.core.interfaces import WidgetSuggestionInterface
+
 
 class PublicWidgetSuggestionService(WidgetSuggestionInterface):
     """
     Mock implementation of Widget Suggestion Service for public repository.
     """
-    
+
     async def analyze_and_suggest(
         self,
         raw_import: Any,

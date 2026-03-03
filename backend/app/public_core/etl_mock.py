@@ -5,7 +5,12 @@
 from dataclasses import dataclass
 from typing import Any
 
-from app.core.interfaces import ETLAgentInterface, SchemaInferenceProtocol, GeneratedCodeProtocol
+from app.core.interfaces import (
+    ETLAgentInterface,
+    GeneratedCodeProtocol,
+    SchemaInferenceProtocol,
+)
+
 
 @dataclass
 class MockSchemaInference:
@@ -30,7 +35,7 @@ class PublicETLAgent(ETLAgentInterface):
     Mock implementation of the Semantic ETL Agent for the public repository.
     Does not contain any proprietary LLM logic.
     """
-    
+
     async def infer_schema(
         self,
         sample_rows: list[list[Any]],
@@ -51,7 +56,7 @@ class PublicETLAgent(ETLAgentInterface):
 
     async def generate_cleaning_code(
         self,
-        schema: Any, 
+        schema: Any,
         target_table: str,
         sample_data: list[list[Any]],
         data_source_id: str | None = None,

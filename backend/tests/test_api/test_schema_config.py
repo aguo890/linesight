@@ -52,7 +52,7 @@ async def test_schema_configuration_flow(
     await db_session.refresh(ds)
 
     # Cache IDs for API calls
-    # Note: In new model, line.id might be the ds_id if they are merged, 
+    # Note: In new model, line.id might be the ds_id if they are merged,
     # but based on existing code structure we use ds.id
     ds_id = ds.id
 
@@ -91,7 +91,7 @@ async def test_schema_configuration_flow(
     )
     assert resp_2.status_code == 200
     data_2 = resp_2.json()
-    
+
     # Verify mapping is attached
     assert len(data_2["schema_mappings"]) >= 1
     latest = data_2["schema_mappings"][-1]

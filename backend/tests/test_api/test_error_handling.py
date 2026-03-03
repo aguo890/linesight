@@ -2,9 +2,11 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
+from datetime import date
+
 import pytest
 from httpx import AsyncClient
-from datetime import date
+
 
 @pytest.mark.asyncio
 async def test_404_json_response(async_client: AsyncClient):
@@ -46,10 +48,10 @@ async def test_upload_bad_file_json_response(async_client: AsyncClient, auth_hea
 
 @pytest.mark.asyncio
 async def test_delete_204_response(
-    async_client: AsyncClient, 
-    db_session, 
-    auth_headers, 
-    test_factory, 
+    async_client: AsyncClient,
+    db_session,
+    auth_headers,
+    test_factory,
     test_line,
     test_order
 ):
@@ -74,7 +76,7 @@ async def test_delete_204_response(
         json=payload,
         headers=auth_headers,
     )
-    
+
     assert create_response.status_code == 201, f"Setup failed: {create_response.text}"
     run_id = create_response.json()["id"]
 

@@ -16,12 +16,12 @@ async def test_datasource_flow(async_client, auth_headers):
     print("LOG: Fetching factories...")
     res = await async_client.get("/api/v1/factories", headers=auth_headers)
     assert res.status_code == 200
-    
+
     factories = res.json()
     if not factories:
         print("LOG: No factories found, creating one...")
         res = await async_client.post(
-            "/api/v1/factories", 
+            "/api/v1/factories",
             json={"name": "Integration Test Factory", "code": "ITF-01", "country": "PH", "timezone": "Asia/Manila", "locale": "en-US"},
             headers=auth_headers
         )
@@ -29,7 +29,7 @@ async def test_datasource_flow(async_client, auth_headers):
         factory_id = res.json()["id"]
     else:
         factory_id = factories[0]["id"]
-    
+
     print(f"LOG: Using factory {factory_id}")
 
     # 2. Create Data Source

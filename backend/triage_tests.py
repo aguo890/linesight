@@ -5,9 +5,10 @@
 import re
 from collections import Counter
 
+
 def analyze_failures(log_file="test_output.txt"):
     try:
-        with open(log_file, "r", encoding="utf-8", errors="ignore") as f:
+        with open(log_file, encoding="utf-8", errors="ignore") as f:
             content = f.read()
     except FileNotFoundError:
         print(f"❌ File {log_file} not found.")
@@ -15,13 +16,13 @@ def analyze_failures(log_file="test_output.txt"):
 
     # Regex to find failure patterns
     errors = re.findall(r"E \s+(.*?Error): (.*)", content)
-    
+
     if not errors:
         print("✅ No obvious python exceptions found in log (or log format differs).")
         return
 
     print(f"📉 Found {len(errors)} total errors.\n")
-    
+
     # Group by Error Type
     error_counts = Counter(e[0] for e in errors)
     print("📊 Failure Categories:")

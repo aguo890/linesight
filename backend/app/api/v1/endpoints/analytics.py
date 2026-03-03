@@ -13,14 +13,13 @@ from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import case, desc, func, literal, select
+from sqlalchemy import case, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.api.deps import CurrentUser, get_db
 from app.models import ProductionLine  # Alias for DataSource
 from app.models.analytics import DHUReport, EfficiencyMetric
-
 from app.models.drafts.compliance import TraceabilityRecord, VerificationStatus
 from app.models.events import ProductionEvent
 from app.models.factory import Factory
@@ -31,6 +30,7 @@ from app.schemas.analytics import (
     ComplexityPoint,
     DhuPoint,
     DiscrepanciesResponse,
+    DiscrepancyItem,
     DowntimeAnalysisResponse,
     DowntimeReason,
     EarnedMinutesStats,
@@ -47,7 +47,6 @@ from app.schemas.analytics import (
     TargetRealizationResponse,
     WorkerPerformance,
     WorkforceStats,
-    DiscrepancyItem,
 )
 from app.services.analytics_service import AnalyticsService
 

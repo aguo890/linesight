@@ -2,7 +2,7 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from httpx import AsyncClient
@@ -11,8 +11,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
-from app.models.datasource import DataSource
-from app.models.raw_import import RawImport
 from app.schemas.ingestion import ColumnMappingResult, MatchTier
 
 
@@ -22,7 +20,7 @@ async def test_full_ingestion_flow(
 ):
     """Test entire ingestion pipeline end-to-end."""
     from datetime import date
-    
+
     # 1. Setup Dynamic Date Data
     today_str = date.today().isoformat()
     csv_content = f"Date,Qty,Style\n{today_str},50,ST-FULL"
@@ -66,10 +64,10 @@ async def test_full_ingestion_flow(
     )
     assert res.status_code == 200
     data = res.json()
-    
+
     # Support pagination or list response
     items = data["items"] if isinstance(data, dict) and "items" in data else data
-    
+
     assert len(items) > 0, "Ingested run not found in production runs list"
     assert items[0]["style_number"] == "ST-FULL"
 
@@ -125,7 +123,7 @@ async def test_schema_evolution(
     response = await async_client.post(
         "/api/v1/ingestion/upload",
         params={
-            "factory_id": str(factory.id), 
+            "factory_id": str(factory.id),
             "production_line_id": str(line.id),
             "data_source_id": str(ds.id),
         },

@@ -8,8 +8,8 @@ from decimal import Decimal
 from polyfactory import Use
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, OrderStatus, ProductionRun, ShiftType, Style
 from app.models.user import Organization, User, UserRole
 

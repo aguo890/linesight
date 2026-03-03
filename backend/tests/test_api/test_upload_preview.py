@@ -11,7 +11,6 @@ from pathlib import Path
 import pytest
 from fastapi import status
 
-
 # Point to the directory created by your fixture
 TEST_DATA_DIR = Path(__file__).parent.parent / "data"
 

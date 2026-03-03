@@ -15,9 +15,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.datasource import SchemaMapping
+from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
-from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio
@@ -214,7 +213,7 @@ async def test_schema_mapping_version_increments_correctly(
     versions_created = []
 
     for i in range(1, 4):
-        csv_data = "Col1,Value\ndata,{}\n".format(i)
+        csv_data = f"Col1,Value\ndata,{i}\n"
         files = {"file": (f"test_v{i}.csv", csv_data, "text/csv")}
 
         upload_resp = await async_client.post(
@@ -226,7 +225,7 @@ async def test_schema_mapping_version_increments_correctly(
         raw_import_id = upload_resp.json()["raw_import_id"]
 
         targets = ["style_number", "po_number", "actual_qty"]
-        
+
         confirm_payload = {
             "raw_import_id": raw_import_id,
             "production_line_id": line_id,
