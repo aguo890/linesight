@@ -10,22 +10,27 @@ import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { FactoryContext } from '@/contexts/FactoryContext';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
-import type { Factory } from '@/lib/factoryApi';
+import { type ClientFactory as Factory } from '@/lib/factoryApi';
 
 // Mock active factory generator
 const createMockFactory = (settings: any = {}): Factory => ({
     id: 'test-factory',
-    organization_id: 'org-1',
+    organizationId: 'org-1',
     name: 'Test Factory',
-    is_active: true,
+    code: 'TEST',
+    location: 'Test Location',
+    city: 'Test City',
+    country: 'Test Country',
+    timezone: 'UTC',
+    locale: 'en-US',
+    isActive: true,
     settings: {
         timezone: 'UTC',
         date_format: 'MM/DD/YYYY',
         default_currency: 'USD',
         ...settings
     },
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    isMockedFallback: false
 });
 
 // Mock Context Wrapper

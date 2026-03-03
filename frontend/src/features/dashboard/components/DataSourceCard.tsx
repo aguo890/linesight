@@ -12,7 +12,7 @@
  */
 import React from 'react';
 import { Edit2, Trash2, Activity, Upload, Lock, Database } from 'lucide-react';
-import type { DataSource } from '@/lib/factoryApi';
+import type { ClientDataSource as DataSource } from '@/lib/datasourceApi';
 import { usePermissions } from '@/hooks/usePermissions';
 
 interface DataSourceCardProps {
@@ -45,14 +45,14 @@ export const DataSourceCard: React.FC<DataSourceCardProps & { onClick?: (id: str
             className={`group relative bg-surface rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all duration-200 ${onClick ? 'cursor-pointer' : ''}`}
         >
             {/* Top Border Indicator */}
-            <div className={`h-1.5 w-full ${dataSource.is_active ? 'bg-brand' : 'bg-border'}`} />
+            <div className={`h-1.5 w-full ${dataSource.isActive ? 'bg-brand' : 'bg-border'}`} />
 
             <div className="p-5">
                 <div className="flex items-start justify-between mb-4">
                     <div className="p-2 bg-brand/10 rounded-lg group-hover:bg-brand/20 transition-colors">
                         <Database className="w-6 h-6 text-brand" />
                     </div>
-                    {dataSource.is_active ? (
+                    {dataSource.isActive ? (
                         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/10 border border-success/20">
                             <Activity className="w-3.5 h-3.5 text-success" />
                             <span className="text-xs font-medium text-success">Active</span>

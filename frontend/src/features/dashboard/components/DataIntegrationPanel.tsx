@@ -16,8 +16,8 @@ import {
     Clock
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { listDataSources, updateDataSource, type DataSource } from '@/lib/datasourceApi';
-import { X } from 'lucide-react'; // Import Close icon
+import { listDataSources, updateDataSource, type ClientDataSource as DataSource } from '@/lib/datasourceApi';
+import { X } from 'lucide-react';
 
 interface DataIntegrationPanelProps {
     className?: string;
@@ -75,8 +75,8 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
         try {
             setLoading(true);
             await updateDataSource(editingDataSource.id, {
-                time_column: editingDataSource.time_column,
-                is_active: editingDataSource.is_active
+                time_column: editingDataSource.timeColumn,
+                is_active: editingDataSource.isActive
             });
             setEditingDataSource(null);
             fetchData(); // Refresh list
@@ -182,13 +182,22 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                         ) : (
                                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                                 {dataSources.map(ds => {
-                                                    const activeMapping = ds.schema_mappings?.find(m => m.is_active);
+                                                    const activeMapping = ds.schemaMappings?.find(m => m.is_active);
                                                     return (
-                                                        <div key={ds.id} className="border rounded-md p-3 hover:border-blue-300 transition-colors">
+                                                        <div key={ds.id} className={`border rounded-md p-3 hover:border-blue-300 transition-colors ${ds.isMockedFallback ? 'bg-amber-50/30 border-amber-200' : ''}`}>
+                                                            {ds.isMockedFallback && (
+                                                                <div className="mb-2 px-2 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold rounded flex items-center">
+                                                                    <AlertCircle className="w-2.5 h-2.5 me-1" />
+                                                                    {t('data_integration.mock_data_warning', { defaultValue: 'VIEWING MOCK DATA FALLBACK' })}
+                                                                </div>
+                                                            )}
                                                             <div className="flex justify-between items-start mb-2">
-                                                                <h4 className="font-medium text-gray-900">{ds.source_name}</h4>
-                                                                <span className={`px-2 py-0.5 rounded text-xs ${ds.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                                                                    {ds.is_active ? t('common.status.active') : t('common.status.inactive')}
+                                                                <h4 className="font-medium text-gray-900">
+                                                                    {ds.sourceName}
+                                                                    {ds.isMockedFallback && <span className="ms-2 text-[10px] text-amber-600 font-bold">(MOCK)</span>}
+                                                                </h4>
+                                                                <span className={`px-2 py-0.5 rounded text-xs ${ds.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                                                                    {ds.isActive ? t('common.status.active') : t('common.status.inactive')}
                                                                 </span>
                                                             </div>
                                                             <div className="text-xs text-gray-500 mb-3 line-clamp-2">
@@ -249,7 +258,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                 <label className="block text-sm font-medium text-gray-700 mb-1">{t('data_integration.modal.source_name')}</label>
                                 <input
                                     type="text"
-                                    value={editingDataSource.source_name || ''}
+                                    value={editingDataSource.sourceName || ''}
                                     disabled
                                     className="w-full px-3 py-2 border rounded-md bg-gray-100 text-gray-500"
                                 />
@@ -258,8 +267,8 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                 <label className="block text-sm font-medium text-gray-700 mb-1">{t('data_integration.modal.time_column')}</label>
                                 <input
                                     type="text"
-                                    value={editingDataSource.time_column || ''}
-                                    onChange={(e) => setEditingDataSource({ ...editingDataSource, time_column: e.target.value })}
+                                    value={editingDataSource.timeColumn || ''}
+                                    onChange={(e) => setEditingDataSource({ ...editingDataSource, timeColumn: e.target.value })}
                                     className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
                                 />
                                 <p className="text-xs text-gray-500 mt-1">{t('data_integration.modal.time_column_hint')}</p>
@@ -268,8 +277,8 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
                                 <input
                                     type="checkbox"
                                     id="isActive"
-                                    checked={editingDataSource.is_active}
-                                    onChange={(e) => setEditingDataSource({ ...editingDataSource, is_active: e.target.checked })}
+                                    checked={editingDataSource.isActive}
+                                    onChange={(e) => setEditingDataSource({ ...editingDataSource, isActive: e.target.checked })}
                                     className="rounded text-blue-600 focus:ring-blue-500"
                                 />
                                 <label htmlFor="isActive" className="text-sm text-gray-700">{t('data_integration.modal.config_active')}</label>

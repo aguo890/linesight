@@ -42,6 +42,8 @@ const MemoizedInnerWidget = React.memo(({ component: Component, ...props }: any)
     return isSameSize && isSameData && isSameSettings;
 });
 
+
+
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     widget,
     editMode,
@@ -111,8 +113,6 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
 
     const title = widget.settings?.customTitle || manifest?.meta.title;
     const iconKey = manifest?.meta.icon;
-    const IconComponent = useMemo(() => iconKey ? getWidgetIcon(iconKey) : undefined, [iconKey]);
-    const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest?.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest?.meta.iconColor]);
 
     if (!manifest) {
         return (
@@ -130,7 +130,13 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     // 9. Error State
     if (error && !editMode) {
         return (
-            <WidgetWrapper id={widget.i} title={title} isMock={isMock} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
+            <WidgetWrapper
+                id={widget.i}
+                title={title}
+                isMock={isMock}
+                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
+                iconBgColor={manifest.meta.bgColor}
+            >
                 <div className="flex flex-col items-center justify-center h-full text-red-400 gap-2 p-4 text-center">
                     <AlertCircle className="w-6 h-6" />
                     <span className="text-xs font-medium">{t('widgets.renderer.failed_load')}</span>
@@ -143,7 +149,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     // 10. Locked State
     if (manifest.locked && !widget.settings?.unlockPreview) {
         return (
-            <WidgetWrapper id={widget.i} title={title} isMock={isMock} editMode={editMode} onRemove={onDelete} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
+            <WidgetWrapper id={widget.i} title={title} isMock={isMock} editMode={editMode} onRemove={onDelete} icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined} iconBgColor={manifest.meta.bgColor}>
                 <ComingSoonWidget
                     id={widget.i}
                     w={widget.w}
@@ -188,7 +194,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 editMode={editMode}
                                 onRemove={onDelete}
                                 density={widget.h <= 2 ? 'compact' : 'default'}
-                                icon={iconElement}
+                                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
                                 iconBgColor={manifest.meta.bgColor}
                             >
                                 {/* PERFORMANCE OPTIMIZATION: Render Lightweight MicroPreview */}
@@ -209,7 +215,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 editMode={editMode}
                                 onRemove={onDelete}
                                 density={widget.h <= 2 ? 'compact' : 'default'}
-                                icon={iconElement}
+                                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
                                 iconBgColor={manifest.meta.bgColor}
                                 isLoading={loading}
                             >

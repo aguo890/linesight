@@ -11,8 +11,9 @@ import { useTranslation } from 'react-i18next';
 import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
-import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource } from '@/lib/ingestionApi';
-import { listFactories, listDataSources, type DataSource as FactoryDataSource } from '@/lib/factoryApi';
+import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource as IngestionDataSource } from '@/lib/ingestionApi';
+import { listFactories, listDataSources } from '@/lib/factoryApi';
+import type { ClientDataSource as FactoryDataSource } from '@/lib/datasourceApi';
 import { LayoutMiniMap } from './LayoutMiniMap';
 import { WIDGET_DEFINITIONS, getCompatibilityStatus } from '@/features/dashboard/registry';
 
@@ -48,7 +49,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     const [availableFields, setAvailableFields] = useState<AvailableField[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [dataSourceId, setDataSourceId] = useState<string | null>(null);
-    const [existingDataSources, setExistingDataSources] = useState<DataSource[]>([]);
+    const [existingDataSources, setExistingDataSources] = useState<IngestionDataSource[]>([]);
     const [dashboardName, setDashboardName] = useState('');
 
     const [factories, setFactories] = useState<{ id: string, name: string, code?: string }[]>([]);
@@ -205,7 +206,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
      * COMPLETE files: Load existing schema and go to mapping review
      * INCOMPLETE files: Trigger processing flow to complete HITL pipeline
      */
-    const handleUseExisting = async (source: DataSource, name: string) => {
+    const handleUseExisting = async (source: IngestionDataSource, name: string) => {
         setIsSubmitting(true);
         setDashboardName(name);
 
@@ -518,7 +519,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 {/* OPTION A: Skip to Widgets for Mature Data Sources */}
                                 {(() => {
                                     const selectedSource = dataSources.find(ds => ds.id === selectedDataSourceId);
-                                    if (selectedSource?.has_active_schema && isSelectionComplete) {
+                                    if (selectedSource?.hasActiveSchema && isSelectionComplete) {
                                         return (
                                             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-5 space-y-3">
                                                 <div className="flex items-center text-emerald-700 dark:text-emerald-400">

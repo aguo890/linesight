@@ -5,7 +5,7 @@
  */
 
 import React, { createContext, useContext, useState, useMemo } from 'react';
-import { type Factory } from '@/lib/factoryApi';
+import { type ClientFactory as Factory, adaptFactoryToClient } from '@/lib/factoryApi';
 import { useListFactoriesApiV1FactoriesGet } from '@/api/endpoints/factories/factories';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -35,7 +35,9 @@ export const FactoryProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
     const [activeFactoryId, setActiveFactoryId] = useState<string | null>(null);
 
-    const factories = (factoriesData as unknown as Factory[]) || [];
+    const factories = useMemo(() => {
+        return (factoriesData as any[] || []).map(f => adaptFactoryToClient(f));
+    }, [factoriesData]);
     const error = queryError ? (queryError as any).message || "Failed to load factories" : null;
 
     // Derive: auto-select first factory if none explicitly set

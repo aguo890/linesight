@@ -9,7 +9,8 @@ import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-re
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '@/api/endpoints/factories/factories';
-import type { FactoryRead as Factory, ShiftConfig } from '@/api/model';
+import type { ShiftConfig } from '@/api/model';
+import { type ClientFactory as Factory } from '@/lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
 
 interface Props {
@@ -87,7 +88,7 @@ const FactorySettingsModalContent: React.FC<Props> = ({ onClose, factory }) => {
     const handleSaveRequest = () => {
         // Check if timezone changed from non-UTC to something else, or significant change
         // For safety, if timezone changed and it wasn't just setting explicit UTC from default, warn user.
-        if (timezone !== originalTimezone && factory.is_active) {
+        if (timezone !== originalTimezone && factory.isActive) {
             setShowTimezoneWarning(true);
         } else {
             executeSave();

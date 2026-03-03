@@ -122,8 +122,7 @@ export default function ProfilePage() {
                 }
             }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [setTheme, i18n]);
 
     // Fetch organization and factory context
     useEffect(() => {

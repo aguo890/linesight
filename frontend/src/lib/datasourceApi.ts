@@ -9,13 +9,67 @@ import api from './api';
 
 import {
     type DataSourceRead,
-    type DataSourceUpdate,
+    type AppSchemasDatasourceDataSourceUpdate as DataSourceUpdate,
     type SchemaMappingResponse,
     type SchemaMappingCreate
 } from '@/api/model';
 
-export type DataSource = DataSourceRead & {
-    production_line_id?: string;
+/**
+ * Stable frontend contract for DataSource, decoupled from backend schema.
+ */
+export interface ClientDataSource {
+    id: string;
+    factoryId: string;
+    sourceName: string;
+    name: string;
+    code: string;
+    description: string;
+    timeColumn: string;
+    isActive: boolean;
+    schemaMappings: SchemaMappingResponse[];
+    hasActiveSchema: boolean;
+    createdAt: string;
+    isMockedFallback: boolean;
+}
+
+/**
+ * Adapter function to map backend DataSourceRead to ClientDataSource.
+ */
+export const adaptDataSourceToClient = (data: DataSourceRead | null | undefined): ClientDataSource => {
+    if (!data) {
+        return {
+            id: '',
+            factoryId: '',
+            sourceName: 'Unknown',
+            name: 'Unknown',
+            code: '',
+            description: '',
+            timeColumn: '',
+            isActive: false,
+            schemaMappings: [],
+            hasActiveSchema: false,
+            createdAt: new Date().toISOString(),
+            isMockedFallback: true
+        };
+    }
+
+    // Flag as mock if critical identification fields are missing
+    const isMockedFallback = !data.id || (!data.source_name && !data.name);
+
+    return {
+        id: data.id || `mock-${Date.now()}`,
+        factoryId: data.factory_id || (data as any).production_line_id || '',
+        sourceName: data.source_name || data.name || 'Unnamed Source',
+        name: data.name || data.source_name || 'Unnamed Source',
+        code: (data as any).code || '',
+        description: data.description || '',
+        timeColumn: data.time_column || '',
+        isActive: data.is_active ?? false,
+        schemaMappings: data.schema_mappings || [],
+        hasActiveSchema: (data.schema_mappings || []).some(m => m.is_active),
+        createdAt: data.created_at || new Date().toISOString(),
+        isMockedFallback
+    };
 };
 
 export interface AvailableField {
@@ -35,19 +89,20 @@ export interface RawImport {
     production_line_id: string;
 }
 
-export const listDataSources = async (skip: number = 0, limit: number = 100): Promise<DataSourceRead[]> => {
+export const listDataSources = async (skip: number = 0, limit: number = 100): Promise<ClientDataSource[]> => {
     const response = await api.get(`/data-sources?skip=${skip}&limit=${limit}`);
-    return response.data;
+    return (response.data || []).map((ds: DataSourceRead) => adaptDataSourceToClient(ds));
 };
 
-export const getDataSource = async (id: string): Promise<DataSourceRead> => {
+export const getDataSource = async (id: string): Promise<ClientDataSource> => {
     const response = await api.get(`/data-sources/${id}`);
-    return response.data;
+    return adaptDataSourceToClient(response.data);
 };
 
-export const getDataSourceByLine = async (lineId: string): Promise<DataSourceRead | null> => {
+export const getDataSourceByLine = async (lineId: string): Promise<ClientDataSource | null> => {
     const response = await api.get(`/data-sources/by-line/${lineId}`);
-    return response.data;
+    if (!response.data) return null;
+    return adaptDataSourceToClient(response.data);
 };
 
 export const updateSchemaMapping = async (dataSourceId: string, data: SchemaMappingCreate): Promise<SchemaMappingResponse> => {
@@ -58,9 +113,9 @@ export const updateSchemaMapping = async (dataSourceId: string, data: SchemaMapp
 export const updateDataSource = async (
     id: string,
     updates: DataSourceUpdate
-): Promise<DataSourceRead> => {
+): Promise<ClientDataSource> => {
     const response = await api.put(`/data-sources/${id}`, updates);
-    return response.data;
+    return adaptDataSourceToClient(response.data);
 };
 
 export const getUploadHistory = async (lineId: string): Promise<RawImport[]> => {

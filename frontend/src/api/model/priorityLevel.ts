@@ -12,7 +12,6 @@
 export type PriorityLevel = typeof PriorityLevel[keyof typeof PriorityLevel];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PriorityLevel = {
   low: 'low',
   normal: 'normal',

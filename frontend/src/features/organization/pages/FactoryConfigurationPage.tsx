@@ -58,7 +58,16 @@ export const FactoryConfigurationPage: React.FC = () => {
         setMembers(res.data);
     }, []);
 
-    useEffect(() => { fetchMembers(); }, [fetchMembers]);
+    useEffect(() => {
+        let isMounted = true;
+        const init = async () => {
+            await fetchMembers();
+        };
+        if (isMounted) {
+            init();
+        }
+        return () => { isMounted = false; };
+    }, [fetchMembers]);
 
     // --- Handlers ---
 

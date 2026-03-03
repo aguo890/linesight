@@ -12,7 +12,6 @@
 export type AgentType = typeof AgentType[keyof typeof AgentType];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AgentType = {
   schema_inference: 'schema_inference',
   code_generation: 'code_generation',

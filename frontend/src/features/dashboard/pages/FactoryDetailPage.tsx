@@ -53,7 +53,7 @@ import {
     useDeleteDashboardApiV1DashboardsDashboardIdDelete
 } from '@/api/endpoints/dashboards/dashboards';
 import type { Dashboard } from '@/features/dashboard/types';
-import type { DataSource } from '@/lib/factoryApi';
+import type { ClientDataSource as DataSource } from '@/lib/datasourceApi';
 import { usePermissions } from '@/hooks/usePermissions';
 
 type ViewMode = 'grid' | 'list';
@@ -166,7 +166,7 @@ export const FactoryDetailPage: React.FC = () => {
         if (!sourceSearch) return dataSources;
         const q = sourceSearch.toLowerCase();
         return dataSources.filter(ds =>
-            ds.name.toLowerCase().includes(q) ||
+            ds.sourceName.toLowerCase().includes(q) ||
             (ds.code && ds.code.toLowerCase().includes(q))
         );
     }, [dataSources, sourceSearch]);
@@ -372,7 +372,7 @@ export const FactoryDetailPage: React.FC = () => {
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <Globe className="w-3.5 h-3.5 text-text-muted" />
-                                    {factory.organization_id}
+                                    {factory.organizationId}
                                 </span>
                             </div>
                         </div>
@@ -601,11 +601,11 @@ export const FactoryDetailPage: React.FC = () => {
                                                 </div>
                                             </td>
                                             <td className="py-3 px-4">
-                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.is_active
+                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.isActive
                                                     ? 'bg-success/10 text-success border-success/20'
                                                     : 'bg-surface-subtle text-text-muted border-border'
                                                     }`}>
-                                                    {source.is_active ? t('factory_detail.status.active') : t('factory_detail.status.inactive')}
+                                                    {source.isActive ? t('factory_detail.status.active') : t('factory_detail.status.inactive')}
                                                 </span>
                                             </td>
                                             <td className="py-3 px-4 text-end">

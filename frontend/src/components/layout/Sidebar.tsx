@@ -56,7 +56,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     const [dashboards, setDashboards] = useState<SavedDashboard[]>(() => dashboardStorage.getDashboards());
     const [showAllDashboards, setShowAllDashboards] = useState(false);
     const [isDashboardsExpanded] = useState(true);
-    const [isCollapsed, setIsCollapsed] = useState(false);
 
     // PERSISTENCE: MainLayout handles the state now.
     // We could still persist to localStorage if MainLayout initializes from it.

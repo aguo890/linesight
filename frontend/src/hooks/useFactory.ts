@@ -18,9 +18,10 @@ import {
     createFactory as createFactoryApi,
     createDataSource as createDataSourceApi,
     deleteFactory as deleteFactoryApi,
-    getDataSource,
+    getDataSourceById as getDataSource,
+    type ClientFactory as Factory,
 } from '@/lib/factoryApi';
-import { type FactoryRead as Factory, type DataSourceRead as DataSource } from '@/api/model';
+import { type ClientDataSource as DataSource } from '@/lib/datasourceApi';
 
 // =============================================================================
 // Types
