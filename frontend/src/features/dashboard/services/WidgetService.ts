@@ -93,7 +93,7 @@ export function migrateLegacySettings(widgetId: string, oldSettings: any = {}) {
 
     if (result.success) {
         // [CRITICAL FIX] Force re-attach version in case Zod stripped it
-        const finalOutput = result.data;
+        const finalOutput = result.data as any;
         finalOutput.version = currentVersion;
         return finalOutput;
     }
@@ -103,7 +103,7 @@ export function migrateLegacySettings(widgetId: string, oldSettings: any = {}) {
     // [ROBUSTNESS FIX] Generate defaults directly from the current source of truth (Zod)
     // instead of relying on potentially outdated manifest.initialSettings
     try {
-        const cleanDefaults = manifest.settingsSchema.parse({});
+        const cleanDefaults = manifest.settingsSchema.parse({}) as any;
         cleanDefaults.version = currentVersion;
         return cleanDefaults;
     } catch (e) {

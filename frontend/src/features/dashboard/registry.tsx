@@ -38,6 +38,35 @@ import {
     KpiSummarySchema,
     KpiSummaryDataSchema
 } from './registry.schemas';
+
+export {
+    ProductionChartSchema,
+    ProductionChartDataSchema,
+    LineEfficiencySchema,
+    LineEfficiencyDataSchema,
+    TargetRealizationSchema,
+    TargetRealizationDataSchema,
+    EarnedMinutesSchema,
+    EarnedMinutesDataSchema,
+    ProductionTimelineSchema,
+    TimelineDataSchema,
+    SamPerformanceSchema,
+    SamPerformanceDataSchema,
+    DhuQualitySchema,
+    DhuQualityDataSchema,
+    SpeedQualitySchema,
+    SpeedQualityDataSchema,
+    ComplexityImpactSchema,
+    ComplexityDataSchema,
+    BlockerCloudSchema,
+    DowntimeDataSchema,
+    StyleProgressSchema,
+    StyleProgressDataSchema,
+    WorkforceSchema,
+    WorkforceDataSchema,
+    KpiSummarySchema,
+    KpiSummaryDataSchema
+};
 import { LEGACY_ALIASES } from './registry.constants';
 import * as helpers from './registry.helpers';
 
@@ -389,7 +418,10 @@ export const WIDGET_DEFINITIONS = ALL_WIDGETS.map(w => ({
     id: w.id,
     ...w.meta,
     defaultW: w.layout.w,
-    defaultH: w.layout.h
+    defaultH: w.layout.h,
+    minW: w.layout.minW,
+    minH: w.layout.minH,
+    locked: w.locked ?? false
 }));
 
 export const getCompatibilityStatus = (id: string, fields: string[]) =>

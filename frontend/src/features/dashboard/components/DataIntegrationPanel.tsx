@@ -38,14 +38,7 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
     const [error, setError] = useState<string | null>(null);
     const [editingDataSource, setEditingDataSource] = useState<DataSource | null>(null);
 
-    // Fetch data on mount and when production line changes
-    useEffect(() => {
-        if (isExpanded) {
-            fetchData();
-        }
-    }, [isExpanded, activeTab, productionLineId]);
-
-    const fetchData = async () => {
+    const fetchData = React.useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -61,7 +54,14 @@ export const DataIntegrationPanel: React.FC<DataIntegrationPanelProps> = ({ clas
         } finally {
             setLoading(false);
         }
-    };
+    }, [activeTab, t]);
+
+    // Fetch data on mount and when production line changes
+    useEffect(() => {
+        if (isExpanded) {
+            fetchData();
+        }
+    }, [isExpanded, fetchData, productionLineId]);
 
     const handleUploadComplete = () => {
         if (activeTab === 'uploads') fetchData();

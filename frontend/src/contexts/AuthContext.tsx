@@ -12,6 +12,7 @@ import i18n from '@/i18n';
 import { toShortLocale, detectBestLocale } from '@/utils/localeUtils';
 
 import { type AuthState, type AuthContextType } from './AuthContext.types';
+export type { AuthState, AuthContextType };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

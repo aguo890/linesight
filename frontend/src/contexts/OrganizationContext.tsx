@@ -41,7 +41,7 @@ export const OrganizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     useEffect(() => {
         // Initial load
         refreshQuota();
-    }, []);
+    }, [refreshQuota]);
 
     const value = {
         quotaStatus,
