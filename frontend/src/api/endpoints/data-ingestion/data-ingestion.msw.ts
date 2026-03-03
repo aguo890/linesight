@@ -20,18 +20,18 @@ import type {
 
 import {
   MatchTier
-} from '@/api/model';
+} from '../../model';
 import type {
   AvailableField,
   ConfirmMappingResponse,
   PreviewResponse,
   ProcessingResponse,
   PromoteToProductionApiV1IngestionPromoteRawImportIdPost200,
-  UploadFileForIngestionApiV1IngestionUploadPost200
-} from '@/api/model';
+  UploadFileForIngestionApiV1IngestionUploadPost201
+} from '../../model';
 
 
-export const getUploadFileForIngestionApiV1IngestionUploadPostResponseMock = (): UploadFileForIngestionApiV1IngestionUploadPost200 => ({})
+export const getUploadFileForIngestionApiV1IngestionUploadPostResponseMock = (): UploadFileForIngestionApiV1IngestionUploadPost201 => ({})
 
 export const getProcessFileApiV1IngestionProcessRawImportIdPostResponseMock = (overrideResponse: Partial< ProcessingResponse > = {}): ProcessingResponse => ({raw_import_id: faker.string.alpha({length: {min: 10, max: 20}}), filename: faker.string.alpha({length: {min: 10, max: 20}}), columns: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({source_column: faker.string.alpha({length: {min: 10, max: 20}}), target_field: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), confidence: faker.number.float({min: 0, max: 1, fractionDigits: 2}), tier: faker.helpers.arrayElement(Object.values(MatchTier)), fuzzy_score: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.float({min: undefined, max: undefined, fractionDigits: 2}),null,]), undefined]), reasoning: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), sample_data: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({})), undefined]), needs_review: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), ignored: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), status: faker.string.alpha({length: {min: 10, max: 20}})})), stats: faker.helpers.arrayElement([{}, undefined]), auto_mapped_count: faker.number.int({min: undefined, max: undefined}), needs_review_count: faker.number.int({min: undefined, max: undefined}), needs_attention_count: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
@@ -56,13 +56,13 @@ export const getGetUploadHistoryApiV1IngestionHistoryGetMockHandler = (overrideR
   }, options)
 }
 
-export const getUploadFileForIngestionApiV1IngestionUploadPostMockHandler = (overrideResponse?: UploadFileForIngestionApiV1IngestionUploadPost200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<UploadFileForIngestionApiV1IngestionUploadPost200> | UploadFileForIngestionApiV1IngestionUploadPost200), options?: RequestHandlerOptions) => {
+export const getUploadFileForIngestionApiV1IngestionUploadPostMockHandler = (overrideResponse?: UploadFileForIngestionApiV1IngestionUploadPost201 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<UploadFileForIngestionApiV1IngestionUploadPost201> | UploadFileForIngestionApiV1IngestionUploadPost201), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/ingestion/upload', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
     : getUploadFileForIngestionApiV1IngestionUploadPostResponseMock()),
-      { status: 200,
+      { status: 201,
         headers: { 'Content-Type': 'application/json' }
       })
   }, options)

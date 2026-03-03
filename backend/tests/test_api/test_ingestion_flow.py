@@ -141,7 +141,7 @@ async def test_schema_evolution(
     # Process (skip mocking details, just assume success for simplicity or mock again)
     # We need to mock again because matching engine is instantiated per request
     with patch(
-        "app.api.v1.endpoints.ingestion.HybridMatchingEngine"
+        "app.services.matching.HybridMatchingEngine"
     ) as mock_engine_cls:
         instance = mock_engine_cls.return_value
         instance.initialize = AsyncMock()

@@ -75,7 +75,7 @@ async def upload_and_promote(
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200, f"Upload failed: {upload_resp.text}"
+    assert upload_resp.status_code == 201, f"Upload failed: {upload_resp.text}"
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # 2. Confirm Mapping
@@ -209,7 +209,7 @@ async def test_date_format_handling(
         files=files,
         headers=auth_headers
     )
-    assert upload_res.status_code == 200, f"Upload failed: {upload_res.text}"
+    assert upload_res.status_code == 201, f"Upload failed: {upload_res.text}"
     import_id = upload_res.json()["raw_import_id"]
 
     # Confirm Mapping
@@ -526,7 +526,7 @@ DUPE-001,PO-DUPE,{today},999
         files=files,
         headers=auth_headers,
     )
-    assert upload1.status_code == 200
+    assert upload1.status_code == 201
     first_id = upload1.json()["raw_import_id"]
 
     # Second upload (same content)
@@ -536,7 +536,7 @@ DUPE-001,PO-DUPE,{today},999
         files=files2,
         headers=auth_headers,
     )
-    assert upload2.status_code == 200
+    assert upload2.status_code == 201
     second_response = upload2.json()
 
     # Should return same ID and already_exists flag

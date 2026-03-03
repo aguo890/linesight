@@ -43,7 +43,7 @@ async def test_preview_endpoint_success(
         files=files,
         headers=auth_headers,
     )
-    assert upload_res.status_code == 200
+    assert upload_res.status_code == 201
     raw_import_id = upload_res.json()["raw_import_id"]
 
     # 2. Process file (should populate StagingRecord)
@@ -104,7 +104,7 @@ async def test_list_uploads_includes_datasource_id(
         files=files,
         headers=auth_headers,
     )
-    assert upload_res.status_code == 200, f"Upload failed: {upload_res.text}"
+    assert upload_res.status_code == 201, f"Upload failed: {upload_res.text}"
     raw_import_id = upload_res.json()["raw_import_id"]
 
     confirm_res = await async_client.post(

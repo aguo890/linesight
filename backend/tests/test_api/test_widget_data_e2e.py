@@ -94,7 +94,7 @@ STYLE-002,PO-DEF,{today},300,350,2.0,85.7
         headers=auth_headers,
     )
 
-    assert upload_resp.status_code == 200, f"Upload failed: {upload_resp.text}"
+    assert upload_resp.status_code == 201, f"Upload failed: {upload_resp.text}"
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     print("\n[CHECKPOINT 1] ✅ Upload Success")

@@ -29,7 +29,7 @@ async def test_upload_csv_file(async_client, auth_headers, test_factory, test_li
             headers=auth_headers,
         )
 
-    assert response.status_code == status.HTTP_200_OK
+    assert response.status_code == status.HTTP_201_CREATED
     data = response.json()
     assert "raw_import_id" in data
     assert data["filename"] == "test.csv"

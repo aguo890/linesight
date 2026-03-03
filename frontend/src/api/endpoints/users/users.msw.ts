@@ -20,7 +20,7 @@ import type {
 
 import type {
   UserRead
-} from '@/api/model';
+} from '../../model';
 
 
 export const getReadUserMeApiV1UsersMeGetResponseMock = (overrideResponse: Partial< UserRead > = {}): UserRead => ({email: faker.internet.email(), full_name: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 255}}),null,]), undefined]), id: faker.string.alpha({length: {min: 10, max: 20}}), organization_id: faker.string.alpha({length: {min: 10, max: 20}}), role: faker.string.alpha({length: {min: 10, max: 20}}), is_active: faker.datatype.boolean(), is_verified: faker.datatype.boolean(), timezone: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), preferences: faker.helpers.arrayElement([faker.helpers.arrayElement([{theme: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), country_code: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}),null,]), undefined]), notifications: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), locale: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])},null,]), undefined]), last_login: faker.helpers.arrayElement([faker.helpers.arrayElement([`${faker.date.past().toISOString().split('.')[0]}Z`,null,]), undefined]), created_at: `${faker.date.past().toISOString().split('.')[0]}Z`, updated_at: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})

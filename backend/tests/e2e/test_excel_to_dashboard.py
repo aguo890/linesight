@@ -146,7 +146,7 @@ async def test_e2e_excel_ingestion_and_dashboard(
             files=files,
         )
 
-    assert response.status_code == 200, response.text
+    assert response.status_code == 201, response.text
     upload_data = response.json()
     raw_import_id = upload_data["raw_import_id"]  # Matches response_model
 

@@ -47,7 +47,7 @@ async def test_ingestion_deduplication(
         files=files,
         headers=auth_headers,
     )
-    assert response1.status_code == 200
+    assert response1.status_code == 201
     data1 = response1.json()
     raw_import_id1 = data1["raw_import_id"]
     assert "already_exists" not in data1
@@ -59,7 +59,7 @@ async def test_ingestion_deduplication(
         files=files,
         headers=auth_headers,
     )
-    assert response2.status_code == 200
+    assert response2.status_code == 201
     data2 = response2.json()
     assert data2["raw_import_id"] == raw_import_id1
     assert data2["already_exists"] is True
@@ -97,12 +97,12 @@ async def test_mapping_state_endpoint(
         files=files,
         headers=auth_headers,
     )
-    assert upload_res.status_code == 200
+    assert upload_res.status_code == 201
     raw_import_id = upload_res.json()["raw_import_id"]
 
     # Mock engine for mapping-state
     with patch(
-        "app.api.v1.endpoints.ingestion.HybridMatchingEngine"
+        "app.services.matching.HybridMatchingEngine"
     ) as mock_engine_cls:
         instance = mock_engine_cls.return_value
         instance.initialize = AsyncMock()
@@ -170,7 +170,7 @@ async def test_process_idempotency(
     await db_session.commit()
 
     with patch(
-        "app.api.v1.endpoints.ingestion.HybridMatchingEngine"
+        "app.services.matching.HybridMatchingEngine"
     ) as mock_engine_cls:
         instance = mock_engine_cls.return_value
         instance.initialize = AsyncMock()

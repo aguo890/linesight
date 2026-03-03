@@ -12,7 +12,7 @@
 export type SubscriptionTier = typeof SubscriptionTier[keyof typeof SubscriptionTier];
 
 
- 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubscriptionTier = {
   starter: 'starter',
   pro: 'pro',

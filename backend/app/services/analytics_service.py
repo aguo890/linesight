@@ -186,9 +186,7 @@ class AnalyticsService:
         if reference_date:
             ref_date = reference_date
         else:
-            from datetime import timezone
-
-            ref_date = datetime.now(timezone.utc).date()
+            ref_date = date.today()
 
         query = select(
             func.sum(ProductionRun.actual_qty).label("actual"),
@@ -310,10 +308,8 @@ class AnalyticsService:
         Used by the SAM Performance Widget.
         """
         # Default to today if no dates
-        from datetime import timezone
-
         if not end_date:
-            end_date = datetime.now(timezone.utc).date()
+            end_date = date.today()
         if not start_date:
             start_date = end_date
 

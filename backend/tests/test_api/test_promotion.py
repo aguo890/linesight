@@ -65,7 +65,7 @@ async def test_promotion_logic_full_cycle(
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200
+    assert upload_resp.status_code == 201
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # 3. Confirm Mapping

@@ -20,7 +20,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query';
 
-import { customInstance } from '@/api/axios-client';
+import { customInstance } from '../../axios-client';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];

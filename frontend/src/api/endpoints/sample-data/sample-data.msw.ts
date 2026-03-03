@@ -20,7 +20,7 @@ import type {
 
 import type {
   SampleFile
-} from '@/api/model';
+} from '../../model';
 
 
 export const getListSampleFilesApiV1SamplesSampleFilesGetResponseMock = (): SampleFile[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({filename: faker.string.alpha({length: {min: 10, max: 20}}), size: faker.number.int({min: undefined, max: undefined}), description: faker.string.alpha({length: {min: 10, max: 20}})})))

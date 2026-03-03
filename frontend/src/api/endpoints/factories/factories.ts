@@ -33,9 +33,9 @@ import type {
   FactoryUpdate,
   FactoryWithDataSources,
   HTTPValidationError
-} from '@/api/model';
+} from '../../model';
 
-import { customInstance } from '@/api/axios-client';
+import { customInstance } from '../../axios-client';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];

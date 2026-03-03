@@ -97,7 +97,7 @@ async def test_quality_data_promotion(
     response = await client.post(
         "/api/v1/ingestion/upload", headers=auth_headers, files=files, params=params
     )
-    assert response.status_code == 200, f"Upload failed: {response.text}"
+    assert response.status_code == 201, f"Upload failed: {response.text}"
     raw_import_id = response.json()["raw_import_id"]
 
     # 2. Process File (Extract headers)

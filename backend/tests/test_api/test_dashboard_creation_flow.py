@@ -87,7 +87,7 @@ async def test_complete_dashboard_creation_flow(
         files={"file": ("production_data.csv", csv_file, "text/csv")},
         headers=auth_headers,
     )
-    assert upload_response.status_code == 200  # Endpoint returns 200, not 201
+    assert upload_response.status_code == 201  # Endpoint returns 200, not 201
     upload_data = upload_response.json()
     raw_import_id = upload_data["raw_import_id"]
     assert upload_data["filename"] == "production_data.csv"

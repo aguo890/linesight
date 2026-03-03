@@ -50,7 +50,7 @@ async def test_storage_segmentation(
     resp_1 = await async_client.post(
         "/api/v1/ingestion/upload", files=files_1, params=params_1, headers=auth_headers
     )
-    assert resp_1.status_code == 200, resp_1.text
+    assert resp_1.status_code == 201, resp_1.text
 
     # 2. Upload to Line 2
     files_2 = {"file": ("test_line_2.csv", csv_content, "text/csv")}
@@ -59,7 +59,7 @@ async def test_storage_segmentation(
     resp_2 = await async_client.post(
         "/api/v1/ingestion/upload", files=files_2, params=params_2, headers=auth_headers
     )
-    assert resp_2.status_code == 200, resp_2.text
+    assert resp_2.status_code == 201, resp_2.text
 
     # 3. Upload Unassigned (no IDs)
     files_3 = {"file": ("test_unassigned.csv", csv_content, "text/csv")}

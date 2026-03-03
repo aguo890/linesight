@@ -79,10 +79,7 @@ export const getUploadHistoryApiV1IngestionHistoryGetResponse = zod.any()
  * Upload a file and create a RawImport record.
 
 This is step 1 of the HITL flow. The file is saved and parsed.
-Storage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}
-
-REQUIRES: factory_id - Data must be uploaded to a specific factory.
-OPTIONAL: data_source_id - If provided, upload is associated with a specific data source.
+Logic delegated to IngestionService.
  * @summary Upload File For Ingestion
  */
 export const uploadFileForIngestionApiV1IngestionUploadPostQueryParams = zod.object({
@@ -95,13 +92,12 @@ export const uploadFileForIngestionApiV1IngestionUploadPostBody = zod.object({
   "file": zod.instanceof(File)
 })
 
-export const uploadFileForIngestionApiV1IngestionUploadPostResponse = zod.record(zod.string(), zod.any())
-
 
 /**
  * Process an uploaded file through the Hybrid Waterfall Matching Engine.
 
 This is step 2 of the HITL flow. Returns column mappings with confidence scores.
+Logic delegated to IngestionService.
  * @summary Process File
  */
 export const processFileApiV1IngestionProcessRawImportIdPostParams = zod.object({
@@ -145,6 +141,7 @@ export const processFileApiV1IngestionProcessRawImportIdPostResponse = zod.objec
 
 This is step 3 of the HITL flow. Saves the mapping and optionally
 learns from user corrections for future matching.
+Logic delegated to IngestionService.
  * @summary Confirm Mapping
  */
 export const confirmMappingApiV1IngestionConfirmMappingPostBodyMappingsItemIgnoredDefault = false;export const confirmMappingApiV1IngestionConfirmMappingPostBodyMappingsItemUserCorrectedDefault = false;export const confirmMappingApiV1IngestionConfirmMappingPostBodyLearnCorrectionsDefault = true;
@@ -774,7 +771,7 @@ export const createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBody = zod.ob
   "specialty": zod.union([zod.string().max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodySpecialtyMaxOne),zod.null()]).optional(),
   "target_operators": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetOperatorsMinOne),zod.null()]).optional(),
   "target_efficiency_pct": zod.union([zod.number().min(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMinOne).max(createDataSourceApiV1FactoriesFactoryIdDataSourcesPostBodyTargetEfficiencyPctMaxOne),zod.null()]).optional(),
-  "factory_id": zod.string().describe('ID of the factory this data source belongs to'),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional().describe('ID of the factory this data source belongs to'),
   "settings": zod.union([zod.object({
   "is_custom_schedule": zod.boolean().optional().describe('If false, uses factory defaults'),
   "shift_pattern": zod.union([zod.array(zod.record(zod.string(), zod.any())),zod.null()]).optional(),
@@ -2039,7 +2036,7 @@ export const listDataSourcesApiV1DataSourcesGetResponseHasActiveSchemaDefault = 
 
 export const listDataSourcesApiV1DataSourcesGetResponseItem = zod.object({
   "id": zod.string(),
-  "factory_id": zod.string(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2074,7 +2071,7 @@ export const getDataSourceApiV1DataSourcesDataSourceIdGetResponseHasActiveSchema
 
 export const getDataSourceApiV1DataSourcesDataSourceIdGetResponse = zod.object({
   "id": zod.string(),
-  "factory_id": zod.string(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2122,7 +2119,7 @@ export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponseHasActiveSch
 
 export const updateDataSourceApiV1DataSourcesDataSourceIdPutResponse = zod.object({
   "id": zod.string(),
-  "factory_id": zod.string(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2165,7 +2162,7 @@ export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponseHasActiveSc
 
 export const getDataSourceByLineApiV1DataSourcesLineLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
-  "factory_id": zod.string(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
@@ -2201,7 +2198,7 @@ export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGe
 
 export const getDatasourceByLineExplicitApiV1DataSourcesByLineProductionLineIdGetResponse = zod.union([zod.object({
   "id": zod.string(),
-  "factory_id": zod.string(),
+  "factory_id": zod.union([zod.string(),zod.null()]).optional(),
   "production_line_id": zod.union([zod.string(),zod.null()]).optional(),
   "source_name": zod.union([zod.string(),zod.null()]).optional(),
   "description": zod.union([zod.string(),zod.null()]),
