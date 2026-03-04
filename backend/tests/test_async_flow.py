@@ -17,7 +17,6 @@ async def test_datasource_lifecycle(fast_async_client: AsyncClient, test_factory
     Uses fast_async_client with auth bypass for speed and reliability.
     """
     # 1. Create Data Source (auth already handled by fixture)
-    print("\nLOG: 1. Creating data source...")
     payload = {
         "name": f"Async Integration Test {test_factory.id[:4]}",
         "factory_id": test_factory.id,
@@ -36,7 +35,6 @@ async def test_datasource_lifecycle(fast_async_client: AsyncClient, test_factory
     created_ds_id = res.json()["id"]
 
     # 2. Verify List
-    print("LOG: 2. Verifying existence in list...")
     res = await fast_async_client.get(
         f"/api/v1/factories/{test_factory.id}/data-sources"
     )
@@ -49,8 +47,5 @@ async def test_datasource_lifecycle(fast_async_client: AsyncClient, test_factory
     )
 
     # 3. Cleanup
-    print("LOG: 3. Deleting...")
     res = await fast_async_client.delete(f"/api/v1/data-sources/{created_ds_id}")
     assert res.status_code in [200, 204], f"Delete failed: {res.text}"
-
-    print("LOG: [OK] Test Complete!")
