@@ -218,7 +218,7 @@ const AIProcessingView: React.FC<{
             isMounted = false;
             hasStartedRef.current = false;
         };
-    }, []);
+    }, [mappings, t]);
 
     return (
         <div className="flex flex-col h-full items-center justify-center py-12 px-4 animate-in fade-in duration-500 bg-surface">

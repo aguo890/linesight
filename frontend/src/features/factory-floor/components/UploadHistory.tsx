@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FileSpreadsheet, Clock, AlertCircle, CheckCircle2, History, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { listFilesByProductionLine, listFiles, getImportPreview, type FileListItem } from '@/lib/fileApi';
@@ -26,19 +26,7 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
     const [previewData, setPreviewData] = useState<Record<string, any>[]>([]);
     const [previewLoading, setPreviewLoading] = useState(false);
 
-    useEffect(() => {
-        fetchUploads();
-    }, [productionLineId]);
-
-    useEffect(() => {
-        if (selectedFileForPreview) {
-            loadPreview(selectedFileForPreview.id);
-        } else {
-            setPreviewData([]);
-        }
-    }, [selectedFileForPreview]);
-
-    const fetchUploads = async () => {
+    const fetchUploads = useCallback(async () => {
         setLoading(true);
         setError(null);
         try {
@@ -52,7 +40,19 @@ export const UploadHistory: React.FC<UploadHistoryProps> = ({ productionLineId }
         } finally {
             setLoading(false);
         }
-    };
+    }, [productionLineId, t]);
+
+    useEffect(() => {
+        fetchUploads();
+    }, [productionLineId, fetchUploads]);
+
+    useEffect(() => {
+        if (selectedFileForPreview) {
+            loadPreview(selectedFileForPreview.id);
+        } else {
+            setPreviewData([]);
+        }
+    }, [selectedFileForPreview]);
 
     const loadPreview = async (fileId: string) => {
         setPreviewLoading(true);

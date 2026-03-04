@@ -221,7 +221,7 @@ const DashboardPageContent = () => {
             }
         }
         setIsLoading(false);
-    }, [dashboardIdFromUrl]);
+    }, [dashboardIdFromUrl, setWidgets]);
 
 
 
@@ -272,7 +272,7 @@ const DashboardPageContent = () => {
         // Listen for dashboard switching from sidebar
         window.addEventListener('dashboard-switched', loadDashboard);
         return () => window.removeEventListener('dashboard-switched', loadDashboard);
-    }, [loadDashboard]);
+    }, [loadDashboard, dashboardIdFromUrl, navigate]);
 
     // 1. Layout Change Handler
     const handleLayoutChange = useCallback((layout: readonly any[]) => {
@@ -303,7 +303,7 @@ const DashboardPageContent = () => {
             // If no actual changes, return the exact same object reference to stop React re-renders
             return hasChanges ? updated : prevWidgets;
         });
-    }, []);
+    }, [setWidgets]);
 
     // Layout and persistence are now handled by DashboardContext + API saves in editMode
 
