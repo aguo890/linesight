@@ -16,7 +16,6 @@ from sqlalchemy.orm import selectinload
 
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
-from app.models.datasource import DataSource
 from app.models.production import ProductionRun
 
 # Mock file for quality data
@@ -49,11 +48,11 @@ async def setup_quality_test_data(db_session, test_organization):
     line.source_name = "Test Quality Data"
     line.time_column = "Inspection_Date"
     line.description = "Test data source"
-    
+
     db_session.add(line)
     await db_session.commit()
     await db_session.refresh(line)
-    
+
     ds = line  # Use the same object for configuration
 
     # 3. Create SchemaMapping
@@ -97,7 +96,7 @@ async def test_quality_data_promotion(
     response = await client.post(
         "/api/v1/ingestion/upload", headers=auth_headers, files=files, params=params
     )
-    assert response.status_code == 200, f"Upload failed: {response.text}"
+    assert response.status_code == 201, f"Upload failed: {response.text}"
     raw_import_id = response.json()["raw_import_id"]
 
     # 2. Process File (Extract headers)

@@ -7,17 +7,17 @@
 import React, { Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react'; // Removed Maximize2, LayoutGrid, Move
-import type { ValidatedWidgetConfig } from '../services/WidgetService';
-import type { GlobalFilters } from '../config';
-import { getWidgetManifest } from '../registry';
+import type { ValidatedWidgetConfig } from '@/features/dashboard/services/WidgetService';
+import type { GlobalFilters } from '@/features/dashboard/config';
+import { getWidgetManifest } from '@/features/dashboard/registry';
 import WidgetErrorBoundary from './WidgetErrorBoundary';
 import { useWidgetLogger } from '@/hooks/useWidgetLogger';
 import { WidgetSkeleton } from './WidgetSkeleton';
-import { useDashboard } from '../context/DashboardContext';
+import { useDashboard } from '@/features/dashboard/context/DashboardContext';
 import { useWidgetData } from '@/features/dashboard/hooks/useWidgetData';
 import { WidgetWrapper } from './WidgetWrapper';
-import { ComingSoonWidget } from '../widgets/ComingSoonWidget';
-import { getWidgetIcon } from '../utils/iconMap';
+import { ComingSoonWidget } from '@/features/dashboard/widgets/ComingSoonWidget';
+import { getWidgetIcon } from '@/features/dashboard/utils/iconMap';
 import { useDebouncedDimensions } from '@/hooks/useDebouncedDimensions';
 import { MicroPreview } from './MicroPreview'; // Import the lightweight preview
 
@@ -31,6 +31,18 @@ interface WidgetRendererProps {
     width?: number;
     height?: number;
 }
+
+// 11. Memoized Inner Widget
+const MemoizedInnerWidget = React.memo(({ component: Component, ...props }: any) => {
+    return <Component {...props} />;
+}, (prev: any, next: any) => {
+    const isSameSize = Math.abs(prev.width - next.width) < 2 && Math.abs(prev.height - next.height) < 2;
+    const isSameData = prev.data === next.data;
+    const isSameSettings = prev.settings === next.settings;
+    return isSameSize && isSameData && isSameSettings;
+});
+
+
 
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     widget,
@@ -99,6 +111,9 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     const effectiveWidth = editMode ? debouncedW : parentWidth;
     const effectiveHeight = editMode ? debouncedH : parentHeight;
 
+    const title = widget.settings?.customTitle || manifest?.meta.title;
+    const iconKey = manifest?.meta.icon;
+
     if (!manifest) {
         return (
             <div className="p-4 bg-error/10 border border-error/30 rounded text-error">
@@ -106,10 +121,6 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
             </div>
         );
     }
-
-    const title = widget.settings?.customTitle || manifest.meta.title;
-    const IconComponent = useMemo(() => manifest.meta.icon ? getWidgetIcon(manifest.meta.icon) : undefined, [manifest.meta.icon]);
-    const iconElement = useMemo(() => IconComponent ? <IconComponent className={manifest.meta.iconColor || "text-text-muted"} /> : undefined, [IconComponent, manifest.meta.iconColor]);
 
     // 8. Loading State (Only for non-edit mode or initial load)
     if (loading && !data && manifest.dataId && !editMode) {
@@ -119,7 +130,13 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     // 9. Error State
     if (error && !editMode) {
         return (
-            <WidgetWrapper id={widget.i} title={title} isMock={isMock} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
+            <WidgetWrapper
+                id={widget.i}
+                title={title}
+                isMock={isMock}
+                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
+                iconBgColor={manifest.meta.bgColor}
+            >
                 <div className="flex flex-col items-center justify-center h-full text-red-400 gap-2 p-4 text-center">
                     <AlertCircle className="w-6 h-6" />
                     <span className="text-xs font-medium">{t('widgets.renderer.failed_load')}</span>
@@ -132,7 +149,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     // 10. Locked State
     if (manifest.locked && !widget.settings?.unlockPreview) {
         return (
-            <WidgetWrapper id={widget.i} title={title} isMock={isMock} editMode={editMode} onRemove={onDelete} icon={iconElement} iconBgColor={manifest.meta.bgColor}>
+            <WidgetWrapper id={widget.i} title={title} isMock={isMock} editMode={editMode} onRemove={onDelete} icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined} iconBgColor={manifest.meta.bgColor}>
                 <ComingSoonWidget
                     id={widget.i}
                     w={widget.w}
@@ -145,15 +162,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
         );
     }
 
-    // 11. Memoized Inner Widget
-    const MemoizedInnerWidget = React.memo(({ component: Component, ...props }: any) => {
-        return <Component {...props} />;
-    }, (prev, next) => {
-        const isSameSize = Math.abs(prev.width - next.width) < 2 && Math.abs(prev.height - next.height) < 2;
-        const isSameData = prev.data === next.data;
-        const isSameSettings = prev.settings === next.settings;
-        return isSameSize && isSameData && isSameSettings;
-    });
+
 
     return (
         <>
@@ -185,7 +194,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 editMode={editMode}
                                 onRemove={onDelete}
                                 density={widget.h <= 2 ? 'compact' : 'default'}
-                                icon={iconElement}
+                                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
                                 iconBgColor={manifest.meta.bgColor}
                             >
                                 {/* PERFORMANCE OPTIMIZATION: Render Lightweight MicroPreview */}
@@ -206,7 +215,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
                                 editMode={editMode}
                                 onRemove={onDelete}
                                 density={widget.h <= 2 ? 'compact' : 'default'}
-                                icon={iconElement}
+                                icon={iconKey ? React.createElement(getWidgetIcon(iconKey), { className: manifest?.meta.iconColor || "text-text-muted" }) : undefined}
                                 iconBgColor={manifest.meta.bgColor}
                                 isLoading={loading}
                             >

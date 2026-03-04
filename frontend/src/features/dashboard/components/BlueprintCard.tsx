@@ -7,7 +7,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Zap, ShieldCheck, Users, TrendingUp, ChevronRight } from 'lucide-react';
-import type { WidgetBundle, BundleReadiness } from '../registry';
+import type { WidgetBundle, BundleReadiness } from '@/features/dashboard/registry';
 
 interface BlueprintCardProps {
     bundle: WidgetBundle;

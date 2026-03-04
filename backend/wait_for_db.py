@@ -2,12 +2,13 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-import time
-import sys
-import os
 import logging
+import sys
+import time
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
+
 from app.core.config import settings
 
 # Configure logging
@@ -24,14 +25,14 @@ def wait_for_db():
     Uses app.core.config settings for the connection URL.
     """
     db_url = settings.sync_database_url
-    
+
     # Sanity check
     if not db_url:
         logger.error("❌ DATABASE_URL is not set in environment or settings.")
         sys.exit(1)
-        
+
     logger.info(f"⏳ Attempting to connect to database (Host: {settings.DB_HOST})...")
-    
+
     # Create engine
     try:
         engine = create_engine(db_url, pool_pre_ping=True)
@@ -41,7 +42,7 @@ def wait_for_db():
 
     max_retries = 30
     retry_interval = 1
-    
+
     for i in range(max_retries):
         try:
             # Context manager handles connection cleanup
@@ -58,7 +59,7 @@ def wait_for_db():
         except Exception as e:
             logger.error(f"❌ Unexpected error: {e}")
             sys.exit(1)
-    
+
     logger.error("❌ Timeout waiting for database connection.")
     sys.exit(1)
 

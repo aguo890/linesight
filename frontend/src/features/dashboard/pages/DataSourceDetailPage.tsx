@@ -20,10 +20,10 @@ import {
     deleteUploads,
     type LineDataSource,
     type UploadRecord
-} from '../api/lineApi'; // TODO: Update this API file or move functions to factoryApi
+} from '@/features/dashboard/api/lineApi'; // TODO: Update this API file or move functions to factoryApi
 import {
     useGetFactoryApiV1FactoriesFactoryIdGet
-} from '../../../api/endpoints/factories/factories';
+} from '@/api/endpoints/factories/factories';
 
 // Using new hooks/APIs where possible
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';

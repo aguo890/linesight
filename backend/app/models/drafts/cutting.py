@@ -27,7 +27,7 @@ from app.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from app.models.factory import Factory
-    from app.models.production import Order, ProductionRun
+    from app.models.production import Order
     from app.models.traceability import TraceabilityRecord
     from app.models.workforce import Worker
 

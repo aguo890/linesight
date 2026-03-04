@@ -12,6 +12,7 @@ private (proprietary) implementations must adhere to.
 from abc import ABC, abstractmethod
 from typing import Any, Protocol
 
+
 class SchemaInferenceProtocol(Protocol):
     """Protocol for schema inference result."""
     detected_headers: list[str]
@@ -32,7 +33,7 @@ class GeneratedCodeProtocol(Protocol):
 
 class ETLAgentInterface(ABC):
     """Interface for the Semantic ETL Agent."""
-    
+
     @abstractmethod
     async def infer_schema(
         self,
@@ -57,7 +58,7 @@ class ETLAgentInterface(ABC):
 
 class WidgetSuggestionInterface(ABC):
     """Interface for Widget Suggestion Service."""
-    
+
     @abstractmethod
     async def analyze_and_suggest(
         self,

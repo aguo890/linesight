@@ -6,17 +6,17 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@/test/utils';
-import { FilePreviewModal } from '../FilePreviewModal';
+import { FilePreviewModal } from '@/components/FilePreviewModal';
 import * as ingestionApi from '@/lib/ingestionApi';
 
-// Mock the ingestionApi module
-vi.mock('../../lib/ingestionApi', () => ({
+vi.mock('@/lib/ingestionApi', () => ({
     getFilePreview: vi.fn(),
 }));
 
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         t: (key: string, options?: any) => {
             const translations: Record<string, string> = {
                 'file_preview.title': 'File Preview',

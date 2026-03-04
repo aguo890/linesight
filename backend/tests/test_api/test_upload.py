@@ -86,7 +86,7 @@ class TestUploadEndpoints:
             },
             headers=auth_headers,
         )
-        # Assuming the endpoint returns 200 OK with raw_import_id (based on test_ingestion_deduplication)
-        assert response.status_code in [200, 202]
+        # Assuming the endpoint returns 201 Created with raw_import_id
+        assert response.status_code in [201, 202]
         data = response.json()
         assert "raw_import_id" in data

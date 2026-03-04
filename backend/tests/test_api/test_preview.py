@@ -6,8 +6,8 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.raw_import import StagingRecord
 
 
@@ -43,7 +43,7 @@ async def test_preview_endpoint_success(
         files=files,
         headers=auth_headers,
     )
-    assert upload_res.status_code == 200
+    assert upload_res.status_code == 201
     raw_import_id = upload_res.json()["raw_import_id"]
 
     # 2. Process file (should populate StagingRecord)
@@ -91,7 +91,7 @@ async def test_list_uploads_includes_datasource_id(
     )
     db_session.add(factory)
     await db_session.flush()
-    
+
     line = DataSource(factory_id=factory.id, name="Line 1", code="L1")
     db_session.add(line)
     await db_session.commit()
@@ -104,7 +104,7 @@ async def test_list_uploads_includes_datasource_id(
         files=files,
         headers=auth_headers,
     )
-    assert upload_res.status_code == 200, f"Upload failed: {upload_res.text}"
+    assert upload_res.status_code == 201, f"Upload failed: {upload_res.text}"
     raw_import_id = upload_res.json()["raw_import_id"]
 
     confirm_res = await async_client.post(
@@ -126,14 +126,14 @@ async def test_list_uploads_includes_datasource_id(
     assert list_res.status_code == 200
     files = list_res.json()["files"]
     assert len(files) == 1
-    
+
     ds_id = files[0]["data_source_id"]
     assert ds_id is not None
-    
+
     # 4. Verify we can fetch the DS with this ID
     # The DS ID should match the line.id in the new architecture
     assert ds_id == line.id
-    
+
     ds_res = await async_client.get(
         f"/api/v1/data-sources/{ds_id}", headers=auth_headers
     )

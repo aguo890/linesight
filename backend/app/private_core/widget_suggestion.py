@@ -11,11 +11,10 @@ import json
 
 from sqlalchemy.orm import Session
 
+from app.core.interfaces import WidgetSuggestionInterface
 from app.models.raw_import import RawImport
 from app.schemas.dashboard import SuggestedWidget
 
-
-from app.core.interfaces import WidgetSuggestionInterface
 
 class WidgetSuggestionService(WidgetSuggestionInterface):
     """

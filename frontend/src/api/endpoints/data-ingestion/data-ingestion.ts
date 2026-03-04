@@ -37,7 +37,7 @@ import type {
   ProcessFileApiV1IngestionProcessRawImportIdPostParams,
   ProcessingResponse,
   PromoteToProductionApiV1IngestionPromoteRawImportIdPost200,
-  UploadFileForIngestionApiV1IngestionUploadPost200,
+  UploadFileForIngestionApiV1IngestionUploadPost201,
   UploadFileForIngestionApiV1IngestionUploadPostParams
 } from '../../model';
 
@@ -145,10 +145,7 @@ export function useGetUploadHistoryApiV1IngestionHistoryGet<TData = Awaited<Retu
  * Upload a file and create a RawImport record.
 
 This is step 1 of the HITL flow. The file is saved and parsed.
-Storage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}
-
-REQUIRES: factory_id - Data must be uploaded to a specific factory.
-OPTIONAL: data_source_id - If provided, upload is associated with a specific data source.
+Logic delegated to IngestionService.
  * @summary Upload File For Ingestion
  */
 export const uploadFileForIngestionApiV1IngestionUploadPost = (
@@ -160,7 +157,7 @@ export const uploadFileForIngestionApiV1IngestionUploadPost = (
       const formData = new FormData();
 formData.append(`file`, bodyUploadFileForIngestionApiV1IngestionUploadPost.file)
 
-      return customInstance<UploadFileForIngestionApiV1IngestionUploadPost200>(
+      return customInstance<UploadFileForIngestionApiV1IngestionUploadPost201>(
       {url: `/api/v1/ingestion/upload`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData,
@@ -220,6 +217,7 @@ export const useUploadFileForIngestionApiV1IngestionUploadPost = <TError = HTTPV
  * Process an uploaded file through the Hybrid Waterfall Matching Engine.
 
 This is step 2 of the HITL flow. Returns column mappings with confidence scores.
+Logic delegated to IngestionService.
  * @summary Process File
  */
 export const processFileApiV1IngestionProcessRawImportIdPost = (
@@ -288,6 +286,7 @@ export const useProcessFileApiV1IngestionProcessRawImportIdPost = <TError = HTTP
 
 This is step 3 of the HITL flow. Saves the mapping and optionally
 learns from user corrections for future matching.
+Logic delegated to IngestionService.
  * @summary Confirm Mapping
  */
 export const confirmMappingApiV1IngestionConfirmMappingPost = (

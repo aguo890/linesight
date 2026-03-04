@@ -3,16 +3,16 @@
 # found in the LICENSE file in the root directory of this source tree.
 
 import uuid
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from decimal import Decimal
 
 import pytest
 from httpx import AsyncClient
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
-from app.models.production import ProductionRun
 from app.models.events import ProductionEvent
+from app.models.factory import Factory
+from app.models.production import ProductionRun
 
 
 @pytest.fixture
@@ -106,7 +106,7 @@ async def test_overview_fallback(
 ):
     """Test that overview returns correct data for the active period."""
     factory_id = historical_data["factory"].id
-    
+
     # Call Overview
     response = await async_client.get(
         f"/api/v1/analytics/overview?factory_id={factory_id}", headers=auth_headers
@@ -126,7 +126,7 @@ async def test_production_chart_fallback(
 ):
     """Test production chart returns data points."""
     factory_id = historical_data["factory"].id
-    
+
     response = await async_client.get(
         f"/api/v1/analytics/production-chart?factory_id={factory_id}", headers=auth_headers
     )
@@ -146,7 +146,7 @@ async def test_sam_performance_fallback(
 ):
     """Test SAM performance widget."""
     factory_id = historical_data["factory"].id
-    
+
     response = await async_client.get(
         f"/api/v1/analytics/sam-performance?factory_id={factory_id}", headers=auth_headers
     )
@@ -164,7 +164,7 @@ async def test_hourly_fallback(
 ):
     """Test hourly production returns distributed data."""
     line_id = historical_data["line"].id
-    
+
     response = await async_client.get(
         f"/api/v1/analytics/production/hourly?line_id={line_id}", headers=auth_headers
     )

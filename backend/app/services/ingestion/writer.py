@@ -187,7 +187,7 @@ class ProductionWriter:
         p_date = record.get("production_date") or record.get("inspection_date")
         if p_date is None:
             p_date = now.date()
-            
+
         if isinstance(p_date, datetime):
             p_date = p_date.date()
         shift = record.get("shift", "day")

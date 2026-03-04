@@ -50,6 +50,7 @@ class GeneratedCode:
 
 from app.core.interfaces import ETLAgentInterface
 
+
 class SemanticETLAgent(ETLAgentInterface):
     """
     LLM-powered agent for understanding and cleaning Excel data.

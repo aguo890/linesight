@@ -6,7 +6,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { DashboardWidgetConfig, GlobalFilters } from '../config';
+import type { DashboardWidgetConfig, GlobalFilters } from '@/features/dashboard/config';
 import type { DateRange } from 'react-day-picker';
 
 
@@ -153,7 +153,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({
         return DEFAULT_FILTERS;
     });
 
-    const [lastRefreshAt, setLastRefreshAt] = useState(Date.now());
+    const [lastRefreshAt, setLastRefreshAt] = useState(() => Date.now());
     const [dataSourceId, setDataSourceId] = useState<string | undefined>(initialDataSourceId);
 
     // Optimized Persistence Effect - Debounced 500ms to prevent spam

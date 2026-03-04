@@ -9,7 +9,7 @@ import {
     ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import type { WidgetProps } from '../types';
+import type { WidgetProps } from '@/features/dashboard/types';
 import { WidgetWrapper, getDensity } from '@/features/dashboard/components/WidgetWrapper';
 import { TrendingUp, Loader2, AlertCircle } from 'lucide-react';
 import { useWidgetData } from '@/features/dashboard/hooks/useWidgetData';

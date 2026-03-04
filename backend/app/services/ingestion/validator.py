@@ -94,7 +94,7 @@ class RecordValidator:
 
         # Fetch existing orders using precise composite key matching
         from sqlalchemy import tuple_
-        
+
         stmt = select(Order).where(
             tuple_(Order.po_number, Order.style_id).in_(list(order_keys))
         )

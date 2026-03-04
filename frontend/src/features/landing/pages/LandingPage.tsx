@@ -9,7 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import { Logo } from '@/components/common/Logo';
 import {
     ArrowRight,
@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { MiniDashboard } from "@/features/landing/components/simulation/MiniDashboard";
 import { PARTNER_LOGOS } from '@/features/landing/components/PartnerLogos';
-import tsfLogo from '../../../assets/landing_page_brands/tsflogo.png';
+import tsfLogo from '@/assets/landing_page_brands/tsflogo.png';
 import { useSnakeScroll } from '@/hooks/useSnakeScroll';
 import { SnakeLane } from '@/features/landing/components/SnakeLane';
 import { WaitlistForm } from '@/features/landing/components/WaitlistForm';

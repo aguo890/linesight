@@ -7,16 +7,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LayoutGrid, ChevronDown, PanelLeft, Users } from 'lucide-react';
-import { dashboardStorage } from '../../features/dashboard/storage';
-import type { SavedDashboard } from '../../features/dashboard/types';
+import { dashboardStorage } from '@/features/dashboard/storage';
+import type { SavedDashboard } from '@/features/dashboard/types';
 
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useTranslation } from 'react-i18next'; // [I18N]
 import type { ParseKeys } from 'i18next'; // [I18N]
-import { Logo } from '../common/Logo';
+import { Logo } from '@/components/common/Logo';
 import { cn } from '@/lib/utils';
-import { AutoFlipIcon } from '../common/AutoFlipIcon';
+import { AutoFlipIcon } from '@/components/common/AutoFlipIcon';
 
 const INITIAL_DASHBOARD_LIMIT = 5;
 
@@ -53,7 +53,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     const { t } = useTranslation(); // [I18N]
     const location = useLocation();
     const navigate = useNavigate();
-    const [dashboards, setDashboards] = useState<SavedDashboard[]>([]);
+    const [dashboards, setDashboards] = useState<SavedDashboard[]>(() => dashboardStorage.getDashboards());
     const [showAllDashboards, setShowAllDashboards] = useState(false);
     const [isDashboardsExpanded] = useState(true);
 
@@ -62,12 +62,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
     // But for now we follow the user's specific request for an implementation plan that uses MainLayout.
 
     // consume context
-    const { } = useOrganization();
+    useOrganization();
     const { user } = useAuth();
     const isOwner = user?.role === 'owner' || user?.role === 'system_admin';
 
+
+
+    const loadDashboards = () => {
+        // Create a shallow copy to ensure React detects the change and re-renders
+        setDashboards([...dashboardStorage.getDashboards()]);
+    };
+
     useEffect(() => {
-        loadDashboards();
+        // Removed initial call to avoid cascading render on mount
+        // State is already initialized via lazy useState initializer above
+
         // Listen for dashboard updates
         const handleStorageChange = () => {
             console.log('Sidebar: handleStorageChange triggered');
@@ -76,11 +85,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         window.addEventListener('dashboards-updated', handleStorageChange);
         return () => window.removeEventListener('dashboards-updated', handleStorageChange);
     }, []);
-
-    const loadDashboards = () => {
-        // Create a shallow copy to ensure React detects the change and re-renders
-        setDashboards([...dashboardStorage.getDashboards()]);
-    };
 
     // Helper to check if active for basic highlighting
 

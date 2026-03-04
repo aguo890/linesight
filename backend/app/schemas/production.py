@@ -351,7 +351,9 @@ class ProductionRunBase(BaseModel):
 
 
 from typing import Any
-from pydantic import model_validator, Field
+
+from pydantic import Field, model_validator
+
 
 class ProductionRunCreate(ProductionRunBase):
     order_id: str
@@ -365,7 +367,7 @@ class ProductionRunCreate(ProductionRunBase):
             # If line_id is provided but data_source_id is not, map it
             if 'line_id' in data and 'data_source_id' not in data:
                 data['data_source_id'] = data['line_id']
-            
+
             # Ensure at least one is provided to maintain the original strictness
             if not data.get('data_source_id') and not data.get('line_id'):
                 raise ValueError("Either data_source_id or line_id must be provided")

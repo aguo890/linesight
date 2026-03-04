@@ -2,12 +2,14 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-import pytest
-from httpx import AsyncClient
 from datetime import date
 
-from app.models.factory import Factory
+import pytest
+from httpx import AsyncClient
+
 from app.models.datasource import DataSource
+from app.models.factory import Factory
+
 
 @pytest.mark.asyncio
 async def test_production_run_lifecycle(
@@ -29,7 +31,7 @@ async def test_production_run_lifecycle(
     db_session.add(ds)
     await db_session.commit()
 
-    from app.models.production import Style, Order
+    from app.models.production import Order, Style
     style = Style(factory_id=factory.id, style_number="STY-PROD")
     db_session.add(style)
     await db_session.flush()
@@ -55,7 +57,7 @@ async def test_production_run_lifecycle(
         "worked_minutes": 480, # REQUIRED
         "sam": 5.5
     }
-    
+
     create_res = await async_client.post(
         "/api/v1/production/runs",
         json=payload,
@@ -95,7 +97,7 @@ async def test_create_run_factory_mismatch(
         "shift": "day",
         "actual_qty": 100
     }
-    
+
     res = await async_client.post(
         "/api/v1/production/runs",
         json=payload,

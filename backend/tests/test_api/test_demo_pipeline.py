@@ -23,8 +23,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
 from app.models.raw_import import RawImport
 
@@ -106,7 +106,7 @@ async def test_demo_full_pipeline_with_excel_file(
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200, f"Upload failed: {upload_resp.text}"
+    assert upload_resp.status_code == 201, f"Upload failed: {upload_resp.text}"
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # Step 2: Confirm column mappings
@@ -229,7 +229,7 @@ async def test_demo_data_values_integrity(
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200
+    assert upload_resp.status_code == 201
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # Confirm with minimal required mappings

@@ -5,7 +5,7 @@
  */
 
 import React, { Suspense } from 'react';
-import { WIDGET_REGISTRY, WIDGET_DEFINITIONS } from '../registry';
+import { WIDGET_REGISTRY, WIDGET_DEFINITIONS } from '@/features/dashboard/registry';
 import { WidgetSkeleton } from './WidgetSkeleton';
 import WidgetErrorBoundary from './WidgetErrorBoundary';
 

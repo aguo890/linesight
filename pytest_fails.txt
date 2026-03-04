@@ -1,0 +1,375 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\19803\Projects\FactoryExcelManager\backend
+configfile: pytest.ini
+plugins: anyio-4.12.0, Faker-40.1.0, langsmith-0.5.1, locust-2.43.0, asyncio-1.3.0, cov-7.0.0, mock-3.15.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 224 items
+
+backend\tests\api\test_analytics_flaws.py ..                             [  0%]
+backend\tests\api\v1\test_factory_settings.py .                          [  1%]
+backend\tests\api\v1\test_team.py .                                      [  1%]
+backend\tests\api\v1\test_users.py .....                                 [  4%]
+backend\tests\e2e\test_excel_to_dashboard.py .                           [  4%]
+backend\tests\test_api\test_ai_decisions.py .......                      [  7%]
+backend\tests\test_api\test_analytics_real.py ....                       [  9%]
+backend\tests\test_api\test_auth.py ....                                 [ 11%]
+backend\tests\test_api\test_dashboard_creation_flow.py ..s..             [ 13%]
+backend\tests\test_api\test_dashboard_flow.py ....                       [ 15%]
+backend\tests\test_api\test_dashboard_widgets.py ..                      [ 16%]
+backend\tests\test_api\test_data_pipeline_robust.py ..........           [ 20%]
+backend\tests\test_api\test_datasource.py .....                          [ 22%]
+backend\tests\test_api\test_datasources_by_line.py .                     [ 23%]
+backend\tests\test_api\test_demo_pipeline.py ..                          [ 24%]
+backend\tests\test_api\test_destructive_flows.py ..                      [ 25%]
+backend\tests\test_api\test_dry_run_flow.py ............                 [ 30%]
+backend\tests\test_api\test_error_handling.py ....                       [ 32%]
+backend\tests\test_api\test_excel_to_widget_integrity.py ..              [ 33%]
+backend\tests\test_api\test_factories.py ...                             [ 34%]
+backend\tests\test_api\test_fallback_logic.py ..F.                       [ 36%]
+backend\tests\test_api\test_individual_widgets.py .F.....                [ 39%]
+backend\tests\test_api\test_ingestion_deduplication.py .F.               [ 40%]
+backend\tests\test_api\test_ingestion_flow.py ..                         [ 41%]
+backend\tests\test_api\test_integrity.py ....                            [ 43%]
+backend\tests\test_api\test_line_management.py ..                        [ 44%]
+backend\tests\test_api\test_organizations.py ...                         [ 45%]
+backend\tests\test_api\test_preview.py ..                                [ 46%]
+backend\tests\test_api\test_preview_dry_run_endpoint.py .                [ 46%]
+backend\tests\test_api\test_production.py ..                             [ 47%]
+backend\tests\test_api\test_promotion.py .                               [ 48%]
+backend\tests\test_api\test_quality_constraints.py ..                    [ 49%]
+backend\tests\test_api\test_quality_import.py .                          [ 49%]
+backend\tests\test_api\test_quota_enforcement.py .......                 [ 52%]
+backend\tests\test_api\test_repro_500.py .                               [ 53%]
+backend\tests\test_api\test_samples.py ......                            [ 55%]
+backend\tests\test_api\test_schema_config.py .                           [ 56%]
+backend\tests\test_api\test_schema_mapping_reuse.py .F                   [ 57%]
+backend\tests\test_api\test_storage_separation.py .                      [ 57%]
+backend\tests\test_api\test_style_progress.py .                          [ 58%]
+backend\tests\test_api\test_upload.py ...                                [ 59%]
+backend\tests\test_api\test_upload_history.py .                          [ 59%]
+backend\tests\test_api\test_upload_preview.py .....                      [ 62%]
+backend\tests\test_api\test_verification_cascade.py .                    [ 62%]
+backend\tests\test_api\test_widget_data_e2e.py .s                        [ 63%]
+backend\tests\test_async_flow.py F                                       [ 63%]
+backend\tests\test_datasource_flow.py .                                  [ 64%]
+backend\tests\test_ingestion\test_full_flow.py F                         [ 64%]
+backend\tests\test_mapping_intelligence.py .                             [ 65%]
+backend\tests\test_sequential_ingestion.py .                             [ 65%]
+backend\tests\test_services\test_ai_decision_logging.py .......          [ 68%]
+backend\tests\test_services\test_analytics_service.py ...                [ 70%]
+backend\tests\test_services\test_date_parser.py ......                   [ 72%]
+backend\tests\test_services\test_excel_parser.py .....                   [ 75%]
+backend\tests\test_services\test_file_processor.py ..............        [ 81%]
+backend\tests\test_services\test_fuzzy_matcher_optimized.py .....        [ 83%]
+backend\tests\test_services\test_matching_engine_new.py ......           [ 86%]
+backend\tests\test_services\test_production_schema.py ..........         [ 90%]
+backend\tests\test_timezone_chaos.py .                                   [ 91%]
+backend\tests\test_widget_judge.py ...                                   [ 92%]
+backend\tests\unit\services\ingestion\test_date_profiler.py ............ [ 97%]
+.....                                                                    [100%]
+
+================================== FAILURES ===================================
+E   AssertionError: assert 0.0 == 100.0
+     +  where 0.0 = float('0.0')
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-03T03:15:03.255769Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/sam-performance?factory_id=2314eae4-7f12-4bbc-b030-45c9ca95f031 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/sam-performance?factory_id=2314eae4-7f12-4bbc-b030-45c9ca95f031 "HTTP/1.1 200 OK"
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\test_api\test_fallback_logic.py:157: AssertionError: assert 0.0 == 100.0
+E   AssertionError: assert 0.0 > 0
+     +  where 0.0 = float('0.0')
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-03T03:15:03.976562Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=4b7e1737-665c-4916-ae11-8b3b14a90f29 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=4b7e1737-665c-4916-ae11-8b3b14a90f29 "HTTP/1.1 200 OK"
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\test_api\test_individual_widgets.py:343: AssertionError: assert 0.0 > 0
+E   AssertionError: assert 4 == 1
+     +  where 4 = len([{'confidence': 1.0, 'fuzzy_score': None, 'ignored': False, 'needs_review': False, ...}, {'confidence': 1.0, 'fuzzy_sc...e, 'needs_review': False, ...}, {'confidence': 1.0, 'fuzzy_score': None, 'ignored': False, 'needs_review': False, ...}])
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-03T03:15:05.662386Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=7d17dc71-65c5-469e-9138-32a4fe8acb02&production_line_id=1b9c18b2-9ab6-40ab-8294-59ee7162a025 \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-03-03T03:15:05.900640Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)"}
+{"timestamp": "2026-03-03T03:15:05.900775Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Style' -> 'style_number' (Conf: 1.0)"}
+{"timestamp": "2026-03-03T03:15:05.900989Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Qty' -> 'actual_qty' (Conf: 1.0)"}
+{"timestamp": "2026-03-03T03:15:05.901194Z", "level": "INFO", "logger": "app.services.matching.engine", "message": "MATCH [Hash]: 'Eff' -> 'line_efficiency' (Conf: 1.0)"}
+{"timestamp": "2026-03-03T03:15:05.906642Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/ingestion/mapping-state/14f09fe6-fede-49a8-96a8-1db6836020f7 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=7d17dc71-65c5-469e-9138-32a4fe8acb02&production_line_id=1b9c18b2-9ab6-40ab-8294-59ee7162a025 "HTTP/1.1 201 Created"
+INFO     app.services.matching.engine:engine.py:167 MATCH [Hash]: 'Date' -> 'production_date' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:167 MATCH [Hash]: 'Style' -> 'style_number' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:167 MATCH [Hash]: 'Qty' -> 'actual_qty' (Conf: 1.0)
+INFO     app.services.matching.engine:engine.py:167 MATCH [Hash]: 'Eff' -> 'line_efficiency' (Conf: 1.0)
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/ingestion/mapping-state/14f09fe6-fede-49a8-96a8-1db6836020f7 "HTTP/1.1 200 OK"
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\test_api\test_ingestion_deduplication.py:133: AssertionError: assert 4 == 1
+E   assert 400 == 201
+     +  where 400 = <Response [400 Bad Request]>.status_code
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-03T03:15:55.331000Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=35c226e9-11ed-4e4a-bf10-0bb6603e17f7&production_line_id=01a7d443-996e-44e8-9753-099667aebab8 \"HTTP/1.1 201 Created\""}
+{"timestamp": "2026-03-03T03:15:55.331641Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-03-03T03:15:55.331710Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "CONFIRM-MAPPING ENDPOINT CALLED"}
+{"timestamp": "2026-03-03T03:15:55.331768Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  raw_import_id: b3080c4b-32e2-4178-a38e-071e01265d32"}
+{"timestamp": "2026-03-03T03:15:55.331851Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  production_line_id: 01a7d443-996e-44e8-9753-099667aebab8"}
+{"timestamp": "2026-03-03T03:15:55.331892Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  factory_id: 35c226e9-11ed-4e4a-bf10-0bb6603e17f7"}
+{"timestamp": "2026-03-03T03:15:55.331925Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  data_source_id: None"}
+{"timestamp": "2026-03-03T03:15:55.331956Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "  mappings count: 1"}
+{"timestamp": "2026-03-03T03:15:55.331984Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "============================================================"}
+{"timestamp": "2026-03-03T03:15:55.333305Z", "level": "INFO", "logger": "ingestion.confirm_mapping", "message": "Schema Locked for DataSource 01a7d443-996e-44e8-9753-099667aebab8: dict_keys(['Col1'])"}
+{"timestamp": "2026-03-03T03:15:55.338561Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-03-03T03:15:55.343582Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=35c226e9-11ed-4e4a-bf10-0bb6603e17f7&production_line_id=01a7d443-996e-44e8-9753-099667aebab8 \"HTTP/1.1 400 Bad Request\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=35c226e9-11ed-4e4a-bf10-0bb6603e17f7&production_line_id=01a7d443-996e-44e8-9753-099667aebab8 "HTTP/1.1 201 Created"
+INFO     ingestion.confirm_mapping:ingestion_service.py:378 ============================================================
+INFO     ingestion.confirm_mapping:ingestion_service.py:379 CONFIRM-MAPPING ENDPOINT CALLED
+INFO     ingestion.confirm_mapping:ingestion_service.py:380   raw_import_id: b3080c4b-32e2-4178-a38e-071e01265d32
+INFO     ingestion.confirm_mapping:ingestion_service.py:381   production_line_id: 01a7d443-996e-44e8-9753-099667aebab8
+INFO     ingestion.confirm_mapping:ingestion_service.py:382   factory_id: 35c226e9-11ed-4e4a-bf10-0bb6603e17f7
+INFO     ingestion.confirm_mapping:ingestion_service.py:383   data_source_id: None
+INFO     ingestion.confirm_mapping:ingestion_service.py:384   mappings count: 1
+INFO     ingestion.confirm_mapping:ingestion_service.py:385 ============================================================
+INFO     ingestion.confirm_mapping:ingestion_service.py:460 Schema Locked for DataSource 01a7d443-996e-44e8-9753-099667aebab8: dict_keys(['Col1'])
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/confirm-mapping "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/ingestion/upload?factory_id=35c226e9-11ed-4e4a-bf10-0bb6603e17f7&production_line_id=01a7d443-996e-44e8-9753-099667aebab8 "HTTP/1.1 400 Bad Request"
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\test_api\test_schema_mapping_reuse.py:226: assert 400 == 201
+E   socket.gaierror: [Errno 11001] getaddrinfo failed
+---------------------------- Captured stdout call -----------------------------
+
+LOG: 1. Attempting login...
+{"timestamp": "2026-03-03T03:16:26.795681Z", "level": "ERROR", "logger": "app.main", "message": "Unhandled exception: [Errno 11001] getaddrinfo failed", "exception": "Traceback (most recent call last):\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\errors.py\", line 164, in __call__\n    await self.app(scope, receive, _send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\cors.py\", line 85, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\middleware\\exceptions.py\", line 63, in __call__\n    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\middleware\\asyncexitstack.py\", line 18, in __call__\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 716, in __call__\n    await self.middleware_stack(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 736, in app\n    await route.handle(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\routing.py\", line 290, in handle\n    await self.app(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 119, in app\n    await wrap_app_handling_exceptions(app, request)(scope, receive, send)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 53, in wrapped_app\n    raise exc\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\starlette\\_exception_handler.py\", line 42, in wrapped_app\n    await app(scope, receive, sender)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 105, in app\n    response = await f(request)\n               ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 426, in app\n    raw_response = await run_endpoint_function(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\fastapi\\routing.py\", line 312, in run_endpoint_function\n    return await dependant.call(**values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\Projects\\FactoryExcelManager\\backend\\app\\api\\v1\\endpoints\\auth.py\", line 43, in login\n    result = await db.execute(select(User).where(User.email == request.email))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\ext\\asyncio\\session.py\", line 449, in execute\n    result = await greenlet_spawn(\n             ^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\_concurrency_py3k.py\", line 201, in greenlet_spawn\n    result = context.throw(*sys.exc_info())\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 2351, in execute\n    return self._execute_internal(\n           ~~~~~~~~~~~~~~~~~~~~~~^\n        statement,\n        ^^^^^^^^^^\n    ...<4 lines>...\n        _add_event=_add_event,\n        ^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 2239, in _execute_internal\n    conn = self._connection_for_bind(bind)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 2108, in _connection_for_bind\n    return trans._connection_for_bind(engine, execution_options)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 2, in _connection_for_bind\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\state_changes.py\", line 137, in _go\n    ret_value = fn(self, *arg, **kw)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\orm\\session.py\", line 1187, in _connection_for_bind\n    conn = bind.connect()\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\base.py\", line 3285, in connect\n    return self._connection_cls(self)\n           ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\base.py\", line 143, in __init__\n    self._dbapi_connection = engine.raw_connection()\n                             ~~~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\base.py\", line 3309, in raw_connection\n    return self.pool.connect()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 447, in connect\n    return _ConnectionFairy._checkout(self)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 1264, in _checkout\n    fairy = _ConnectionRecord.checkout(pool)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 711, in checkout\n    rec = pool._do_get()\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\impl.py\", line 177, in _do_get\n    with util.safe_reraise():\n         ~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\langhelpers.py\", line 224, in __exit__\n    raise exc_value.with_traceback(exc_tb)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\impl.py\", line 175, in _do_get\n    return self._create_connection()\n           ~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 388, in _create_connection\n    return _ConnectionRecord(self)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 673, in __init__\n    self.__connect()\n    ~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 899, in __connect\n    with util.safe_reraise():\n         ~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\langhelpers.py\", line 224, in __exit__\n    raise exc_value.with_traceback(exc_tb)\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\pool\\base.py\", line 895, in __connect\n    self.dbapi_connection = connection = pool._invoke_creator(self)\n                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\create.py\", line 661, in connect\n    return dialect.connect(*cargs, **cparams)\n           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\engine\\default.py\", line 630, in connect\n    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501\n           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\dialects\\postgresql\\asyncpg.py\", line 955, in connect\n    await_only(creator_fn(*arg, **kw)),\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\_concurrency_py3k.py\", line 132, in await_only\n    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\sqlalchemy\\util\\_concurrency_py3k.py\", line 196, in greenlet_spawn\n    value = await result\n            ^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connection.py\", line 2443, in connect\n    return await connect_utils._connect(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<22 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connect_utils.py\", line 1249, in _connect\n    raise last_error or exceptions.TargetServerAttributeNotMatched(\n    ...<2 lines>...\n    )\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connect_utils.py\", line 1218, in _connect\n    conn = await _connect_addr(\n           ^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n    )\n    ^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connect_utils.py\", line 1054, in _connect_addr\n    return await __connect_addr(params, True, *args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connect_utils.py\", line 1099, in __connect_addr\n    tr, pr = await connector\n             ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\19803\\AppData\\Roaming\\Python\\Python313\\site-packages\\asyncpg\\connect_utils.py\", line 969, in _create_ssl_connection\n    tr, pr = await loop.create_connection(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<2 lines>...\n        host, port)\n        ^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\base_events.py\", line 1117, in create_connection\n    infos = await self._ensure_resolved(\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        (host, port), family=family,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\base_events.py\", line 1500, in _ensure_resolved\n    return await loop.getaddrinfo(host, port, family=family, type=type,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                                  proto=proto, flags=flags)\n                                  ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\base_events.py\", line 939, in getaddrinfo\n    return await self.run_in_executor(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        None, getaddr_func, host, port, family, type, proto, flags)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\concurrent\\futures\\thread.py\", line 59, in run\n    result = self.fn(*self.args, **self.kwargs)\n  File \"C:\\Python313\\Lib\\socket.py\", line 977, in getaddrinfo\n    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsocket.gaierror: [Errno 11001] getaddrinfo failed"}
+------------------------------ Captured log call ------------------------------
+ERROR    app.main:main.py:100 Unhandled exception: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 105, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 426, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 312, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\endpoints\auth.py", line 43, in login
+    result = await db.execute(select(User).where(User.email == request.email))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\ext\asyncio\session.py", line 449, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2351, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2239, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 2108, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\orm\session.py", line 1187, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3285, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\base.py", line 3309, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\impl.py", line 175, in _do_get
+    return self._create_connection()
+           ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 955, in connect
+    await_only(creator_fn(*arg, **kw)),
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<22 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connect_utils.py", line 1249, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+    ...<2 lines>...
+    )
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connect_utils.py", line 1054, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connect_utils.py", line 1099, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\19803\AppData\Roaming\Python\Python313\site-packages\asyncpg\connect_utils.py", line 969, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        host, port)
+        ^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 1117, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (host, port), family=family,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 1500, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  proto=proto, flags=flags)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Python313\Lib\socket.py", line 977, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+C:\Python313\Lib\socket.py:977: socket.gaierror: [Errno 11001] getaddrinfo failed
+E   AssertionError: Sam Efficiency should be calculated
+    assert 0.0 > 0
+     +  where 0.0 = float('0.0')
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-03T03:16:27.317945Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Checking mappings for DS 4e9e0f06-9775-458e-ab71-53b1f5f97863"}
+{"timestamp": "2026-03-03T03:16:27.318082Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DEBUG: Mapping 1ec8ac67-fdfc-4b3e-b886-43cf7848edc0 | Ver: 1 | Active: True"}
+{"timestamp": "2026-03-03T03:16:27.332569Z", "level": "WARNING", "logger": "app.services.ingestion.date_profiler", "message": "AMBIGUOUS DATE COLUMN: All 1 sampled values could be YYYY-MM-DD or YYYY-DD-MM. Defaulting to ISO 8601 (YYYY-MM-DD). Consider configuring explicit format in data source settings."}
+{"timestamp": "2026-03-03T03:16:27.332667Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "DATE COLUMN PROFILED: 'Production Date' -> YYYY-MM-DD (confidence: 50%)"}
+{"timestamp": "2026-03-03T03:16:27.332709Z", "level": "WARNING", "logger": "app.services.ingestion.orchestrator", "message": "AMBIGUOUS DATE COLUMN 'Production Date': All sampled values could be YYYY-MM-DD or YYYY-DD-MM. Defaulting to ISO 8601. Consider configuring explicit format."}
+{"timestamp": "2026-03-03T03:16:27.334801Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Resolving existing runs for differential calculation..."}
+{"timestamp": "2026-03-03T03:16:27.335684Z", "level": "INFO", "logger": "app.services.ingestion.orchestrator", "message": "Found 0 existing runs to update."}
+{"timestamp": "2026-03-03T03:16:27.335820Z", "level": "INFO", "logger": "app.services.ingestion.writer", "message": "Inserting/Upserting 1 runs..."}
+{"timestamp": "2026-03-03T03:16:27.337668Z", "level": "INFO", "logger": "app.services.ingestion.writer", "message": "Flushing ProductionRun writes before inserting children..."}
+{"timestamp": "2026-03-03T03:16:27.337756Z", "level": "INFO", "logger": "app.services.ingestion.writer", "message": "Inserting 1 events..."}
+{"timestamp": "2026-03-03T03:16:27.338493Z", "level": "INFO", "logger": "app.services.ingestion.writer", "message": "Upserting 1 efficiency metrics..."}
+{"timestamp": "2026-03-03T03:16:27.339502Z", "level": "INFO", "logger": "app.services.ingestion.writer", "message": "Upserting 1 quality inspections..."}
+{"timestamp": "2026-03-03T03:16:28.356218Z", "level": "WARNING", "logger": "app.core.cache", "message": "Redis unavailable: Timeout connecting to server. Cache will be bypassed."}
+{"timestamp": "2026-03-03T03:16:28.360829Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-02-25: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.361956Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-02-26: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.362945Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-02-27: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.363841Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-02-28: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.364693Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-03-01: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.365538Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-03-02: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.366390Z", "level": "INFO", "logger": "app.services.dhu_aggregation", "message": "DHU aggregation for 2026-03-03: 0 reports upserted"}
+{"timestamp": "2026-03-03T03:16:28.377950Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/production-chart?line_id=4e9e0f06-9775-458e-ab71-53b1f5f97863 \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-03-03T03:16:28.382069Z", "level": "INFO", "logger": "httpx", "message": "HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=4e9e0f06-9775-458e-ab71-53b1f5f97863 \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     app.services.ingestion.orchestrator:orchestrator.py:95 DEBUG: Checking mappings for DS 4e9e0f06-9775-458e-ab71-53b1f5f97863
+INFO     app.services.ingestion.orchestrator:orchestrator.py:98 DEBUG: Mapping 1ec8ac67-fdfc-4b3e-b886-43cf7848edc0 | Ver: 1 | Active: True
+WARNING  app.services.ingestion.date_profiler:date_profiler.py:147 AMBIGUOUS DATE COLUMN: All 1 sampled values could be YYYY-MM-DD or YYYY-DD-MM. Defaulting to ISO 8601 (YYYY-MM-DD). Consider configuring explicit format in data source settings.
+INFO     app.services.ingestion.orchestrator:orchestrator.py:244 DATE COLUMN PROFILED: 'Production Date' -> YYYY-MM-DD (confidence: 50%)
+WARNING  app.services.ingestion.orchestrator:orchestrator.py:251 AMBIGUOUS DATE COLUMN 'Production Date': All sampled values could be YYYY-MM-DD or YYYY-DD-MM. Defaulting to ISO 8601. Consider configuring explicit format.
+INFO     app.services.ingestion.orchestrator:orchestrator.py:147 Resolving existing runs for differential calculation...
+INFO     app.services.ingestion.orchestrator:orchestrator.py:151 Found 0 existing runs to update.
+INFO     app.services.ingestion.writer:writer.py:380 Inserting/Upserting 1 runs...
+INFO     app.services.ingestion.writer:writer.py:446 Flushing ProductionRun writes before inserting children...
+INFO     app.services.ingestion.writer:writer.py:467 Inserting 1 events...
+INFO     app.services.ingestion.writer:writer.py:480 Upserting 1 efficiency metrics...
+INFO     app.services.ingestion.writer:writer.py:504 Upserting 1 quality inspections...
+WARNING  app.core.cache:cache.py:54 Redis unavailable: Timeout connecting to server. Cache will be bypassed.
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-02-25: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-02-26: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-02-27: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-02-28: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-03-01: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-03-02: 0 reports upserted
+INFO     app.services.dhu_aggregation:dhu_aggregation.py:209 DHU aggregation for 2026-03-03: 0 reports upserted
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/production-chart?line_id=4e9e0f06-9775-458e-ab71-53b1f5f97863 "HTTP/1.1 200 OK"
+INFO     httpx:_client.py:1740 HTTP Request: GET http://test/api/v1/analytics/sam-performance?line_id=4e9e0f06-9775-458e-ab71-53b1f5f97863 "HTTP/1.1 200 OK"
+C:\Users\19803\Projects\FactoryExcelManager\backend\tests\test_ingestion\test_full_flow.py:164: AssertionError: Sam Efficiency should be calculated
+============================== warnings summary ===============================
+tests/test_api/test_integrity.py::test_production_run_constraints
+tests/test_api/test_quality_constraints.py::test_quality_inspection_rejects_duplicate_type_per_run
+  <sys>:0: SAWarning: transaction already deassociated from connection
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED backend\tests\test_api\test_fallback_logic.py::test_sam_performance_fallback
+FAILED backend\tests\test_api\test_individual_widgets.py::test_get_sam_performance
+FAILED backend\tests\test_api\test_ingestion_deduplication.py::test_mapping_state_endpoint
+FAILED backend\tests\test_api\test_schema_mapping_reuse.py::test_schema_mapping_version_increments_correctly
+FAILED backend\tests\test_async_flow.py::test_datasource_lifecycle - socket.g...
+FAILED backend\tests\test_ingestion\test_full_flow.py::test_full_data_flow - ...
+====== 6 failed, 216 passed, 2 skipped, 2 warnings in 341.19s (0:05:41) =======

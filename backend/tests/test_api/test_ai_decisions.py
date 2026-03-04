@@ -160,6 +160,7 @@ async def test_get_data_source_ai_decisions(
 
     # Create data source
     data_source = DataSource(
+        factory_id=test_line.factory_id,
         production_line_id=test_line.id,
         source_name="Test Source",
     )

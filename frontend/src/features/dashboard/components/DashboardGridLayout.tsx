@@ -10,7 +10,7 @@ import { useContainerWidth } from '@/hooks/useContainerWidth';
 import { useLayout } from '@/contexts/LayoutContext';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import type { ValidatedWidgetConfig } from '../services/WidgetService';
+import type { ValidatedWidgetConfig } from '@/features/dashboard/services/WidgetService';
 
 export interface DashboardGridLayoutProps {
     widgets: ValidatedWidgetConfig[];
@@ -37,7 +37,7 @@ const WidgetWrapper = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEle
                         const width = style?.width ? parseInt(String(style.width), 10) : undefined;
                         const height = style?.height ? parseInt(String(style.height), 10) : undefined;
 
-                        // @ts-ignore - Injecting props dynamically
+                        // @ts-expect-error - Injecting props dynamically
                         return React.cloneElement(child, { width, height });
                     }
                     return child;

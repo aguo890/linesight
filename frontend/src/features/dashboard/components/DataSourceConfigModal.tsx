@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Settings, Database, Clock, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { getDataSourceByLine, updateDataSource, type DataSource } from '@/lib/datasourceApi';
+import { getDataSourceByLine, updateDataSource, type ClientDataSource as DataSource } from '@/lib/datasourceApi';
 
 interface DataSourceConfigModalProps {
     isOpen: boolean;
@@ -45,7 +45,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
             const data = await getDataSourceByLine(lineId);
             if (data) {
                 setDataSource(data);
-                setTimeColumn(data.time_column || '');
+                setTimeColumn(data.timeColumn || '');
                 setDescription(data.description || '');
             } else {
                 setDataSource(null);
@@ -170,7 +170,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                     <label className="block text-sm font-semibold text-text-main dark:text-white mb-2 flex items-center justify-between">
                                         {t('data_source_config.schema_title')}
                                         <span className="text-[10px] bg-brand/10 text-brand px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">
-                                            {t('data_source_config.schema_version', { version: dataSource.schema_mappings.find(m => m.is_active)?.version || 1 })}
+                                            {t('data_source_config.schema_version', { version: dataSource.schemaMappings.find((m: any) => m.is_active)?.version || 1 })}
                                         </span>
                                     </label>
                                     <div className="border border-border dark:border-slate-700 rounded-lg overflow-hidden bg-surface-subtle/30 dark:bg-slate-800/30">
@@ -184,7 +184,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
                                                 </thead>
                                                 <tbody className="divide-y divide-border dark:divide-slate-800">
                                                     {(() => {
-                                                        const rawMap = dataSource.schema_mappings.find(m => m.is_active)?.column_map || {};
+                                                        const rawMap = dataSource.schemaMappings.find((m: any) => m.is_active)?.column_map || {};
                                                         const columnMap = typeof rawMap === 'string' ? JSON.parse(rawMap) : rawMap;
                                                         return Object.entries(columnMap).map(([src, target]) => (
                                                             <tr key={src} className="hover:bg-surface/50 dark:hover:bg-slate-700/50 transition-colors">

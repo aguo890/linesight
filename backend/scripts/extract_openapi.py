@@ -140,7 +140,7 @@ def extract_openapi(output_path: str, api_url: str | None = None) -> None:
                 else:
                     # For floats/decimals, exclusiveMinimum is technically val, but since OpenAPI 3.0 uses exclusiveMinimum: true, we can't easily express it. Setting minimum = val is "close enough" for most clients.
                     node["minimum"] = val
-                    
+
             for key, value in node.items():
                 recursive_strip_exclusive_minimum(value)
 

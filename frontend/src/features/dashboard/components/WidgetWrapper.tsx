@@ -6,7 +6,7 @@
 
 import { Settings, Trash2, Move } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useDashboardSafe } from '../context/DashboardContext';
+import { useDashboardSafe } from '@/features/dashboard/context/DashboardContext';
 import { useTranslation } from 'react-i18next';
 
 export type WidgetDensity = 'default' | 'compact' | 'minimal';
@@ -36,6 +36,16 @@ export interface WidgetWrapperProps {
  * - compact: Reduced header on single line, no subtitle
  * - minimal: No header, just a hoverable corner icon with tooltip
  */
+
+// Reusable Loading Overlay
+const LoadingOverlay = () => (
+    <div className="absolute inset-0 bg-surface/50 backdrop-blur-[1px] z-20 flex items-center justify-center rounded-lg transition-all duration-300">
+        <div className="flex flex-col items-center gap-2">
+            <div className="w-5 h-5 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    </div>
+);
+
 export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
     id,
     title,
@@ -63,15 +73,6 @@ export const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
 
     // Standard Card Classes - Uses semantic colors for dark mode
     const cardClasses = "bg-surface text-text-main border border-border shadow-sm";
-
-    // Reusable Loading Overlay
-    const LoadingOverlay = () => (
-        <div className="absolute inset-0 bg-surface/50 backdrop-blur-[1px] z-20 flex items-center justify-center rounded-lg transition-all duration-300">
-            <div className="flex flex-col items-center gap-2">
-                <div className="w-5 h-5 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
-            </div>
-        </div>
-    );
 
     // Minimal mode: Overlay icon in corner
     if (density === 'minimal') {

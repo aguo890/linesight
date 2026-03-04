@@ -16,7 +16,9 @@ const ErrorPage: React.FC = () => {
 
     if (isRouteErrorResponse(error)) {
         errorMessage = error.statusText || `Error ${error.status}`;
-        errorDetail = (error.data as any)?.message || JSON.stringify(error.data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const errorData = error.data as any;
+        errorDetail = errorData?.message || JSON.stringify(errorData);
     } else if (error instanceof Error) {
         errorMessage = error.message;
         errorDetail = error.stack;

@@ -55,20 +55,18 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
     const [theme, setThemeState] = useState<Theme>(() => defaultTheme ?? getInitialTheme());
-    const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() => resolveTheme(theme));
+    // Derive resolved theme during render — no state needed
     const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(() => {
         if (typeof window === 'undefined') return 'light';
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     });
+    const resolvedTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme;
 
-    // Update the DOM and localStorage when theme changes
+    // Update the DOM and localStorage when theme changes (no setState — pure side effects)
     useEffect(() => {
-        const resolved = resolveTheme(theme);
-        setResolvedTheme(resolved);
-
         // Update DOM
         const root = document.documentElement;
-        if (resolved === 'dark') {
+        if (resolvedTheme === 'dark') {
             root.classList.add('dark');
         } else {
             root.classList.remove('dark');
@@ -80,7 +78,7 @@ export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
         } catch {
             // localStorage not available
         }
-    }, [theme, systemTheme]);
+    }, [theme, systemTheme, resolvedTheme]);
 
     // Listen for system preference changes ALWAYS to keep systemTheme up to date
     useEffect(() => {

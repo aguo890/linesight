@@ -9,8 +9,8 @@ import {
 } from 'recharts';
 import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
 import { useTranslation } from 'react-i18next';
-import type { SmartWidgetProps } from '../config';
-import { SpeedQualityDataSchema } from '../registry';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
+import { SpeedQualityDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 import { useFactoryFormat } from '@/hooks/useFactoryFormat';
 import { useThemeColors } from '@/hooks/useThemeColor';

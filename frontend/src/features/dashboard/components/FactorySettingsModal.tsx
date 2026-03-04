@@ -4,12 +4,13 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { X, Save, Plus, Trash2, Clock, Calendar, AlertTriangle } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '../../../api/endpoints/factories/factories';
-import type { Factory, ShiftConfig } from '@/lib/factoryApi';
+import { useUpdateFactoryApiV1FactoriesFactoryIdPatch, getGetFactoryApiV1FactoriesFactoryIdGetQueryKey, getListFactoriesApiV1FactoriesGetQueryKey } from '@/api/endpoints/factories/factories';
+import type { ShiftConfig } from '@/api/model';
+import { type ClientFactory as Factory } from '@/lib/factoryApi';
 import { formatInTimeZone } from 'date-fns-tz';
 
 interface Props {
@@ -51,22 +52,31 @@ const MEASUREMENT_SYSTEMS = [
     { value: 'imperial', label: 'Imperial (lbs, in)' },
 ];
 
-export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory }) => {
+/**
+ * Factory Settings Modal
+ */
+const FactorySettingsModalContent: React.FC<Props> = ({ onClose, factory }) => {
     const { t } = useTranslation();
 
-    // State
-    const [shifts, setShifts] = useState<ShiftConfig[]>([]);
-    const [currency, setCurrency] = useState('USD');
-    const [weekends, setWeekends] = useState<number[]>([]);
+    // State initialized directly from factory props (key-prop pattern handles resets)
+    const settings = factory.settings as any;
+    const [shifts, setShifts] = useState<ShiftConfig[]>(
+        (settings?.default_shift_pattern) || (settings?.operating_shifts) || []
+    );
+    const [currency, setCurrency] = useState(settings?.default_currency || 'USD');
+    const [weekends, setWeekends] = useState<number[]>(
+        (settings?.standard_non_working_days) || (settings?.weekend_days) || [5, 6]
+    );
 
     // Localization State
-    const [country, setCountry] = useState('');
-    const [timezone, setTimezone] = useState('UTC');
-    const [originalTimezone, setOriginalTimezone] = useState('UTC');
+    const [country, setCountry] = useState(factory.country || settings?.country || '');
+    const initialTz = factory.timezone || settings?.timezone || 'UTC';
+    const [timezone, setTimezone] = useState(initialTz);
+    const [originalTimezone] = useState(initialTz);
     const [showTimezoneWarning, setShowTimezoneWarning] = useState(false);
 
-    const [dateFormat, setDateFormat] = useState('MM/DD/YYYY');
-    const [measurementSystem, setMeasurementSystem] = useState('metric');
+    const [dateFormat, setDateFormat] = useState(settings?.date_format || 'MM/DD/YYYY');
+    const [measurementSystem, setMeasurementSystem] = useState(settings?.measurement_system || 'metric');
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -75,32 +85,10 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
     // Mutation
     const updateFactoryMutation = useUpdateFactoryApiV1FactoriesFactoryIdPatch();
 
-    // Initialize state from factory props
-    useEffect(() => {
-        if (isOpen && factory) {
-            const settings = factory.settings;
-
-            // Handle new field names with fallback to old ones if data exists
-            setShifts((settings?.default_shift_pattern) || (settings?.operating_shifts) || []);
-            setWeekends((settings?.standard_non_working_days) || (settings?.weekend_days) || [5, 6]);
-
-            // New fields
-            setCurrency(settings?.default_currency || 'USD'); // kept as is
-
-            // Factory Level Fields (fallback to settings if not at root)
-            setCountry(factory.country || settings?.country || '');
-            const tz = factory.timezone || settings?.timezone || 'UTC';
-            setTimezone(tz);
-            setOriginalTimezone(tz);
-            setDateFormat(settings?.date_format || 'MM/DD/YYYY');
-            setMeasurementSystem(settings?.measurement_system || 'metric');
-        }
-    }, [isOpen, factory]);
-
     const handleSaveRequest = () => {
         // Check if timezone changed from non-UTC to something else, or significant change
         // For safety, if timezone changed and it wasn't just setting explicit UTC from default, warn user.
-        if (timezone !== originalTimezone && factory.is_active) {
+        if (timezone !== originalTimezone && factory.isActive) {
             setShowTimezoneWarning(true);
         } else {
             executeSave();
@@ -193,7 +181,6 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
         }
     };
 
-    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -453,3 +440,13 @@ export const FactorySettingsModal: React.FC<Props> = ({ isOpen, onClose, factory
         </div>
     );
 };
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ */
+export const FactorySettingsModal: React.FC<Props> = (props) => {
+    if (!props.isOpen) return null;
+    return <FactorySettingsModalContent {...props} />;
+};
+
+export default FactorySettingsModal;

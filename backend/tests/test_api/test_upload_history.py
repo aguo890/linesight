@@ -7,8 +7,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.raw_import import RawImport
 
 
@@ -53,7 +53,7 @@ async def test_upload_history_segmentation(
     resp_a = await async_client.post(
         "/api/v1/ingestion/upload", files=files_a, params=params_a, headers=auth_headers
     )
-    assert resp_a.status_code == 200
+    assert resp_a.status_code == 201
 
     # Upload to Line B
     files_b = {"file": ("line_b_file.csv", csv_content, "text/csv")}
@@ -61,7 +61,7 @@ async def test_upload_history_segmentation(
     resp_b = await async_client.post(
         "/api/v1/ingestion/upload", files=files_b, params=params_b, headers=auth_headers
     )
-    assert resp_b.status_code == 200
+    assert resp_b.status_code == 201
 
     # Upload Unassigned
     files_u = {"file": ("unassigned.csv", csv_content, "text/csv")}
@@ -69,7 +69,7 @@ async def test_upload_history_segmentation(
     resp_u = await async_client.post(
         "/api/v1/ingestion/upload", files=files_u, params=params_u, headers=auth_headers
     )
-    assert resp_u.status_code == 200
+    assert resp_u.status_code == 201
 
     # 3. Verify Database State
     # We don't have a specific "list imports by line" endpoint yet in core (maybe in analytics or production),

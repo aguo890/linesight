@@ -4,6 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
+/* eslint-disable no-restricted-imports */
 import 'i18next';
 import en from '../public/locales/en/translation.json';
 import landing from '../public/locales/en/landing.json';

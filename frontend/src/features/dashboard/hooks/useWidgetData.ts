@@ -6,10 +6,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { type ZodSchema } from 'zod';
-import { fetchWidgetData, type ServiceResponse } from '../services/widgetDataService';
-import * as mocks from '../services/mockData'; // We still need the mock generators
-import { type ShiftType } from '../../../types/analytics';
-import { useDashboardSafe } from '../context/DashboardContext';
+import { fetchWidgetData, type ServiceResponse } from '@/features/dashboard/services/widgetDataService';
+import * as mocks from '@/features/dashboard/services/mockData'; // We still need the mock generators
+import { type ShiftType } from '@/types/analytics';
+import { useDashboardSafe } from '@/features/dashboard/context/DashboardContext';
 
 interface UseWidgetDataOptions<T = any> {
     dataId?: string;

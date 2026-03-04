@@ -42,8 +42,7 @@ function App() {
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, theme, setTheme, i18n]);
 
   // Handle RTL/LTR direction based on language
   useEffect(() => {

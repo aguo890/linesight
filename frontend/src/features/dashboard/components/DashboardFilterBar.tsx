@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { Filter } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useDashboard } from '../context/DashboardContext';
+import { useDashboard } from '@/features/dashboard/context/DashboardContext';
 import { useTimezoneDate } from '@/hooks/useTimezoneDate';
 import { useFactoryContext } from '@/contexts/FactoryContext';
 import { TimezoneDateRangePicker } from '@/components/common/TimezoneDateRangePicker';

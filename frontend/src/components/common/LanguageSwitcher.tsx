@@ -4,9 +4,9 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { LOCALES, type LocaleCode } from '../../context/config/locales';
+import { LOCALES, type LocaleCode } from '@/context/config/locales';
 
 /**
  * LanguageSwitcher - Dropdown component for switching languages
@@ -15,6 +15,7 @@ import { LOCALES, type LocaleCode } from '../../context/config/locales';
 export default function LanguageSwitcher() {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [pendingPath, setPendingPath] = useState<string | null>(null);
     const location = useLocation();
     const pathName = location.pathname;
 
@@ -35,8 +36,15 @@ export default function LanguageSwitcher() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // Handle side effects strictly outside of render handlers
+    useEffect(() => {
+        if (pendingPath) {
+            window.location.href = pendingPath;
+        }
+    }, [pendingPath]);
+
     // Handle Language Switch
-    const handleSwitch = (newLocale: string) => {
+    const handleSwitch = useCallback((newLocale: string) => {
         // Replace the first segment of the URL with the new locale
         // Ex: /en/pricing -> /es/pricing
         const segments = pathName.split('/').filter(Boolean);
@@ -50,10 +58,8 @@ export default function LanguageSwitcher() {
         }
 
         const newPath = '/' + segments.join('/');
-
-        // Full reload ensures fonts update correctly for CJK languages
-        window.location.href = newPath;
-    };
+        setPendingPath(newPath);
+    }, [pathName]);
 
     return (
         <div className="relative inline-block text-left" ref={dropdownRef}>

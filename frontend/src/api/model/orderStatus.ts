@@ -12,7 +12,7 @@
 export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
 
 
- 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OrderStatus = {
   pending: 'pending',
   confirmed: 'confirmed',

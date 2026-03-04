@@ -8,21 +8,11 @@ import { createContext, useState, useCallback, useEffect, type ReactNode } from 
 import api from '@/lib/api';
 import { authStorage } from '@/lib/authStorage';
 import { updateProfile, type UserUpdate, type UserInfo } from '@/lib/authApi';
-import i18n from '../i18n';
-import { toShortLocale, detectBestLocale } from '../utils/localeUtils';
+import i18n from '@/i18n';
+import { toShortLocale, detectBestLocale } from '@/utils/localeUtils';
 
-interface AuthState {
-    user: UserInfo | null;
-    token: string | null;
-    isAuthenticated: boolean;
-}
-
-export interface AuthContextType extends AuthState {
-    login: (email: string, password: string) => Promise<UserInfo>;
-    loginDemo: (email: string) => void;
-    logout: () => void;
-    updateUser: (data: UserUpdate) => Promise<UserInfo>;
-}
+import { type AuthState, type AuthContextType } from './AuthContext.types';
+export type { AuthState, AuthContextType };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 

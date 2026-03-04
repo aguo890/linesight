@@ -75,7 +75,7 @@ async def test_jan_feb_march_continuity(async_client, db_session, test_factory, 
             files=files_payload,
             headers=auth_headers
         )
-        assert resp.status_code == 200, f"Upload failed: {resp.text}"
+        assert resp.status_code == 201, f"Upload failed: {resp.text}"
         raw_import_id = resp.json()["raw_import_id"]
 
         # B. Process (Generate Mappings)

@@ -4,11 +4,11 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Settings, Database, RotateCcw } from 'lucide-react';
 
 import { z } from 'zod';
-import { getWidgetSchema } from '../registry';
+import { getWidgetSchema } from '@/features/dashboard/registry';
 
 interface WidgetSettingsModalProps {
     isOpen: boolean;
@@ -23,35 +23,22 @@ interface WidgetSettingsModalProps {
  * Zod-Driven Settings Modal
  * Dynamically renders form inputs based on the Zod schema defined in the registry.
  */
-export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
-    isOpen,
+const WidgetSettingsModalContent: React.FC<WidgetSettingsModalProps> = ({
     widgetType,
     widgetTitle,
     currentSettings,
     onSave,
     onClose
 }) => {
-    const [formValues, setFormValues] = useState<Record<string, any>>({});
+    // Initialize schema and form values once at mount (key-prop pattern handles resets)
+    const [schema] = useState<z.ZodSchema<any> | null>(() => widgetType ? getWidgetSchema(widgetType) : null);
+    const [formValues, setFormValues] = useState<Record<string, any>>(() => {
+        if (!widgetType) return {};
+        const widgetSchema = getWidgetSchema(widgetType);
+        const defaults = widgetSchema instanceof z.ZodObject ? widgetSchema.parse({}) : {};
+        return { ...defaults, ...currentSettings };
+    });
     const [errors, setErrors] = useState<z.ZodIssue[]>([]);
-    const [schema, setSchema] = useState<z.ZodSchema<any> | null>(null);
-
-    // 1. Retrieve the Source of Truth
-    // When modal opens, fetch the schema and initialize form
-    useEffect(() => {
-        if (isOpen && widgetType) {
-            const widgetSchema = getWidgetSchema(widgetType);
-            setSchema(widgetSchema);
-
-            // Merge current settings with defaults
-            // We use safeParse to get default values if available in the schema
-            const defaults = widgetSchema instanceof z.ZodObject
-                ? widgetSchema.parse({})
-                : {};
-
-            setFormValues({ ...defaults, ...currentSettings });
-            setErrors([]);
-        }
-    }, [isOpen, widgetType, currentSettings]);
 
     const handleChange = (name: string, value: any) => {
         setFormValues(prev => ({ ...prev, [name]: value }));
@@ -77,14 +64,13 @@ export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = ({
         }
     };
 
-    if (!isOpen) return null;
 
     // Helper to extract field metadata from Zod Schema
     // Zod doesn't have a simple public "shape" API on ZodSchema, so we check if it is ZodObject
     let fields: { key: string, def: z.ZodTypeAny, description?: string }[] = [];
 
     if (schema instanceof z.ZodObject) {
-        // @ts-ignore - access internal shape for introspection
+        // Access ZodObject shape for introspection
         const shape = schema.shape;
         fields = Object.entries(shape).map(([key, def]) => ({
             key,
@@ -281,6 +267,14 @@ const ZodFieldRenderer: React.FC<{
             <p className="text-xs text-text-muted">Unsupported field type: {name}</p>
         </div>
     );
+};
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ */
+export const WidgetSettingsModal: React.FC<WidgetSettingsModalProps> = (props) => {
+    if (!props.isOpen) return null;
+    return <WidgetSettingsModalContent {...props} />;
 };
 
 export default WidgetSettingsModal;

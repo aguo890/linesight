@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { SmartWidgetProps } from '../config';
-import { WorkforceDataSchema } from '../registry';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
+import { WorkforceDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 
 // Infer TypeScript type from Zod schema

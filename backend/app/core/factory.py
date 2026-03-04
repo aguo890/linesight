@@ -3,7 +3,6 @@
 # found in the LICENSE file in the root directory of this source tree.
 
 import logging
-from typing import Any
 
 from app.core.interfaces import ETLAgentInterface, WidgetSuggestionInterface
 

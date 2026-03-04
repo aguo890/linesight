@@ -6,7 +6,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
-import { toRegionLocale, detectBestLocale } from '../utils/localeUtils';
+import { toRegionLocale, detectBestLocale } from '@/utils/localeUtils';
 
 // Define default options OUTSIDE the hook to maintain reference stability
 const DEFAULT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {

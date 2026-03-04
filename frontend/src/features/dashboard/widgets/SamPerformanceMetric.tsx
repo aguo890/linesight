@@ -6,10 +6,10 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { ResponsiveContainer, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { z } from 'zod';
-import { SamPerformanceDataSchema } from '../registry';
+import { SamPerformanceDataSchema } from '@/features/dashboard/registry';
 
 // Schema-inferred types
 type SamData = z.infer<typeof SamPerformanceDataSchema>;

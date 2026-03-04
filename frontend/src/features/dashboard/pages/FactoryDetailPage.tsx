@@ -36,7 +36,7 @@ import { useTranslation } from 'react-i18next';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { DataSourceCard } from '@/features/dashboard/components/DataSourceCard';
-import { CreateDataSourceModal } from '../../organization/components/CreateDataSourceModal';
+import { CreateDataSourceModal } from '@/features/organization/components/CreateDataSourceModal';
 import { DataSourceUploadModal } from '@/features/dashboard/components/DataSourceUploadModal';
 import { MappingFlowModal } from '@/features/dashboard/components/MappingFlowModal';
 import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard';
@@ -44,16 +44,16 @@ import { DashboardWizard } from '@/features/dashboard/components/DashboardWizard
 import { Skeleton } from '@/components/ui/Skeleton';
 import { DashboardCard } from '@/features/dashboard/components/DashboardCard';
 import { FactorySettingsModal } from '@/features/dashboard/components/FactorySettingsModal';
-import { dashboardStorage } from '../storage';
+import { dashboardStorage } from '@/features/dashboard/storage';
 
 import { useOrganization } from '@/contexts/OrganizationContext';
 import { useFactory } from '@/hooks/useFactory';
 import {
     useListDashboardsApiV1DashboardsGet,
     useDeleteDashboardApiV1DashboardsDashboardIdDelete
-} from '../../../api/endpoints/dashboards/dashboards';
-import type { Dashboard } from '../types';
-import type { DataSource } from '@/lib/factoryApi';
+} from '@/api/endpoints/dashboards/dashboards';
+import type { Dashboard } from '@/features/dashboard/types';
+import type { ClientDataSource as DataSource } from '@/lib/datasourceApi';
 import { usePermissions } from '@/hooks/usePermissions';
 
 type ViewMode = 'grid' | 'list';
@@ -166,7 +166,7 @@ export const FactoryDetailPage: React.FC = () => {
         if (!sourceSearch) return dataSources;
         const q = sourceSearch.toLowerCase();
         return dataSources.filter(ds =>
-            ds.name.toLowerCase().includes(q) ||
+            ds.sourceName.toLowerCase().includes(q) ||
             (ds.code && ds.code.toLowerCase().includes(q))
         );
     }, [dataSources, sourceSearch]);
@@ -372,7 +372,7 @@ export const FactoryDetailPage: React.FC = () => {
                                 </span>
                                 <span className="flex items-center gap-1.5">
                                     <Globe className="w-3.5 h-3.5 text-text-muted" />
-                                    {factory.organization_id}
+                                    {factory.organizationId}
                                 </span>
                             </div>
                         </div>
@@ -601,11 +601,11 @@ export const FactoryDetailPage: React.FC = () => {
                                                 </div>
                                             </td>
                                             <td className="py-3 px-4">
-                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.is_active
+                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${source.isActive
                                                     ? 'bg-success/10 text-success border-success/20'
                                                     : 'bg-surface-subtle text-text-muted border-border'
                                                     }`}>
-                                                    {source.is_active ? t('factory_detail.status.active') : t('factory_detail.status.inactive')}
+                                                    {source.isActive ? t('factory_detail.status.active') : t('factory_detail.status.inactive')}
                                                 </span>
                                             </td>
                                             <td className="py-3 px-4 text-end">
@@ -649,6 +649,7 @@ export const FactoryDetailPage: React.FC = () => {
                 preselectedFactoryId={factory?.id}
             />
             <CreateDataSourceModal
+                key={isCreateModalOpen ? 'open' : 'closed'}
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 onSuccess={handleSourceCreationSuccess}
@@ -678,6 +679,7 @@ export const FactoryDetailPage: React.FC = () => {
             />
             {factory && (
                 <FactorySettingsModal
+                    key={isSettingsModalOpen ? 'open' : 'closed'}
                     isOpen={isSettingsModalOpen}
                     onClose={() => setIsSettingsModalOpen(false)}
                     factory={factory}

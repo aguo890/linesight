@@ -5,10 +5,10 @@
  */
 
 import React from 'react';
-import type { SmartWidgetProps } from '../config';
+import type { SmartWidgetProps } from '@/features/dashboard/config';
 import { Clock, TrendingUp, Zap } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { EarnedMinutesDataSchema } from '../registry';
+import { EarnedMinutesDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 
 // Infer TypeScript type from Zod schema

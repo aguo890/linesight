@@ -16,8 +16,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.factory import Factory
 from app.models.datasource import DataSource
+from app.models.factory import Factory
 from app.models.production import ProductionRun
 
 
@@ -77,7 +77,7 @@ GOLD-002,PO-GOLD-B,{today},300,400,1.5,8,2,480
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200, f"Upload failed: {upload_resp.text}"
+    assert upload_resp.status_code == 201, f"Upload failed: {upload_resp.text}"
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # ========================================================================
@@ -216,7 +216,7 @@ ANOMALY-001,PO-BAD,{today},1000,1000,10.0,2,0,60
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200
+    assert upload_resp.status_code == 201
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # ========================================================================

@@ -19,8 +19,11 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        return () => setMounted(false);
+        const frame = requestAnimationFrame(() => setMounted(true));
+        return () => {
+            cancelAnimationFrame(frame);
+            setMounted(false);
+        };
     }, []);
 
     if (!mounted || typeof document === 'undefined') return null;

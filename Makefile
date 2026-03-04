@@ -196,12 +196,16 @@ sync-check:
 	@echo "✅ Types synced."
 
 test:
-	@echo "🧪 Running Tests (in Docker)..."
-	docker compose exec backend pytest
+	@echo "🧪 Running Tests (in Docker against PostgreSQL)..."
+	docker compose exec \
+	  -e DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/linesight_test \
+	  backend pytest tests/
 
 test-cov:
-	@echo "📊 Running Tests with Coverage (in Docker)..."
-	docker compose exec backend pytest --cov=app --cov-report=term-missing
+	@echo "📊 Running Tests with Coverage (in Docker against PostgreSQL)..."
+	docker compose exec \
+	  -e DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/linesight_test \
+	  backend pytest --cov=app --cov-report=term-missing
 
 lint:
 	@echo "🎨 Linting (in Docker)..."

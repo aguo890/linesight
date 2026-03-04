@@ -48,6 +48,52 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
     const [rawImportId, setRawImportId] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    /**
+     * Safely attempts to parse the error message as a structured schema error.
+     * Returns SchemaErrorDetails OR null if it's a generic string error.
+     */
+    const structuredError = React.useMemo(() => {
+        if (!error) return null;
+
+        try {
+            // Attempt to parse the error string if it looks like JSON
+            if (error.startsWith('{')) {
+                const parsed = JSON.parse(error);
+
+                // Check for the "File structure mismatch" shape seen in the logs
+                if (parsed.expected && parsed.found) {
+                    // Extract missing columns from the "errors" array or calculate them
+                    let missing: string[] = [];
+                    if (Array.isArray(parsed.errors)) {
+                        const missingStr = parsed.errors.find((e: string) => e.startsWith('Missing columns:'));
+                        if (missingStr) {
+                            missing = missingStr.replace('Missing columns:', '').split(',').map((s: string) => s.trim()).filter(Boolean);
+                        }
+                    }
+
+                    // Also calculate extra columns (found but not expected)
+                    const extra = parsed.found.filter((f: string) => !parsed.expected.includes(f));
+
+                    return {
+                        message: parsed.message,
+                        missing_columns: missing,
+                        extra_columns: extra,
+                        expected_columns: parsed.expected,
+                        found_columns: parsed.found
+                    } as any;
+                }
+
+                // Fallback for "Best Practice" shape (details key)
+                if (parsed.details && Array.isArray(parsed.details.missing_columns)) {
+                    return parsed.details;
+                }
+            }
+        } catch (e) {
+            console.warn('Error parsing structured validation error:', e);
+        }
+
+        return null;
+    }, [error]);
 
     if (!isOpen) return null;
 
@@ -178,52 +224,7 @@ export const DataSourceUploadModal: React.FC<DataSourceUploadModalProps> = ({
         onClose();
     };
 
-    /**
-     * Safely attempts to parse the error message as a structured schema error.
-     * Returns SchemaErrorDetails OR null if it's a generic string error.
-     */
-    const structuredError = React.useMemo(() => {
-        if (!error) return null;
 
-        try {
-            // Attempt to parse the error string if it looks like JSON
-            if (error.startsWith('{')) {
-                const parsed = JSON.parse(error);
-
-                // Check for the "File structure mismatch" shape seen in the logs
-                if (parsed.expected && parsed.found) {
-                    // Extract missing columns from the "errors" array or calculate them
-                    let missing: string[] = [];
-                    if (Array.isArray(parsed.errors)) {
-                        const missingStr = parsed.errors.find((e: string) => e.startsWith('Missing columns:'));
-                        if (missingStr) {
-                            missing = missingStr.replace('Missing columns:', '').split(',').map((s: string) => s.trim()).filter(Boolean);
-                        }
-                    }
-
-                    // Also calculate extra columns (found but not expected)
-                    const extra = parsed.found.filter((f: string) => !parsed.expected.includes(f));
-
-                    return {
-                        message: parsed.message,
-                        missing_columns: missing,
-                        extra_columns: extra,
-                        expected_columns: parsed.expected,
-                        found_columns: parsed.found
-                    } as any;
-                }
-
-                // Fallback for "Best Practice" shape (details key)
-                if (parsed.details && Array.isArray(parsed.details.missing_columns)) {
-                    return parsed.details;
-                }
-            }
-        } catch (e) {
-            console.warn('Error parsing structured validation error:', e);
-        }
-
-        return null;
-    }, [error]);
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">

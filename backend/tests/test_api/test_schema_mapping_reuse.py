@@ -15,9 +15,8 @@ from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.datasource import SchemaMapping
+from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
-from app.models.datasource import DataSource
 
 
 @pytest.mark.asyncio
@@ -68,7 +67,7 @@ STYLE-001,PO-ABC,100,2026-01-05
         files=files,
         headers=auth_headers,
     )
-    assert upload_resp.status_code == 200
+    assert upload_resp.status_code == 201
     raw_import_id = upload_resp.json()["raw_import_id"]
 
     # ========================================================================
@@ -117,7 +116,7 @@ STYLE-002,PO-DEF,200,1.5,2026-01-05
         files=files_2,
         headers=auth_headers,
     )
-    assert upload_resp_2.status_code == 200
+    assert upload_resp_2.status_code == 201
     raw_import_id_2 = upload_resp_2.json()["raw_import_id"]
 
     # ========================================================================
@@ -213,9 +212,8 @@ async def test_schema_mapping_version_increments_correctly(
 
     versions_created = []
 
-    # Create 3 mappings in succession
     for i in range(1, 4):
-        csv_data = f"Col{i},Value\ndata,{i}\n"
+        csv_data = f"Col1,Value\ndata,{i}\n"
         files = {"file": (f"test_v{i}.csv", csv_data, "text/csv")}
 
         upload_resp = await async_client.post(
@@ -223,15 +221,19 @@ async def test_schema_mapping_version_increments_correctly(
             files=files,
             headers=auth_headers,
         )
+        assert upload_resp.status_code == 201
         raw_import_id = upload_resp.json()["raw_import_id"]
+
+        targets = ["style_number", "po_number", "actual_qty"]
 
         confirm_payload = {
             "raw_import_id": raw_import_id,
             "production_line_id": line_id,
             "factory_id": factory_id,
-            "time_column": f"Col{i}",  # Required field
+            "time_column": "Col1",  # Required field
+            "data_source_id": line_id,
             "mappings": [
-                {"source_column": f"Col{i}", "target_field": "style_number"},
+                {"source_column": "Col1", "target_field": targets[i-1]},
             ],
         }
 

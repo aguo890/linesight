@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@/test/utils';
-import { Card } from '../Card';
+import { Card } from '@/components/ui/Card';
 
 describe('Card Component', () => {
   it('renders children content', () => {

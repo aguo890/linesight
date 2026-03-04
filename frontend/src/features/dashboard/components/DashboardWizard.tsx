@@ -4,17 +4,18 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Upload, CheckCircle, Layout, Factory, ChevronRight, Settings, AlertCircle, Loader2 } from 'lucide-react';
 // Note: useNavigate and canManageInfrastructure removed - no longer navigating to add line from wizard
 import { useTranslation } from 'react-i18next';
 import { WizardStep1Upload } from './wizard/WizardStep1Upload';
 import { WizardStep2Mapping } from './wizard/WizardStep2Mapping';
 import { WizardStep3Widgets } from './wizard/WizardStep3Widgets';
-import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource } from '@/lib/ingestionApi';
-import { listFactories, listDataSources, type DataSource as FactoryDataSource } from '@/lib/factoryApi';
+import { getAvailableFields, getDataSourcesForLine, getDataSourceSchema, confirmMapping, promoteToProduction, processFile, type ColumnMapping, type AvailableField, type DataSource as IngestionDataSource } from '@/lib/ingestionApi';
+import { listFactories, listDataSources } from '@/lib/factoryApi';
+import type { ClientDataSource as FactoryDataSource } from '@/lib/datasourceApi';
 import { LayoutMiniMap } from './LayoutMiniMap';
-import { WIDGET_DEFINITIONS, getCompatibilityStatus } from '../registry';
+import { WIDGET_DEFINITIONS, getCompatibilityStatus } from '@/features/dashboard/registry';
 
 export interface DashboardWizardProps {
     isOpen: boolean;
@@ -48,7 +49,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     const [availableFields, setAvailableFields] = useState<AvailableField[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [dataSourceId, setDataSourceId] = useState<string | null>(null);
-    const [existingDataSources, setExistingDataSources] = useState<DataSource[]>([]);
+    const [existingDataSources, setExistingDataSources] = useState<IngestionDataSource[]>([]);
     const [dashboardName, setDashboardName] = useState('');
 
     const [factories, setFactories] = useState<{ id: string, name: string, code?: string }[]>([]);
@@ -58,6 +59,10 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
 
     const [isLoadingContext, setIsLoadingContext] = useState(false);
     const [isLoadingSources, setIsLoadingSources] = useState(false);
+
+    // Refs for safe auto-selection and preventing network spam
+    const hasAutoSelected = useRef(false);
+    const fetchedFactoryId = useRef<string | null>(null);
 
     // Widget Selection State (Lifted for Sidebar Preview)
     const [selectedWidgets, setSelectedWidgets] = useState<string[]>([]);
@@ -113,18 +118,34 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
     }, [isOpen, preselectedFactoryId, preselectedDataSourceId]);
 
     useEffect(() => {
+        // Reset state if the factory changes
+        if (selectedFactoryId && fetchedFactoryId.current !== selectedFactoryId) {
+            hasAutoSelected.current = false;
+        }
+
         if (selectedFactoryId) {
             const fetchSources = async () => {
+                // GUARD: Only fetch if we haven't already fetched for this factory
+                if (fetchedFactoryId.current === selectedFactoryId) return;
+
                 setIsLoadingSources(true);
                 try {
                     const factorySources = await listDataSources(selectedFactoryId);
                     setDataSources(factorySources);
-                    if (!selectedDataSourceId && !preselectedDataSourceId && factorySources.length > 0) {
-                        setSelectedDataSourceId(factorySources[0].id);
-                    } else if (preselectedDataSourceId) {
-                        setSelectedDataSourceId(preselectedDataSourceId);
-                    } else if (!selectedDataSourceId && factorySources.length === 0) {
-                        setSelectedDataSourceId('');
+                    fetchedFactoryId.current = selectedFactoryId; // Mark as fetched
+
+                    // Auto-selection logic
+                    if (!hasAutoSelected.current && !selectedDataSourceId) {
+                        if (!preselectedDataSourceId && factorySources.length > 0) {
+                            setSelectedDataSourceId(factorySources[0].id);
+                            hasAutoSelected.current = true;
+                        } else if (preselectedDataSourceId) {
+                            setSelectedDataSourceId(preselectedDataSourceId);
+                            hasAutoSelected.current = true;
+                        } else if (factorySources.length === 0) {
+                            setSelectedDataSourceId('');
+                            hasAutoSelected.current = true;
+                        }
                     }
                 } catch (error) {
                     console.error('Failed to fetch data sources:', error);
@@ -138,8 +159,9 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
         } else {
             setDataSources([]);
             setSelectedDataSourceId('');
+            fetchedFactoryId.current = null;
         }
-    }, [selectedFactoryId, preselectedDataSourceId]);
+    }, [selectedFactoryId, preselectedDataSourceId, selectedDataSourceId]);
 
     useEffect(() => {
         const checkExistingData = async () => {
@@ -205,7 +227,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
      * COMPLETE files: Load existing schema and go to mapping review
      * INCOMPLETE files: Trigger processing flow to complete HITL pipeline
      */
-    const handleUseExisting = async (source: DataSource, name: string) => {
+    const handleUseExisting = async (source: IngestionDataSource, name: string) => {
         setIsSubmitting(true);
         setDashboardName(name);
 
@@ -518,7 +540,7 @@ export const DashboardWizard: React.FC<DashboardWizardProps> = ({
                                 {/* OPTION A: Skip to Widgets for Mature Data Sources */}
                                 {(() => {
                                     const selectedSource = dataSources.find(ds => ds.id === selectedDataSourceId);
-                                    if (selectedSource?.has_active_schema && isSelectionComplete) {
+                                    if (selectedSource?.hasActiveSchema && isSelectionComplete) {
                                         return (
                                             <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-5 space-y-3">
                                                 <div className="flex items-center text-emerald-700 dark:text-emerald-400">

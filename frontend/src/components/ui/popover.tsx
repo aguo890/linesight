@@ -36,31 +36,53 @@ export const Popover: React.FC<PopoverProps> = ({ children, open, onOpenChange }
     );
 };
 
-export const PopoverTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }>(
-    ({ children, asChild, onClick, ...props }, ref) => {
-        const context = React.useContext(PopoverContext);
-        if (!context) throw new Error("PopoverTrigger must be used within Popover");
+/**
+ * Utility to merge refs safely.
+ */
+function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
+    return (value: T) => {
+        refs.forEach((ref) => {
+            if (typeof ref === 'function') {
+                ref(value);
+            } else if (ref != null) {
+                (ref as React.MutableRefObject<T | null>).current = value;
+            }
+        });
+    };
+}
 
-        const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-            onClick?.(e);
-            context.setIsOpen(!context.isOpen);
-        };
+interface PopoverTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    asChild?: boolean;
+    ref?: React.Ref<HTMLButtonElement>;
+}
 
-        if (asChild && React.isValidElement(children)) {
-            return React.cloneElement(children as React.ReactElement<any>, {
-                onClick: handleClick,
-                ref,
-                ...props
-            });
-        }
+export const PopoverTrigger = ({ children, asChild, onClick, ref, ...props }: PopoverTriggerProps) => {
+    const context = React.useContext(PopoverContext);
+    if (!context) throw new Error("PopoverTrigger must be used within Popover");
 
-        return (
-            <button ref={ref} onClick={handleClick} {...props}>
-                {children}
-            </button>
-        );
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        context.setIsOpen(!context.isOpen);
+    };
+
+    if (asChild && React.isValidElement(children)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const childRef = (children as any).ref;
+
+        return React.cloneElement(children as React.ReactElement<any>, {
+            ...props,
+            onClick: handleClick,
+            // eslint-disable-next-line react-hooks/refs
+            ref: mergeRefs(ref, childRef)
+        });
     }
-);
+
+    return (
+        <button ref={ref} onClick={handleClick} {...props}>
+            {children}
+        </button>
+    );
+};
 PopoverTrigger.displayName = "PopoverTrigger";
 
 export const PopoverContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { side?: 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end' }>(

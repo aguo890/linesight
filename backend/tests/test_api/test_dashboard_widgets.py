@@ -8,8 +8,7 @@ from decimal import Decimal
 import pytest
 from httpx import AsyncClient
 
-from app.enums import OrderStatus, PeriodType, ShiftType
-from app.models.analytics import DHUReport
+from app.enums import OrderStatus, ShiftType
 from app.models.datasource import DataSource
 from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
@@ -41,11 +40,11 @@ async def test_get_dhu_quality_trend(
 
     # Create dummy style/order/line first if not exists
     # reusing the factory created above
-    
+
     style = Style(factory_id=factory.id, style_number="STY-DHU")
     db_session.add(style)
     await db_session.flush()
-    
+
     order = Order(style_id=style.id, po_number="PO-DHU", quantity=1000)
     db_session.add(order)
     await db_session.flush()
@@ -70,7 +69,7 @@ async def test_get_dhu_quality_trend(
         # dhu = defects / units * 100 => defects = dhu * units / 100
         units = 1000
         defects = int(dhu_val * units / 100)
-        
+
         inspection = QualityInspection(
             production_run_id=run.id,
             units_checked=units,
@@ -80,15 +79,15 @@ async def test_get_dhu_quality_trend(
             inspected_at=datetime.now()
         )
         db_session.add(inspection)
-        
+
     await db_session.commit()
 
     today = datetime.now().date()
     start_date = today - timedelta(days=6)
-    
+
     # 1. Call API with explicit date range
     response = await async_client.get(
-        "/api/v1/analytics/dhu", 
+        "/api/v1/analytics/dhu",
         params={
             "date_from": start_date.isoformat(),
             "date_to": today.isoformat()
@@ -106,7 +105,7 @@ async def test_get_dhu_quality_trend(
     assert "dhu" in first_point
 
     first_dhu = data[0]["dhu"]
-    
+
     # Check trend (Assuming API returns ordered by date ascending)
     assert float(first_dhu) > 1.0
 
@@ -200,13 +199,13 @@ async def test_get_style_progress(
     assert response.status_code == 200
 
     data = response.json()["active_styles"]
-    
+
     # Check for specific "Story" elements
     statuses = [item["status"] for item in data]
     assert "In Progress" in statuses # Was "On Track"
-    
+
     # Note: "Behind" logic in API is not explicit in the snippet I saw ("In Progress" for >0).
-    # The snippet showed: Pending, In Progress, Completed. 
+    # The snippet showed: Pending, In Progress, Completed.
     # It seems "Behind" status calculation might be missing in the current endpoint code I viewed?
     # Lines 433-441 in analytics.py only show Pending, In Progress, Completed.
     # So checking for "Behind" might fail if logic was removed.

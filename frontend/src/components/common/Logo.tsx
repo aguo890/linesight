@@ -7,7 +7,7 @@
 import React from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import logo from '../../assets/images/logo.svg?url';
+import logo from '@/assets/images/logo.svg?url';
 
 // Helper for Tailwind class merging
 function cn(...inputs: ClassValue[]) {

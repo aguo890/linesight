@@ -35,7 +35,7 @@ export const customInstance = <T>(
         cancelToken: source.token,
     }).then(({ data }) => data);
 
-    // @ts-expect-error
+    // @ts-expect-error: Legacy API mock bypass
     promise.cancel = () => {
         source.cancel('Query was cancelled');
     };

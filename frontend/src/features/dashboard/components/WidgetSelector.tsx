@@ -7,7 +7,7 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Plus, Lock, AlertCircle, Sparkles, CheckCircle, CheckSquare } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { WIDGET_DEFINITIONS, getCompatibilityStatus, type WidgetCategory, type CompatibilityStatus } from '../registry';
+import { WIDGET_DEFINITIONS, getCompatibilityStatus, type WidgetCategory, type CompatibilityStatus } from '@/features/dashboard/registry';
 import { MicroPreview, type SampleDataMap } from './MicroPreview';
 
 interface WidgetSelectorProps {

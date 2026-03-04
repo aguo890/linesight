@@ -10,12 +10,12 @@ import { X, Users, Trash2, ShieldAlert, Pencil, Check } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { removeUserScope, type MemberRead } from '../../../api/endpoints/team/teamApi';
+import { removeUserScope, type MemberRead } from '@/api/endpoints/team/teamApi';
 import {
     useUpdateDataSourceApiV1DataSourcesDataSourceIdPut,
     useDeleteDataSourceApiV1DataSourcesDataSourceIdDelete
-} from '../../../api/endpoints/data-sources/data-sources';
-import type { DataSourceRead as DataSource } from '../../../api/model';
+} from '@/api/endpoints/data-sources/data-sources';
+import type { DataSourceRead as DataSource } from '@/api/model';
 
 interface DataSourceDetailsDrawerProps {
     dataSource: DataSource | null;

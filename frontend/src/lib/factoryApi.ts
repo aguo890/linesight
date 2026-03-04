@@ -9,21 +9,84 @@ import api from './api';
 import {
     type FactoryRead,
     type DataSourceRead
-} from '../api/model';
+} from '@/api/model';
+import {
+    type ClientDataSource,
+    adaptDataSourceToClient
+} from './datasourceApi';
 
-export const listFactories = async (): Promise<FactoryRead[]> => {
+/**
+ * Stable frontend contract for Factory, decoupled from backend schema.
+ */
+export interface ClientFactory {
+    id: string;
+    name: string;
+    code: string;
+    location: string;
+    city: string;
+    country: string;
+    timezone: string;
+    isActive: boolean;
+    settings: any;
+    organizationId: string;
+    locale: string;
+    isMockedFallback: boolean;
+    dataSources?: ClientDataSource[]; // Enriched in UI or some endpoints
+}
+
+/**
+ * Adapter function to map backend FactoryRead to ClientFactory.
+ */
+export const adaptFactoryToClient = (data: FactoryRead | null | undefined): ClientFactory => {
+    if (!data) {
+        return {
+            id: '',
+            name: 'Unknown Factory',
+            code: '',
+            location: '',
+            city: '',
+            country: '',
+            timezone: 'UTC',
+            isActive: false,
+            settings: {},
+            organizationId: '',
+            locale: 'en-US',
+            isMockedFallback: true
+        };
+    }
+
+    // Flag as mock if critical identification fields are missing
+    const isMockedFallback = !data.id || !data.name;
+
+    return {
+        id: data.id || `mock-${Date.now()}`,
+        name: data.name || 'Unnamed Factory',
+        code: data.code || '',
+        location: (data as any).location || '',
+        city: (data as any).city || '',
+        country: (data as any).country || '',
+        timezone: (data as any).timezone || 'UTC',
+        isActive: (data as any).is_active ?? true,
+        settings: data.settings || {},
+        organizationId: data.organization_id || '',
+        locale: (data as any).locale || 'en-US',
+        isMockedFallback
+    };
+};
+
+export const listFactories = async (): Promise<ClientFactory[]> => {
     const response = await api.get('/factories/');
-    return response.data;
+    return (response.data || []).map((f: FactoryRead) => adaptFactoryToClient(f));
 };
 
-export const getFactory = async (id: string): Promise<FactoryRead> => {
+export const getFactory = async (id: string): Promise<ClientFactory> => {
     const response = await api.get(`/factories/${id}`);
-    return response.data;
+    return adaptFactoryToClient(response.data);
 };
 
-export const listDataSources = async (factoryId: string): Promise<DataSourceRead[]> => {
+export const listDataSources = async (factoryId: string): Promise<ClientDataSource[]> => {
     const response = await api.get(`/factories/${factoryId}/data-sources`);
-    return response.data;
+    return (response.data || []).map((ds: DataSourceRead) => adaptDataSourceToClient(ds));
 };
 
 export const resetSystemState = async (): Promise<{ status: string; message: string }> => {
@@ -31,40 +94,36 @@ export const resetSystemState = async (): Promise<{ status: string; message: str
     return response.data;
 };
 
-export const createFactory = async (data: { name: string; code?: string; location?: string; country?: string; timezone?: string }): Promise<FactoryRead> => {
+export const createFactory = async (data: { name: string; code?: string; location?: string; country?: string; timezone?: string }): Promise<ClientFactory> => {
     const response = await api.post('/factories/', data);
-    return response.data;
+    return adaptFactoryToClient(response.data);
 };
 
-export const updateFactory = async (factoryId: string, data: { name?: string; code?: string; settings?: any }): Promise<FactoryRead> => {
+export const updateFactory = async (factoryId: string, data: { name?: string; code?: string; settings?: any }): Promise<ClientFactory> => {
     const response = await api.patch(`/factories/${factoryId}`, data);
-    return response.data;
+    return adaptFactoryToClient(response.data);
 };
 
-// Adapted to use data-sources endpoint, mapping older "ProductionLine" params to new schema if needed
-export const createDataSource = async (factoryId: string, data: { name: string; code?: string; description?: string; specialty?: string; settings?: any }): Promise<DataSourceRead> => {
-    // Backend expects specific fields. 'name' replaces 'source_name'? Or 'source_name' is required?
-    // The previous analysis showed backend requires `source_name`.
+export const createDataSource = async (factoryId: string, data: { name: string; code?: string; description?: string; specialty?: string; settings?: any }): Promise<ClientDataSource> => {
     const payload = {
         ...data,
-        source_name: data.name, // Ensure source_name is populated
-        production_line_id: "legacy_compat", // If schema still demands it
+        source_name: data.name,
+        production_line_id: "legacy_compat",
     };
     const response = await api.post(`/factories/${factoryId}/data-sources`, payload);
-    return response.data;
+    return adaptDataSourceToClient(response.data);
 };
 
 export const deleteFactory = async (factoryId: string): Promise<void> => {
     await api.delete(`/factories/${factoryId}`);
 };
 
-export const getDataSource = async (dsId: string): Promise<DataSourceRead> => {
+export const getDataSourceById = async (dsId: string): Promise<ClientDataSource> => {
     const response = await api.get<DataSourceRead>(`/factories/data-sources/${dsId}`);
-    return response.data;
+    return adaptDataSourceToClient(response.data);
 };
 
 // Legacy compatibility: "ProductionLine" concept now maps to DataSource
-// This function is used by dashboard pages to resolve factory_id from a production_line_id
 export interface ProductionLine {
     id: string;
     factory_id: string;
@@ -74,8 +133,6 @@ export interface ProductionLine {
 }
 
 export const getProductionLine = async (lineId: string): Promise<ProductionLine> => {
-    // The production_line_id stored in DataSource actually refers to a DataSource ID
-    // in the current schema. We fetch the DataSource and map it to ProductionLine interface.
     const response = await api.get<DataSourceRead>(`/factories/data-sources/${lineId}`);
     const ds = response.data;
     return {

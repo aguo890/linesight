@@ -45,7 +45,7 @@ async def test_preview_dry_run_endpoint(
     # Verify data content
     assert data["raw_import_id"] == raw_import.id
     assert len(data["preview_records"]) > 0
-    
+
     # Verify preview records structure
     for record in data["preview_records"]:
         assert "row" in record

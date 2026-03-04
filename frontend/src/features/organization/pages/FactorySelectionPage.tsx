@@ -23,8 +23,8 @@ import {
 } from 'lucide-react';
 
 // API & Context
-import { listFactories, listDataSources, deleteFactory, type Factory } from '@/lib/factoryApi';
-import { listOrgMembers, type MemberRead } from '../../../api/endpoints/team/teamApi';
+import { listFactories, listDataSources, deleteFactory, type ClientFactory as Factory } from '@/lib/factoryApi';
+import { listOrgMembers, type MemberRead } from '@/api/endpoints/team/teamApi';
 import { useOrganization } from '@/contexts/OrganizationContext';
 
 // Components
@@ -72,9 +72,9 @@ export const FactorySelectionPage: React.FC = () => {
                 factoriesRes.map(async (factory: Factory) => {
                     try {
                         const sources = await listDataSources(factory.id);
-                        return { ...factory, data_sources: sources || [] };
+                        return { ...factory, dataSources: sources || [] };
                     } catch {
-                        return { ...factory, data_sources: [] };
+                        return { ...factory, dataSources: [] };
                     }
                 })
             );
@@ -102,7 +102,7 @@ export const FactorySelectionPage: React.FC = () => {
 
     // -- Helpers --
     const getManagerCount = (factory: Factory): number => {
-        const sourceIds = factory.data_sources?.map((ds) => ds.id) || [];
+        const sourceIds = factory.dataSources?.map((ds: any) => ds.id) || [];
         // Managers assigned to this factory directly OR to any data source in this factory
         const assignedManagers = members.filter(
             (m) =>
@@ -271,7 +271,7 @@ export const FactorySelectionPage: React.FC = () => {
 
                     {/* Factory Cards */}
                     {!isLoading && filteredFactories.map((factory) => {
-                        const sourceCount = factory.data_sources?.length || 0;
+                        const sourceCount = factory.dataSources?.length || 0;
                         const managerCount = getManagerCount(factory);
                         const isMenuOpen = activeMenuId === factory.id;
 
@@ -394,7 +394,7 @@ export const FactorySelectionPage: React.FC = () => {
                                             </div>
                                         </td>
                                         <td className="py-3 px-4 font-mono text-xs text-text-muted">{factory.code}</td>
-                                        <td className="py-3 px-4 text-text-muted">{factory.data_sources?.length || 0}</td>
+                                        <td className="py-3 px-4 text-text-muted">{factory.dataSources?.length || 0}</td>
                                         <td className="py-3 px-4 text-text-muted">{getManagerCount(factory)}</td>
                                         <td className="py-3 px-4 text-right relative">
                                             <button

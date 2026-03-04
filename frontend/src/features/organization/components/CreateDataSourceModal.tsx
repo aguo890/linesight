@@ -4,11 +4,11 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Settings, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '../../../api/endpoints/factories/factories';
+import { useCreateDataSourceApiV1FactoriesFactoryIdDataSourcesPost } from '@/api/endpoints/factories/factories';
 import type { QuotaStatus } from '@/lib/quotaApi';
 
 interface CreateDataSourceModalProps {
@@ -20,8 +20,7 @@ interface CreateDataSourceModalProps {
     quotaStatus: QuotaStatus | null;
 }
 
-export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
-    isOpen,
+const CreateDataSourceModalContent: React.FC<CreateDataSourceModalProps> = ({
     onClose,
     onSuccess,
     factoryId,
@@ -43,16 +42,8 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
     const factoryQuota = quotaStatus?.lines_per_factory.by_factory.find(f => f.factory_id === factoryId);
     const canCreate = factoryQuota?.can_create ?? true;
 
-    useEffect(() => {
-        if (!isOpen) {
-            setName('');
-            setCode('');
-            setDescription('');
-            setSpecialty('');
-            setUseDefaults(true);
-            setError(null);
-        }
-    }, [isOpen]);
+
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -107,7 +98,6 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
 
     const isSubmitting = createDataSourceMutation.isPending;
 
-    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -264,3 +254,14 @@ export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = ({
         </div>
     );
 };
+
+/**
+ * Self-Encapsulated Modal Wrapper
+ * Returns null when closed to ensure unmounting and fresh state initialization on next open.
+ */
+export const CreateDataSourceModal: React.FC<CreateDataSourceModalProps> = (props) => {
+    if (!props.isOpen) return null;
+    return <CreateDataSourceModalContent {...props} />;
+};
+
+export default CreateDataSourceModal;

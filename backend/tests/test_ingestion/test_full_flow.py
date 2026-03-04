@@ -2,14 +2,15 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
+import os
 from datetime import date
+
 import pandas as pd
 import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-import os
 
-from app.models.datasource import DataSource, SchemaMapping
+from app.models.datasource import SchemaMapping
 from app.models.production import ProductionRun
 from app.models.raw_import import RawImport
 from app.services.file_processor import FileProcessingService
@@ -76,8 +77,8 @@ async def test_full_data_flow(
         }
     ]
     df = pd.DataFrame(records)
-    
-    # Ensure constraints logic: Style must be created if not exists? 
+
+    # Ensure constraints logic: Style must be created if not exists?
     # IngestionOrchestrator.validator usually *resolves* styles.
     # If style doesn't exist, RecordValidator might fail or auto-create depending on config.
     # The default behavior for "Resolve Styles" usually assumes they exist or creates them?
@@ -85,10 +86,10 @@ async def test_full_data_flow(
     # But wait, the original test didn't create styles manually.
     # The original test passed `records` to `_insert_production_runs`.
     # `_insert_production_runs` likely did lookups.
-    
+
     # Let's Pre-Create Style and Order to be safe, as Ingestion typically requires them.
-    from app.models.production import Style, Order
-    
+    from app.models.production import Order, Style
+
     style = Style(
         factory_id=test_factory.id,
         style_number="STY-TEST-01",
@@ -98,14 +99,14 @@ async def test_full_data_flow(
     )
     db_session.add(style)
     await db_session.flush()
-    
+
     order = Order(
         style_id=style.id,
         po_number="PO-100",
         quantity=1000,
     )
     # Order doesn't have factory_id in recent schema view, inherited from Style.
-    
+
     db_session.add(order)
     await db_session.commit() # Commit to ensure they are visible
 
@@ -128,13 +129,13 @@ async def test_full_data_flow(
     )
     db_session.add(raw_import)
     await db_session.commit() # Commit so separate thread/session can see it if needed
-    
+
     # 5. Execute Promote
     processor = FileProcessingService(db_session)
-    
+
     # Use the PUBLIC method now
     await processor.promote_to_production(raw_import.id)
-    
+
     # 6. Run Aggregation
     from app.services.dhu_aggregation import run_dhu_aggregation
     await run_dhu_aggregation(db_session, days_back=7, factory_id=test_factory.id)
@@ -144,7 +145,7 @@ async def test_full_data_flow(
     assert len(runs.scalars().all()) == 1, "ProductionRun should be created"
 
     # 8. Check Analytics Endpoints
-    
+
     # Production Chart
     resp = await async_client.get(
         f"/api/v1/analytics/production-chart?line_id={test_line.id}", headers=auth_headers

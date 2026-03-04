@@ -17,8 +17,8 @@ import {
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
 import { ChartDirectionIsolator } from '@/components/common/ChartDirectionIsolator';
-import { type SmartWidgetProps } from '../config';
-import { TargetRealizationDataSchema } from '../registry';
+import { type SmartWidgetProps } from '@/features/dashboard/config';
+import { TargetRealizationDataSchema } from '@/features/dashboard/registry';
 import { z } from 'zod';
 import { useThemeColors } from '@/hooks/useThemeColor';
 

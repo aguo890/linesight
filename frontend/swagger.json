@@ -158,7 +158,7 @@
           "ingestion"
         ],
         "summary": "Upload File For Ingestion",
-        "description": "Upload a file and create a RawImport record.\n\nThis is step 1 of the HITL flow. The file is saved and parsed.\nStorage structure: uploads/{factory_id}/{data_source_id}/{year}/{month}/{filename}\n\nREQUIRES: factory_id - Data must be uploaded to a specific factory.\nOPTIONAL: data_source_id - If provided, upload is associated with a specific data source.",
+        "description": "Upload a file and create a RawImport record.\n\nThis is step 1 of the HITL flow. The file is saved and parsed.\nLogic delegated to IngestionService.",
         "operationId": "upload_file_for_ingestion_api_v1_ingestion_upload_post",
         "security": [
           {
@@ -225,7 +225,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -257,7 +257,7 @@
           "ingestion"
         ],
         "summary": "Process File",
-        "description": "Process an uploaded file through the Hybrid Waterfall Matching Engine.\n\nThis is step 2 of the HITL flow. Returns column mappings with confidence scores.",
+        "description": "Process an uploaded file through the Hybrid Waterfall Matching Engine.\n\nThis is step 2 of the HITL flow. Returns column mappings with confidence scores.\nLogic delegated to IngestionService.",
         "operationId": "process_file_api_v1_ingestion_process__raw_import_id__post",
         "parameters": [
           {
@@ -329,7 +329,7 @@
           "ingestion"
         ],
         "summary": "Confirm Mapping",
-        "description": "Confirm column mappings after user review.\n\nThis is step 3 of the HITL flow. Saves the mapping and optionally\nlearns from user corrections for future matching.",
+        "description": "Confirm column mappings after user review.\n\nThis is step 3 of the HITL flow. Saves the mapping and optionally\nlearns from user corrections for future matching.\nLogic delegated to IngestionService.",
         "operationId": "confirm_mapping_api_v1_ingestion_confirm_mapping_post",
         "requestBody": {
           "content": {
@@ -5988,7 +5988,14 @@
             "title": "Id"
           },
           "factory_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Factory Id"
           },
           "production_line_id": {
@@ -6072,7 +6079,6 @@
         "type": "object",
         "required": [
           "id",
-          "factory_id",
           "description",
           "is_active",
           "created_at"
@@ -10184,7 +10190,14 @@
             "title": "Target Efficiency Pct"
           },
           "factory_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Factory Id",
             "description": "ID of the factory this data source belongs to"
           },
@@ -10248,8 +10261,7 @@
         },
         "type": "object",
         "required": [
-          "name",
-          "factory_id"
+          "name"
         ],
         "title": "DataSourceCreate",
         "description": "Schema for creating a data source."
