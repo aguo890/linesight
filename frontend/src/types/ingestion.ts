@@ -183,8 +183,8 @@ export interface ConfirmMappingResponse {
 export interface FilePreview {
     raw_import_id: string;
     filename: string;
-    headers: string[];
-    sample_rows: unknown[][];
+    columns: string[];
+    data: unknown[][];
     total_rows: number;
     total_columns: number;
     status: string;
