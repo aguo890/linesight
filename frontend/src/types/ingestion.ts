@@ -181,10 +181,10 @@ export interface ConfirmMappingResponse {
  * File preview data with headers and sample rows.
  */
 export interface FilePreview {
-    raw_import_id: string;
     filename: string;
     columns: string[];
     data: unknown[][];
+    preview_rows: number;
     total_rows: number;
     total_columns: number;
     status: string;
