@@ -2,14 +2,14 @@
 # Use of this source code is governed by the proprietary license
 # found in the LICENSE file in the root directory of this source tree.
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.analytics import EfficiencyMetric
+from app.models.analytics import DHUReport, EfficiencyMetric
 from app.models.datasource import DataSource
 from app.models.drafts.compliance import (
     ComplianceStandard,
@@ -18,7 +18,9 @@ from app.models.drafts.compliance import (
 )
 from app.models.factory import Factory
 from app.models.production import Order, ProductionRun, Style
+from app.models.quality import QualityInspection
 from app.models.workforce import Worker, WorkerSkill
+from app.enums import PeriodType
 
 
 @pytest.fixture
@@ -122,8 +124,36 @@ async def analytics_data(db_session: AsyncSession, test_factory, test_line):
     )
     db_session.add(record)
 
+    # 6. Create Quality Inspection for DHU
+    inspection = QualityInspection(
+        production_run_id=run.id,
+        units_checked=100,
+        defects_found=5,
+        inspector_id=worker1.id,
+        inspected_at=datetime.utcnow(),
+    )
+    db_session.add(inspection)
+
+    # 7. Create DHU Report
+    dhu_report = DHUReport(
+        report_date=today,
+        avg_dhu=Decimal("5.0"),
+        total_inspected=100,
+        total_defects=5,
+        factory_id=test_factory.id,
+        period_type=PeriodType.DAILY,
+    )
+    db_session.add(dhu_report)
+
     await db_session.commit()
-    return {"run": run, "worker1": worker1, "worker2": worker2, "record": record}
+    return {
+        "run": run,
+        "worker1": worker1,
+        "worker2": worker2,
+        "record": record,
+        "inspection": inspection,
+        "dhu_report": dhu_report,
+    }
 
 
 @pytest.mark.asyncio
@@ -197,10 +227,94 @@ async def test_get_discrepancies_real(
     response = await async_client.get(
         "/api/v1/analytics/discrepancies", headers=auth_headers
     )
-    assert response.status_code == 200, f"Expected 200, got {response.status_code}: {response.text}"
+    assert response.status_code == 200, (
+        f"Expected 200, got {response.status_code}: {response.text}"
+    )
     data = response.json()
 
     discrepancies = data["discrepancies"]
     assert len(discrepancies) >= 1
     assert discrepancies[0]["issue_title"] == "Compliance Flagged"
     assert discrepancies[0]["severity"] == "High"  # Or whatever mapping logic uses
+
+
+@pytest.mark.asyncio
+async def test_get_dhu_trend_real(
+    async_client: AsyncClient, auth_headers: dict, analytics_data, test_line
+):
+    response = await async_client.get(
+        f"/api/v1/analytics/dhu?line_id={test_line.id}&days=7",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    # Expect list of DhuPoint objects
+    assert len(data) == 7
+    # Find today's point (should have DHU 5.0)
+    today_str = date.today().strftime("%Y-%m-%d")
+    today_point = next((p for p in data if p["date"] == today_str), None)
+    assert today_point is not None
+    assert float(today_point["dhu"]) == 5.0
+
+
+@pytest.mark.asyncio
+async def test_get_speed_quality_trend_real(
+    async_client: AsyncClient, auth_headers: dict, analytics_data, test_line
+):
+    response = await async_client.get(
+        f"/api/v1/analytics/speed-quality?line_id={test_line.id}&days=14",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    # Expect SpeedQualityResponse with data_points
+    assert "data_points" in data
+    points = data["data_points"]
+    assert len(points) == 15
+    # Find today's point (should have efficiency 85.5 and DHU 5.0)
+    today_str = date.today().strftime("%Y-%m-%d")
+    today_point = next((p for p in points if p["date"] == today_str), None)
+    assert today_point is not None
+    assert float(today_point["efficiency_pct"]) == 85.5
+    assert float(today_point["defects_per_hundred"]) == 5.0
+
+
+@pytest.mark.asyncio
+async def test_get_earned_minutes_stats_real(
+    async_client: AsyncClient, auth_headers: dict, analytics_data, test_line
+):
+    response = await async_client.get(
+        f"/api/v1/analytics/earned-minutes?line_id={test_line.id}",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "earned_minutes" in data
+    assert "total_available_minutes" in data
+    assert "efficiency_pct_aggregate" in data
+    # Check values based on fixture
+    # total_earned_minutes = sam_actual = 4500, total_available_minutes = operators_present * worked_minutes = 10 * 4800 = 48000
+    # weighted_efficiency = 9.375% rounded to 2 decimals = 9.38
+    assert float(data["earned_minutes"]) == 4500
+    assert float(data["total_available_minutes"]) == 48000
+    assert abs(float(data["efficiency_pct_aggregate"]) - 9.38) < 0.1
+
+
+@pytest.mark.asyncio
+async def test_get_complexity_stats_real(
+    async_client: AsyncClient, auth_headers: dict, analytics_data, test_line
+):
+    response = await async_client.get(
+        f"/api/v1/analytics/complexity-impact?line_id={test_line.id}",
+        headers=auth_headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert "data_points" in data
+    points = data["data_points"]
+    # Should have one point for the style we created
+    assert len(points) == 1
+    point = points[0]
+    assert point["style_code"] == "STY-ANA-001"
+    assert float(point["sam"]) == 10.0
+    assert float(point["efficiency_pct"]) == 85.5

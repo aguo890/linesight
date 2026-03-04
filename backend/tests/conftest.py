@@ -27,6 +27,8 @@ from sqlalchemy.pool import NullPool
 from app.core.database import get_db
 from app.main import app
 from app.models.base import Base
+import freezegun
+from app.api.deps import get_current_user
 
 # =============================================================================
 # Database Configuration (PostgreSQL Only)
@@ -36,11 +38,12 @@ from app.models.base import Base
 # Default to port 5434 (exposed by Docker) for local runs, or 5432 for CI/Docker internal runs
 TEST_DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+asyncpg://postgres:postgres@localhost:5434/linesight_test"
+    "postgresql+asyncpg://postgres:postgres@localhost:5434/linesight_test",
 )
 
 # Derive sync URL for legacy sync tests
 SYNC_TEST_DATABASE_URL = TEST_DATABASE_URL.replace("+asyncpg", "+psycopg2")
+
 
 @pytest.fixture(scope="session")
 def event_loop():
@@ -56,11 +59,7 @@ def event_loop():
 @pytest_asyncio.fixture(scope="session")
 async def db_engine():
     """Session-scoped async database engine using NullPool to prevent connection leaks."""
-    engine = create_async_engine(
-        TEST_DATABASE_URL,
-        poolclass=NullPool,
-        echo=False
-    )
+    engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool, echo=False)
     yield engine
     # CRITICAL: Dispose of the engine to close connections and prevent hangs
     await engine.dispose()
@@ -86,7 +85,7 @@ async def setup_database(db_engine):
         async with db_engine.begin() as conn:
             # PostgreSQL specific: bypass FK checks for mass creation/drop
             await conn.execute(text("SET session_replication_role = 'replica';"))
-            
+
             # Create tables using metadata to respect dependency graph
             await conn.run_sync(Base.metadata.create_all)
 
@@ -117,7 +116,7 @@ async def db_session(db_engine) -> AsyncGenerator[AsyncSession, None]:
         # 4. CLEANUP PHASE: Ensure complete rollback and closure to prevent locks
         await session.rollback()
         await session.close()
-        
+
         await transaction.rollback()
         await connection.close()
 
@@ -127,13 +126,13 @@ def sync_db_session(sync_db_engine) -> Generator[Session, None, None]:
     """Synchronous database session for non-async tests."""
     # 1. Create a specific connection
     connection = sync_db_engine.connect()
-    
+
     # 2. Begin a transaction
     transaction = connection.begin()
-    
+
     # 3. Bind the session to the connection
     session = Session(bind=connection, expire_on_commit=False)
-    
+
     try:
         yield session
     finally:
@@ -172,6 +171,38 @@ async def async_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, 
         yield db_session
 
     app.dependency_overrides[get_db] = override_get_db
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        yield ac
+
+    app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture(scope="function")
+async def fast_async_client(
+    db_session: AsyncSession, test_organization
+) -> AsyncGenerator[AsyncClient, None]:
+    """Optimized async client with auth bypass for ~15% speed improvement."""
+    from app.enums import UserRole
+
+    async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
+        yield db_session
+
+    # Create a mock user object that mimics User model attributes
+    mock_user = MagicMock()
+    mock_user.id = "test-user-id"
+    mock_user.email = "test@example.com"
+    mock_user.role = UserRole.SYSTEM_ADMIN
+    mock_user.organization_id = test_organization.id
+    mock_user.is_active = True
+    mock_user.is_verified = True
+
+    async def override_get_current_user():
+        return mock_user
+
+    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_current_user] = override_get_current_user
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
@@ -253,6 +284,27 @@ async def auth_headers(test_user) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
+@pytest_asyncio.fixture
+async def auth_headers_override(test_user) -> AsyncGenerator[dict, None]:
+    """
+    Auth headers with dependency override for speed.
+    Use with fast_async_client for optimal performance.
+    """
+    from app.api.deps import get_current_user
+    from app.core.security import create_access_token
+
+    async def override_get_current_user():
+        return test_user
+
+    app.dependency_overrides[get_current_user] = override_get_current_user
+    token = create_access_token(subject=test_user.id)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    yield headers
+
+    app.dependency_overrides.clear()
+
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_files():
     """Ensure dummy files exist for tests to prevent FileNotFoundError."""
@@ -261,28 +313,30 @@ def setup_test_files():
 
     # 1. Dummy Excel (Comprehensive for demo/pipeline tests)
     excel_path = base_dir / "perfect_production.xlsx"
-    df = pd.DataFrame({
-        "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
-        "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
-        "buyer": ["Buyer A", "Buyer B", "Buyer C", "Buyer D", "Buyer E"],
-        "production_date": [
-            str(date.today() - timedelta(days=4)),
-            str(date.today() - timedelta(days=3)),
-            str(date.today() - timedelta(days=2)),
-            str(date.today() - timedelta(days=1)),
-            str(date.today())
-        ],
-        "shift": ["day", "day", "night", "night", "day"],
-        "actual_qty": [100, 150, 200, 120, 180],
-        "planned_qty": [100, 150, 200, 120, 180],
-        "operators_present": [20, 20, 25, 22, 24],
-        "helpers_present": [5, 5, 5, 4, 6],
-        "defects": [0, 1, 0, 2, 0],
-        "dhu": [0.0, 0.67, 0.0, 1.67, 0.0],
-        "downtime_minutes": [0, 10, 0, 0, 5],
-        "downtime_reason": ["", "Breakdown", "", "", "Tea Break"],
-        "sam": [2.5, 2.5, 2.5, 3.0, 3.0]
-    })
+    df = pd.DataFrame(
+        {
+            "style_number": ["ST-001", "ST-002", "ST-003", "ST-004", "ST-005"],
+            "po_number": ["PO-1001", "PO-1002", "PO-1003", "PO-1004", "PO-1005"],
+            "buyer": ["Buyer A", "Buyer B", "Buyer C", "Buyer D", "Buyer E"],
+            "production_date": [
+                str(date.today() - timedelta(days=4)),
+                str(date.today() - timedelta(days=3)),
+                str(date.today() - timedelta(days=2)),
+                str(date.today() - timedelta(days=1)),
+                str(date.today()),
+            ],
+            "shift": ["day", "day", "night", "night", "day"],
+            "actual_qty": [100, 150, 200, 120, 180],
+            "planned_qty": [100, 150, 200, 120, 180],
+            "operators_present": [20, 20, 25, 22, 24],
+            "helpers_present": [5, 5, 5, 4, 6],
+            "defects": [0, 1, 0, 2, 0],
+            "dhu": [0.0, 0.67, 0.0, 1.67, 0.0],
+            "downtime_minutes": [0, 10, 0, 0, 5],
+            "downtime_reason": ["", "Breakdown", "", "", "Tea Break"],
+            "sam": [2.5, 2.5, 2.5, 3.0, 3.0],
+        }
+    )
     df.to_excel(excel_path, index=False)
 
     # Also create copies as Standard_Master_Widget.xlsx and others for specific tests
@@ -292,12 +346,14 @@ def setup_test_files():
 
     # 2. Dummy CSV
     csv_path = base_dir / "test_e2e.csv"
-    df_csv = pd.DataFrame({
-        "Date": [str(date.today())],
-        "Qty": [50],
-        "Style": ["ST-001"],
-        "PO": ["PO-1001"]
-    })
+    df_csv = pd.DataFrame(
+        {
+            "Date": [str(date.today())],
+            "Qty": [50],
+            "Style": ["ST-001"],
+            "PO": ["PO-1001"],
+        }
+    )
     df_csv.to_csv(csv_path, index=False)
     df_csv.to_csv(base_dir / "perfect_production.csv", index=False)
 
@@ -323,8 +379,19 @@ def mock_env_vars(monkeypatch, mocker):
     )
 
     mocker.patch(
-        "app.private_core.etl_agent.SemanticETLAgent._init_client", return_value=MagicMock()
+        "app.private_core.etl_agent.SemanticETLAgent._init_client",
+        return_value=MagicMock(),
     )
+
+
+@pytest.fixture
+def frozen_time():
+    """
+    Freeze time for deterministic date-based tests.
+    Usage: @pytest.mark.usefixtures("frozen_time")
+    """
+    with freezegun.freeze_time("2026-01-15 10:30:00", tz_offset=0):
+        yield
 
 
 # =============================================================================

@@ -9,7 +9,7 @@ Fixes the '1700% Bug' by enforcing strict weighted aggregation rules.
 """
 
 from datetime import date, datetime, timedelta
-from typing import Any
+from typing import Any, Sequence
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +19,28 @@ from app.core.logging import get_logger
 from app.models.production import Order, ProductionRun
 
 logger = get_logger(__name__)
+
+
+def safe_divide(numerator: float, denominator: float, default: float = 0.0) -> float:
+    """Safe division with default fallback. Returns default if denominator is zero or negative."""
+    if denominator is None or numerator is None:
+        return default
+    try:
+        if denominator <= 0:
+            return default
+        return numerator / denominator
+    except (ZeroDivisionError, TypeError, ValueError):
+        return default
+
+
+def physics_clamp(value: float, min_val: float = 0.0, max_val: float = 150.0) -> float:
+    """Clamp a value to physical limits (e.g., efficiency cannot exceed 150%)."""
+    if value is None:
+        return min_val
+    try:
+        return max(min_val, min(value, max_val))
+    except (TypeError, ValueError):
+        return min_val
 
 
 class AnalyticsService:
@@ -39,7 +61,7 @@ class AnalyticsService:
 
     @staticmethod
     def calculate_available_minutes(
-        operators: int, helpers: int, minutes_worked: int
+        operators: int, helpers: int, minutes_worked: float
     ) -> float:
         """Core formula: (Operators + Helpers) * Shift Duration"""
         total_headcount = (operators or 0) + (helpers or 0)
@@ -51,12 +73,12 @@ class AnalyticsService:
         Weighted Efficiency = Sum(Earned) / Sum(Available).
         Prevents the 'averaging averages' bug.
         """
-        if available_minutes <= 0:
-            return 0.0
-        return round((earned_minutes / available_minutes) * 100, 2)
+        ratio = safe_divide(earned_minutes, available_minutes, default=0.0)
+        efficiency = ratio * 100.0
+        return round(physics_clamp(efficiency, min_val=0.0, max_val=150.0), 2)
 
     @classmethod
-    def aggregate_production_stats(cls, logs: list[Any]) -> dict[str, Any]:
+    def aggregate_production_stats(cls, logs: Sequence[Any]) -> dict[str, Any]:
         """
         Aggregates a list of production logs (SQLAlchemy models or dicts)
         to return a weighted efficiency score.
@@ -94,7 +116,7 @@ class AnalyticsService:
             )
 
             earned = cls.calculate_earned_minutes(qty, sam)
-            available = cls.calculate_available_minutes(ops, helpers, worked)
+            available = cls.calculate_available_minutes(ops, helpers, float(worked))
 
             total_earned += earned
             total_available += available
@@ -154,6 +176,7 @@ class AnalyticsService:
         """
         if not self.db:
             raise ValueError("Database session required for this method.")
+        assert self.db is not None
 
         # Build query with OPTIONAL line_id filter
         query = select(ProductionRun).where(
@@ -183,6 +206,10 @@ class AnalyticsService:
         """
         Get target realization stats (Actual vs Planned) for a specific date.
         """
+        if not self.db:
+            raise ValueError("Database session required for this method.")
+        assert self.db is not None
+
         if reference_date:
             ref_date = reference_date
         else:
@@ -225,6 +252,7 @@ class AnalyticsService:
         """
         if not self.db:
             return []
+        assert self.db is not None
 
         try:
             # 1. Resolve date range (default to today if not provided)
@@ -270,7 +298,9 @@ class AnalyticsService:
 
                 earned = self.calculate_earned_minutes(run.actual_qty, sam)
                 available = self.calculate_available_minutes(
-                    run.operators_present, run.helpers_present, run.worked_minutes
+                    run.operators_present,
+                    run.helpers_present,
+                    float(run.worked_minutes),
                 )
 
                 style_stats[name]["total_earned"] += earned
@@ -335,6 +365,7 @@ class AnalyticsService:
         # --- BREAKDOWN BY STYLE ---
         breakdown = []
         if self.db:
+            assert self.db is not None
             try:
                 # Query production runs with eager-loaded order->style relationships
                 query = (
