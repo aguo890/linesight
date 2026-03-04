@@ -13,7 +13,7 @@
  * 3. Displays mapping interface (WizardStep2Mapping)
  * 4. Saves confirmed mappings
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import api from '@/lib/api';
 import { useToast } from '@/contexts/ToastContext';
@@ -42,17 +42,7 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
     const [confirming, setConfirming] = useState(false);
     const { addToast } = useToast();
 
-    useEffect(() => {
-        if (isOpen && rawImportId) {
-            initializeFlow(rawImportId);
-        } else {
-            // Reset state when closed
-            setLoading(true);
-            setMappings([]);
-        }
-    }, [isOpen, rawImportId]);
-
-    const initializeFlow = async (id: string) => {
+    const initializeFlow = useCallback(async (id: string) => {
         setLoading(true);
 
         try {
@@ -76,7 +66,17 @@ export const MappingFlowModal: React.FC<MappingFlowModalProps> = ({
         } finally {
             setLoading(false);
         }
-    };
+    }, [addToast, onClose]);
+
+    useEffect(() => {
+        if (isOpen && rawImportId) {
+            initializeFlow(rawImportId);
+        } else {
+            // Reset state when closed
+            setLoading(true);
+            setMappings([]);
+        }
+    }, [isOpen, rawImportId, initializeFlow]);
 
     const handleConfirmMapping = async (confirmedMappings: any[]) => {
         if (!rawImportId || !dataSourceId) {

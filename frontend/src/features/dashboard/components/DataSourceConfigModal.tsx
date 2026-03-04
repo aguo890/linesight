@@ -4,7 +4,7 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { X, Settings, Database, Clock, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getDataSourceByLine, updateDataSource, type ClientDataSource as DataSource } from '@/lib/datasourceApi';
@@ -31,13 +31,7 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
     const [timeColumn, setTimeColumn] = useState('');
     const [description, setDescription] = useState('');
 
-    useEffect(() => {
-        if (isOpen && lineId) {
-            fetchDataSource();
-        }
-    }, [isOpen, lineId]);
-
-    const fetchDataSource = async () => {
+    const fetchDataSource = useCallback(async () => {
         setLoading(true);
         setError(null);
         setSuccess(false);
@@ -56,7 +50,13 @@ export const DataSourceConfigModal: React.FC<DataSourceConfigModalProps> = ({
         } finally {
             setLoading(false);
         }
-    };
+    }, [lineId, t]);
+
+    useEffect(() => {
+        if (isOpen && lineId) {
+            fetchDataSource();
+        }
+    }, [isOpen, lineId, fetchDataSource]);
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
