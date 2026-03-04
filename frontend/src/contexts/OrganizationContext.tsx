@@ -22,7 +22,7 @@ export const OrganizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const [error, setError] = useState<string | null>(null);
 
     const refreshQuota = useCallback(async () => {
-        setIsLoading(true);
+        // Don't set loading to true on refresh to avoid UI flicker
         setError(null);
         try {
             const data = await getQuotaStatus();
