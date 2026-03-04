@@ -10,3 +10,6 @@ omit =
     tests/*
     *migrations*
     *__pycache__*
+
+[report]
+fail_under = 68
