@@ -31,13 +31,15 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
 
 
     const loadPreview = useCallback(async (id: string) => {
+        console.log('[FilePreviewModal] Loading preview for fileId:', id);
         setLoading(true);
         setError(null);
         try {
             const previewData = await getFilePreview(id);
+            console.log('[FilePreviewModal] API returned:', previewData);
             setData(previewData);
         } catch (err: unknown) {
-            console.error('Preview failed:', err);
+            console.error('[FilePreviewModal] Preview failed:', err);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const error = err as any;
             setError(
@@ -108,11 +110,11 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/30 rounded-md">
                                     <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                     <span className="text-sm font-medium text-blue-900 dark:text-blue-200">
-                                        {t('file_preview.showing_rows', { count: data.sample_rows.length })}
+                                         {t('file_preview.showing_rows', { count: data.data?.length || 0 })}
                                     </span>
                                 </div>
                                 <div className="text-sm text-gray-500 dark:text-slate-400">
-                                    {t('file_preview.columns_detected', { count: data.headers?.length || 0 })}
+                                     {t('file_preview.columns_detected', { count: data.columns?.length || 0 })}
                                 </div>
                             </div>
 
@@ -122,7 +124,7 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                                     <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
                                         <thead className="bg-gray-50 dark:bg-slate-800/50">
                                             <tr>
-                                                {(data.headers || []).map((col, idx) => (
+                                                 {(data.columns || []).map((col: string, idx: number) => (
                                                     <th
                                                         key={idx}
                                                         className="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider whitespace-nowrap border-r border-gray-200 dark:border-slate-700 last:border-r-0"
@@ -133,9 +135,9 @@ export const FilePreviewModal: React.FC<FilePreviewModalProps> = ({
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white dark:bg-slate-900 divide-y divide-gray-200 dark:divide-slate-700">
-                                            {(data.sample_rows || []).map((row, rowIdx) => (
+                                             {(data.data || []).map((row: unknown[], rowIdx: number) => (
                                                 <tr key={rowIdx} className="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                                                    {(data.headers || []).map((_, colIdx) => (
+                                                     {(data.columns || []).map((_, colIdx: number) => (
                                                         <td
                                                             key={`${rowIdx}-${colIdx}`}
                                                             className="px-4 py-3 text-sm text-gray-900 dark:text-gray-300 whitespace-nowrap border-r border-gray-200 dark:border-slate-700 last:border-r-0"

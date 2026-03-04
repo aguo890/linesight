@@ -22,21 +22,21 @@ export const OrganizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const [error, setError] = useState<string | null>(null);
 
     const refreshQuota = useCallback(async () => {
-        // Don't set loading to true on refresh to avoid UI flicker
+        setIsLoading(true);
         setError(null);
         try {
             const data = await getQuotaStatus();
             setQuotaStatus(data);
-        } catch (err: any) {
-            console.error('Failed to load quota status:', err);
-            // Only set error if we don't have data yet, or depending on UX preference
-            if (!quotaStatus) {
-                setError(err.response?.status === 401 ? 'Not logged in' : 'Failed to load organization data');
+            if (!data) {
+                setError('Failed to load organization data');
             }
+        } catch (err: any) {
+            console.error('Quota Refresh Error:', err);
+            setError(err.response?.status === 401 ? 'Not logged in' : 'Failed to load organization data');
         } finally {
             setIsLoading(false);
         }
-    }, [quotaStatus]);
+    }, []);
 
     useEffect(() => {
         // Initial load
