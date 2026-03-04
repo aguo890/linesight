@@ -1,0 +1,12 @@
+[run]
+omit =
+    app/db/seed.py
+    app/db/seed/*
+    app/public_core/etl_mock.py
+    app/core/llm.py
+    app/core/scheduler.py
+    app/worker.py
+    app/tests/*
+    tests/*
+    *migrations*
+    *__pycache__*
