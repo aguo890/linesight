@@ -82,8 +82,15 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                             <span>{t('dashboard_header.status.updated', { time: lastUpdated })}</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <h1 className="text-2xl font-bold text-text-main tracking-tight">
+                            <h1 className="text-2xl font-bold text-text-main tracking-tight flex items-center gap-3">
                                 {dashboardName || t('dashboard_header.status.loading')}
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-error/10 text-error border border-error/50 shadow-sm animate-pulse">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-error"></span>
+                                    </span>
+                                    MOCK PLC DATA
+                                </span>
                             </h1>
                             {dataSourceName && (
                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-brand/10 text-brand border border-brand/20 shadow-sm">

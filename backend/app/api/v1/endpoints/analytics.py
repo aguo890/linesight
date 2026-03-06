@@ -12,12 +12,12 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Security
 from sqlalchemy import case, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.api.deps import CurrentUser, get_db
+from app.api.deps import get_current_user, get_db
 from app.models import ProductionLine  # Alias for DataSource
 from app.models.analytics import DHUReport, EfficiencyMetric
 from app.models.drafts.compliance import TraceabilityRecord, VerificationStatus
@@ -58,7 +58,7 @@ router = APIRouter()
 
 @router.get("/overview", response_model=OverviewStats)
 async def get_overview_stats(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -161,7 +161,7 @@ async def get_overview_stats(
 
 @router.get("/production-chart", response_model=ProductionChartData)
 async def get_production_chart(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -199,17 +199,17 @@ async def get_production_chart(
         actual = row["actual"] if row else 0
         target = row["target"] if row else 0  # Default target 0 if no run
 
-        # Use day name (Mon, Tue) as label for frontend consistency
         # Determine date format
         date_fmt = "%m/%d/%Y"
-        if current_user.preferences:
+        prefs_val = current_user.get('preferences')
+        if prefs_val:
             try:
                 import json
 
                 prefs = (
-                    json.loads(current_user.preferences)
-                    if isinstance(current_user.preferences, str)
-                    else current_user.preferences
+                    json.loads(prefs_val)
+                    if isinstance(prefs_val, str)
+                    else prefs_val
                 )
                 if isinstance(prefs, dict):
                     user_fmt = prefs.get("date_format")
@@ -235,7 +235,7 @@ async def get_production_chart(
 
 @router.get("/workers/lowest-performers", response_model=LowestPerformersResponse)
 async def get_lowest_performers(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     limit: int = Query(5, ge=1, le=50),
 ):
@@ -281,7 +281,7 @@ async def get_lowest_performers(
 
 @router.get("/discrepancies", response_model=DiscrepanciesResponse)
 async def get_discrepancies(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
@@ -337,7 +337,7 @@ async def get_discrepancies(
 
 @router.get("/production/styles", response_model=StyleProgressResponse)
 async def get_style_progress(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -413,17 +413,30 @@ async def get_style_progress(
         result = await db.execute(query)
         orders = result.scalars().all()
 
+        # --- OPTIMIZED SINGLE QUERY (Fixing N+1 bottleneck) ---
+        # 1. Base query for actual quantities per order
+        qty_query = select(
+            ProductionRun.order_id, 
+            func.sum(ProductionRun.actual_qty).label("total_qty")
+        )
+        if line_id:
+            qty_query = qty_query.where(ProductionRun.data_source_id == line_id)
+        qty_query = qty_query.group_by(ProductionRun.order_id).subquery()
+
+        # 2. Main query joining the aggregated quantities
+        query = (
+            select(Order, qty_query.c.total_qty)
+            .outerjoin(qty_query, Order.id == qty_query.c.order_id)
+            .where(Order.id.in_([order.id for order in orders]))
+            .options(selectinload(Order.style))
+        )
+        
+        result = await db.execute(query)
+        order_qty_pairs = result.all()
+
         styles = []
-        for order in orders:
-            run_query = select(func.sum(ProductionRun.actual_qty)).where(
-                ProductionRun.order_id == order.id
-            )
-
-            if line_id:
-                run_query = run_query.where(ProductionRun.data_source_id == line_id)
-
-            run_res = await db.execute(run_query)
-            total_produced = run_res.scalar() or 0
+        for order, total_produced in order_qty_pairs:
+            total_produced = total_produced or 0
 
             target = order.quantity or 0
             try:
@@ -479,7 +492,7 @@ async def get_style_progress(
 
 @router.get("/dhu", response_model=list[DhuPoint])
 async def get_dhu_trend(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     days: int = 7,
     date_from: date | None = None,
@@ -558,7 +571,7 @@ async def get_dhu_trend(
 
 @router.get("/speed-quality", response_model=SpeedQualityResponse)
 async def get_speed_quality_trend(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     days: int = 14,
     date_from: date | None = None,
@@ -633,7 +646,7 @@ async def get_speed_quality_trend(
 
 @router.get("/complexity-impact", response_model=ComplexityAnalysisResponse)
 async def get_complexity_stats(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
 ):
@@ -681,7 +694,7 @@ async def get_complexity_stats(
 
 @router.get("/earned-minutes", response_model=EarnedMinutesStats)
 async def get_earned_minutes_stats(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -717,7 +730,7 @@ async def get_earned_minutes_stats(
 
 @router.get("/downtime-reasons", response_model=DowntimeAnalysisResponse)
 async def get_downtime_reasons(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -807,7 +820,7 @@ async def get_downtime_reasons(
 
 @router.get("/production/hourly", response_model=list[int])
 async def get_hourly_production(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
 ):
@@ -860,7 +873,7 @@ async def get_hourly_production(
 
 @router.get("/sam-performance", response_model=SamPerformanceResponse)
 async def get_sam_performance(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     date_from: date | None = None,
@@ -879,7 +892,7 @@ async def get_sam_performance(
 
 @router.get("/target-realization", response_model=TargetRealizationResponse)
 async def get_target_realization(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
 ):
@@ -917,7 +930,7 @@ async def get_complexity_analysis(
 
 @router.get("/events", response_model=list[ProductionEventItem])
 async def get_production_events(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
     minutes: int = 60,
@@ -946,7 +959,7 @@ async def get_production_events(
 
 @router.get("/workforce", response_model=WorkforceStats)
 async def get_workforce_stats(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     line_id: str | None = None,
 ):
@@ -1000,7 +1013,7 @@ async def get_workforce_stats(
             select(func.sum(ProductionLine.target_operators))
             .join(Factory, ProductionLine.factory_id == Factory.id)
             .where(ProductionLine.is_active)
-            .where(Factory.organization_id == current_user.organization_id)
+            .where(Factory.organization_id == current_user.get('organization_id'))
         )
 
         lines_res = await db.execute(lines_query)
@@ -1027,7 +1040,7 @@ async def get_workforce_stats(
 
 @router.post("/recalculate")
 async def recalculate_metrics(
-    current_user: CurrentUser,
+    current_user: Annotated[dict, Security(get_current_user, scopes=["analytics:view", "factory_floor:read"])],
     db: Annotated[AsyncSession, Depends(get_db)],
     days_back: int = 30,
 ):

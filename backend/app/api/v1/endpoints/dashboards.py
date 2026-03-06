@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 @router.post("/", response_model=DashboardResponse, status_code=status.HTTP_201_CREATED)
 async def create_dashboard(
     dashboard_in: DashboardCreate,
-    current_user: User = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -48,7 +48,7 @@ async def create_dashboard(
     - **layout_config**: Grid layout configuration
     """
     logger.info(
-        f"Attempting to create dashboard for user {current_user.id}. Payload: {dashboard_in.model_dump()}"
+        f"Attempting to create dashboard for user {current_user.get('id')}. Payload: {dashboard_in.model_dump()}"
     )
 
     # Validate data source if provided
@@ -72,7 +72,7 @@ async def create_dashboard(
                 .join(Factory, DataSource.factory_id == Factory.id)
                 .where(
                     DataSource.id == dashboard_in.data_source_id,
-                    Factory.organization_id == current_user.organization_id,
+                    Factory.organization_id == current_user.get('organization_id'),
                 )
             )
             data_source = result.scalar_one_or_none()
@@ -99,11 +99,11 @@ async def create_dashboard(
             )
 
         # RBAC Check
-        if current_user.role == UserRole.LINE_MANAGER:
+        if current_user.get('role') == UserRole.LINE_MANAGER:
             # Line Manager: Must be assigned to this specific line
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.production_line_id == data_source.id
                 )
             )
@@ -112,7 +112,7 @@ async def create_dashboard(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Line Manager: You do not have permission for this production line."
                 )
-        elif current_user.role == UserRole.FACTORY_MANAGER:
+        elif current_user.get('role') == UserRole.FACTORY_MANAGER:
             # Factory Manager: Must be assigned to the factory of this line
             # We have the Factory object joined in the query above (Factory.id)
             # data_source variable holds the result which is just DataSource object?
@@ -126,7 +126,7 @@ async def create_dashboard(
             # We explicitly fetch the line -> factory relationship to be safe.
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.factory_id == data_source.factory_id
                 )
             )
@@ -139,7 +139,7 @@ async def create_dashboard(
     try:
         # Create dashboard
         dashboard = Dashboard(
-            user_id=current_user.id,
+            user_id=current_user.get('id'),
             name=dashboard_in.name,
             description=dashboard_in.description,
             data_source_id=dashboard_in.data_source_id,
@@ -168,11 +168,10 @@ async def create_dashboard(
         ) from e
 
 
-# I am not sure how to do it like, basically this needs to be the CEO view. What does the ceo want to see?
 @router.get("/", response_model=DashboardListResponse)
 async def list_dashboards(
     factory_id: str | None = Query(None, description="Filter dashboards by factory"),
-    current_user: User = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -183,11 +182,11 @@ async def list_dashboards(
     from app.models.datasource import DataSource
     from app.models.factory import Factory
 
-    logger.debug(f"Dashboard list requested. factory_id={factory_id}, user_id={current_user.id}, role={current_user.role}")
+    logger.debug(f"Dashboard list requested. factory_id={factory_id}, user_id={current_user.get('id')}, role={current_user.get('role')}")
 
     try:
         # Start with base query
-        stmt = select(Dashboard).where(Dashboard.user_id == current_user.id)
+        stmt = select(Dashboard).where(Dashboard.user_id == current_user.get('id'))
 
         # Track if we've joined DataSource to avoid duplicate joins
         datasource_joined = False
@@ -203,11 +202,11 @@ async def list_dashboards(
             datasource_joined = True
 
         # RBAC: Managers only see dashboards for lines they are assigned to
-        if current_user.role == UserRole.LINE_MANAGER:
+        if current_user.get('role') == UserRole.LINE_MANAGER:
             logger.debug("Applying LINE_MANAGER RBAC filter")
             # Line Manager: filter by assigned lines
             scope_query = select(UserScope.production_line_id).where(
-                UserScope.user_id == current_user.id,
+                UserScope.user_id == current_user.get('id'),
                 UserScope.production_line_id.isnot(None)
             )
             scope_result = await db.execute(scope_query)
@@ -222,11 +221,11 @@ async def list_dashboards(
                 (DataSource.id.in_(allowed_ids))
             )
 
-        elif current_user.role == UserRole.FACTORY_MANAGER:
+        elif current_user.get('role') == UserRole.FACTORY_MANAGER:
             logger.debug("Applying FACTORY_MANAGER RBAC filter")
             # Factory Manager: filter by assigned factories
             factory_scope_query = select(UserScope.factory_id).where(
-                UserScope.user_id == current_user.id
+                UserScope.user_id == current_user.get('id')
             )
             scope_result = await db.execute(factory_scope_query)
             allowed_factory_ids = [row[0] for row in scope_result.fetchall()]
@@ -269,12 +268,10 @@ async def list_dashboards(
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-# Proably needs to update/refactored since we need to make sure that the root dashboard isnt
-# just 1 single production line, its an overall view of all factories and lines, still dont know how am going to do that
 @router.get("/{dashboard_id}", response_model=DashboardDetailResponse)
 async def get_dashboard(
     dashboard_id: str,
-    current_user: User = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -283,11 +280,10 @@ async def get_dashboard(
     Returns the dashboard configuration plus actual widget data
     fetched from the linked data source, including production line ID for filtering.
     """
-    # Using selectinload for async loading of relationships
     result = await db.execute(
         select(Dashboard)
         .options(selectinload(Dashboard.data_source))
-        .where(Dashboard.id == dashboard_id, Dashboard.user_id == current_user.id)
+        .where(Dashboard.id == dashboard_id, Dashboard.user_id == current_user.get('id'))
     )
     dashboard = result.scalar_one_or_none()
 
@@ -303,20 +299,20 @@ async def get_dashboard(
 
     # RBAC Reference Check
     if production_line_id:
-        if current_user.role == UserRole.LINE_MANAGER:
+        if current_user.get('role') == UserRole.LINE_MANAGER:
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.production_line_id == production_line_id
                 )
             )
             if not scope_check.scalar_one_or_none():
                  raise HTTPException(status_code=403, detail="Forbidden")
 
-        elif current_user.role == UserRole.FACTORY_MANAGER:
+        elif current_user.get('role') == UserRole.FACTORY_MANAGER:
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.factory_id == dashboard.data_source.factory_id
                 )
             )
@@ -345,7 +341,7 @@ async def get_dashboard(
 async def update_dashboard(
     dashboard_id: str,
     dashboard_in: DashboardUpdate,
-    current_user: User = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -376,7 +372,7 @@ async def update_dashboard(
             .join(Factory, DataSource.factory_id == Factory.id)
             .where(
                 DataSource.id == dashboard_in.data_source_id,
-                Factory.organization_id == current_user.organization_id,
+                Factory.organization_id == current_user.get('organization_id'),
             )
         )
         data_source = ds_result.scalar_one_or_none()
@@ -388,16 +384,16 @@ async def update_dashboard(
             )
 
         # RBAC Check
-        if current_user.role == UserRole.LINE_MANAGER:
+        if current_user.get('role') == UserRole.LINE_MANAGER:
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.production_line_id == data_source.id
                 )
             )
             if not scope_check.scalar_one_or_none():
                  raise HTTPException(status_code=403, detail="Forbidden")
-        elif current_user.role == UserRole.FACTORY_MANAGER:
+        elif current_user.get('role') == UserRole.FACTORY_MANAGER:
             # Check factory access (DataSource -> Factory)
             # data_source query above joined Factory already?
             # Yes: join(Factory, DataSource.factory_id == Factory.id)
@@ -406,7 +402,7 @@ async def update_dashboard(
             # Simplified:
             scope_check = await db.execute(
                 select(UserScope).where(
-                    UserScope.user_id == current_user.id,
+                    UserScope.user_id == current_user.get('id'),
                     UserScope.factory_id == data_source.factory_id
                 )
             )
@@ -453,7 +449,7 @@ async def update_dashboard(
 @router.delete("/{dashboard_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_dashboard(
     dashboard_id: str,
-    current_user: User = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -463,7 +459,7 @@ async def delete_dashboard(
     """
     result = await db.execute(
         select(Dashboard).where(
-            Dashboard.id == dashboard_id, Dashboard.user_id == current_user.id
+            Dashboard.id == dashboard_id, Dashboard.user_id == current_user.get('id')
         )
     )
     dashboard = result.scalar_one_or_none()

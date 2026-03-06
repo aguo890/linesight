@@ -18,69 +18,85 @@ from app.core.database import get_db
 from app.core.security import decode_access_token
 from app.models.user import User
 
-# Security scheme
-security = HTTPBearer(auto_error=False)
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, SecurityScopes, OAuth2PasswordBearer
+from jose import JWTError, jwt
+from app.core.config import settings
 
+# Security scheme
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 async def get_current_user(
-    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)],
-    db: Annotated[AsyncSession, Depends(get_db)],
-) -> User:
+    security_scopes: SecurityScopes,
+    token: str = Depends(oauth2_scheme)
+) -> dict:
     """
-    Validate JWT token and return current user.
+    Validate JWT token statelessly and verify required scopes.
+    Returns a dict with user identity and scopes to avoid DB hits.
+    """
+    if security_scopes.scopes:
+        authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
+    else:
+        authenticate_value = "Bearer"
 
-    Raises:
-        HTTPException: If token is invalid or user not found
-    """
-    if not credentials:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
-            headers={"WWW-Authenticate": "Bearer"},
+    try:
+        payload = jwt.decode(
+            token,
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM]
         )
-
-    token = credentials.credentials
-    payload = decode_access_token(token)
-
-    if not payload:
+        user_id: str | None = payload.get("sub")
+        token_scopes: list[str] = payload.get("scopes", [])
+        org_id: str | None = payload.get("organization_id")
+        user_role: str | None = payload.get("role")
+        
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": authenticate_value},
+            )
+    except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",
-            headers={"WWW-Authenticate": "Bearer"},
+            headers={"WWW-Authenticate": authenticate_value},
         )
 
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token payload",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    # Validate that the token contains all required scopes
+    for scope in security_scopes.scopes:
+        if scope not in token_scopes:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not enough permissions",
+                headers={"WWW-Authenticate": authenticate_value},
+            )
 
-    # Fetch user from database
+    # Return the basic user identity parsed from the token statelessly
+    return {
+        "id": user_id, 
+        "scopes": token_scopes, 
+        "organization_id": org_id,
+        "role": user_role,
+        "is_active": True
+    }
+
+
+
+async def get_current_active_user(
+    current_token: Annotated[dict, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> User:
+    """Ensure user is active and fetch full user from database."""
+    user_id = current_token.get("id")
     result = await db.execute(select(User).where(User.id == user_id, User.is_active))
     user = result.scalar_one_or_none()
-
+    
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found or inactive",
-            headers={"WWW-Authenticate": "Bearer"},
         )
-
     return user
-
-
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-) -> User:
-    """Ensure user is active."""
-    if not current_user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Inactive user",
-        )
-    return current_user
 
 
 async def require_admin(
@@ -140,7 +156,7 @@ async def require_manager_or_above(
 
 
 # Type aliases for dependency injection
-CurrentUser = Annotated[User, Depends(get_current_user)]
+CurrentUser = Annotated[User, Depends(get_current_active_user)]
 ActiveUser = Annotated[User, Depends(get_current_active_user)]
 AdminUser = Annotated[User, Depends(require_admin)]  # SYSTEM_ADMIN or OWNER
 SystemAdminUser = Annotated[User, Depends(require_system_admin)]  # SYSTEM_ADMIN only
