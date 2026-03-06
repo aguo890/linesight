@@ -22,7 +22,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, 
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_active_user, get_db
 from app.models.datasource import DataSource
 from app.models.raw_import import RawImport, StagingRecord
 from app.models.user import User, UserRole
@@ -113,7 +113,7 @@ async def upload_file_for_ingestion(
         None, description="LEGACY: Use data_source_id instead"
     ),
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),  # Added authentication
+    current_user: User = Depends(get_current_active_user),  # Added authentication
 ):
     """
     Upload a file and create a RawImport record.
@@ -389,7 +389,7 @@ async def get_import_preview(raw_import_id: str, db: AsyncSession = Depends(get_
 async def get_dry_run_preview(
     raw_import_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     HITL Preview: Show how data will look after import.
@@ -408,7 +408,7 @@ async def delete_uploads(
         ..., description="REQUIRED: Production line to clear history for"
     ),
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Delete upload history for a production line.
@@ -480,7 +480,7 @@ async def delete_uploads(
 async def promote_to_production(
     raw_import_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Step 4: Promote data from a confirmed RawImport to production tables.

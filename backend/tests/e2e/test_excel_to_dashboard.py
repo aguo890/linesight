@@ -116,9 +116,10 @@ async def test_e2e_excel_ingestion_and_dashboard(
     # --- SETUP AUTH ---
     from types import SimpleNamespace
 
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
     from app.main import app
 
+    fake_token = {"id": env["user"].id, "scopes": ["analytics:view", "factory_floor:read", "admin:all"], "organization_id": env["user"].organization_id, "role": "admin", "is_active": True}
     fake_user = SimpleNamespace(
         id=env["user"].id,
         organization_id=env["user"].organization_id,
@@ -126,7 +127,8 @@ async def test_e2e_excel_ingestion_and_dashboard(
         is_active=True,
         preferences="{}",
     )
-    app.dependency_overrides[get_current_user] = lambda: fake_user
+    app.dependency_overrides[get_current_user] = lambda: fake_token
+    app.dependency_overrides[get_current_active_user] = lambda: fake_user
 
     # --- STEP 1: UPLOAD ---
     file_path = get_golden_master_path()
@@ -326,4 +328,5 @@ async def test_e2e_excel_ingestion_and_dashboard(
     assert response.status_code == 200
 
     # CLEANUP
-    app.dependency_overrides.pop(get_current_user)
+    app.dependency_overrides.pop(get_current_user, None)
+    app.dependency_overrides.pop(get_current_active_user, None)

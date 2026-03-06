@@ -14,7 +14,7 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_active_user, get_db
 from app.models import ProductionLine  # Alias for DataSource
 from app.models.datasource import DataSource, SchemaMapping
 from app.models.factory import Factory
@@ -75,7 +75,7 @@ class DataSourceResponse(BaseModel):
 async def create_data_source(
     data: DataSourceCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Create a new data source for a production line."""
 
@@ -141,7 +141,7 @@ async def create_data_source(
 async def get_data_source(
     data_source_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Get data source by ID."""
     from sqlalchemy.orm import selectinload
@@ -167,7 +167,7 @@ async def list_data_sources(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """List all data sources with mappings loaded."""
     from sqlalchemy.orm import selectinload
@@ -185,7 +185,7 @@ async def list_data_sources(
 async def get_data_source_by_line(
     line_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Get data source by ID (line_id IS the DataSource.id after refactor)."""
     from sqlalchemy.orm import selectinload
@@ -208,7 +208,7 @@ async def get_data_source_by_line(
 async def get_datasource_by_line_explicit(
     production_line_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Fetch DataSource config for a specific line.
@@ -235,7 +235,7 @@ async def update_schema_mapping(
     data_source_id: str,
     mapping_data: SchemaMappingCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Create a new version of the schema mapping after user validation."""
 
@@ -280,7 +280,7 @@ async def update_data_source(
     data_source_id: str,
     datasource_in: DataSourceUpdate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Update mappings or time column for a specific DataSource."""
     from sqlalchemy.orm import selectinload
@@ -321,7 +321,7 @@ async def update_data_source(
 async def delete_data_source(
     data_source_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Delete a data source and all its associated schema mappings.

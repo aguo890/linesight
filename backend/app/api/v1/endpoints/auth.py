@@ -64,8 +64,22 @@ async def login(
             detail="User account is disabled",
         )
 
-    # Create access token
-    access_token = create_access_token(subject=user.id)
+    # Map Role to Scopes (Stateless RBAC matrix)
+    scopes = ["analytics:view", "factory_floor:read"] # Base scopes
+    if user.role in [UserRole.SYSTEM_ADMIN, UserRole.OWNER]:
+        scopes.extend(["admin:all", "factory_floor:write"])
+    elif user.role in [UserRole.FACTORY_MANAGER, UserRole.LINE_MANAGER]:
+        scopes.append("factory_floor:write")
+        
+    # Create access token with embedded scopes and user metadata
+    access_token = create_access_token(
+        subject=user.id,
+        additional_claims={
+            "scopes": scopes,
+            "organization_id": user.organization_id,
+            "role": user.role.value
+        }
+    )
 
     # Parse preferences if it's a string
     prefs = user.preferences

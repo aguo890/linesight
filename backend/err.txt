@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from app.main import app
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\main.py", line 151, in <module>
+    app = create_application()
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\main.py", line 128, in create_application
+    from app.api.v1.router import api_router
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\router.py", line 12, in <module>
+    from app.api.v1.endpoints import (
+    ...<15 lines>...
+    )
+  File "C:\Users\19803\Projects\FactoryExcelManager\backend\app\api\v1\endpoints\ingestion.py", line 483, in <module>
+    current_user: User = Depends(get_current_user),
+                                 ^^^^^^^^^^^^^^^^
+NameError: name 'get_current_user' is not defined. Did you mean: 'get_current_active_user'?

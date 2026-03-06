@@ -199,10 +199,15 @@ async def fast_async_client(
     mock_user.is_verified = True
 
     async def override_get_current_user():
+        return {"id": mock_user.id, "scopes": ["analytics:view", "factory_floor:read", "admin:all"], "organization_id": mock_user.organization_id, "role": mock_user.role, "is_active": True}
+
+    async def override_get_current_active_user():
         return mock_user
 
     app.dependency_overrides[get_db] = override_get_db
+    from app.api.deps import get_current_active_user
     app.dependency_overrides[get_current_user] = override_get_current_user
+    app.dependency_overrides[get_current_active_user] = override_get_current_active_user
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
@@ -214,23 +219,34 @@ async def fast_async_client(
 @pytest.fixture(scope="function")
 def client_with_auth(client) -> Generator[TestClient, None, None]:
     """Test client with bypassed authentication."""
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
 
-    # Create fake user data
-    fake_user = {
+    # Create fake user data token for stateless endpoints
+    fake_token = {
         "id": "test-user-id",
-        "email": "test@example.com",
-        "role": "system_admin",
+        "scopes": ["analytics:view", "factory_floor:read", "admin:all"],
         "organization_id": "test-org-id",
+        "role": "system_admin",
+        "is_active": True
     }
+    
+    # Create fake model for stateful endpoints
+    mock_user = MagicMock()
+    mock_user.id = "test-user-id"
+    mock_user.email = "test@example.com"
+    mock_user.role = "system_admin"
+    mock_user.organization_id = "test-org-id"
+    mock_user.is_active = True
 
     # Override dependency
-    app.dependency_overrides[get_current_user] = lambda: fake_user
+    app.dependency_overrides[get_current_user] = lambda: fake_token
+    app.dependency_overrides[get_current_active_user] = lambda: mock_user
 
     yield client
 
     # Clean up
     app.dependency_overrides.pop(get_current_user, None)
+    app.dependency_overrides.pop(get_current_active_user, None)
 
 
 # =============================================================================
@@ -280,7 +296,14 @@ async def auth_headers(test_user) -> dict:
     """Generate auth headers for authenticated requests."""
     from app.core.security import create_access_token
 
-    token = create_access_token(subject=test_user.id)
+    token = create_access_token(
+        subject=test_user.id,
+        additional_claims={
+            "scopes": ["analytics:view", "factory_floor:read", "admin:all"],
+            "organization_id": test_user.organization_id,
+            "role": test_user.role.value if hasattr(test_user.role, "value") else str(test_user.role)
+        }
+    )
     return {"Authorization": f"Bearer {token}"}
 
 
@@ -290,13 +313,17 @@ async def auth_headers_override(test_user) -> AsyncGenerator[dict, None]:
     Auth headers with dependency override for speed.
     Use with fast_async_client for optimal performance.
     """
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
     from app.core.security import create_access_token
 
     async def override_get_current_user():
+        return {"id": test_user.id, "scopes": ["analytics:view", "factory_floor:read", "admin:all"], "organization_id": test_user.organization_id, "role": test_user.role, "is_active": True}
+
+    async def override_get_current_active_user():
         return test_user
 
     app.dependency_overrides[get_current_user] = override_get_current_user
+    app.dependency_overrides[get_current_active_user] = override_get_current_active_user
     token = create_access_token(subject=test_user.id)
 
     headers = {"Authorization": f"Bearer {token}"}

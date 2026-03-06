@@ -71,7 +71,45 @@ const DashboardPageContent = () => {
         return () => observer.disconnect();
     }, []);
 
+    // 🔴 NEW: WebSocket Connection for Real-Time PLC Telemetry
+    useEffect(() => {
+        // Connect to the WebSocket when the dashboard mounts
+        const clientId = `client_${Math.random().toString(36).substr(2, 9)}`;
+        // In a real app we'd use the actual API URL, for now hardcoding localhost:8000 for local dev
+        const wsUrl = `ws://localhost:8000/api/v1/ws/dashboard/${clientId}${factoryId ? `?line_id=${factoryId}` : ''}`;
 
+        const ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+            console.log('🟢 Connected to Live PLC Telemetry Stream');
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const telemetryData = JSON.parse(event.data);
+                console.log('📡 Received Live PLC Event:', telemetryData);
+
+                // TODO: Dispatch this event to Zustand store to update charts
+                // For now, we just log it to prove the pipeline works end-to-end
+            } catch (err) {
+                console.error('Failed to parse telemetry data', err);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error('🔴 WebSocket Error:', error);
+        };
+
+        ws.onclose = () => {
+            console.log('⚪ Disconnected from Live PLC Telemetry Stream');
+        };
+
+        return () => {
+            if (ws.readyState === 1) { // OPEN
+                ws.close();
+            }
+        };
+    }, [factoryId]); // Reconnect if the factory/line changes
 
     const loadDashboard = useCallback(async () => {
         setIsLoading(true);

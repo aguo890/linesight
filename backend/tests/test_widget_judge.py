@@ -132,19 +132,22 @@ async def test_judge_workforce_integrity_and_scope(
     # ... mock user ...
     from types import SimpleNamespace
 
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
     from app.main import app
 
+    fake_token = {"id": "judge-user", "scopes": ["analytics:view", "factory_floor:read"]}
     fake_user = SimpleNamespace(
         id="judge-user",
         organization_id=judge_data["factory"].organization_id,
         role="admin",
         is_active=True,
     )
-    app.dependency_overrides[get_current_user] = lambda: fake_user
+    app.dependency_overrides[get_current_user] = lambda: fake_token
+    app.dependency_overrides[get_current_active_user] = lambda: fake_user
 
     response = await async_client.get(f"/api/v1/analytics/workforce?line_id={line_id}")
-    app.dependency_overrides.pop(get_current_user)
+    app.dependency_overrides.pop(get_current_user, None)
+    app.dependency_overrides.pop(get_current_active_user, None)
 
     assert response.status_code == 200, f"Response: {response.text}"
     data = response.json()
@@ -184,19 +187,22 @@ async def test_judge_overview_timezone_and_scope(async_client, judge_data):
 
     from types import SimpleNamespace
 
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
     from app.main import app
 
+    fake_token = {"id": "judge-user", "scopes": ["analytics:view", "factory_floor:read"]}
     fake_user = SimpleNamespace(
         id="judge-user",
         organization_id=judge_data["factory"].organization_id,
         role="admin",
         is_active=True,
     )
-    app.dependency_overrides[get_current_user] = lambda: fake_user
+    app.dependency_overrides[get_current_user] = lambda: fake_token
+    app.dependency_overrides[get_current_active_user] = lambda: fake_user
 
     response = await async_client.get(f"/api/v1/analytics/overview?line_id={line_id}")
-    app.dependency_overrides.pop(get_current_user)
+    app.dependency_overrides.pop(get_current_user, None)
+    app.dependency_overrides.pop(get_current_active_user, None)
 
     assert response.status_code == 200
     data = response.json()
@@ -221,22 +227,24 @@ async def test_judge_no_fake_simulation(async_client, judge_data):
 
     from types import SimpleNamespace
 
-    from app.api.deps import get_current_user
+    from app.api.deps import get_current_user, get_current_active_user
     from app.main import app
 
+    fake_token = {"id": "judge-user", "scopes": ["analytics:view", "factory_floor:read"]}
     fake_user = SimpleNamespace(
         id="judge-user",
         organization_id=judge_data["factory"].organization_id,
         role="admin",
         is_active=True,
     )
-    app.dependency_overrides[get_current_user] = lambda: fake_user
+    app.dependency_overrides[get_current_user] = lambda: fake_token
+    app.dependency_overrides[get_current_active_user] = lambda: fake_user
 
-    # Call Style Progress
     response = await async_client.get(
         f"/api/v1/analytics/production/styles?line_id={line_id}"
     )
-    app.dependency_overrides.pop(get_current_user)
+    app.dependency_overrides.pop(get_current_user, None)
+    app.dependency_overrides.pop(get_current_active_user, None)
 
     assert response.status_code == 200
     data = response.json()  # List of styles

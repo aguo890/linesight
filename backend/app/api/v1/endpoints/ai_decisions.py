@@ -14,7 +14,7 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_active_user, get_db
 from app.models.ai_decision import AgentType, AIDecision
 from app.models.user import User
 
@@ -53,7 +53,7 @@ async def list_ai_decisions(
     limit: int = Query(50, ge=1, le=100, description="Number of results to return"),
     offset: int = Query(0, ge=0, description="Number of results to skip"),
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     List AI decisions with optional filtering.
@@ -109,7 +109,7 @@ async def list_ai_decisions(
 async def get_ai_decision(
     decision_id: str,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """Get a specific AI decision by ID with full details."""
     result = await db.execute(select(AIDecision).where(AIDecision.id == decision_id))
@@ -131,7 +131,7 @@ async def get_data_source_ai_decisions(
         10, ge=1, le=50, description="Number of recent decisions to return"
     ),
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_active_user),
 ):
     """
     Get recent AI decisions for a specific data source.
