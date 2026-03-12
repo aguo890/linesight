@@ -4,12 +4,20 @@
 COMPOSE_FILE := docker-compose.yml
 # Default service for shell command
 SERVICE ?= backend
-# Use system python for utility scripts (cross-platform)
-# specific handling for Windows (where 'python' is standard) vs Unix (where 'python3' is often standard)
+# Use backend venv python if available, otherwise fall back to system python
+# This ensures utility scripts (push, reconcile, etc.) have all dependencies
 ifeq ($(OS),Windows_NT)
-    PYTHON_CMD := python
+    ifneq (,$(wildcard backend/venv/Scripts/python.exe))
+        PYTHON_CMD := backend/venv/Scripts/python.exe
+    else
+        PYTHON_CMD := python
+    endif
 else
-    PYTHON_CMD := $(shell command -v python > /dev/null 2>&1 && echo python || echo python3)
+    ifneq (,$(wildcard backend/venv/bin/python))
+        PYTHON_CMD := backend/venv/bin/python
+    else
+        PYTHON_CMD := $(shell command -v python > /dev/null 2>&1 && echo python || echo python3)
+    endif
 endif
 
 .PHONY: default dev up down restart logs shell clean setup help push push-quick migrate branch reconcile reconcile-dry sync-check test test-cov lint lint-fix format check
@@ -109,6 +117,15 @@ clean:
 # 1. Dev - "Daily Driver"
 # Starts app -> Syncs API types -> Tails logs
 dev: up wait-healthy sync-check logs
+
+# 1b. Dev-Local - Native dev without Docker
+# Starts Postgres, Redis, Backend, Frontend with combined logs in one terminal
+.PHONY: dev-local stop-local
+dev-local:
+	@powershell -ExecutionPolicy Bypass -File dev_local.ps1
+
+stop-local:
+	@powershell -ExecutionPolicy Bypass -File stop_native.ps1
 
 # 2. Setup - The "Fresh Start" command
 # Stops everything, removes volumes (cleans DB), rebuilds, starts, and migrates.
