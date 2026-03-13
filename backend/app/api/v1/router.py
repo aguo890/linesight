@@ -55,4 +55,7 @@ api_router.include_router(websockets.router, prefix="/ws", tags=["WebSockets"])
 
 if settings.ENVIRONMENT != "production":
     api_router.include_router(dev.router, prefix="/dev", tags=["Development"])
+    
+    from app.api.v1.endpoints import dev_tools
+    api_router.include_router(dev_tools.router, prefix="/dev", tags=["Development - SCADA"])
 # Force reload

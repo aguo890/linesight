@@ -14,7 +14,7 @@ Uses a waterfall approach:
 4. Intelligent Heuristics (dateutil)
 
 Safe Mode:
-When an ISO-style date (YYYY-XX-XX) has both middle and last parts ≤ 12,
+When an ISO-style date (YYYY-XX-XX) has both middle and last parts <= 12,
 it's ambiguous (could be YYYY-MM-DD or YYYY-DD-MM). A warning is logged
 but the date is still parsed as ISO standard (YYYY-MM-DD).
 """
@@ -227,7 +227,7 @@ def parse_date(
             if month <= 12 and day <= 12:
                 logger.warning(
                     f"AMBIGUOUS DATE DETECTED: '{str_val}' - "
-                    f"Both values ({month}, {day}) are ≤ 12. "
+                    f"Both values ({month}, {day}) are <= 12. "
                     f"Interpreting as YYYY-MM-DD (ISO 8601): {year}-{month:02d}-{day:02d}. "
                     f"If this is YYYY-DD-MM format, configure explicit format in data source."
                 )
