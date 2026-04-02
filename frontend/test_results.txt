@@ -1,3 +1,24 @@
 
  RUN  v1.6.1 /app
 
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯⎯ Unhandled Error ⎯⎯⎯⎯⎯⎯⎯
+Error: Worker terminated due to reaching memory limit: JS heap out of memory
+ ❯ [kOnExit] node:internal/worker:320:26
+ ❯ Worker.<computed>.onexit node:internal/worker:230:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ERR_WORKER_OUT_OF_MEMORY' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ Test Files   (1)
+      Tests   (4)
+     Errors  1 error
+   Start at  19:06:50
+   Duration  309.13s (transform 71ms, setup 73ms, collect 99ms, tests 0ms, environment 136ms, prepare 38ms)
+

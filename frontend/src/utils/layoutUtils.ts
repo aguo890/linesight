@@ -15,7 +15,7 @@ export interface LayoutItem {
     id: string;
     w: number;
     h: number;
-    [key: string]: any; // Allow passing through other widget props
+    [key: string]: unknown; // Allow passing through other widget props
 }
 
 export interface LayoutPosition {

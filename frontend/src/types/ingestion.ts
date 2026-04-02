@@ -222,11 +222,11 @@ export interface DryRunResponse {
 
 export interface AILayoutAnalysisResponse {
     raw_import_id: string;
-    detected_layout: Record<string, any>;
+    detected_layout: Record<string, unknown>;
     confidence: number;
 }
 
 export interface AIPreviewResponse {
-    records: Record<string, any>[];
+    records: Record<string, unknown>[];
     total_records: number;
 }

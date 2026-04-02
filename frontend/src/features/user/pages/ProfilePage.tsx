@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
 import { type UserPreferences, type UserInfo } from '@/lib/authApi';
 import LocationSelector from '@/features/dashboard/components/LocationSelector';
-import { getPrefs } from '../utils';
+import { getPrefs } from '@/features/user/utils';
 import api from '@/lib/api';
 import { listFactories } from '@/lib/factoryApi';
 import { useToast } from '@/contexts/ToastContext';
