@@ -1,8 +1,6 @@
 # LineSight - Docker Compose Configuration
 # Complete stack: Backend + Postgres + Redis
 
-version: '3.8'
-
 services:
   # ==========================================
   # Backend API Service
