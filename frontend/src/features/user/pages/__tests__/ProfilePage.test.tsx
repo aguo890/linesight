@@ -6,15 +6,16 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import ProfilePage from '@/features/user/ProfilePage';
+import ProfilePage from '@/features/user/pages/ProfilePage';
 
 // Mocks
 const mockUpdateUser = vi.fn();
 const mockSetTheme = vi.fn();
 const mockChangeLanguage = vi.fn();
 const mockNavigate = vi.fn();
+const mockAddToast = vi.fn();
 
-vi.mock('../../../hooks/useAuth', () => ({
+vi.mock('@/hooks/useAuth', () => ({
     useAuth: () => ({
         user: {
             full_name: 'Test User',
@@ -25,7 +26,7 @@ vi.mock('../../../hooks/useAuth', () => ({
     })
 }));
 
-vi.mock('../../../context/ThemeContext', () => ({
+vi.mock('@/context/ThemeContext', () => ({
     useTheme: () => ({
         theme: 'light',
         systemTheme: 'light',
@@ -33,14 +34,34 @@ vi.mock('../../../context/ThemeContext', () => ({
     })
 }));
 
-vi.mock('../../../lib/api', () => ({
+vi.mock('@/lib/api', () => ({
     default: {
         get: vi.fn().mockResolvedValue({ data: { id: 'org-1', name: 'Test Org' } }),
     }
 }));
 
-vi.mock('../../../lib/factoryApi', () => ({
+vi.mock('@/lib/factoryApi', () => ({
     listFactories: vi.fn().mockResolvedValue([])
+}));
+
+vi.mock('@/contexts/ToastContext', () => ({
+    useToast: () => ({
+        addToast: mockAddToast
+    })
+}));
+
+vi.mock('@/components/common/ConfirmDialog', () => ({
+    default: ({ isOpen, title, onConfirm, onClose }: any) => isOpen ? (
+        <div data-testid="confirm-dialog">
+            <span>{title}</span>
+            <button onClick={onConfirm}>Confirm</button>
+            <button onClick={onClose}>Cancel</button>
+        </div>
+    ) : null
+}));
+
+vi.mock('@/components/common/AutoFlipIcon', () => ({
+    AutoFlipIcon: ({ icon: Icon, ...props }: any) => <Icon {...props} />
 }));
 
 vi.mock('react-i18next', () => ({
@@ -63,7 +84,7 @@ vi.mock('react-router-dom', () => ({
 }));
 
 // Mock child components to simplify testing
-vi.mock('../../components/common/LanguageSelector', () => ({
+vi.mock('@/components/common/LanguageSelector', () => ({
     LanguageSelector: ({ onPreferenceChange }: any) => (
         <select
             data-testid="language-selector"
@@ -75,7 +96,7 @@ vi.mock('../../components/common/LanguageSelector', () => ({
     )
 }));
 
-vi.mock('../../features/dashboard/components/LocationSelector', () => ({
+vi.mock('@/features/dashboard/components/LocationSelector', () => ({
     default: () => (
         <div data-testid="location-selector" />
     )

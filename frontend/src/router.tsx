@@ -18,7 +18,7 @@ const DynamicDashboardPage = lazy(() => import('./features/dashboard/pages/Dynam
 const MyDashboardsPage = lazy(() => import('./features/dashboard/pages/MyDashboardsPage'));
 const FactoryDetailPage = lazy(() => import('./features/dashboard/pages/FactoryDetailPage'));
 const DataSourceDetailPage = lazy(() => import('./features/dashboard/pages/DataSourceDetailPage')); // Updated import
-const ProfilePage = lazy(() => import('./features/user/ProfilePage'));
+const ProfilePage = lazy(() => import('./features/user/pages/ProfilePage'));
 const NotFound = lazy(() => import('./features/dashboard/pages/NotFound'));
 
 // Organization Settings (Hub and Spoke pattern)
